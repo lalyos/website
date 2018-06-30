@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>基于 Persistent Volumes 搭建 WordPress 和 MySQL 应用 - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="基于 Persistent Volumes 搭建 WordPress 和 MySQL 应用" />
+<meta property="og:description" content="基于 Persistent Volumes 搭建 WordPress 和 MySQL 应用" />
+
+<meta property="og:url" content="https://kubernetes.io/cn/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/" />
+<meta property="og:title" content="基于 Persistent Volumes 搭建 WordPress 和 MySQL 应用 - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+             <li>
+                <a href="#">
+                    Chinese <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/">English</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+         
+        
+        <a class="item" data-title="Tutorials" href="/cn/docs/tutorials/"></a>
+
+	
+	
+		
+		
+<a class="item" data-title="Kubernetes 对象管理" href="/cn/docs/tutorials/object-management-kubectl/object-management/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="StatefulSet基本使用" href="/cn/docs/tutorials/stateful-application/basic-stateful-set/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Try Our Interactive Tutorials">
+		<div class="container">
+		
+		
+		<a class="item" data-title="Try Our Interactive Tutorials" href="/cn/docs/tutorials/kubernetes-basics/"></a>
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="互动教程 - 创建集群" href="/cn/docs/tutorials/kubernetes-basics/cluster-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 应用外部可见" href="/cn/docs/tutorials/kubernetes-basics/expose-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 应用程序探索" href="/cn/docs/tutorials/kubernetes-basics/explore-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 扩展您的应用程序" href="/cn/docs/tutorials/kubernetes-basics/scale-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 更新您的应用程序" href="/cn/docs/tutorials/kubernetes-basics/update-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 部署应用程序" href="/cn/docs/tutorials/kubernetes-basics/deploy-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Minikube 创建一个集群" href="/cn/docs/tutorials/kubernetes-basics/cluster-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 kubectl 创建部署" href="/cn/docs/tutorials/kubernetes-basics/deploy-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用服务发布您的应用程序" href="/cn/docs/tutorials/kubernetes-basics/expose-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="执行滚动更新" href="/cn/docs/tutorials/kubernetes-basics/update-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="查看 Pods 和节点" href="/cn/docs/tutorials/kubernetes-basics/explore-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="运行应用程序的多个实例" href="/cn/docs/tutorials/kubernetes-basics/scale-intro/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="“示例：使用 Stateful Sets 部署 Cassandra”" href="/cn/docs/tutorials/stateful-application/cassandra/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Source IP" href="/cn/docs/tutorials/services/source-ip/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用ConfigMap来配置Redis" href="/cn/docs/tutorials/configuration/configure-redis-using-configmap/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用命令式的方式管理 Kubernetes 对象" href="/cn/docs/tutorials/object-management-kubectl/imperative-object-management-command/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="基于 Persistent Volumes 搭建 WordPress 和 MySQL 应用" href="/cn/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="运行 ZooKeeper， 一个 CP 分布式系统" href="/cn/docs/tutorials/stateful-application/zookeeper/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/tutorials/stateful-application/mysql-wordpress-persistent-volume.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>基于 Persistent Volumes 搭建 WordPress 和 MySQL 应用</h1>
+
+
+
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#快速入门">快速入门</a></li>
+<li><a href="#目录">目录</a></li>
+<li><a href="#集群要求">集群要求</a></li>
+<li><a href="#决定在哪里存储你的数据">决定在哪里存储你的数据</a>
+<ul>
+<li><a href="#host-path">Host Path</a>
+<ul>
+<li>
+<ul>
+<li><a href="#selinux">SELinux</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#gce-persistent-disk">GCE Persistent Disk</a></li>
+</ul></li>
+<li><a href="#创建-mysql-密码-secret">创建 MySQL 密码 Secret</a></li>
+<li><a href="#部署-mysql">部署 MySQL</a></li>
+<li><a href="#部署-wordpress">部署 WordPress</a></li>
+<li><a href="#访问你的新-wordpress-博客">访问你的新 WordPress 博客</a></li>
+<li><a href="#删除并重启你的博客">删除并重启你的博客</a></li>
+<li><a href="#接下来的步骤">接下来的步骤</a></li>
+</ul></li>
+</ul>
+</nav>
+
+
+
+<p>本示例描述了如何在 Kubeernetes 上持久化安装 <a href="https://wordpress.org/" target="_blank">WordPress</a> 和
+<a href="https://www.mysql.com/" target="_blank">MySQL</a> 。在这个安装里我们将使用官方的 <a href="https://registry.hub.docker.com/_/mysql/" target="_blank">mysql</a> 和
+<a href="https://registry.hub.docker.com/_/wordpress/" target="_blank">wordpress</a> 镜像（WordPress 镜像包含一个 Apache 服务）。</p>
+
+<p>展示的 Kubernetes 概念：</p>
+
+<ul>
+<li><a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/" target="_blank">Persistent Volumes</a> 定义持久化磁盘（磁盘生命周期不和 Pods 绑定）。</li>
+<li><a href="https://kubernetes.io/docs/concepts/services-networking/service/" target="_blank">Services</a> 使得 Pods 能够找到其它 Pods。</li>
+<li><a href="https://kubernetes.io/docs/concepts/services-networking/service/#type-loadbalancer" target="_blank">External Load Balancers</a> 对外暴露 Services。</li>
+<li><a href="http://kubernetes.io/docs/user-guide/deployments/" target="_blank">Deployments</a> 确保 Pods 持续运行。</li>
+<li><a href="http://kubernetes.io/docs/user-guide/secrets/" target="_blank">Secrets</a> 保存敏感密码信息。</li>
+</ul>
+
+<h2 id="快速入门">快速入门</h2>
+
+<p>在一个名为 <code>password.txt</code> 的文件中放置你期望的 MySQL 密码，结尾不要有空行。如果你的编辑器添加了一个空行，开始的 <code>tr</code> 命令将会删除它。</p>
+
+<p><strong>请注意：</strong>如果你的集群强制启用 <strong><em>selinux</em></strong> 特性并且你将使用 <a href="#host-path">Host Path</a> 作为存储，请遵照这个<a href="#selinux">额外步骤</a>。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">tr --delete <span style="color:#b44">&#39;\n&#39;</span> &lt;password.txt &gt;.strippedpassword.txt <span style="color:#666">&amp;&amp;</span> mv .strippedpassword.txt password.txt
+kubectl create -f https://raw.githubusercontent.com/kubernetes/examples/master/mysql-wordpress-pd/local-volumes.yaml
+kubectl create secret generic mysql-pass --from-file<span style="color:#666">=</span>password.txt
+kubectl create -f https://raw.githubusercontent.com/kubernetes/examples/master/mysql-wordpress-pd/mysql-deployment.yaml
+kubectl create -f https://raw.githubusercontent.com/kubernetes/examples/master/mysql-wordpress-pd/wordpress-deployment.yaml</code></pre></div>
+<h2 id="目录">目录</h2>
+
+<p><a href="#persistent-installation-of-mysql-and-wordpress-on-kubernetes">在 Kubernetes 上持久化安装 MySQL 和 WordPress</a>
+  - <a href="#quickstart">快速入门</a>
+  - <a href="#table-of-contents">目录</a>
+  - <a href="#cluster-requirements">集群要求</a>
+  - <a href="#decide-where-you-will-store-your-data">决定在哪里存储你的数据</a>
+    - <a href="#host-path">Host Path</a>
+        - <a href="#selinux">SELinux</a>
+    - <a href="#gce-persistent-disk">GCE Persistent Disk</a>
+  - <a href="#create-the-mysql-password-secret">创建 MySQL 密码 secret</a>
+  - <a href="#deploy-mysql">部署 MySQL</a>
+  - <a href="#deploy-wordpress">部署 WordPress</a>
+  - <a href="#visit-your-new-wordpress-blog">访问你的新 WordPress 博客</a>
+  - <a href="#take-down-and-restart-your-blog">删除并重启你的博客</a>
+  - <a href="#next-steps">接下来的步骤</a></p>
+
+<h2 id="集群要求">集群要求</h2>
+
+<p>Kubernetes本质是模块化的，可以在各种环境中运行。但并不是所有集群都相同。此处是本示例的一些要求：
+* 需要 1.2 版本以上的 Kubernetes，以使用更新的特性，例如 PV Claims 和 Deployments。运行 <code>kubectl version</code> 来查看你的集群版本。
+* <a href="https://github.com/kubernetes/dns" target="_blank">Cluster DNS</a> 将被用于服务发现。
+* 一个 <a href="https://kubernetes.io/docs/concepts/services-networking/service/#type-loadbalancer" target="_blank">external load balancer</a> 将被用于接入 WordPress。
+* 使用了 <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims" target="_blank">Persistent Volume Claims</a>。你必须创建集群中需要的 Persistent Volumes。本示例将展示两种类型的 volume 的创建方法，但是任何类型的 volume 都是足够使用的。</p>
+
+<p>查阅 <a href="http://kubernetes.io/docs/getting-started-guides/" target="_blank">Getting Started Guide</a>，搭建一个集群并安装 <a href="http://kubernetes.io/docs/user-guide/prereqs/" target="_blank">kubectl</a> 命令行工具。</p>
+
+<h2 id="决定在哪里存储你的数据">决定在哪里存储你的数据</h2>
+
+<p>MySQL 和 WordPress 各自使用一个 <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/" target="_blank">Persistent Volume</a> 来存储自己的数据。我们将使用一个 Persistent Volume Claim 来取得一个可用的持久化存储。本示例覆盖了 HostPath 和
+GCEPersistentDisk 卷类型。你可以从两者中选择一个，或者查看 <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/#types-of-persistent-volumes" target="_blank">Persistent Volumes的类型</a>。</p>
+
+<h3 id="host-path">Host Path</h3>
+
+<p>Host paths 是映射到主机上目录的卷。<strong>这种类型应该只用于测试目的或者单节点集群</strong>。如果 pod 在一个新的节点上重建，数据将不会在节点之间移动。如果 pod 被删除并在一个新的节点上重建，数据将会丢失。</p>
+
+<h5 id="selinux">SELinux</h5>
+
+<p>在支持 selinux 的系统上，保持它为 enabled/enforcing 是最佳选择。然而，docker 容器使用 &ldquo;_svirt_sandbox_file<em>t</em>&rdquo; 标签类型挂载 host path，这和默认的 /tmp (&rdquo;_tmp<em>t</em>&rdquo;) 标签类型不兼容。在 mysql 容器试图对 <em>/var/lib/mysql</em> 执行 <code>chown</code> 时将导致权限错误。
+因此，要在一个启用 selinx 的系统上使用 host path，你应该预先创建 host path 路径（/tmp/data/）并将它的 selinux 标签类型改变为 &ldquo;_svirt_sandbox_file<em>t</em>&ldquo;，就像下面一样：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#080;font-style:italic">## on every node:
+</span><span style="color:#080;font-style:italic"></span>mkdir -p /tmp/data
+chmod a+rwt /tmp/data  <span style="color:#080;font-style:italic"># match /tmp permissions
+</span><span style="color:#080;font-style:italic"></span>chcon -Rt svirt_sandbox_file_t /tmp/data</code></pre></div>
+<p>继续进行 host path 配置，在 Kubernetes 中使用 <a href="https://git.k8s.io/examples/mysql-wordpress-pd/local-volumes.yaml" target="_blank">local-volumes.yaml</a> 创建 persistent volume 对象：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#a2f">export</span> <span style="color:#b8860b">KUBE_REPO</span><span style="color:#666">=</span>https://raw.githubusercontent.com/kubernetes/examples/master
+kubectl create -f <span style="color:#b8860b">$KUBE_REPO</span>/mysql-wordpress-pd/local-volumes.yaml</code></pre></div>
+<h3 id="gce-persistent-disk">GCE Persistent Disk</h3>
+
+<p>如果在 <a href="http://kubernetes.io/docs/getting-started-guides/gce/" target="_blank">Google Compute Engine</a> 上运行集群，你可以使用这个存储选项。</p>
+
+<p>创建两个永久磁盘。你需要在和 Kubernetes 集群相同的 <a href="https://cloud.google.com/compute/docs/zones" target="_blank">GCE zone</a> 中创建这些磁盘。默认的安装脚本将在 <code>us-central1-b</code> zone 中创建集群，就像你在 <a href="https://git.k8s.io/kubernetes/cluster/gce/config-default.sh" target="_blank">config-default.sh</a> 文件中看到的。替换下面的 <code>&lt;zone&gt;</code> 为合适的 zone。<code>wordpress-1</code> 和 <code>wordpress-2</code> 的名字必须和 <a href="https://git.k8s.io/examples/mysql-wordpress-pd/gce-volumes.yaml" target="_blank">gce-volumes.yaml</a> 指定的 <code>pdName</code> 字段匹配。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">gcloud compute disks create --size<span style="color:#666">=</span>20GB --zone<span style="color:#666">=</span>&lt;zone&gt; wordpress-1
+gcloud compute disks create --size<span style="color:#666">=</span>20GB --zone<span style="color:#666">=</span>&lt;zone&gt; wordpress-2</code></pre></div>
+<p>在 Kubernetes 为这些磁盘创建 persistent volume 对象：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#a2f">export</span> <span style="color:#b8860b">KUBE_REPO</span><span style="color:#666">=</span>https://raw.githubusercontent.com/kubernetes/examples/master
+kubectl create -f <span style="color:#b8860b">$KUBE_REPO</span>/mysql-wordpress-pd/gce-volumes.yaml</code></pre></div>
+<h2 id="创建-mysql-密码-secret">创建 MySQL 密码 Secret</h2>
+
+<p>使用一个 <a href="http://kubernetes.io/docs/user-guide/secrets/" target="_blank">Secret</a> 对象存储 MySQL 密码。首先，创建一个名为 <code>password.txt</code> 的文件(和 wordpress 示例文件在相同的文件夹)，并且将你的密码保存于其中。请确保密码文件的结尾没有空行。如果你的编辑器添加了一个，开始的 <code>tr</code> 命令将会删除这个空行。然后，创建这个 Secret 对象。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">tr --delete <span style="color:#b44">&#39;\n&#39;</span> &lt;password.txt &gt;.strippedpassword.txt <span style="color:#666">&amp;&amp;</span> mv .strippedpassword.txt password.txt
+kubectl create secret generic mysql-pass --from-file<span style="color:#666">=</span>password.txt</code></pre></div>
+<p>MySQL 和 WordPress pod 配置引用了这个 secret，所以这些 pods 就可以访问它。MySQL pod 会设置数据库密码，并且 WordPress 将使用这个密码来访问数据库。</p>
+
+<h2 id="部署-mysql">部署 MySQL</h2>
+
+<p>&lt;&ndash;
+Now that the persistent disks and secrets are defined, the Kubernetes
+pods can be launched. Start MySQL using
+<a href="https://git.k8s.io/examples/mysql-wordpress-pd/mysql-deployment.yaml" target="_blank">mysql-deployment.yaml</a>.
+&ndash;&gt;
+现在我们已经定义了永久磁盘和 secrets，可以启动 Kubernetes pods 了。使用 <a href="https://git.k8s.io/examples/mysql-wordpress-pd/mysql-deployment.yaml" target="_blank">mysql-deployment.yaml</a> 启动 MySQL。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl create -f <span style="color:#b8860b">$KUBE_REPO</span>/mysql-wordpress-pd/mysql-deployment.yaml</code></pre></div>
+<p>查看 <a href="https://git.k8s.io/examples/mysql-wordpress-pd/mysql-deployment.yaml" target="_blank">mysql-deployment.yaml</a>，注意到我们定义了一个挂载到 <code>/var/lib/mysql</code> 的卷，然后创建了一个请求 20G 卷的 Persistent Volume Claim。这个要求可以被任何符合这个要求的卷满足，在我们的例子中，可以是上面创建的卷中的一个。</p>
+
+<p>再看一下 <code>env</code> 一节，我们引用上面创建的 <code>mysql-pass</code> secret 来指定密码。Secrets 可以有多组键值对。我们的只有一个键 <code>password.txt</code>，它是我们用来创建 secret 的文件名。<a href="https://hub.docker.com/_/mysql/" target="_blank">MySQL镜像</a>  使用 <code>MYSQL_ROOT_PASSWORD</code> 环境变量设置数据库密码。</p>
+
+<p>在很短的时间内，新建的 pod 将达到 <code>Running</code> 状态。列出所有的 pods，查看新建的 pod 的状态。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl get pods</code></pre></div>
+<pre><code>NAME                          READY     STATUS    RESTARTS   AGE
+wordpress-mysql-cqcf4-9q8lo   1/1       Running   0          1m
+</code></pre>
+
+<p>Kubernetes 记录每个 pod 的 stderr 和 stdout。使用 <code>kubectl log</code> 查看一个 pod 的日志。从 <code>get pods</code> 复制 pod 名字，然后：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl logs &lt;pod-name&gt;</code></pre></div>
+<pre><code>...
+2016-02-19 16:58:05 1 [Note] InnoDB: 128 rollback segment(s) are active.
+2016-02-19 16:58:05 1 [Note] InnoDB: Waiting for purge to start
+2016-02-19 16:58:05 1 [Note] InnoDB: 5.6.29 started; log sequence number 1626007
+2016-02-19 16:58:05 1 [Note] Server hostname (bind-address): '*'; port: 3306
+2016-02-19 16:58:05 1 [Note] IPv6 is available.
+2016-02-19 16:58:05 1 [Note]   - '::' resolves to '::';
+2016-02-19 16:58:05 1 [Note] Server socket created on IP: '::'.
+2016-02-19 16:58:05 1 [Warning] 'proxies_priv' entry '@ root@wordpress-mysql-cqcf4-9q8lo' ignored in --skip-name-resolve mode.
+2016-02-19 16:58:05 1 [Note] Event Scheduler: Loaded 0 events
+2016-02-19 16:58:05 1 [Note] mysqld: ready for connections.
+Version: '5.6.29'  socket: '/var/run/mysqld/mysqld.sock'  port: 3306  MySQL Community Server (GPL)
+</code></pre>
+
+<p>我们还需要在 <a href="https://git.k8s.io/examples/mysql-wordpress-pd/mysql-deployment.yaml" target="_blank">mysql-deployment.yaml</a> 中创建一个 service 以允许其它 pods 访问这个 mysql 示例。<code>wordpress-mysql</code> 名称被解析为这个 pod 的 IP。</p>
+
+<p>到此为止，我们创建了一个 Deployment，一个 Pod，一个 PVC，一个 Service，一个 Endpoint，两个 PV 和一个 Secret，显示如下：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl get deployment,pod,svc,endpoints,pvc -l <span style="color:#b8860b">app</span><span style="color:#666">=</span>wordpress -o wide <span style="color:#666">&amp;&amp;</span> <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>  kubectl get secret mysql-pass <span style="color:#666">&amp;&amp;</span> <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>  kubectl get pv</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">NAME                     DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+deploy/wordpress-mysql   <span style="color:#666">1</span>         <span style="color:#666">1</span>         <span style="color:#666">1</span>            <span style="color:#666">1</span>           3m
+NAME                                  READY     STATUS    RESTARTS   AGE       IP           NODE
+po/wordpress-mysql-3040864217-40soc   <span style="color:#666">1</span>/1       Running   <span style="color:#666">0</span>          3m        <span style="color:#666">172</span>.17.0.2   <span style="color:#666">127</span>.0.0.1
+NAME                  CLUSTER-IP   EXTERNAL-IP   PORT<span style="color:#666">(</span>S<span style="color:#666">)</span>    AGE       SELECTOR
+svc/wordpress-mysql   None         &lt;none&gt;        <span style="color:#666">3306</span>/TCP   3m        <span style="color:#b8860b">app</span><span style="color:#666">=</span>wordpress,tier<span style="color:#666">=</span>mysql
+NAME                 ENDPOINTS         AGE
+ep/wordpress-mysql   <span style="color:#666">172</span>.17.0.2:3306   3m
+NAME                 STATUS    VOLUME       CAPACITY   ACCESSMODES   AGE
+pvc/mysql-pv-claim   Bound     local-pv-2   20Gi       RWO           3m
+NAME         TYPE      DATA      AGE
+mysql-pass   Opaque    <span style="color:#666">1</span>         3m
+NAME         CAPACITY   ACCESSMODES   STATUS      CLAIM                    REASON    AGE
+local-pv-1   20Gi       RWO           Available                                      3m
+local-pv-2   20Gi       RWO           Bound       default/mysql-pv-claim             3m</code></pre></div>
+<h2 id="部署-wordpress">部署 WordPress</h2>
+
+<p>接下来使用 <a href="https://git.k8s.io/examples/mysql-wordpress-pd/wordpress-deployment.yaml" target="_blank">wordpress-deployment.yaml</a> 部署 WordPress：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl create -f <span style="color:#b8860b">$KUBE_REPO</span>/mysql-wordpress-pd/wordpress-deployment.yaml</code></pre></div>
+<p>我们在这里使用了许多相同的特性，比如对 persistent storage 的 volume claim 和 password 的 secret。</p>
+
+<p><a href="https://hub.docker.com/_/wordpress/" target="_blank">WordPress 镜像</a> 通过环境变量 <code>WORDPRESS_DB_HOST</code> 接收数据库的主机名。我们将这个环境变量值设置为我们创建的 MySQL
+service 的名字：<code>wordpress-mysql</code>。</p>
+
+<p>WordPress service 具有 <code>type: LoadBalancer</code> 的设置。这将 wordpress service 置于一个外部 IP 之下。</p>
+
+<p>找到你的 WordPress service 的外部 IP 地址。<strong>为这个 service 分配一个外部 IP 地址可能会耗时一分钟左右，这取决于你的集群环境。</strong></p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl get services wordpress</code></pre></div>
+<pre><code>NAME        CLUSTER-IP     EXTERNAL-IP     PORT(S)   AGE
+wordpress   10.0.0.5       1.2.3.4         80/TCP    19h
+</code></pre>
+
+<h2 id="访问你的新-wordpress-博客">访问你的新 WordPress 博客</h2>
+
+<p>现在，我们可以访问这个运行的 WordPress 应用。请使用你上面获取的 service 的外部 IP 地址。</p>
+
+<pre><code>http://&lt;external-ip&gt;
+</code></pre>
+
+<p>你应该可以看到熟悉的 WordPress 初始页面。</p>
+
+<p><img src="WordPress.png" alt="WordPress init page" title="WordPress init page" /></p>
+
+<blockquote>
+<p>警告：不要在这个页面上留下你的 WordPress 设置。如果被其他用户发现，他们可能在你的实例上创建一个网站并用它来为可能有害的内容提供服务。你应该继续创建用户名密码之后的安装过程，删除你的实例，或者建立一个防火墙来限制接入。</p>
+</blockquote>
+
+<h2 id="删除并重启你的博客">删除并重启你的博客</h2>
+
+<p>建立你的 WordPress 博客并简单使用一下。然后删除它的 pods 并再次启动它们。由于使用了永久磁盘，你的博客的状态将被保留。</p>
+
+<p>所有的资源都被标记为 <code>app=wordpress</code>，你可以使用 label selector 轻松的删除它们：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl delete deployment,service -l <span style="color:#b8860b">app</span><span style="color:#666">=</span>wordpress
+kubectl delete secret mysql-pass</code></pre></div>
+<p>稍后使用原来的命令重建资源，这将会选择包含原来的完整数据的磁盘。由于我们没有删除 PV Claims，在删除我们的 pods 后，集群中没有任何一个 pod 能够 claim 它们。保留 PV Claims 也保证了重建 Pods 不会导致 PD 切换 Pods。</p>
+
+<p>如果你已经准备好了释放你的永久磁盘及其上的数据，请运行：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl delete pvc -l <span style="color:#b8860b">app</span><span style="color:#666">=</span>wordpress</code></pre></div>
+<p>And then delete the volume objects themselves:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl delete pv local-pv-1 local-pv-2</code></pre></div>
+<p>或者</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl delete pv wordpress-pv-1 wordpress-pv-2</code></pre></div>
+<h2 id="接下来的步骤">接下来的步骤</h2>
+
+<ul>
+<li><a href="http://kubernetes.io/docs/user-guide/introspection-and-debugging/" target="_blank">Introspection and Debugging</a></li>
+<li><a href="http://kubernetes.io/docs/user-guide/jobs/" target="_blank">Jobs</a> may be useful to run SQL queries.</li>
+<li><a href="http://kubernetes.io/docs/user-guide/getting-into-containers/" target="_blank">Exec</a></li>
+<li><a href="http://kubernetes.io/docs/user-guide/connecting-to-applications-port-forward/" target="_blank">Port Forwarding</a></li>
+</ul>
+
+<p>[<img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/examples/mysql-wordpress-pd/README.md?pixel" alt="Analytics" />]()</p>
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/cn\/docs\/tutorials\/stateful-application\/mysql-wordpress-persistent-volume\/",
+					"title" : "基于 Persistent Volumes 搭建 WordPress 和 MySQL 应用",
+					"permalink" : "https:\/\/kubernetes.io\/cn\/docs\/tutorials\/stateful-application\/mysql-wordpress-persistent-volume\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/tutorials/stateful-application/mysql-wordpress-persistent-volume.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

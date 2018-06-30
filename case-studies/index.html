@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html id="caseStudies" lang="en" class="gridPage">
+	<head>
+		<meta charset="utf-8">
+<title>Case Studies - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+<link rel="stylesheet" type="text/css" href="/css/gridpage.css">
+
+
+<meta name="description" content="Case Studies" />
+<meta property="og:description" content="Case Studies" />
+
+<meta property="og:url" content="https://kubernetes.io/case-studies/" />
+<meta property="og:title" content="Case Studies - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text">
+			<main>
+				<div id="headlineWrapper">
+					<h1>Kubernetes User Case Studies</h1>
+					<h5>A collection of users running Kubernetes in production.</h5>
+				</div>
+				
+			</main>
+		</section>
+		
+		
+		
+	<section id="mainContent">
+    <main>
+        <div class="content">
+            <div class="case-studies">
+
+              <div class="case-study">
+                  <img src="/images/case_studies/northwestern_feature.png" alt="Northwestern Mutual">
+                  <p class="quote">"No one would think a company that’s 160-plus years old is foraying this deep into the cloud and infrastructure stack."</p>
+                  <!--<p class="attrib">—  APP PLATFORM TEAMS MANAGER, BRYAN PFREMMER</p>-->
+                  <a href="/case-studies/northwestern-mutual/">Read about Northwestern Mutual</a>
+              </div>
+
+              <div class="case-study">
+                  <img src="/images/case_studies/openai_feature.png" alt="openAI">
+                  <p class="quote">"Research teams can now take advantage of the frameworks we’ve built on top of Kubernetes, which make it easy to launch experiments, scale them by 10x or 50x, and take little effort to manage."</p>
+                  <!--<p class="attrib">—  Christopher Berner, Head of Infrastructure for OpenAI</p>-->
+                  <a href="/case-studies/openai/">Read about OpenAI</a>
+              </div>
+
+
+              <div class="case-study">
+                  <img src="/images/case_studies/newyorktimes_feature.png" alt="the new york times">
+                  <p class="quote">"I think once you get over the initial hump, things get a lot easier and actually a lot faster."</p>
+                  <!--<p class="attrib">—  Deep Kapadia, Executive Director, Engineering at The New York Times</p>-->
+                  <a href="/case-studies/newyorktimes/">Read about The New York Times</a>
+              </div>
+
+              <div class="case-study">
+                  <img src="/images/case_studies/nordstrom_feature.png" alt="nordstrom">
+                  <p class="quote">"We are always looking for ways to optimize and provide more value through technology. With Kubernetes we are showcasing two types of efficiency that we can bring: Dev efficiency and Ops efficiency. It’s a win-win."</p>
+                  <!--<p class="attrib">—  Dhawal Patel, senior engineer at Nordstrom</p>-->
+                  <a href="/case-studies/nordstrom/">Read about Nordstrom</a>
+              </div>
+
+
+            </div>
+        </div>
+    </main>
+</section>
+
+<section id="video">
+    <main>
+        <!--<div><button onclick="kub.showVideo()"><img src="/images/case_studies/video_thumb.jpg" alt="Zulily video"><h6>Kubernetes at zulily</h6></button></div>-->
+        <div>
+            <!--<h3>Box</h3>-->
+            <h4><i>"Kubernetes has the opportunity to be the new cloud platform. The amount of innovation that's going to come from being able to standardize on Kubernetes as a platform is incredibly exciting - more exciting than anything I've seen in the last 10 years of working on the cloud."</i></h4>
+            <img src="/images/case_studies/box-small.png" id="boxlogo" alt="Box">
+        </div>
+        <div style= "padding-left: 40px;"><button onclick="kub.showVideo()"><img src="/images/case_studies/Video-Clip-Box.png" alt="Box video"><h6>Kubernetes at Box</h6></button></div>
+    </main>
+</section>
+
+<section id="users">
+    <main>
+        <h3>Kubernetes Users</h3>
+        <div id="usersGrid">
+          <a target="_blank" href="/case-studies/northwestern-mutual/"><img src="/images/case_studies/northwestern_feature.png" alt="Northwestern Mutual"></a>
+          <a target="_blank" href="/case-studies/openai/"><img src="/images/case_studies/openai_feature.png" alt="OpenAI"></a>
+          <a target="_blank" href="/case-studies/newyorktimes/"><img src="/images/case_studies/newyorktimes_feature.png" alt="The New York Times"></a>
+          <a target="_blank" href="/case-studies/nordstrom/"><img src="/images/case_studies/nordstrom_feature.png" alt="Nordstrom"></a>
+          <a target="_blank" href="/case-studies/crowdfire/"><img src="/images/case_studies/crowdfire_feature.png" alt="Crowdfire"></a>
+          <a target="_blank" href="/case-studies/squarespace/"><img src="/images/case_studies/squarespace_feature.png" alt="Squarespace"></a>
+          <a target="_blank" href="/case-studies/zalando/"><img src="/images/case_studies/zalando_feature.png" alt="Zalando"></a>
+          <a target="_blank" href="/case-studies/amadeus/"><img src="/images/case_studies/amadeus.png" alt="Amadeus"></a>
+          <a target="_blank" href="/case-studies/ancestry/"><img src="/images/case_studies/ancestry.png" alt="Ancestry.com"></a>
+          <a target="_blank" href="/case-studies/blablacar/"><img src="/images/case_studies/blablacar.png" alt="BlaBlaCar"></a>
+          <a target="_blank" href="/case-studies/blackrock/"><img src="/images/case_studies/blackrock2.png" alt="BlackRock"></a>
+          <a target="_blank" href="/case-studies/box/"><img src="/images/case_studies/box_logo.png" alt="box"></a>
+          <a target="_blank" href="/case-studies/buffer/"><img src="/images/case_studies/buffer_logo.png" alt="Buffer"></a>
+          <a target="_blank" href="https://cloud.google.com/customers/ccp-games/"><img src="/images/case_studies/ccp.png" alt="CCP Games"></a>
+          <a target="_blank" href="https://youtu.be/lmeFkH-rHII"><img src="/images/case_studies/comcast_logo.png" alt="Comcast"></a>
+          <a target="_blank" href="http://searchitoperations.techtarget.com/news/450297178/Tech-firms-roll-out-Kubernetes-in-production"><img src="/images/case_studies/concur.png" alt="Concur"></a>
+          <a target="_blank" href="http://www.nextplatform.com/2015/11/12/inside-ebays-shift-to-kubernetes-and-containers-atop-openstack/"><img src="/images/case_studies/ebay_logo.png" alt="Ebay"></a>
+          <a target="_blank" href="http://blogs.wsj.com/cio/2016/02/24/big-changes-in-goldmans-software-emerge-from-small-containers/"><img src="/images/case_studies/gs.png" alt="Goldman Sachs"></a>
+          <a target="_blank" href="/case-studies/golfnow/"><img src="/images/case_studies/golfnow_logo.png" alt="GolfNow"></a>
+          <a target="_blank" href="/case-studies/haufegroup/"><img src="/images/case_studies/haufegroup_logo.png" alt="Haufe Group"></a>
+          <a target="_blank" href="/case-studies/huawei/"><img src="/images/case_studies/huawei.png" alt="Huawei"></a>
+          <a target="_blank" href="https://kubernetes.io/blog/2017/02/inside-jd-com-shift-to-kubernetes-from-openstack"><img src="/images/case_studies/jd.png" alt="JD.COM"></a>
+          <a target="_blank" href="https://www.openstack.org/videos/video/running-kubernetes-on-openstack-at-liveperson"><img src="/images/case_studies/liveperson.png" alt="LivePerson"></a>
+          <a target="_blank" href="https://youtu.be/YkOY7DgXKyw"><img src="/images/case_studies/monzo_logo.png" alt="monzo"></a>
+          <a target="_blank" href="https://www.youtube.com/watch?v=P5qfyv_zGcU"><img src="/images/case_studies/nyt.png" alt="New York Times"></a>
+          <a target="_blank" href="https://openai.com/blog/infrastructure-for-deep-learning"><img src="/images/case_studies/openai.png" alt="OpenAI"></a>
+          <a target="_blank" href="/case-studies/peardeck/"><img src="/images/case_studies/peardeck_logo.png" alt="peardeck"></a>
+          <a href="/case-studies/pearson/"><img src="/images/case_studies/pearson_logo.png" alt="Pearson"></a>
+          <a target="_blank" href="https://cloud.google.com/customers/philips/"><img src="/images/case_studies/philips_logo.png" alt="Philips"></a>
+          <a target="_blank" href="https://cloudplatform.googleblog.com/2016/09/bringing-Pokemon-GO-to-life-on-Google-Cloud.html"><img src="/images/case_studies/pokemon_go_logo.png" alt="Pokemon GO"></a>
+          <a target="_blank" href="http://www.nextplatform.com/2016/05/24/samsung-experts-put-kubernetes-paces/"><img src="/images/case_studies/sds.png" alt="Samsung SDS"></a>
+          <a target="_blank" href="https://youtu.be/4gyeixJLabo"><img src="/images/case_studies/sap.png" alt="SAP"></a>
+          <a target="_blank" href="https://www.youtube.com/watch?v=5378N5iLb2Q"><img src="/images/case_studies/soundcloud.png" alt="SoundCloud"></a>
+          <a target="_blank" href="https://www.youtube.com/watch?v=F3iMkz_NSvU"><img src="/images/case_studies/homeoffice.png" alt="UK Home Office"></a>
+          <a target="_blank" href="http://thenewstack.io/wepay-kubernetes-changed-business/"><img src="/images/case_studies/wepay.png" alt="WePay"></a>
+          <a target="_blank" href="/case-studies/wink/"><img src="/images/case_studies/wink.png" alt="Wink"></a>
+          <a href="/case-studies/wikimedia/"><img src="/images/case_studies/wikimedia_logo.png" alt="Wikimedia"></a>
+          <a target="_blank" href="https://kubernetes.io/blog/2016/10/kubernetes-and-openstack-at-yahoo-japan"><img src="/images/case_studies/yahooJapan_logo.png" alt="Yahoo! Japan"></a>
+          <a target="_blank" href="#" onclick="event.preventDefault(); kub.showVideo()"><img src="/images/case_studies/zulily_logo.png" alt="zulily"></a>
+          <a target="_blank" href="https://docs.google.com/a/google.com/forms/d/e/1FAIpQLScuI7Ye3VQHQTwBASrgkjQDSS5TP0g3AXfFhwSM9YpHgxRKFA/viewform" class="tell-your-story"><img src="/images/case_studies/story.png" alt="Tell your story"></a>
+        </div>
+    </main>
+</section>
+
+
+<div id="videoPlayer">
+    <!--<iframe data-url="https://www.youtube.com/watch?v=of45hYbkIZs" frameborder="0" allowfullscreen></iframe>-->
+    <iframe data-url="https://www.youtube.com/embed/of45hYbkIZs?autoplay=1" frameborder="0" allowfullscreen="true"></iframe>
+    <button id="closeButton"></button>
+</div>
+
+
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

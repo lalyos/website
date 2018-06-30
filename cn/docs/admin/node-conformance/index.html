@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>节点设置校验 - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="节点设置校验" />
+<meta property="og:description" content="节点设置校验" />
+
+<meta property="og:url" content="https://kubernetes.io/cn/docs/admin/node-conformance/" />
+<meta property="og:title" content="节点设置校验 - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+             <li>
+                <a href="#">
+                    Chinese <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/">English</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Admins" href="/cn/docs/admin/"></a>
+
+	
+	
+		
+		
+<a class="item" data-title="Kubelet authentication/authorization" href="/cn/docs/admin/kubelet-authentication-authorization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes API访问控制" href="/cn/docs/admin/accessing-the-api/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes OpenVSwitch GRE/VxLAN 网络" href="/cn/docs/admin/ovs-networking/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="TLS bootstrapping" href="/cn/docs/admin/kubelet-tls-bootstrapping/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kube-apiserver" href="/cn/docs/admin/kube-apiserver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用启动引导令牌（Bootstrap Tokens）认证" href="/cn/docs/admin/bootstrap-tokens/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="创建大规模集群" href="/cn/docs/admin/cluster-large/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="多区域运行" href="/cn/docs/admin/multiple-zones/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="构建高可用集群">
+		<div class="container">
+		
+		
+		<a class="item" data-title="构建高可用集群" href="/cn/docs/admin/high-availability/"></a>
+		
+		
+	
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="概述">
+		<div class="container">
+		
+		
+		<a class="item" data-title="概述" href="/cn/docs/admin/authorization/"></a>
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="ABAC 模式" href="/cn/docs/admin/authorization/abac/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Webhook Mode" href="/cn/docs/admin/authorization/webhook/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="管理Service Accounts" href="/cn/docs/admin/service-accounts-admin/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="节点设置校验" href="/cn/docs/admin/node-conformance/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/admin/node-conformance.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>节点设置校验</h1>
+
+
+
+
+
+<ul>
+<li>TOC
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#节点合规性测试">节点合规性测试</a></li>
+<li><a href="#限制">限制</a></li>
+<li><a href="#节点的前提条件">节点的前提条件</a></li>
+<li><a href="#运行节点合规性测试">运行节点合规性测试</a></li>
+<li><a href="#针对其他硬件体系结构运行节点合规性测试">针对其他硬件体系结构运行节点合规性测试</a></li>
+<li><a href="#运行选定的测试">运行选定的测试</a></li>
+<li><a href="#注意事项">注意事项</a></li>
+</ul></li>
+</ul>
+</nav></li>
+</ul>
+
+<h2 id="节点合规性测试">节点合规性测试</h2>
+
+<p><em>节点合规性测试</em> 是一个容器化的测试框架，提供了针对节点的系统验证和功能测试。 该测试主要检测节点是否满足 Kubernetes 的最低要求，通过检测的节点有资格加入 Kubernetes 集群。</p>
+
+<h2 id="限制">限制</h2>
+
+<p>在 Kubernetes 1.5版本中，节点合规性测试存在以下限制：</p>
+
+<ul>
+<li>节点合规性测试只支持 Docker 作为容器运行时环境。</li>
+</ul>
+
+<h2 id="节点的前提条件">节点的前提条件</h2>
+
+<p>为运行节点合规性测试，节点必须满足与标准的 Kubernetes 节点同样的前提条件。最基本地， 节点应安装以下组件：</p>
+
+<ul>
+<li>容器运行时 (Docker)</li>
+<li>Kubelet</li>
+</ul>
+
+<h2 id="运行节点合规性测试">运行节点合规性测试</h2>
+
+<p>执行以下步骤来运行节点合规性测试：</p>
+
+<ol>
+<li><p>因为测试框架会启动一个本地的 master 来测试 Kubelet，
+所以将 Kubelet 指向本机 `&ndash;api-servers=&ldquo;<a href="http://localhost:8080&quot;。" target="_blank">http://localhost:8080&quot;。</a> 还有一些其他 Kubelet 参数可能需要注意：</p>
+
+<ul>
+<li><code>--pod-cidr</code>： 如果使用 <code>kubenet</code>， 需要为 Kubelet 任意指定一个 CIDR， 例如 <code>--pod-cidr=10.180.0.0/24</code>。</li>
+<li><code>--cloud-provider</code>： 如果使用 <code>--cloud-provider=gce</code>，需要移除这个参数来运行测试。</li>
+</ul></li>
+
+<li><p>执行以下命令来运行节点合规性测试：</p></li>
+</ol>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#080;font-style:italic"># $CONFIG_DIR 是 Kubelet 的 manifest 文件路径。
+</span><span style="color:#080;font-style:italic"># $LOG_DIR 是测试结果输出的路径。
+</span><span style="color:#080;font-style:italic"></span>sudo docker run -it --rm --privileged --net<span style="color:#666">=</span>host <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>  -v /:/rootfs -v <span style="color:#b8860b">$CONFIG_DIR</span>:<span style="color:#b8860b">$CONFIG_DIR</span> -v <span style="color:#b8860b">$LOG_DIR</span>:/var/result <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>  k8s.gcr.io/node-test:0.2</code></pre></div>
+<h2 id="针对其他硬件体系结构运行节点合规性测试">针对其他硬件体系结构运行节点合规性测试</h2>
+
+<p>Kubernetes 也为其他硬件体系结构的系统提供了节点合规性测试的 Docker 镜像：</p>
+
+<table>
+<thead>
+<tr>
+<th>Arch</th>
+<th align="center">Image</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>amd64</td>
+<td align="center">node-test-amd64</td>
+</tr>
+
+<tr>
+<td>arm</td>
+<td align="center">node-test-arm</td>
+</tr>
+
+<tr>
+<td>arm64</td>
+<td align="center">node-test-arm64</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="运行选定的测试">运行选定的测试</h2>
+
+<p>为运行指定的测试，用正则表达式来描述将要运行的测试，并重载 <code>FOCUS</code> 环境变量。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo docker run -it --rm --privileged --net<span style="color:#666">=</span>host <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>  -v /:/rootfs:ro -v <span style="color:#b8860b">$CONFIG_DIR</span>:<span style="color:#b8860b">$CONFIG_DIR</span> -v <span style="color:#b8860b">$LOG_DIR</span>:/var/result <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>  -e <span style="color:#b8860b">FOCUS</span><span style="color:#666">=</span>MirrorPod <span style="color:#b62;font-weight:bold">\ </span><span style="color:#080;font-style:italic"># 只运行MirrorPod测试
+</span><span style="color:#080;font-style:italic"></span>  k8s.gcr.io/node-test:0.2</code></pre></div>
+<p>为跳过指定的测试，用正则表达式来描述将要跳过的测试，并重载 <code>SKIP</code> 环境变量。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo docker run -it --rm --privileged --net<span style="color:#666">=</span>host <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>  -v /:/rootfs:ro -v <span style="color:#b8860b">$CONFIG_DIR</span>:<span style="color:#b8860b">$CONFIG_DIR</span> -v <span style="color:#b8860b">$LOG_DIR</span>:/var/result <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>  -e <span style="color:#b8860b">SKIP</span><span style="color:#666">=</span>MirrorPod <span style="color:#b62;font-weight:bold">\ </span><span style="color:#080;font-style:italic"># 运行除MirrorPod外的所有测试
+</span><span style="color:#080;font-style:italic"></span>  k8s.gcr.io/node-test:0.2</code></pre></div>
+<p>节点合规性测试是<a href="https://github.com/kubernetes/community/blob/master/contributors/devel/e2e-node-tests.md" target="_blank">节点端到端测试</a>的一个容器化的版本。
+默认情况下， 它会运行所有的合规性测试用例。</p>
+
+<p>理论上，只要合理地配置容器和挂载所需的卷，就可以运行任何的节点端到端测试用例。 但是这里 <strong>强烈建议只运行合规性测试</strong>，因为运行非合规性测试需要很多复杂的配置。</p>
+
+<h2 id="注意事项">注意事项</h2>
+
+<ul>
+<li>测试会在节点上遗留一些Docker镜像， 包括节点合规性测试本身的镜像，和功能测试相关的镜像。</li>
+<li>测试会在节点上遗留一些死的容器。这些容器是在功能测试的过程中创建的。</li>
+</ul>
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/admin/node-conformance.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/cn\/docs\/admin\/node-conformance\/",
+					"title" : "节点设置校验",
+					"permalink" : "https:\/\/kubernetes.io\/cn\/docs\/admin\/node-conformance\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/admin/node-conformance.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Init Containers - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="Init Containers" />
+<meta property="og:description" content="Init Containers" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/concepts/workloads/pods/init-containers/" />
+<meta property="og:title" content="Init Containers - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+
+
+<h1>Concepts</h1>
+<h5></h5>
+
+
+
+
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/" class="YAH">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Concepts" href="/docs/concepts/"></a>
+
+	
+	
+		
+		
+	<div class="item" data-title="Overview">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="What is Kubernetes?" href="/docs/concepts/overview/what-is-kubernetes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes Components" href="/docs/concepts/overview/components/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="The Kubernetes API" href="/docs/concepts/overview/kubernetes-api/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Working with Kubernetes Objects">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Understanding Kubernetes Objects" href="/docs/concepts/overview/working-with-objects/kubernetes-objects/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Names" href="/docs/concepts/overview/working-with-objects/names/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Namespaces" href="/docs/concepts/overview/working-with-objects/namespaces/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Labels and Selectors" href="/docs/concepts/overview/working-with-objects/labels/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Annotations" href="/docs/concepts/overview/working-with-objects/annotations/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Object Management Using kubectl">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Kubernetes Object Management" href="/docs/concepts/overview/object-management-kubectl/overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Managing Kubernetes Objects Using Imperative Commands" href="/docs/concepts/overview/object-management-kubectl/imperative-command/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Imperative Management of Kubernetes Objects Using Configuration Files" href="/docs/concepts/overview/object-management-kubectl/imperative-config/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Declarative Management of Kubernetes Objects Using Configuration Files" href="/docs/concepts/overview/object-management-kubectl/declarative-config/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Compute, Storage, and Networking Extensions">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Cluster Administration Overview" href="/docs/concepts/cluster-administration/cluster-administration-overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Certificates" href="/docs/concepts/cluster-administration/certificates/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Cloud Providers" href="/docs/concepts/cluster-administration/cloud-providers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Managing Resources" href="/docs/concepts/cluster-administration/manage-deployment/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Cluster Networking" href="/docs/concepts/cluster-administration/networking/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Logging Architecture" href="/docs/concepts/cluster-administration/logging/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configuring kubelet Garbage Collection" href="/docs/concepts/cluster-administration/kubelet-garbage-collection/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federation" href="/docs/concepts/cluster-administration/federation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Proxies in Kubernetes" href="/docs/concepts/cluster-administration/proxies/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Controller manager metrics" href="/docs/concepts/cluster-administration/controller-metrics/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Installing Addons" href="/docs/concepts/cluster-administration/addons/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Kubernetes Architecture">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Nodes" href="/docs/concepts/architecture/nodes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Master-Node communication" href="/docs/concepts/architecture/master-node-communication/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Concepts Underlying the Cloud Controller Manager" href="/docs/concepts/architecture/cloud-controller/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Extending Kubernetes">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Extending your Kubernetes Cluster" href="/docs/concepts/extend-kubernetes/extend-cluster/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Extending the Kubernetes API">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Extending the Kubernetes API with the aggregation layer" href="/docs/concepts/extend-kubernetes/api-extension/apiserver-aggregation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Custom Resources" href="/docs/concepts/extend-kubernetes/api-extension/custom-resources/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Compute, Storage, and Networking Extensions">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Network Plugins" href="/docs/concepts/extend-kubernetes/compute-storage-net/network-plugins/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Device Plugins" href="/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Service Catalog" href="/docs/concepts/extend-kubernetes/service-catalog/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Containers">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Images" href="/docs/concepts/containers/images/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Container Environment Variables" href="/docs/concepts/containers/container-environment-variables/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Container Lifecycle Hooks" href="/docs/concepts/containers/container-lifecycle-hooks/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Workloads">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+	<div class="item" data-title="Pods">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Pod Overview" href="/docs/concepts/workloads/pods/pod-overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pods" href="/docs/concepts/workloads/pods/pod/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pod Lifecycle" href="/docs/concepts/workloads/pods/pod-lifecycle/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Init Containers" href="/docs/concepts/workloads/pods/init-containers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pod Preset" href="/docs/concepts/workloads/pods/podpreset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Disruptions" href="/docs/concepts/workloads/pods/disruptions/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Controllers">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="ReplicaSet" href="/docs/concepts/workloads/controllers/replicaset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="ReplicationController" href="/docs/concepts/workloads/controllers/replicationcontroller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Deployments" href="/docs/concepts/workloads/controllers/deployment/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="StatefulSets" href="/docs/concepts/workloads/controllers/statefulset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="DaemonSet" href="/docs/concepts/workloads/controllers/daemonset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Garbage Collection" href="/docs/concepts/workloads/controllers/garbage-collection/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Jobs - Run to Completion" href="/docs/concepts/workloads/controllers/jobs-run-to-completion/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="CronJob" href="/docs/concepts/workloads/controllers/cron-jobs/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Configuration">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Configuration Best Practices" href="/docs/concepts/configuration/overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Managing Compute Resources for Containers" href="/docs/concepts/configuration/manage-compute-resources-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Assigning Pods to Nodes" href="/docs/concepts/configuration/assign-pod-node/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Taints and Tolerations" href="/docs/concepts/configuration/taint-and-toleration/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Secrets" href="/docs/concepts/configuration/secret/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Organizing Cluster Access Using kubeconfig Files" href="/docs/concepts/configuration/organize-cluster-access-kubeconfig/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pod Priority and Preemption" href="/docs/concepts/configuration/pod-priority-preemption/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Services, Load Balancing, and Networking">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Services" href="/docs/concepts/services-networking/service/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="DNS for Services and Pods" href="/docs/concepts/services-networking/dns-pod-service/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Connecting Applications with Services" href="/docs/concepts/services-networking/connect-applications-service/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Ingress" href="/docs/concepts/services-networking/ingress/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Network Policies" href="/docs/concepts/services-networking/network-policies/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Adding entries to Pod /etc/hosts with HostAliases" href="/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Storage">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Volumes" href="/docs/concepts/storage/volumes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Persistent Volumes" href="/docs/concepts/storage/persistent-volumes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Storage Classes" href="/docs/concepts/storage/storage-classes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Dynamic Volume Provisioning" href="/docs/concepts/storage/dynamic-provisioning/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Node-specific Volume Limits" href="/docs/concepts/storage/storage-limits/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Policies">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Resource Quotas" href="/docs/concepts/policy/resource-quotas/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pod Security Policies" href="/docs/concepts/policy/pod-security-policy/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/concepts/workloads/pods/init-containers.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>Init Containers</h1>
+
+
+
+<p>This page provides an overview of Init Containers, which are specialized
+Containers that run before app Containers and can contain utilities or setup
+scripts not present in an app image.</p>
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+<li><a href="#understanding-init-containers">Understanding Init Containers</a></li>
+
+
+
+
+<li><a href="#what-can-init-containers-be-used-for">What can Init Containers be used for?</a></li>
+
+
+
+
+<li><a href="#detailed-behavior">Detailed behavior</a></li>
+
+
+
+
+<li><a href="#support-and-compatibility">Support and compatibility</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#what-s-next">What's next</a></li>
+
+
+
+</ul>
+
+
+<h2 id="understanding-init-containers">Understanding Init Containers</h2>
+
+<p>A <a href="/docs/concepts/workloads/pods/pod-overview/">Pod</a> can have multiple Containers running
+apps within it, but it can also have one or more Init Containers, which are run
+before the app Containers are started.</p>
+
+<p>Init Containers are exactly like regular Containers, except:</p>
+
+<ul>
+<li>They always run to completion.</li>
+<li>Each one must complete successfully before the next one is started.</li>
+</ul>
+
+<p>If an Init Container fails for a Pod, Kubernetes restarts the Pod repeatedly until the Init
+Container succeeds. However, if the Pod has a <code>restartPolicy</code> of Never, it is not restarted.</p>
+
+<p>To specify a Container as an Init Container, add the <code>initContainers</code> field on the PodSpec as
+a JSON array of objects of type
+<a href="/docs/reference/generated/kubernetes-api/v1.11/#container-v1-core">Container</a>
+alongside the app <code>containers</code> array.
+The status of the init containers is returned in <code>.status.initContainerStatuses</code>
+field as an array of the container statuses (similar to the <code>.status.containerStatuses</code>
+field).</p>
+
+<h3 id="differences-from-regular-containers">Differences from regular Containers</h3>
+
+<p>Init Containers support all the fields and features of app Containers,
+including resource limits, volumes, and security settings. However, the
+resource requests and limits for an Init Container are handled slightly
+differently, which are documented in <a href="#resources">Resources</a> below.  Also, Init Containers do not
+support readiness probes because they must run to completion before the Pod can
+be ready.</p>
+
+<p>If multiple Init Containers are specified for a Pod, those Containers are run
+one at a time in sequential order. Each must succeed before the next can run.
+When all of the Init Containers have run to completion, Kubernetes initializes
+the Pod and runs the application Containers as usual.</p>
+
+<h2 id="what-can-init-containers-be-used-for">What can Init Containers be used for?</h2>
+
+<p>Because Init Containers have separate images from app Containers, they
+have some advantages for start-up related code:</p>
+
+<ul>
+<li>They can contain and run utilities that are not desirable to include in the
+app Container image for security reasons.</li>
+<li>They can contain utilities or custom code for setup that is not present in an app
+image. For example, there is no need to make an image <code>FROM</code> another image just to use a tool like
+<code>sed</code>, <code>awk</code>, <code>python</code>, or <code>dig</code> during setup.</li>
+<li>The application image builder and deployer roles can work independently without
+the need to jointly build a single app image.</li>
+<li>They use Linux namespaces so that they have different filesystem views from app Containers.
+Consequently, they can be given access to Secrets that app Containers are not able to
+access.</li>
+<li>They run to completion before any app Containers start, whereas app
+Containers run in parallel, so Init Containers provide an easy way to block or
+delay the startup of app Containers until some set of preconditions are met.</li>
+</ul>
+
+<h3 id="examples">Examples</h3>
+
+<p>Here are some ideas for how to use Init Containers:</p>
+
+<ul>
+<li><p>Wait for a service to be created with a shell command like:</p>
+
+<p>for i in {1..100}; do sleep 1; if dig myservice; then exit 0; fi; done; exit 1</p></li>
+
+<li><p>Register this Pod with a remote server from the downward API with a command like:</p>
+
+<p>curl -X POST http://$MANAGEMENT_SERVICE_HOST:$MANAGEMENT_SERVICE_PORT/register -d &lsquo;instance=$(<POD_NAME>)&amp;ip=$(<POD_IP>)&rsquo;</p></li>
+
+<li><p>Wait for some time before starting the app Container with a command like <code>sleep 60</code>.</p></li>
+
+<li><p>Clone a git repository into a volume.</p></li>
+
+<li><p>Place values into a configuration file and run a template tool to dynamically
+generate a configuration file for the main app Container. For example,
+place the POD_IP value in a configuration and generate the main app
+configuration file using Jinja.</p></li>
+</ul>
+
+<p>More detailed usage examples can be found in the <a href="/docs/concepts/workloads/controllers/statefulset/">StatefulSets documentation</a>
+and the <a href="/docs/tasks/configure-pod-container/configure-pod-initialization/">Production Pods guide</a>.</p>
+
+<h3 id="init-containers-in-use">Init Containers in use</h3>
+
+<p>The following yaml file for Kubernetes 1.5 outlines a simple Pod which has two Init Containers.
+The first waits for <code>myservice</code> and the second waits for <code>mydb</code>. Once both
+containers complete, the Pod will begin.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Pod<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>myapp-pod<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>labels:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>app:<span style="color:#bbb"> </span>myapp<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>annotations:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>pod.beta.kubernetes.io/init-containers:<span style="color:#bbb"> </span><span style="color:#b44">&#39;[
+</span><span style="color:#b44">        {
+</span><span style="color:#b44">            &#34;name&#34;: &#34;init-myservice&#34;,
+</span><span style="color:#b44">            &#34;image&#34;: &#34;busybox&#34;,
+</span><span style="color:#b44">            &#34;command&#34;: [&#34;sh&#34;, &#34;-c&#34;, &#34;until nslookup myservice; do echo waiting for myservice; sleep 2; done;&#34;]
+</span><span style="color:#b44">        },
+</span><span style="color:#b44">        {
+</span><span style="color:#b44">            &#34;name&#34;: &#34;init-mydb&#34;,
+</span><span style="color:#b44">            &#34;image&#34;: &#34;busybox&#34;,
+</span><span style="color:#b44">            &#34;command&#34;: [&#34;sh&#34;, &#34;-c&#34;, &#34;until nslookup mydb; do echo waiting for mydb; sleep 2; done;&#34;]
+</span><span style="color:#b44">        }
+</span><span style="color:#b44">    ]&#39;</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>containers:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>myapp-container<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>image:<span style="color:#bbb"> </span>busybox<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>command:<span style="color:#bbb"> </span>[<span style="color:#b44">&#39;sh&#39;</span>,<span style="color:#bbb"> </span><span style="color:#b44">&#39;-c&#39;</span>,<span style="color:#bbb"> </span><span style="color:#b44">&#39;echo The app is running! &amp;&amp; sleep 3600&#39;</span>]</code></pre></div>
+<p>There is a new syntax in Kubernetes 1.6, although the old annotation syntax still works for 1.6 and 1.7.  The new syntax must be used for 1.8 or greater. We have moved the declaration of Init Containers to <code>spec</code>:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Pod<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>myapp-pod<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>labels:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>app:<span style="color:#bbb"> </span>myapp<span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>containers:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>myapp-container<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>image:<span style="color:#bbb"> </span>busybox<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>command:<span style="color:#bbb"> </span>[<span style="color:#b44">&#39;sh&#39;</span>,<span style="color:#bbb"> </span><span style="color:#b44">&#39;-c&#39;</span>,<span style="color:#bbb"> </span><span style="color:#b44">&#39;echo The app is running! &amp;&amp; sleep 3600&#39;</span>]<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>initContainers:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>init-myservice<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>image:<span style="color:#bbb"> </span>busybox<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>command:<span style="color:#bbb"> </span>[<span style="color:#b44">&#39;sh&#39;</span>,<span style="color:#bbb"> </span><span style="color:#b44">&#39;-c&#39;</span>,<span style="color:#bbb"> </span><span style="color:#b44">&#39;until nslookup myservice; do echo waiting for myservice; sleep 2; done;&#39;</span>]<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>init-mydb<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>image:<span style="color:#bbb"> </span>busybox<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>command:<span style="color:#bbb"> </span>[<span style="color:#b44">&#39;sh&#39;</span>,<span style="color:#bbb"> </span><span style="color:#b44">&#39;-c&#39;</span>,<span style="color:#bbb"> </span><span style="color:#b44">&#39;until nslookup mydb; do echo waiting for mydb; sleep 2; done;&#39;</span>]</code></pre></div>
+<p>1.5 syntax still works on 1.6, but we recommend using 1.6 syntax. In Kubernetes 1.6, Init Containers were made a field in the API. The beta annotation is still respected in 1.6 and 1.7, but is not supported in 1.8 or greater.</p>
+
+<p>Yaml file below outlines the <code>mydb</code> and <code>myservice</code> services:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">kind:<span style="color:#bbb"> </span>Service<span style="color:#bbb">
+</span><span style="color:#bbb"></span>apiVersion:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>myservice<span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>ports:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>protocol:<span style="color:#bbb"> </span>TCP<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>port:<span style="color:#bbb"> </span><span style="color:#666">80</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>targetPort:<span style="color:#bbb"> </span><span style="color:#666">9376</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>---<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Service<span style="color:#bbb">
+</span><span style="color:#bbb"></span>apiVersion:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>mydb<span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>ports:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>protocol:<span style="color:#bbb"> </span>TCP<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>port:<span style="color:#bbb"> </span><span style="color:#666">80</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>targetPort:<span style="color:#bbb"> </span><span style="color:#666">9377</span></code></pre></div>
+<p>This Pod can be started and debugged with the following commands:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl create -f myapp.yaml
+pod <span style="color:#b44">&#34;myapp-pod&#34;</span> created
+$ kubectl get -f myapp.yaml
+NAME        READY     STATUS     RESTARTS   AGE
+myapp-pod   <span style="color:#666">0</span>/1       Init:0/2   <span style="color:#666">0</span>          6m
+$ kubectl describe -f myapp.yaml
+Name:          myapp-pod
+Namespace:     default
+<span style="color:#666">[</span>...<span style="color:#666">]</span>
+Labels:        <span style="color:#b8860b">app</span><span style="color:#666">=</span>myapp
+Status:        Pending
+<span style="color:#666">[</span>...<span style="color:#666">]</span>
+Init Containers:
+  init-myservice:
+<span style="color:#666">[</span>...<span style="color:#666">]</span>
+    State:         Running
+<span style="color:#666">[</span>...<span style="color:#666">]</span>
+  init-mydb:
+<span style="color:#666">[</span>...<span style="color:#666">]</span>
+    State:         Waiting
+      Reason:      PodInitializing
+    Ready:         False
+<span style="color:#666">[</span>...<span style="color:#666">]</span>
+Containers:
+  myapp-container:
+<span style="color:#666">[</span>...<span style="color:#666">]</span>
+    State:         Waiting
+      Reason:      PodInitializing
+    Ready:         False
+<span style="color:#666">[</span>...<span style="color:#666">]</span>
+Events:
+  FirstSeen    LastSeen    Count    From                      SubObjectPath                           Type          Reason        Message
+  ---------    --------    -----    ----                      -------------                           --------      ------        -------
+  16s          16s         <span style="color:#666">1</span>        <span style="color:#666">{</span>default-scheduler <span style="color:#666">}</span>                                              Normal        Scheduled     Successfully assigned myapp-pod to <span style="color:#666">172</span>.17.4.201
+  16s          16s         <span style="color:#666">1</span>        <span style="color:#666">{</span>kubelet <span style="color:#666">172</span>.17.4.201<span style="color:#666">}</span>    spec.initContainers<span style="color:#666">{</span>init-myservice<span style="color:#666">}</span>     Normal        Pulling       pulling image <span style="color:#b44">&#34;busybox&#34;</span>
+  13s          13s         <span style="color:#666">1</span>        <span style="color:#666">{</span>kubelet <span style="color:#666">172</span>.17.4.201<span style="color:#666">}</span>    spec.initContainers<span style="color:#666">{</span>init-myservice<span style="color:#666">}</span>     Normal        Pulled        Successfully pulled image <span style="color:#b44">&#34;busybox&#34;</span>
+  13s          13s         <span style="color:#666">1</span>        <span style="color:#666">{</span>kubelet <span style="color:#666">172</span>.17.4.201<span style="color:#666">}</span>    spec.initContainers<span style="color:#666">{</span>init-myservice<span style="color:#666">}</span>     Normal        Created       Created container with docker id 5ced34a04634; Security:<span style="color:#666">[</span><span style="color:#b8860b">seccomp</span><span style="color:#666">=</span>unconfined<span style="color:#666">]</span>
+  13s          13s         <span style="color:#666">1</span>        <span style="color:#666">{</span>kubelet <span style="color:#666">172</span>.17.4.201<span style="color:#666">}</span>    spec.initContainers<span style="color:#666">{</span>init-myservice<span style="color:#666">}</span>     Normal        Started       Started container with docker id 5ced34a04634
+$ kubectl logs myapp-pod -c init-myservice <span style="color:#080;font-style:italic"># Inspect the first init container
+</span><span style="color:#080;font-style:italic"></span>$ kubectl logs myapp-pod -c init-mydb      # Inspect the second init container</code></pre></div>
+<p>Once we start the <code>mydb</code> and <code>myservice</code> services, we can see the Init Containers
+complete and the <code>myapp-pod</code> is created:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl create -f services.yaml
+service <span style="color:#b44">&#34;myservice&#34;</span> created
+service <span style="color:#b44">&#34;mydb&#34;</span> created
+$ kubectl get -f myapp.yaml
+NAME        READY     STATUS    RESTARTS   AGE
+myapp-pod   <span style="color:#666">1</span>/1       Running   <span style="color:#666">0</span>          9m</code></pre></div>
+<p>This example is very simple but should provide some inspiration for you to
+create your own Init Containers.</p>
+
+<h2 id="detailed-behavior">Detailed behavior</h2>
+
+<p>During the startup of a Pod, the Init Containers are started in order, after the
+network and volumes are initialized. Each Container must exit successfully before
+the next is started. If a Container fails to start due to the runtime or
+exits with failure, it is retried according to the Pod <code>restartPolicy</code>. However,
+if the Pod <code>restartPolicy</code> is set to Always, the Init Containers use
+<code>RestartPolicy</code> OnFailure.</p>
+
+<p>A Pod cannot be <code>Ready</code> until all Init Containers have succeeded. The ports on an
+Init Container are not aggregated under a service. A Pod that is initializing
+is in the <code>Pending</code> state but should have a condition <code>Initializing</code> set to true.</p>
+
+<p>If the Pod is <a href="#pod-restart-reasons">restarted</a>, all Init Containers must
+execute again.</p>
+
+<p>Changes to the Init Container spec are limited to the container image field.
+Altering an Init Container image field is equivalent to restarting the Pod.</p>
+
+<p>Because Init Containers can be restarted, retried, or re-executed, Init Container
+code should be idempotent. In particular, code that writes to files on <code>EmptyDirs</code>
+should be prepared for the possibility that an output file already exists.</p>
+
+<p>Init Containers have all of the fields of an app Container. However, Kubernetes
+prohibits <code>readinessProbe</code> from being used because Init Containers cannot
+define readiness distinct from completion. This is enforced during validation.</p>
+
+<p>Use <code>activeDeadlineSeconds</code> on the Pod and <code>livenessProbe</code> on the Container to
+prevent Init Containers from failing forever. The active deadline includes Init
+Containers.</p>
+
+<p>The name of each app and Init Container in a Pod must be unique; a
+validation error is thrown for any Container sharing a name with another.</p>
+
+<h3 id="resources">Resources</h3>
+
+<p>Given the ordering and execution for Init Containers, the following rules
+for resource usage apply:</p>
+
+<ul>
+<li>The highest of any particular resource request or limit defined on all Init
+Containers is the <em>effective init request/limit</em></li>
+<li>The Pod&rsquo;s <em>effective request/limit</em> for a resource is the higher of:
+
+<ul>
+<li>the sum of all app Containers request/limit for a resource</li>
+<li>the effective init request/limit for a resource</li>
+</ul></li>
+<li>Scheduling is done based on effective requests/limits, which means
+Init Containers can reserve resources for initialization that are not used
+during the life of the Pod.</li>
+<li>QoS tier of the Pod&rsquo;s <em>effective QoS tier</em> is the QoS tier for Init Containers
+and app containers alike.</li>
+</ul>
+
+<p>Quota and limits are applied based on the effective Pod request and
+limit.</p>
+
+<p>Pod level cgroups are based on the effective Pod request and limit, the
+same as the scheduler.</p>
+
+<h3 id="pod-restart-reasons">Pod restart reasons</h3>
+
+<p>A Pod can restart, causing re-execution of Init Containers, for the following
+reasons:</p>
+
+<ul>
+<li>A user updates the PodSpec causing the Init Container image to change.
+App Container image changes only restart the app Container.</li>
+<li>The Pod infrastructure container is restarted. This is uncommon and would
+have to be done by someone with root access to nodes.</li>
+<li>All containers in a Pod are terminated while <code>restartPolicy</code> is set to Always,
+forcing a restart, and the Init Container completion record has been lost due
+to garbage collection.</li>
+</ul>
+
+<h2 id="support-and-compatibility">Support and compatibility</h2>
+
+<p>A cluster with Apiserver version 1.6.0 or greater supports Init Containers
+using the <code>.spec.initContainers</code> field. Previous versions support Init Containers
+using the alpha or beta annotations. The <code>.spec.initContainers</code> field is also mirrored
+into alpha and beta annotations so that Kubelets version 1.3.0 or greater can execute
+Init Containers, and so that a version 1.6 apiserver can safely be rolled back to version
+1.5.x without losing Init Container functionality for existing created pods.</p>
+
+<p>In Apiserver and Kubelet versions 1.8.0 or greater, support for the alpha and beta annotations
+is removed, requiring a conversion from the deprecated annotations to the
+<code>.spec.initContainers</code> field.</p>
+
+
+
+
+
+
+
+<p>This feature has exited beta in 1.6. Init Containers can be specified in the PodSpec
+alongside the app <code>containers</code> array. The beta annotation value will still be respected
+and overrides the PodSpec field value, however, they are deprecated in 1.6 and 1.7.
+In 1.8, the annotations are no longer supported and must be converted to the PodSpec field.</p>
+
+
+
+
+
+
+
+
+<h2 id="what-s-next">What&#39;s next</h2>
+<ul>
+<li><a href="/docs/tasks/configure-pod-container/configure-pod-initialization/#creating-a-pod-that-has-an-init-container">Creating a Pod that has an Init Container</a></li>
+</ul>
+
+
+
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/concepts/workloads/pods/init-containers.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/concepts\/workloads\/pods\/init-containers\/",
+					"title" : "Init Containers",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/concepts\/workloads\/pods\/init-containers\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/concepts/workloads/pods/init-containers.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

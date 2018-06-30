@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Backups - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="Backups" />
+<meta property="og:description" content="Backups" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/getting-started-guides/ubuntu/backups/" />
+<meta property="og:title" content="Backups - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Independent Solutions" href="/docs/getting-started-guides/"></a>
+
+	
+	
+		
+		
+	<div class="item" data-title="Bare Metal">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Fedora (Multi Node)" href="/docs/getting-started-guides/fedora/flannel_multi_node_cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Fedora (Single Node)" href="/docs/getting-started-guides/fedora/fedora_manual_config/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Deprecated Alternatives" href="/docs/getting-started-guides/alternatives/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Kubernetes on Ubuntu">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Backups" href="/docs/getting-started-guides/ubuntu/backups/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Decommissioning" href="/docs/getting-started-guides/ubuntu/decommissioning/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Glossary and Terminology" href="/docs/getting-started-guides/ubuntu/glossary/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Local Kubernetes development with LXD" href="/docs/getting-started-guides/ubuntu/local/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Logging" href="/docs/getting-started-guides/ubuntu/logging/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Monitoring" href="/docs/getting-started-guides/ubuntu/monitoring/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Networking" href="/docs/getting-started-guides/ubuntu/networking/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Operational Considerations" href="/docs/getting-started-guides/ubuntu/operational-considerations/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Rancher Integration with Ubuntu Kubernetes" href="/docs/getting-started-guides/ubuntu/rancher/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Scaling" href="/docs/getting-started-guides/ubuntu/scaling/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Security Considerations" href="/docs/getting-started-guides/ubuntu/security/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Setting up Kubernetes with Juju" href="/docs/getting-started-guides/ubuntu/installation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Storage" href="/docs/getting-started-guides/ubuntu/storage/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Troubleshooting" href="/docs/getting-started-guides/ubuntu/troubleshooting/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Upgrades" href="/docs/getting-started-guides/ubuntu/upgrades/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Validation - End-to-end Testing" href="/docs/getting-started-guides/ubuntu/validation/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/getting-started-guides/ubuntu/backups.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>Backups</h1>
+
+
+
+
+<p>The state of a Kubernetes cluster is kept in the etcd datastore.
+This page shows how to backup and restore the etcd shipped with
+the Canonical Distribution of Kubernetes. Backing up application specific data,
+normally stored in a persistent volume, is outside the scope of this
+document.</p>
+
+
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+<li><a href="#before-you-begin">Before you begin</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#snapshot-etcd-data">Snapshot etcd data</a></li>
+
+
+
+
+<li><a href="#restore-etcd-data">Restore etcd data</a></li>
+
+
+
+
+<li><a href="#migrating-an-etcd-cluster">Migrating an etcd cluster</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#known-limitations">Known Limitations</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</ul>
+
+
+
+<h2 id="before-you-begin">Before you begin</h2>
+<p>This page assumes you have a working Juju deployed cluster.</p>
+
+
+
+
+<h2 id="snapshot-etcd-data">Snapshot etcd data</h2>
+
+<p>The <code>snapshot</code> action of the etcd charm allows the operator to snapshot
+a running cluster&rsquo;s data for use in cloning,
+backing up, or migrating to a new cluster.</p>
+
+<pre><code>juju run-action etcd/0 snapshot 
+</code></pre>
+
+<p>This will create a snapshot in <code>/home/ubuntu/etcd-snapshots</code> by default.</p>
+
+<h2 id="restore-etcd-data">Restore etcd data</h2>
+
+<p>The etcd charm is capable of restoring its data from a cluster-data snapshot
+via the <code>restore</code> action.
+This comes with caveats and a very specific path to restore a cluster:
+The cluster must be in a state of only having a single member. So it&rsquo;s best to
+deploy a new cluster using the etcd charm, without adding any additional units.</p>
+
+<pre><code>juju deploy etcd new-etcd
+</code></pre>
+
+<p>The above code snippet will deploy a single unit of etcd, as &lsquo;new-etcd&rsquo;</p>
+
+<pre><code>juju run-action etcd/0 restore target=/mnt/etcd-backups
+</code></pre>
+
+<p>Once the restore action has completed, evaluate the cluster health. If the unit
+is healthy, you may resume scaling the application to meet your needs.</p>
+
+<ul>
+<li><p><strong>param</strong> target: destination directory to save the existing data.</p></li>
+
+<li><p><strong>param</strong> skip-backup: Don&rsquo;t backup any existing data.</p></li>
+</ul>
+
+<h2 id="migrating-an-etcd-cluster">Migrating an etcd cluster</h2>
+
+<p>Using the above snapshot and restore operations, migrating etcd is a fairly easy task.</p>
+
+<p><strong>Step 1:</strong> Snapshot your existing cluster. This is encapsulated in the <code>snapshot</code>
+action.</p>
+
+<pre><code>juju run-action etcd/0 snapshot
+</code></pre>
+
+<p>Results:</p>
+
+<pre><code>Action queued with id: b46d5d6f-5625-4320-8cda-b611c6ae580c
+</code></pre>
+
+<p><strong>Step 2:</strong> Check the status of the action so you can grab the snapshot and verify
+the sum. The <code>copy.cmd</code> result output is a copy/paste command for you to download
+the exact snapshot that you just created.</p>
+
+<p>Download the snapshot archive from the unit that created the snapshot and verify
+the sha256 sum</p>
+
+<pre><code>juju show-action-output b46d5d6f-5625-4320-8cda-b611c6ae580c
+</code></pre>
+
+<p>Results:</p>
+
+<pre><code>results:
+  copy:
+    cmd: juju scp etcd/0:/home/ubuntu/etcd-snapshots/etcd-snapshot-2016-11-09-02.41.47.tar.gz
+      .
+  snapshot:
+    path: /home/ubuntu/etcd-snapshots/etcd-snapshot-2016-11-09-02.41.47.tar.gz
+    sha256: 1dea04627812397c51ee87e313433f3102f617a9cab1d1b79698323f6459953d
+    size: 68K
+status: completed
+</code></pre>
+
+<p>Copy the snapshot to the local disk and then check the sha256sum.</p>
+
+<pre><code>juju scp etcd/0:/home/ubuntu/etcd-snapshots/etcd-snapshot-2016-11-09-02.41.47.tar.gz .
+sha256sum etcd-snapshot-2016-11-09-02.41.47.tar.gz
+</code></pre>
+
+<p><strong>Step 3:</strong> Deploy the new cluster leader, and attach the snapshot:</p>
+
+<pre><code>juju deploy etcd new-etcd --resource snapshot=./etcd-snapshot-2016-11-09-02.41.47.tar.gz
+</code></pre>
+
+<p><strong>Step 4:</strong> Reinitialize the master with the data from the resource we just attached
+in step 3.</p>
+
+<pre><code>juju run-action new-etcd/0 restore
+</code></pre>
+
+
+
+
+<h2 id="known-limitations">Known Limitations</h2>
+
+<h4 id="loss-of-pki-warning">Loss of PKI warning</h4>
+
+<p>If you destroy the leader - identified with the <code>*</code> text next to the unit number in status:
+all TLS pki will be lost. No PKI migration occurs outside
+of the units requesting and registering the certificates.</p>
+
+<blockquote class="caution">
+  <div><strong>Caution:</strong>  Mismanaging this configuration will result in locking yourself
+out of the cluster, and can potentially break existing deployments in very
+strange ways relating to x509 validation of certificates, which affects both
+servers and clients.</div>
+</blockquote>
+
+<h4 id="restoring-from-snapshot-on-a-scaled-cluster">Restoring from snapshot on a scaled cluster</h4>
+
+<p>Restoring from a snapshot on a scaled cluster will result in a broken cluster.
+Etcd performs clustering during unit turn-up, and state is stored in Etcd itself.
+During the snapshot restore phase, a new cluster ID is initialized, and peers
+are dropped from the snapshot state to enable snapshot restoration. Please
+follow the migration instructions above in the restore action description.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/getting-started-guides/ubuntu/backups.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/getting-started-guides\/ubuntu\/backups\/",
+					"title" : "Backups",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/getting-started-guides\/ubuntu\/backups\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/getting-started-guides/ubuntu/backups.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

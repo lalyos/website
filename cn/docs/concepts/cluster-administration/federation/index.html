@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>联邦 - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="联邦" />
+<meta property="og:description" content="联邦" />
+
+<meta property="og:url" content="https://kubernetes.io/cn/docs/concepts/cluster-administration/federation/" />
+<meta property="og:title" content="联邦 - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+             <li>
+                <a href="#">
+                    Chinese <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/">English</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+        
+        <a class="item" data-title="Home" href="/cn/docs/"></a>
+
+	
+	
+		
+		
+<a class="item" data-title="" href="/cn/docs/concepts/architecture/cloud-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="" href="/cn/docs/concepts/overview/kubernetes-api/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Admins">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Kubelet authentication/authorization" href="/cn/docs/admin/kubelet-authentication-authorization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes API访问控制" href="/cn/docs/admin/accessing-the-api/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes OpenVSwitch GRE/VxLAN 网络" href="/cn/docs/admin/ovs-networking/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="TLS bootstrapping" href="/cn/docs/admin/kubelet-tls-bootstrapping/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kube-apiserver" href="/cn/docs/admin/kube-apiserver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用启动引导令牌（Bootstrap Tokens）认证" href="/cn/docs/admin/bootstrap-tokens/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="创建大规模集群" href="/cn/docs/admin/cluster-large/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="多区域运行" href="/cn/docs/admin/multiple-zones/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="构建高可用集群">
+		<div class="container">
+		
+		
+		<a class="item" data-title="构建高可用集群" href="/cn/docs/admin/high-availability/"></a>
+		
+		
+	
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="概述">
+		<div class="container">
+		
+		
+		<a class="item" data-title="概述" href="/cn/docs/admin/authorization/"></a>
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="ABAC 模式" href="/cn/docs/admin/authorization/abac/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Webhook Mode" href="/cn/docs/admin/authorization/webhook/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="管理Service Accounts" href="/cn/docs/admin/service-accounts-admin/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="节点设置校验" href="/cn/docs/admin/node-conformance/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Cron Job" href="/cn/docs/concepts/workloads/controllers/cron-jobs/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="DNS Pod 与 Service" href="/cn/docs/concepts/services-networking/dns-pod-service/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="DaemonSet" href="/cn/docs/concepts/workloads/controllers/daemonset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Deployments" href="/cn/docs/concepts/workloads/controllers/deployment/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Docker 用户使用 kubectl 命令指南" href="/cn/docs/user-guide/docker-cli-to-kubectl/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Init 容器" href="/cn/docs/concepts/workloads/pods/init-containers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="JSONPath 支持" href="/cn/docs/user-guide/jsonpath/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes 中的代理" href="/cn/docs/concepts/cluster-administration/proxies/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes 组件" href="/cn/docs/concepts/overview/components/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes集群中使用Sysctls" href="/cn/docs/concepts/cluster-administration/sysctl-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Managing Compute Resources for Containers" href="/cn/docs/concepts/configuration/manage-compute-resources-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Master 节点通信" href="/cn/docs/concepts/architecture/master-node-communication/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Nodes" href="/cn/docs/concepts/architecture/nodes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pod Preset" href="/cn/docs/concepts/workloads/pods/podpreset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pod 安全策略" href="/cn/docs/concepts/policy/pod-security-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pod 的生命周期" href="/cn/docs/concepts/workloads/pods/pod-lifecycle/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Secret" href="/cn/docs/concepts/configuration/secret/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Service" href="/cn/docs/concepts/services-networking/service/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Tutorials">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Kubernetes 对象管理" href="/cn/docs/tutorials/object-management-kubectl/object-management/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="StatefulSet基本使用" href="/cn/docs/tutorials/stateful-application/basic-stateful-set/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Try Our Interactive Tutorials">
+		<div class="container">
+		
+		
+		<a class="item" data-title="Try Our Interactive Tutorials" href="/cn/docs/tutorials/kubernetes-basics/"></a>
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="互动教程 - 创建集群" href="/cn/docs/tutorials/kubernetes-basics/cluster-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 应用外部可见" href="/cn/docs/tutorials/kubernetes-basics/expose-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 应用程序探索" href="/cn/docs/tutorials/kubernetes-basics/explore-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 扩展您的应用程序" href="/cn/docs/tutorials/kubernetes-basics/scale-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 更新您的应用程序" href="/cn/docs/tutorials/kubernetes-basics/update-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 部署应用程序" href="/cn/docs/tutorials/kubernetes-basics/deploy-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Minikube 创建一个集群" href="/cn/docs/tutorials/kubernetes-basics/cluster-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 kubectl 创建部署" href="/cn/docs/tutorials/kubernetes-basics/deploy-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用服务发布您的应用程序" href="/cn/docs/tutorials/kubernetes-basics/expose-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="执行滚动更新" href="/cn/docs/tutorials/kubernetes-basics/update-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="查看 Pods 和节点" href="/cn/docs/tutorials/kubernetes-basics/explore-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="运行应用程序的多个实例" href="/cn/docs/tutorials/kubernetes-basics/scale-intro/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="“示例：使用 Stateful Sets 部署 Cassandra”" href="/cn/docs/tutorials/stateful-application/cassandra/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Source IP" href="/cn/docs/tutorials/services/source-ip/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用ConfigMap来配置Redis" href="/cn/docs/tutorials/configuration/configure-redis-using-configmap/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用命令式的方式管理 Kubernetes 对象" href="/cn/docs/tutorials/object-management-kubectl/imperative-object-management-command/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="基于 Persistent Volumes 搭建 WordPress 和 MySQL 应用" href="/cn/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="运行 ZooKeeper， 一个 CP 分布式系统" href="/cn/docs/tutorials/stateful-application/zookeeper/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="kubectl概述" href="/cn/docs/user-guide/kubectl-overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="为容器设置启动时要执行的命令及其入参" href="/cn/docs/tasks/inject-data-application/define-command-argument-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="为容器设置环境变量" href="/cn/docs/tasks/inject-data-application/define-environment-variable-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="云供应商" href="/cn/docs/concepts/cluster-administration/cloud-providers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Calico 来提供 NetworkPolicy" href="/cn/docs/tasks/administer-cluster/calico-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 HostAliases 向 Pod /etc/hosts 文件添加条目" href="/cn/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 PodPreset 将信息注入 Pods" href="/cn/docs/tasks/inject-data-application/podpreset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Romana 来提供 NetworkPolicy" href="/cn/docs/tasks/administer-cluster/romana-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Secret 安全地分发凭证" href="/cn/docs/tasks/inject-data-application/distribute-credentials-secure/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Service 把前端连接到后端" href="/cn/docs/tasks/access-application-cluster/connecting-frontend-backend/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Weave 网络来提供 NetworkPolicy" href="/cn/docs/tasks/administer-cluster/weave-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用Deployment运行一个无状态应用" href="/cn/docs/tasks/run-application/run-stateless-application-deployment/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="关键插件 Pod 的调度保证" href="/cn/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="同 Pod 内的容器使用共享卷通信" href="/cn/docs/tasks/access-application-cluster/communicate-containers-same-pod-shared-volume/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="在 Kubernetes 中配置私有 DNS 和上游域名服务器" href="/cn/docs/tasks/administer-cluster/dns-custom-nameservers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="垃圾收集" href="/cn/docs/concepts/workloads/controllers/garbage-collection/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="基于Replication Controller执行滚动升级" href="/cn/docs/tasks/run-application/rolling-update-replication-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="声明网络策略" href="/cn/docs/tasks/administer-cluster/declare-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="安装扩展（Addons）" href="/cn/docs/concepts/cluster-administration/addons/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="容器环境变量" href="/cn/docs/concepts/containers/container-environment-variables/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="对 DaemonSet 执行回滚" href="/cn/docs/tasks/manage-daemon/rollback-daemon-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="应用故障排查" href="/cn/docs/tasks/debug-application-cluster/debug-application/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="应用资源配额和限额" href="/cn/docs/tasks/administer-cluster/apply-resource-quota-limit/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="应用连接到 Service" href="/cn/docs/concepts/services-networking/connect-applications-service/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="弹缩StatefulSet" href="/cn/docs/tasks/run-application/scale-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="控制节点上的CPU管理策略" href="/cn/docs/tasks/administer-cluster/cpu-management-policies/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="改变默认 StorageClass" href="/cn/docs/tasks/administer-cluster/change-default-storage-class/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="更改 PersistentVolume 的回收策略" href="/cn/docs/tasks/administer-cluster/change-pv-reclaim-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="概念模板示例" href="/cn/docs/concepts/example-concept-template/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="理解 Kubernetes 对象" href="/cn/docs/concepts/overview/working-with-objects/kubernetes-objects/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="知名标签（Label）、注解（Annotation）和 Taints" href="/cn/docs/reference/labels-annotations-taints/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="管理巨页（HugePages）" href="/cn/docs/tasks/manage-hugepages/scheduling-hugepages/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="给容器分配非透明整型资源" href="/cn/docs/tasks/configure-pod-container/opaque-integer-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="网络策略" href="/cn/docs/concepts/services-networking/network-policies/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="联邦" href="/cn/docs/concepts/cluster-administration/federation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="认识 Kubernetes?" href="/cn/docs/concepts/overview/what-is-kubernetes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="认识 Kubernetes?" href="/cn/docs/whatisk8s/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="设备插件" href="/cn/docs/concepts/cluster-administration/device-plugins/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="设置 Pod CPU 和内存限制" href="/cn/docs/tasks/administer-cluster/cpu-memory-limit/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="访问集群上运行的服务" href="/cn/docs/tasks/administer-cluster/access-cluster-services/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="证书" href="/cn/docs/concepts/cluster-administration/certificates/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="证书轮换" href="/cn/docs/tasks/tls/certificate-rotation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="调度 GPU" href="/cn/docs/tasks/manage-gpus/scheduling-gpus/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="调试Pods和Replication Controllers" href="/cn/docs/tasks/debug-application-cluster/debug-pod-replication-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="调试StatefulSet" href="/cn/docs/tasks/debug-application-cluster/debug-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="资源配额" href="/cn/docs/concepts/policy/resource-quotas/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="运行一个单实例有状态应用" href="/cn/docs/tasks/run-application/run-single-instance-stateful-application/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="通过文件将Pod信息呈现给容器" href="/cn/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="通过环境变量将Pod信息呈现给容器" href="/cn/docs/tasks/inject-data-application/environment-variable-expose-pod-information/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="通过配置文件设置 Kubelet 参数" href="/cn/docs/tasks/administer-cluster/kubelet-config-file/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="配置你的云平台防火墙" href="/cn/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="配置命名空间下pod总数" href="/cn/docs/tasks/administer-cluster/quota-pod-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="配置对多集群的访问" href="/cn/docs/tasks/access-application-cluster/configure-access-multiple-clusters/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="镜像" href="/cn/docs/concepts/containers/images/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="集群故障排查" href="/cn/docs/tasks/debug-application-cluster/debug-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="集群管理" href="/cn/docs/tasks/administer-cluster/cluster-management/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="集群管理概述" href="/cn/docs/concepts/cluster-administration/cluster-administration-overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="静态Pods" href="/cn/docs/tasks/administer-cluster/static-pod/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/concepts/cluster-administration/federation.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>联邦</h1>
+
+
+
+<p>本页面阐明了为何以及如何使用联邦创建Kubernetes集群。</p>
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+<li><a href="#%e4%b8%ba%e4%bd%95%e4%bd%bf%e7%94%a8%e8%81%94%e9%82%a6">为何使用联邦</a></li>
+
+
+
+
+<li><a href="#%e5%bb%ba%e7%ab%8b%e8%81%94%e9%82%a6">建立联邦</a></li>
+
+
+
+
+<li><a href="#api%e8%b5%84%e6%ba%90">API资源</a></li>
+
+
+
+
+<li><a href="#%e7%ba%a7%e8%81%94%e5%88%a0%e9%99%a4">级联删除</a></li>
+
+
+
+
+<li><a href="#%e5%8d%95%e4%b8%aa%e9%9b%86%e7%be%a4%e7%9a%84%e8%8c%83%e5%9b%b4">单个集群的范围</a></li>
+
+
+
+
+<li><a href="#%e9%80%89%e6%8b%a9%e5%90%88%e9%80%82%e7%9a%84%e9%9b%86%e7%be%a4%e6%95%b0">选择合适的集群数</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#what-s-next">What's next</a></li>
+
+
+
+</ul>
+
+
+<h2 id="为何使用联邦">为何使用联邦</h2>
+
+<p>联邦可以使多个集群的管理简单化。它提供了两个主要构件模块：</p>
+
+<ul>
+<li>跨集群同步资源：联邦能够让资源在多个集群中同步。例如，你可以确保在多个集群中存在同样的部署。</li>
+<li>跨集群发现：联邦能够在所有集群的后端自动配置DNS服务和负载均衡。例如，通过多个集群的后端，你可以确保全局的VIP或DNS记录可用。</li>
+</ul>
+
+<p>联邦技术的其他应用场景：</p>
+
+<ul>
+<li>高可用性：通过跨集群分摊负载，自动配置DNS服务和负载均衡，联邦将集群失败所带来的影响降到最低。</li>
+<li>避免供应商锁定：跨集群使迁移应用程序变得更容易，联邦服务避免了供应商锁定。</li>
+</ul>
+
+<p>只有在多个集群的场景下联邦服务才是有帮助的。这里列出了一些你会使用多个集群的原因：</p>
+
+<ul>
+<li>降低延迟：在多个区域含有集群，可使用离用户最近的集群来服务用户，从而最大限度降低延迟。</li>
+<li>故障隔离：对于故障隔离，也许有多个小的集群比有一个大的集群要更好一些（例如：一个云供应商的不同可用域里有多个集群）。详细信息请参阅<a href="/docs/admin/multi-cluster">多集群指南</a>。</li>
+<li>可伸缩性：对于单个kubernetes集群是有伸缩性限制的（但对于大多数用户来说并非如此。更多细节参考<a href="https://git.k8s.io/community/sig-scalability/goals.md" target="_blank">Kubernetes扩展和性能目标</a>）。</li>
+<li><a href="#混合云的能力">混合云</a>：可以有多个集群，它们分别拥有不同的云供应商或者本地数据中心。</li>
+</ul>
+
+<h3 id="注意事项">注意事项</h3>
+
+<p>虽然联邦有很多吸引人的场景，但这里还是有一些需要关注的事项：</p>
+
+<ul>
+<li>增加网络的带宽和损耗：联邦控制面会监控所有的集群，来确保集群的当前状态与预期一致。那么当这些集群运行在一个或者多个云提供者的不同区域中，则会带来重大的网络损耗。</li>
+<li>降低集群的隔离：当联邦控制面中存在一个故障时，会影响所有的集群。把联邦控制面的逻辑降到最小可以缓解这个问题。 无论何时，它都是kubernetes集群里控制面的代表。设计和实现也使其变得更安全,避免多集群运行中断。</li>
+<li>完整性：联邦项目相对较新，还不是很成熟。不是所有资源都可用，且很多资源才刚刚开始。<a href="https://github.com/kubernetes/kubernetes/issues/38893" target="_blank">Issue 38893</a> 列举了一些团队正忙于解决的系统已知问题。</li>
+</ul>
+
+<h3 id="混合云的能力">混合云的能力</h3>
+
+<p>Kubernetes集群里的联邦包括运行在不同云供应商上的集群（例如，谷歌云、亚马逊），和本地部署的集群（例如，OpenStack）。只需在适当的云供应商和/或位置创建所需的所有集群，并将每个集群的API endpoint和凭据注册到您的联邦API服务中（详情参考<a href="/docs/admin/federation/">联邦管理指南</a>）。</p>
+
+<p>在此之后，您的<a href="#api资源">API资源</a>就可以跨越不同的集群和云供应商。</p>
+
+<h2 id="建立联邦">建立联邦</h2>
+
+<p>若要能联合多个集群，首先需要建立一个联邦控制面。参照<a href="/docs/tutorials/federation/set-up-cluster-federation-kubefed/">安装指南</a> 建立联邦控制面。</p>
+
+<h2 id="api资源">API资源</h2>
+
+<p>控制面建立完成后，就可以开始创建联邦API资源了。
+以下指南详细介绍了一些资源：</p>
+
+<ul>
+<li><a href="/docs/tasks/administer-federation/cluster/">Cluster</a></li>
+<li><a href="/docs/tasks/administer-federation/configmap/">ConfigMap</a></li>
+<li><a href="/docs/tasks/administer-federation/daemonset/">DaemonSets</a></li>
+<li><a href="/docs/tasks/administer-federation/deployment/">Deployment</a></li>
+<li><a href="/docs/tasks/administer-federation/events/">Events</a></li>
+<li><a href="/docs/tasks/administer-federation/ingress/">Ingress</a></li>
+<li><a href="/docs/tasks/administer-federation/namespaces/">Namespaces</a></li>
+<li><a href="/docs/tasks/administer-federation/replicaset/">ReplicaSets</a></li>
+<li><a href="/docs/tasks/administer-federation/secret/">Secrets</a></li>
+<li><a href="/docs/concepts/cluster-administration/federation-service-discovery/">Services</a></li>
+</ul>
+
+<p><a href="/docs/reference/federation/">API参考文档</a>列举了联邦API服务支持的所有资源。</p>
+
+<h2 id="级联删除">级联删除</h2>
+
+<p>Kubernetes1.6版本支持联邦资源级联删除。使用级联删除，即当删除联邦控制面的一个资源时，也删除了所有底层集群中的相应资源。</p>
+
+<p>当使用REST API时，级联删除功能不是默认开启的。若使用REST API从联邦控制面删除一个资源时，要开启级联删除功能，即需配置选项 <code>DeleteOptions.orphanDependents=false</code>。使用<code>kubectl delete</code>使级联删除功能默认开启。使用<code>kubectl delete --cascade=false</code>禁用级联删除功能。</p>
+
+<p>注意：Kubernetes1.5版本开始支持联邦资源子集的级联删除。</p>
+
+<h2 id="单个集群的范围">单个集群的范围</h2>
+
+<p>对于IaaS供应商如谷歌计算引擎或亚马逊网络服务，一个虚拟机存在于一个<a href="https://cloud.google.com/compute/docs/zones" target="_blank">域</a>或<a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html" target="_blank">可用域</a>中。
+我们建议一个Kubernetes集群里的所有虚机应该在相同的可用域里，因为：</p>
+
+<ul>
+<li>与单一的全局Kubernetes集群对比，该方式有较少的单点故障。</li>
+<li>与跨可用域的集群对比，该方式更容易推断单区域集群的可用性属性。</li>
+<li>当Kubernetes开发者设计一个系统(例如，对延迟、带宽或相关故障进行假设)，他们也会假设所有的机器都在一个单一的数据中心，或者以其他方式紧密相连。</li>
+</ul>
+
+<p>每个可用区域里包含多个集群当然是可以的，但是总的来说我们认为集群数越少越好。
+偏爱较少集群数的原因是：</p>
+
+<ul>
+<li>在某些情况下，在一个集群里有更多的节点，可以改进Pods的装箱问题（更少的资源碎片）。</li>
+<li>减少操作开销（尽管随着OPS工具和流程的成熟而降低了这块的优势）。</li>
+<li>为每个集群的固定资源花费降低开销，例如，使用apiserver的虚拟机（但是在全体集群开销中，中小型集群的开销占比要小的多）。</li>
+</ul>
+
+<p>多集群的原因包括：</p>
+
+<ul>
+<li>严格的安全性策略要求隔离一类工作与另一类工作（但是，请参见下面的集群分割）。</li>
+<li>测试集群或其他集群软件直至最优的新Kubernetes版本发布。</li>
+</ul>
+
+<h2 id="选择合适的集群数">选择合适的集群数</h2>
+
+<p>Kubernetes集群数量选择也许是一个相对静止的选择，因为对其重新审核的情况很少。相比之下，一个集群中的节点数和一个服务中的pods数可能会根据负载和增长频繁变化。</p>
+
+<p>选择集群的数量，首先，需要决定哪些区域对于将要运行在Kubernetes上的服务，可以有足够的时间到达所有的终端用户（如果使用内容分发网络，则不需要考虑CDN-hosted内容的延迟需求）。法律问题也可能影响这一点。例如，拥有全球客户群的公司可能会对于在美国、欧盟、亚太和南非地区拥有集群起到决定权。使用<code>R</code>代表区域的数量。</p>
+
+<p>其次，决定有多少集群在同一时间不可用，而一些仍然可用。使用<code>U</code>代表不可用的数量。如果不确定，最好选择1。</p>
+
+<p>如果允许负载均衡在集群故障发生时将通信引导到任何区域，那么至少需要较大的<code>R</code>或<code>U + 1</code>集群。若非如此（例如，若要在集群故障发生时确保所有用户的低延迟），则需要<code>R * (U + 1)</code>集群(在每一个<code>R</code>区域里都有<code>U + 1</code>)。在任何情况下，尝试将每个集群放在不同的区域中。</p>
+
+<p>最后，如果你的集群需求超过一个Kubernetes集群推荐的最大节点数，那么你可能需要更多的集群。Kubernetes1.3版本支持多达1000个节点的集群规模。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="what-s-next">What&#39;s next</h2>
+<ul>
+<li>进一步学习<a href="https://github.com/kubernetes/community/blob/master/contributors/design-proposals/multicluster/federation.md" target="_blank">联邦提案</a>。</li>
+<li>集群联邦参考该<a href="/docs/tutorials/federation/set-up-cluster-federation-kubefed/">配置指导</a>。</li>
+<li>查看<a href="https://www.youtube.com/watch?v=pq9lbkmxpS8" target="_blank">Kubecon2016浅谈联邦</a></li>
+</ul>
+
+
+
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/concepts/cluster-administration/federation.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/cn\/docs\/concepts\/cluster-administration\/federation\/",
+					"title" : "联邦",
+					"permalink" : "https:\/\/kubernetes.io\/cn\/docs\/concepts\/cluster-administration\/federation\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/concepts/cluster-administration/federation.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

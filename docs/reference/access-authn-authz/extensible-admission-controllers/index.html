@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Dynamic Admission Control - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="Dynamic Admission Control" />
+<meta property="og:description" content="Dynamic Admission Control" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/" />
+<meta property="og:title" content="Dynamic Admission Control - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h1>Reference Documentation</h1>
+<h5></h5>
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/" class="YAH">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Reference" href="/docs/reference/"></a>
+
+	
+	
+		
+		
+<a class="item" data-title="Standardized Glossary" href="/docs/reference/glossary/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Kubernetes Issues and Security">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Kubernetes Issue Tracker" href="/docs/reference/issues-security/issues/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes Security and Disclosure Information" href="/docs/reference/issues-security/security/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Using the Kubernetes API">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Kubernetes API Overview" href="/docs/reference/using-api/api-overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes API Concepts" href="/docs/reference/using-api/api-concepts/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Client Libraries" href="/docs/reference/using-api/client-libraries/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes Deprecation Policy" href="/docs/reference/using-api/deprecation-policy/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Accessing the API">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Controlling Access to the Kubernetes API" href="/docs/reference/access-authn-authz/controlling-access/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Authenticating" href="/docs/reference/access-authn-authz/authentication/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Authenticating with Bootstrap Tokens" href="/docs/reference/access-authn-authz/bootstrap-tokens/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using Admission Controllers" href="/docs/reference/access-authn-authz/admission-controllers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Dynamic Admission Control" href="/docs/reference/access-authn-authz/extensible-admission-controllers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Managing Service Accounts" href="/docs/reference/access-authn-authz/service-accounts-admin/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Authorization Overview" href="/docs/reference/access-authn-authz/authorization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using RBAC Authorization" href="/docs/reference/access-authn-authz/rbac/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using ABAC Authorization" href="/docs/reference/access-authn-authz/abac/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using Node Authorization" href="/docs/reference/access-authn-authz/node/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Webhook Mode" href="/docs/reference/access-authn-authz/webhook/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="API Reference">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Well-Known Labels, Annotations and Taints" href="/docs/reference/kubernetes-api/labels-annotations-taints/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="v1.11" href="/docs/reference/kubernetes-api/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Federation API">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="extensions/v1beta1 Model Definitions" href="/docs/reference/federation/extensions/v1beta1/definitions/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="extensions/v1beta1 Operations" href="/docs/reference/federation/extensions/v1beta1/operations/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="v1 Model Definitions" href="/docs/reference/federation/v1/definitions/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="v1 Operations" href="/docs/reference/federation/v1/operations/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Setup tools reference">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+	<div class="item" data-title="Kubeadm">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Overview of kubeadm" href="/docs/reference/setup-tools/kubeadm/kubeadm/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm init" href="/docs/reference/setup-tools/kubeadm/kubeadm-init/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm join" href="/docs/reference/setup-tools/kubeadm/kubeadm-join/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm upgrade" href="/docs/reference/setup-tools/kubeadm/kubeadm-upgrade/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm config" href="/docs/reference/setup-tools/kubeadm/kubeadm-config/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm reset" href="/docs/reference/setup-tools/kubeadm/kubeadm-reset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm token" href="/docs/reference/setup-tools/kubeadm/kubeadm-token/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm version" href="/docs/reference/setup-tools/kubeadm/kubeadm-version/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm alpha" href="/docs/reference/setup-tools/kubeadm/kubeadm-alpha/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Implementation details" href="/docs/reference/setup-tools/kubeadm/implementation-details/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="kubefed">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="kubefed" href="/docs/reference/setup-tools/kubefed/kubefed/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubefed options" href="/docs/reference/setup-tools/kubefed/kubefed-options/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubefed init" href="/docs/reference/setup-tools/kubefed/kubefed-init/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubefed join" href="/docs/reference/setup-tools/kubefed/kubefed-join/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubefed unjoin" href="/docs/reference/setup-tools/kubefed/kubefed-unjoin/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubefed version" href="/docs/reference/setup-tools/kubefed/kubefed-version/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Command line tools reference">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Feature Gates" href="/docs/reference/command-line-tools-reference/feature-gates/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="federation-apiserver" href="/docs/reference/command-line-tools-reference/federation-apiserver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="federation-controller-manager" href="/docs/reference/command-line-tools-reference/federation-controller-manager/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubelet authentication/authorization" href="/docs/reference/command-line-tools-reference/kubelet-authentication-authorization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="TLS bootstrapping" href="/docs/reference/command-line-tools-reference/kubelet-tls-bootstrapping/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="cloud-controller-manager" href="/docs/reference/command-line-tools-reference/cloud-controller-manager/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kube-apiserver" href="/docs/reference/command-line-tools-reference/kube-apiserver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kube-controller-manager" href="/docs/reference/command-line-tools-reference/kube-controller-manager/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kube-proxy" href="/docs/reference/command-line-tools-reference/kube-proxy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kube-scheduler" href="/docs/reference/command-line-tools-reference/kube-scheduler/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubelet" href="/docs/reference/command-line-tools-reference/kubelet/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="kubectl CLI">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="JSONPath Support" href="/docs/reference/kubectl/jsonpath/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Overview of kubectl" href="/docs/reference/kubectl/overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubectl" href="/docs/reference/kubectl/kubectl/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubectl Cheat Sheet" href="/docs/reference/kubectl/cheatsheet/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubectl Commands" href="/docs/reference/kubectl/kubectl-cmds/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubectl Usage Conventions" href="/docs/reference/kubectl/conventions/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubectl for Docker Users" href="/docs/reference/kubectl/docker-cli-to-kubectl/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Tools" href="/docs/reference/tools/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/reference/access-authn-authz/extensible-admission-controllers.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>Dynamic Admission Control</h1>
+
+
+
+<p>The <a href="/docs/reference/access-authn-authz/admission-controllers/">admission controllers documentation</a>
+introduces how to use standard, plugin-style admission controllers. However,
+plugin admission controllers are not flexible enough for all use cases, due to
+the following:</p>
+
+<ul>
+<li>They need to be compiled into kube-apiserver.</li>
+<li>They are only configurable when the apiserver starts up.</li>
+</ul>
+
+<p>Two features, <em>Admission Webhooks</em> (beta in 1.9) and <em>Initializers</em> (alpha),
+address these limitations. They allow admission controllers to be developed
+out-of-tree and configured at runtime.</p>
+
+<p>This page describes how to use Admission Webhooks and Initializers.</p>
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+<li><a href="#admission-webhooks">Admission Webhooks</a></li>
+
+
+
+
+<li><a href="#initializers">Initializers</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</ul>
+
+
+<h2 id="admission-webhooks">Admission Webhooks</h2>
+
+<h3 id="what-are-admission-webhooks">What are admission webhooks?</h3>
+
+<p>Admission webhooks are HTTP callbacks that receive admission requests and do
+something with them. You can define two types of admission webhooks,
+<a href="/docs/reference/access-authn-authz/admission-controllers/#validatingadmissionwebhook-alpha-in-1-8-beta-in-1-9">validating admission Webhook</a>
+and
+<a href="/docs/reference/access-authn-authz/admission-controllers/#mutatingadmissionwebhook-beta-in-1-9">mutating admission webhook</a>.
+With validating admission Webhooks, you may reject requests to enforce custom
+admission policies. With mutating admission Webhooks, you may change requests to
+enforce custom defaults.</p>
+
+<h3 id="experimenting-with-admission-webhooks">Experimenting with admission webhooks</h3>
+
+<p>Admission webhooks are essentially part of the cluster control-plane. You should
+write and deploy them with great caution. Please read the <a href="/docs/reference/access-authn-authz/extensible-admission-controllers/#write-an-admission-webhook-server">user
+guides</a> for
+instructions if you intend to write/deploy production-grade admission webhooks.
+In the following, we describe how to quickly experiment with admission webhooks.</p>
+
+<h3 id="prerequisites">Prerequisites</h3>
+
+<ul>
+<li><p>Ensure that the Kubernetes cluster is at least as new as v1.9.</p></li>
+
+<li><p>Ensure that MutatingAdmissionWebhook and ValidatingAdmissionWebhook
+admission controllers are enabled.
+<a href="/docs/reference/access-authn-authz/admission-controllers/#is-there-a-recommended-set-of-admission-controllers-to-use">Here</a>
+is a recommended set of admission controllers to enable in general.</p></li>
+
+<li><p>Ensure that the admissionregistration.k8s.io/v1beta1 API is enabled.</p></li>
+</ul>
+
+<h3 id="write-an-admission-webhook-server">Write an admission webhook server</h3>
+
+<p>Please refer to the implementation of the <a href="https://github.com/kubernetes/kubernetes/blob/v1.10.0-beta.1/test/images/webhook/main.go" target="_blank">admission webhook
+server</a>
+that is validated in a Kubernetes e2e test. The webhook handles the
+<code>admissionReview</code> requests sent by the apiservers, and sends back its decision
+wrapped in <code>admissionResponse</code>.</p>
+
+<p>The example admission webhook server leaves the <code>ClientAuth</code> field
+<a href="https://github.com/kubernetes/kubernetes/blob/v1.10.0-beta.1/test/images/webhook/config.go#L48-L49" target="_blank">empty</a>,
+which defaults to <code>NoClientCert</code>. This means that the webhook server does not
+authenticate the identity of the clients, supposedly apiservers. If you need
+mutual TLS or other ways to authenticate the clients, see
+how to <a href="#authenticate-apiservers">authenticate apiservers</a>.</p>
+
+<h3 id="deploy-the-admission-webhook-service">Deploy the admission webhook service</h3>
+
+<p>The webhook server in the e2e test is deployed in the Kubernetes cluster, via
+the <a href="/docs/reference/generated/kubernetes-api/v1.11/#deployment-v1beta1-apps">deployment API</a>.
+The test also creates a <a href="/docs/reference/generated/kubernetes-api/v1.11/#service-v1-core">service</a>
+as the front-end of the webhook server. See
+<a href="https://github.com/kubernetes/kubernetes/blob/v1.10.0-beta.1/test/e2e/apimachinery/webhook.go#L196" target="_blank">code</a>.</p>
+
+<p>You may also deploy your webhooks outside of the cluster. You will need to update
+your <a href="https://github.com/kubernetes/kubernetes/blob/v1.10.0-beta.1/staging/src/k8s.io/api/admissionregistration/v1beta1/types.go#L218" target="_blank">webhook client configurations</a> accordingly.</p>
+
+<h3 id="configure-admission-webhooks-on-the-fly">Configure admission webhooks on the fly</h3>
+
+<p>You can dynamically configure what resources are subject to what admission
+webhooks via
+<a href="https://github.com/kubernetes/kubernetes/blob/v1.10.0-beta.1/staging/src/k8s.io/api/admissionregistration/v1beta1/types.go#L68" target="_blank">ValidatingWebhookConfiguration</a>
+or
+<a href="https://github.com/kubernetes/kubernetes/blob/v1.10.0-beta.1/staging/src/k8s.io/api/admissionregistration/v1beta1/types.go#L98" target="_blank">MutatingWebhookConifuration</a>.</p>
+
+<p>The following is an example <code>validatingWebhookConfiguration</code>, a mutating webhook
+configuration is similar.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>admissionregistration.k8s.io/v1beta1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>ValidatingWebhookConfiguration<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>&lt;name<span style="color:#bbb"> </span>of<span style="color:#bbb"> </span>this<span style="color:#bbb"> </span>configuration<span style="color:#bbb"> </span>object<span style="color:#b44;font-style:italic">&gt;
+</span><span style="color:#b44;font-style:italic">webhooks:
+</span><span style="color:#b44;font-style:italic">- name: &lt;webhook name, e.g., pod-policy.example.io&gt;
+</span><span style="color:#b44;font-style:italic">  rules:
+</span><span style="color:#b44;font-style:italic">  - apiGroups:
+</span><span style="color:#b44;font-style:italic">    - &#34;&#34;
+</span><span style="color:#b44;font-style:italic">    apiVersions:
+</span><span style="color:#b44;font-style:italic">    - v1
+</span><span style="color:#b44;font-style:italic">    operations:
+</span><span style="color:#b44;font-style:italic">    - CREATE
+</span><span style="color:#b44;font-style:italic">    resources:
+</span><span style="color:#b44;font-style:italic">    - pods
+</span><span style="color:#b44;font-style:italic">  clientConfig:
+</span><span style="color:#b44;font-style:italic">    service:
+</span><span style="color:#b44;font-style:italic">      namespace: &lt;namespace of the front-end service&gt;
+</span><span style="color:#b44;font-style:italic">      name: &lt;name of the front-end service&gt;
+</span><span style="color:#b44;font-style:italic">    caBundle: &lt;pem encoded ca cert that signs the server cert used by the webhook&gt;</span></code></pre></div>
+<blockquote class="note">
+  <div><strong>Note:</strong> When using <code>clientConfig.service</code>, the server cert must be valid for
+<code>&lt;svc_name&gt;.&lt;svc_namespace&gt;.svc</code>.</div>
+</blockquote>
+
+<p>When an apiserver receives a request that matches one of the <code>rules</code>, the
+apiserver sends an <code>admissionReview</code> request to webhook as specified in the
+<code>clientConfig</code>.</p>
+
+<p>After you create the webhook configuration, the system will take a few seconds
+to honor the new configuration.</p>
+
+<blockquote class="note">
+  <div><strong>Note:</strong> When the webhook plugin is deployed into the Kubernetes cluster as a
+service, it has to expose its service on the 443 port. The communication
+between the API server and the webhook service may fail if a different port
+is used.</div>
+</blockquote>
+
+<h3 id="authenticate-apiservers">Authenticate apiservers</h3>
+
+<p>If your admission webhooks require authentication, you can configure the
+apiservers to use basic auth, bearer token, or a cert to authenticate itself to
+the webhooks. There are three steps to complete the configuration.</p>
+
+<ul>
+<li><p>When starting the apiserver, specify the location of the admission control
+configuration file via the <code>--admission-control-config-file</code> flag.</p></li>
+
+<li><p>In the admission control configuration file, specify where the
+MutatingAdmissionWebhook controller and ValidatingAdmissionWebhook controller
+should read the credentials. The credentials are stored in kubeConfig files
+(yes, the same schema that&rsquo;s used by kubectl), so the field name is
+<code>kubeConfigFile</code>. Here is an example admission control configuration file:</p></li>
+</ul>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>apiserver.k8s.io/v1alpha1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>AdmissionConfiguration<span style="color:#bbb">
+</span><span style="color:#bbb"></span>plugins:<span style="color:#bbb">
+</span><span style="color:#bbb"></span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>ValidatingAdmissionWebhook<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>configuration:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>apiVersion:<span style="color:#bbb"> </span>apiserver.config.k8s.io/v1alpha1<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>kind:<span style="color:#bbb"> </span>WebhookAdmission<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>kubeConfigFile:<span style="color:#bbb"> </span>&lt;path-to-kubeconfig-file<span style="color:#b44;font-style:italic">&gt;
+</span><span style="color:#b44;font-style:italic">- name: MutatingAdmissionWebhook
+</span><span style="color:#b44;font-style:italic">  configuration:
+</span><span style="color:#b44;font-style:italic">    apiVersion: apiserver.config.k8s.io/v1alpha1
+</span><span style="color:#b44;font-style:italic">    kind: WebhookAdmission
+</span><span style="color:#b44;font-style:italic">    kubeConfigFile: &lt;path-to-kubeconfig-file&gt;</span></code></pre></div>
+<p>The schema of <code>admissionConfiguration</code> is defined
+<a href="https://github.com/kubernetes/kubernetes/blob/v1.10.0-beta.0/staging/src/k8s.io/apiserver/pkg/apis/apiserver/v1alpha1/types.go#L27" target="_blank">here</a>.</p>
+
+<ul>
+<li>In the kubeConfig file, provide the credentials:</li>
+</ul>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Config<span style="color:#bbb">
+</span><span style="color:#bbb"></span>users:<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#080;font-style:italic"># DNS name of webhook service, i.e., &lt;service name&gt;.&lt;namespace&gt;.svc, or the URL</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#080;font-style:italic"># of the webhook server.</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span><span style="color:#b44">&#39;webhook1.ns1.svc&#39;</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>user:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>client-certificate-data:<span style="color:#bbb"> </span>&lt;pem<span style="color:#bbb"> </span>encoded<span style="color:#bbb"> </span>certificate<span style="color:#b44;font-style:italic">&gt;
+</span><span style="color:#b44;font-style:italic">    client-key-data: &lt;pem encoded key&gt;</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#080;font-style:italic"># The `name` supports using * to wildmatch prefixing segments.</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span><span style="color:#b44">&#39;*.webhook-company.org&#39;</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>user:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>password:<span style="color:#bbb"> </span>&lt;password<span style="color:#b44;font-style:italic">&gt;
+</span><span style="color:#b44;font-style:italic">    username: &lt;name&gt;</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#080;font-style:italic"># &#39;*&#39; is the default match.</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span><span style="color:#b44">&#39;*&#39;</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>user:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>token:<span style="color:#bbb"> </span>&lt;token&gt;</code></pre></div>
+<p>Of course you need to set up the webhook server to handle these authentications.</p>
+
+<h2 id="initializers">Initializers</h2>
+
+<h3 id="what-are-initializers">What are initializers?</h3>
+
+<p><em>Initializer</em> has two meanings:</p>
+
+<ul>
+<li><p>A list of pending pre-initialization tasks, stored in every object&rsquo;s metadata
+(e.g., &ldquo;AddMyCorporatePolicySidecar&rdquo;).</p></li>
+
+<li><p>A user customized controller, which actually performs those tasks. The name of the task
+corresponds to the controller which performs the task. For clarity, we call
+them <em>initializer controllers</em> in this page.</p></li>
+</ul>
+
+<p>Once the controller has performed its assigned task, it removes its name from
+the list. For example, it may send a PATCH that inserts a container in a pod and
+also removes its name from <code>metadata.initializers.pending</code>. Initializers may make
+mutations to objects.</p>
+
+<p>Objects which have a non-empty initializer list are considered uninitialized,
+and are not visible in the API unless specifically requested by using the query parameter,
+<code>?includeUninitialized=true</code>.</p>
+
+<h3 id="when-to-use-initializers">When to use initializers?</h3>
+
+<p>Initializers are useful for admins to force policies (e.g., the
+<a href="/docs/reference/access-authn-authz/admission-controllers/#alwayspullimages">AlwaysPullImages</a>
+admission controller), or to inject defaults (e.g., the
+<a href="/docs/reference/access-authn-authz/admission-controllers/#defaultstorageclass">DefaultStorageClass</a>
+admission controller), etc.</p>
+
+<blockquote class="note">
+  <div><strong>Note:</strong> If your use case does not involve mutating objects, consider using
+external admission webhooks, as they have better performance.</div>
+</blockquote>
+
+<h3 id="how-are-initializers-triggered">How are initializers triggered?</h3>
+
+<p>When an object is POSTed, it is checked against all existing
+<code>initializerConfiguration</code> objects (explained below). For all that it matches,
+all <code>spec.initializers[].name</code>s are appended to the new object&rsquo;s
+<code>metadata.initializers.pending</code> field.</p>
+
+<p>An initializer controller should list and watch for uninitialized objects, by
+using the query parameter <code>?includeUninitialized=true</code>. If using client-go, just
+set
+<a href="https://github.com/kubernetes/kubernetes/blob/v1.7.0-rc.1/staging/src/k8s.io/apimachinery/pkg/apis/meta/v1/types.go#L315" target="_blank">listOptions.includeUninitialized</a>
+to true.</p>
+
+<p>For the observed uninitialized objects, an initializer controller should first
+check if its name matches <code>metadata.initializers.pending[0]</code>. If so, it should then
+perform its assigned task and remove its name from the list.</p>
+
+<h3 id="enable-initializers-alpha-feature">Enable initializers alpha feature</h3>
+
+<p><em>Initializers</em> is an alpha feature, so it is disabled by default. To turn it on,
+you need to:</p>
+
+<ul>
+<li><p>Include &ldquo;Initializers&rdquo; in the <code>--enable-admission-plugins</code> flag when starting
+<code>kube-apiserver</code>. If you have multiple <code>kube-apiserver</code> replicas, all should
+have the same flag setting.</p></li>
+
+<li><p>Enable the dynamic admission controller registration API by adding
+<code>admissionregistration.k8s.io/v1alpha1</code> to the <code>--runtime-config</code> flag passed
+to <code>kube-apiserver</code>, e.g.
+<code>--runtime-config=admissionregistration.k8s.io/v1alpha1</code>. Again, all replicas
+should have the same flag setting.</p></li>
+</ul>
+
+<h3 id="deploy-an-initializer-controller">Deploy an initializer controller</h3>
+
+<p>You should deploy an initializer controller via the <a href="/docs/reference/generated/kubernetes-api/v1.11/#deployment-v1beta1-apps">deployment
+API</a>.</p>
+
+<h3 id="configure-initializers-on-the-fly">Configure initializers on the fly</h3>
+
+<p>You can configure what initializers are enabled and what resources are subject
+to the initializers by creating <code>initializerConfiguration</code> resources.</p>
+
+<p>You should first deploy the initializer controller and make sure that it is
+working properly before creating the <code>initializerConfiguration</code>. Otherwise, any
+newly created resources will be stuck in an uninitialized state.</p>
+
+<p>The following is an example <code>initializerConfiguration</code>:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>admissionregistration.k8s.io/v1alpha1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>InitializerConfiguration<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>example-config<span style="color:#bbb">
+</span><span style="color:#bbb"></span>initializers:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#080;font-style:italic"># the name needs to be fully qualified, i.e., containing at least two &#34;.&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>podimage.example.com<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>rules:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#080;font-style:italic"># apiGroups, apiVersion, resources all support wildcard &#34;*&#34;.</span><span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#080;font-style:italic"># &#34;*&#34; cannot be mixed with non-wildcard.</span><span style="color:#bbb">
+</span><span style="color:#bbb">      </span>-<span style="color:#bbb"> </span>apiGroups:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>-<span style="color:#bbb"> </span><span style="color:#b44">&#34;&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span>apiVersions:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>-<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>resources:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>-<span style="color:#bbb"> </span>pods</code></pre></div>
+<p>After you create the <code>initializerConfiguration</code>, the system will take a few
+seconds to honor the new configuration. Then, <code>&quot;podimage.example.com&quot;</code> will be
+appended to the <code>metadata.initializers.pending</code> field of newly created pods. You
+should already have a ready &ldquo;podimage&rdquo; initializer controller that handles pods
+whose <code>metadata.initializers.pending[0].name=&quot;podimage.example.com&quot;</code>. Otherwise
+the pods will be stuck in an uninitialized state.</p>
+
+<p>Make sure that all expansions of the <code>&lt;apiGroup, apiVersions, resources&gt;</code> tuple
+in a <code>rule</code> are valid. If they are not, separate them in different <code>rules</code>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/reference/access-authn-authz/extensible-admission-controllers.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/reference\/access-authn-authz\/extensible-admission-controllers\/",
+					"title" : "Dynamic Admission Control",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/reference\/access-authn-authz\/extensible-admission-controllers\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/reference/access-authn-authz/extensible-admission-controllers.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Intermediate - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style_user_journeys.css">
+
+
+<meta name="description" content="Intermediate" />
+<meta property="og:description" content="Intermediate" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/user-journeys/users/cluster-operator/intermediate/" />
+<meta property="og:title" content="Intermediate - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+<script src="https://use.fontawesome.com/4bcc658a89.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			<div id="docsToc" style="display:none;"></div>
+			<div id="content">
+				
+	
+	  <h1>Intermediate</h1>
+	
+	
+
+
+
+	
+	<div class="track">USERS &gt; CLUSTER OPERATOR &gt; INTERMEDIATE</div>
+<div class="topheader">
+   Introduction
+</div>
+<div class="sections">sections in this doc</div>
+<div id="user-journeys-toc" class="tablebar">
+
+</div>
+
+<div class="docsection1">
+
+<p>If you are a cluster operator looking to expand your grasp of Kubernetes, this page and its linked topics extend the information provided on the <a href="/docs/user-journeys/users/cluster-operator/foundational">foundational cluster operator page</a>. From this page you can get information on key Kubernetes tasks needed to manage a complete production cluster.</p>
+
+</div><h2 id="work-with-ingress-networking-storage-and-workloads">Work with ingress, networking, storage, and workloads</h2><div class="docsection1">
+
+<p>Introductions to Kubernetes typically discuss simple stateless applications. As you move into more complex development, testing, and production environments, you need to consider more complex cases:</p>
+
+<p>Communication: Ingress and Networking</p>
+
+<ul>
+<li><a href="/docs/concepts/services-networking/ingress/">Ingress</a></li>
+</ul>
+
+<p>Storage: Volumes and PersistentVolumes</p>
+
+<ul>
+<li><a href="/docs/concepts/storage/volumes/">Volumes</a></li>
+<li><a href="/docs/concepts/storage/persistent-volumes/">Persistent Volumes</a></li>
+</ul>
+
+<p>Workloads</p>
+
+<ul>
+<li><a href="/docs/concepts/workloads/controllers/daemonset/">DaemonSets</a></li>
+<li><a href="/docs/concepts/workloads/controllers/statefulset/">Stateful Sets</a></li>
+<li><a href="/docs/concepts/workloads/controllers/jobs-run-to-completion/">Jobs</a></li>
+<li><a href="/docs/concepts/workloads/controllers/cron-jobs/">CronJobs</a></li>
+</ul>
+
+<p>Pods</p>
+
+<ul>
+<li><a href="/docs/concepts/workloads/pods/pod-lifecycle/">Pod Lifecycle</a>
+
+<ul>
+<li><a href="/docs/concepts/workloads/pods/init-containers/">Init Containers</a></li>
+<li><a href="/docs/concepts/workloads/pods/podpreset/">Pod Presets</a></li>
+<li><a href="/docs/concepts/containers/container-lifecycle-hooks/">Container Lifecycle Hooks</a></li>
+</ul></li>
+</ul>
+
+<p>And how Pods work with scheduling, priority, disruptions:</p>
+
+<ul>
+<li><a href="/docs/concepts/configuration/taint-and-toleration/">Taints and Tolerations</a></li>
+<li><a href="/docs/concepts/configuration/pod-priority-preemption/">Pods and Priority</a></li>
+<li><a href="/docs/concepts/workloads/pods/disruptions/">Disruptions</a></li>
+<li><a href="/docs/concepts/configuration/assign-pod-node/">Assigning Pods to Nodes</a></li>
+<li><a href="/docs/concepts/configuration/manage-compute-resources-container/">Managing Compute Resources for Containers</a></li>
+<li><a href="/docs/concepts/configuration/overview/">Configuration Best Practices</a></li>
+</ul>
+
+</div><h2 id="implement-security-best-practices">Implement security best practices</h2><div class="docsection1">
+
+<p>Securing your cluster includes work beyond the scope of Kubernetes itself.</p>
+
+<p>In Kubernetes, you configure access control:</p>
+
+<ul>
+<li><a href="/docs/admin/accessing-the-api/">Controlling Access to the Kubernetes API</a></li>
+<li><a href="/docs/admin/authentication/">Authenticating</a></li>
+<li><a href="/docs/admin/admission-controllers/">Using Admission Controllers</a></li>
+</ul>
+
+<p>You also configure authorization. That is, you determine not just how users and services authenticate to the API server, or whether they have access, but also what resources they have access to. Role-based access control (RBAC) is the recommended mechanism for controlling authorization to Kubernetes resources. Other authorization modes are available for more specific use cases.</p>
+
+<ul>
+<li><a href="/docs/admin/authorization/">Authorization Overview</a></li>
+<li><a href="/docs/admin/authorization/rbac/">Using RBAC Authorization</a></li>
+</ul>
+
+<p>You should create Secrets to hold sensitive data such as passwords, tokens, or keys. Be aware, however, that there are limitations to the protections that a Secret can provide. See <a href="/docs/concepts/configuration/secret/#risks">the Risks section of the Secrets documentation</a>.</p>
+
+<!-- TODO: Other security content? -->
+
+</div><h2 id="implement-custom-logging-and-monitoring">Implement custom logging and monitoring</h2><div class="docsection1">
+
+<p>Monitoring the health and state of your cluster is important. Collecting metrics, logging, and providing access to that information are common needs. Kubernetes provides some basic logging structure, and you may want to use additional tools to help aggregate and analyze log data.</p>
+
+<p>Start with the <a href="/docs/concepts/cluster-administration/logging/">basics on Kubernetes logging</a> to understand how containers do logging and common patterns. Cluster operators often want to add something to gather and aggregate those logs. See the following topics:</p>
+
+<ul>
+<li><a href="/docs/tasks/debug-application-cluster/logging-elasticsearch-kibana/">Logging Using Elasticsearch and Kibana</a></li>
+<li><a href="/docs/tasks/debug-application-cluster/logging-stackdriver/">Logging Using Stackdriver</a></li>
+</ul>
+
+<p>Like log aggregation, many clusters utilize additional software to help capture metrics and display them. There is an overview of tools at <a href="/docs/tasks/debug-application-cluster/resource-usage-monitoring/">Tools for Monitoring Compute, Storage, and Network Resources</a>.
+Kubernetes also supports a <a href="/docs/tasks/debug-application-cluster/core-metrics-pipeline/">core metrics pipeline</a> which can be used by Horizontal Pod Autoscaler with custom metrics.</p>
+
+<p><a href="https://prometheus.io/" target="_blank">Prometheus</a>, which is another CNCF project, is a common choice to support capture and temporary collection of metrics. There are several options for installing Prometheus, including using the <a href="https://github.com/kubernetes/charts/tree/master/stable/prometheus" target="_blank">stable/prometheus</a> <a href="https://helm.sh/" target="_blank">helm</a> chart, and CoreOS provides a <a href="https://github.com/coreos/prometheus-operator" target="_blank">prometheus operator</a> and <a href="https://github.com/coreos/prometheus-operator/tree/master/contrib/kube-prometheus" target="_blank">kube-prometheus</a>, which adds on Grafana dashboards and common configurations.</p>
+
+<p>A common configuration on <a href="https://github.com/kubernetes/minikube" target="_blank">Minikube</a> and some Kubernetes clusters uses <a href="https://github.com/kubernetes/heapster" target="_blank">Heapster</a>
+<a href="https://github.com/kubernetes/heapster/blob/master/docs/influxdb.md" target="_blank">along with InfluxDB and Grafana</a>.
+There is a <a href="https://blog.kublr.com/how-to-utilize-the-heapster-influxdb-grafana-stack-in-kubernetes-for-monitoring-pods-4a553f4d36c9" target="_blank">walkthrough of how to install this configuration in your cluster</a>.
+As of Kubernetes 1.11, Heapster is deprecated, as per <a href="https://github.com/kubernetes/community/tree/master/sig-instrumentation" target="_blank">sig-instrumentation</a>.  See <a href="https://brancz.com/2018/01/05/prometheus-vs-heapster-vs-kubernetes-metrics-apis/" target="_blank">Prometheus vs. Heapster vs. Kubernetes Metrics APIs</a> for more information alternatives.</p>
+
+<p>Hosted data analytics services such as <a href="https://docs.datadoghq.com/integrations/kubernetes/" target="_blank">Datadog</a> also offer Kubernetes integration.</p>
+
+</div><h2 id="additional-resources">Additional resources</h2><div class="docsection1">
+
+<p>Cluster Administration:</p>
+
+<ul>
+<li><a href="/docs/tasks/debug-application-cluster/debug-cluster/">Troubleshoot Clusters</a></li>
+<li><a href="/docs/tasks/debug-application-cluster/debug-pod-replication-controller/">Debug Pods and Replication Controllers</a></li>
+<li><a href="/docs/tasks/debug-application-cluster/debug-init-containers/">Debug Init Containers</a></li>
+<li><a href="/docs/tasks/debug-application-cluster/debug-stateful-set/">Debug Stateful Sets</a></li>
+<li><a href="/docs/tasks/debug-application-cluster/debug-application/">Debug Applications</a></li>
+<li><a href="https://github.com/kubernetes/examples/blob/master/staging/explorer/README.md" target="_blank">Using explorer to investigate your cluster</a></li>
+</ul>
+</div>
+
+<script src="/js/user-journeys/toc.js"></script>
+
+	
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/user-journeys/users/cluster-operator/intermediate.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/user-journeys\/users\/cluster-operator\/intermediate\/",
+					"title" : "Intermediate",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/user-journeys\/users\/cluster-operator\/intermediate\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/user-journeys/users/cluster-operator/intermediate.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

@@ -1,0 +1,1683 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>kubeadm init - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="kubeadm init" />
+<meta property="og:description" content="kubeadm init" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-init/" />
+<meta property="og:title" content="kubeadm init - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h1>Reference Documentation</h1>
+<h5></h5>
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/" class="YAH">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Reference" href="/docs/reference/"></a>
+
+	
+	
+		
+		
+<a class="item" data-title="Standardized Glossary" href="/docs/reference/glossary/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Kubernetes Issues and Security">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Kubernetes Issue Tracker" href="/docs/reference/issues-security/issues/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes Security and Disclosure Information" href="/docs/reference/issues-security/security/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Using the Kubernetes API">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Kubernetes API Overview" href="/docs/reference/using-api/api-overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes API Concepts" href="/docs/reference/using-api/api-concepts/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Client Libraries" href="/docs/reference/using-api/client-libraries/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes Deprecation Policy" href="/docs/reference/using-api/deprecation-policy/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Accessing the API">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Controlling Access to the Kubernetes API" href="/docs/reference/access-authn-authz/controlling-access/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Authenticating" href="/docs/reference/access-authn-authz/authentication/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Authenticating with Bootstrap Tokens" href="/docs/reference/access-authn-authz/bootstrap-tokens/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using Admission Controllers" href="/docs/reference/access-authn-authz/admission-controllers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Dynamic Admission Control" href="/docs/reference/access-authn-authz/extensible-admission-controllers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Managing Service Accounts" href="/docs/reference/access-authn-authz/service-accounts-admin/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Authorization Overview" href="/docs/reference/access-authn-authz/authorization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using RBAC Authorization" href="/docs/reference/access-authn-authz/rbac/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using ABAC Authorization" href="/docs/reference/access-authn-authz/abac/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using Node Authorization" href="/docs/reference/access-authn-authz/node/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Webhook Mode" href="/docs/reference/access-authn-authz/webhook/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="API Reference">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Well-Known Labels, Annotations and Taints" href="/docs/reference/kubernetes-api/labels-annotations-taints/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="v1.11" href="/docs/reference/kubernetes-api/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Federation API">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="extensions/v1beta1 Model Definitions" href="/docs/reference/federation/extensions/v1beta1/definitions/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="extensions/v1beta1 Operations" href="/docs/reference/federation/extensions/v1beta1/operations/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="v1 Model Definitions" href="/docs/reference/federation/v1/definitions/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="v1 Operations" href="/docs/reference/federation/v1/operations/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Setup tools reference">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+	<div class="item" data-title="Kubeadm">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Overview of kubeadm" href="/docs/reference/setup-tools/kubeadm/kubeadm/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm init" href="/docs/reference/setup-tools/kubeadm/kubeadm-init/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm join" href="/docs/reference/setup-tools/kubeadm/kubeadm-join/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm upgrade" href="/docs/reference/setup-tools/kubeadm/kubeadm-upgrade/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm config" href="/docs/reference/setup-tools/kubeadm/kubeadm-config/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm reset" href="/docs/reference/setup-tools/kubeadm/kubeadm-reset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm token" href="/docs/reference/setup-tools/kubeadm/kubeadm-token/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm version" href="/docs/reference/setup-tools/kubeadm/kubeadm-version/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm alpha" href="/docs/reference/setup-tools/kubeadm/kubeadm-alpha/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Implementation details" href="/docs/reference/setup-tools/kubeadm/implementation-details/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="kubefed">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="kubefed" href="/docs/reference/setup-tools/kubefed/kubefed/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubefed options" href="/docs/reference/setup-tools/kubefed/kubefed-options/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubefed init" href="/docs/reference/setup-tools/kubefed/kubefed-init/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubefed join" href="/docs/reference/setup-tools/kubefed/kubefed-join/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubefed unjoin" href="/docs/reference/setup-tools/kubefed/kubefed-unjoin/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubefed version" href="/docs/reference/setup-tools/kubefed/kubefed-version/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Command line tools reference">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Feature Gates" href="/docs/reference/command-line-tools-reference/feature-gates/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="federation-apiserver" href="/docs/reference/command-line-tools-reference/federation-apiserver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="federation-controller-manager" href="/docs/reference/command-line-tools-reference/federation-controller-manager/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubelet authentication/authorization" href="/docs/reference/command-line-tools-reference/kubelet-authentication-authorization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="TLS bootstrapping" href="/docs/reference/command-line-tools-reference/kubelet-tls-bootstrapping/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="cloud-controller-manager" href="/docs/reference/command-line-tools-reference/cloud-controller-manager/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kube-apiserver" href="/docs/reference/command-line-tools-reference/kube-apiserver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kube-controller-manager" href="/docs/reference/command-line-tools-reference/kube-controller-manager/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kube-proxy" href="/docs/reference/command-line-tools-reference/kube-proxy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kube-scheduler" href="/docs/reference/command-line-tools-reference/kube-scheduler/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubelet" href="/docs/reference/command-line-tools-reference/kubelet/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="kubectl CLI">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="JSONPath Support" href="/docs/reference/kubectl/jsonpath/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Overview of kubectl" href="/docs/reference/kubectl/overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubectl" href="/docs/reference/kubectl/kubectl/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubectl Cheat Sheet" href="/docs/reference/kubectl/cheatsheet/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubectl Commands" href="/docs/reference/kubectl/kubectl-cmds/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubectl Usage Conventions" href="/docs/reference/kubectl/conventions/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubectl for Docker Users" href="/docs/reference/kubectl/docker-cli-to-kubectl/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Tools" href="/docs/reference/tools/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/reference/setup-tools/kubeadm/kubeadm-init.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>kubeadm init</h1>
+
+
+
+<p>This command initializes a Kubernetes master node.</p>
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#what-s-next">What's next</a></li>
+
+
+
+</ul>
+
+
+<p>Run this command in order to set up the Kubernetes master.</p>
+
+<h3 id="synopsis">Synopsis</h3>
+
+<p>Run this command in order to set up the Kubernetes master.</p>
+
+<pre><code>kubeadm init [flags]
+</code></pre>
+
+<h3 id="options">Options</h3>
+
+<table style="width: 100%; table-layout: fixed;">
+  <colgroup>
+    <col span="1" style="width: 10px;" />
+    <col span="1" />
+  </colgroup>
+  <tbody>
+
+    <tr>
+      <td colspan="2">--apiserver-advertise-address string</td>
+    </tr>
+    <tr>
+      <td></td><td style="line-height: 130%; word-wrap: break-word;">The IP address the API Server will advertise it's listening on. Specify '0.0.0.0' to use the address of the default network interface.</td>
+    </tr>
+
+    <tr>
+      <td colspan="2">--apiserver-bind-port int32&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: 6443</td>
+    </tr>
+    <tr>
+      <td></td><td style="line-height: 130%; word-wrap: break-word;">Port for the API Server to bind to.</td>
+    </tr>
+
+    <tr>
+      <td colspan="2">--apiserver-cert-extra-sans stringSlice</td>
+    </tr>
+    <tr>
+      <td></td><td style="line-height: 130%; word-wrap: break-word;">Optional extra Subject Alternative Names (SANs) to use for the API Server serving certificate. Can be both IP addresses and DNS names.</td>
+    </tr>
+
+    <tr>
+      <td colspan="2">--cert-dir string&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: "/etc/kubernetes/pki"</td>
+    </tr>
+    <tr>
+      <td></td><td style="line-height: 130%; word-wrap: break-word;">The path where to save and store the certificates.</td>
+    </tr>
+
+    <tr>
+      <td colspan="2">--config string</td>
+    </tr>
+    <tr>
+      <td></td><td style="line-height: 130%; word-wrap: break-word;">Path to kubeadm config file. WARNING: Usage of a configuration file is experimental.</td>
+    </tr>
+
+    <tr>
+      <td colspan="2">--cri-socket string&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: "/var/run/dockershim.sock"</td>
+    </tr>
+    <tr>
+      <td></td><td style="line-height: 130%; word-wrap: break-word;">Specify the CRI socket to connect to.</td>
+    </tr>
+
+    <tr>
+      <td colspan="2">--dry-run</td>
+    </tr>
+    <tr>
+      <td></td><td style="line-height: 130%; word-wrap: break-word;">Don't apply any changes; just output what would be done.</td>
+    </tr>
+
+    <tr>
+      <td colspan="2">--feature-gates string</td>
+    </tr>
+    <tr>
+      <td></td><td style="line-height: 130%; word-wrap: break-word;">A set of key=value pairs that describe feature gates for various features. Options are:<br/>Auditing=true|false (ALPHA - default=false)<br/>CoreDNS=true|false (default=true)<br/>DynamicKubeletConfig=true|false (ALPHA - default=false)<br/>SelfHosting=true|false (ALPHA - default=false)<br/>StoreCertsInSecrets=true|false (ALPHA - default=false)</td>
+    </tr>
+
+    <tr>
+      <td colspan="2">-h, --help</td>
+    </tr>
+    <tr>
+      <td></td><td style="line-height: 130%; word-wrap: break-word;">help for init</td>
+    </tr>
+
+    <tr>
+      <td colspan="2">--ignore-preflight-errors stringSlice</td>
+    </tr>
+    <tr>
+      <td></td><td style="line-height: 130%; word-wrap: break-word;">A list of checks whose errors will be shown as warnings. Example: 'IsPrivilegedUser,Swap'. Value 'all' ignores errors from all checks.</td>
+    </tr>
+
+    <tr>
+      <td colspan="2">--kubernetes-version string&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: "stable-1.10"</td>
+    </tr>
+    <tr>
+      <td></td><td style="line-height: 130%; word-wrap: break-word;">Choose a specific Kubernetes version for the control plane.</td>
+    </tr>
+
+    <tr>
+      <td colspan="2">--node-name string</td>
+    </tr>
+    <tr>
+      <td></td><td style="line-height: 130%; word-wrap: break-word;">Specify the node name.</td>
+    </tr>
+
+    <tr>
+      <td colspan="2">--pod-network-cidr string</td>
+    </tr>
+    <tr>
+      <td></td><td style="line-height: 130%; word-wrap: break-word;">Specify range of IP addresses for the pod network. If set, the control plane will automatically allocate CIDRs for every node.</td>
+    </tr>
+
+    <tr>
+      <td colspan="2">--service-cidr string&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: "10.96.0.0/12"</td>
+    </tr>
+    <tr>
+      <td></td><td style="line-height: 130%; word-wrap: break-word;">Use alternative range of IP address for service VIPs.</td>
+    </tr>
+
+    <tr>
+      <td colspan="2">--service-dns-domain string&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: "cluster.local"</td>
+    </tr>
+    <tr>
+      <td></td><td style="line-height: 130%; word-wrap: break-word;">Use alternative domain for services, e.g. "myorg.internal".</td>
+    </tr>
+
+    <tr>
+      <td colspan="2">--skip-token-print</td>
+    </tr>
+    <tr>
+      <td></td><td style="line-height: 130%; word-wrap: break-word;">Skip printing of the default bootstrap token generated by 'kubeadm init'.</td>
+    </tr>
+
+    <tr>
+      <td colspan="2">--token string</td>
+    </tr>
+    <tr>
+      <td></td><td style="line-height: 130%; word-wrap: break-word;">The token to use for establishing bidirectional trust between nodes and masters. The format is [a-z0-9]{6}\.[a-z0-9]{16} - e.g. abcdef.0123456789abcdef</td>
+    </tr>
+
+    <tr>
+      <td colspan="2">--token-ttl duration&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: 24h0m0s</td>
+    </tr>
+    <tr>
+      <td></td><td style="line-height: 130%; word-wrap: break-word;">The duration before the token is automatically deleted (e.g. 1s, 2m, 3h). If set to '0', the token will never expire</td>
+    </tr>
+
+  </tbody>
+</table>
+
+<h3 id="init-workflow">Init workflow</h3>
+
+<p><code>kubeadm init</code> bootstraps a Kubernetes master node by executing the
+following steps:</p>
+
+<ol>
+<li><p>Runs a series of pre-flight checks to validate the system state
+before making changes. Some checks only trigger warnings, others are
+considered errors and will exit kubeadm until the problem is corrected or the
+user specifies <code>--skip-preflight-checks</code>.</p></li>
+
+<li><p>Generates a self-signed CA (or using an existing one if provided) to set up
+identities for each component in the cluster. If the user has provided their
+own CA cert and/or key by dropping it in the cert directory configured via <code>--cert-dir</code>
+(<code>/etc/kubernetes/pki</code> by default) this step is skipped as described in the
+<a href="#custom-certificates">Using custom certificates</a> document.
+The APIServer certs will have additional SAN entries for any <code>--apiserver-cert-extra-sans</code> arguments, lowercased if necessary.</p></li>
+
+<li><p>Writes kubeconfig files in <code>/etc/kubernetes/</code>  for
+the kubelet, the controller-manager and the scheduler to use to connect to the
+API server, each with its own identity, as well as an additional
+kubeconfig file for administration named <code>admin.conf</code>.</p></li>
+
+<li><p>If kubeadm is invoked with <code>--feature-gates=DynamicKubeletConfig</code> enabled,
+it writes the kubelet init configuration into the <code>/var/lib/kubelet/config/init/kubelet</code> file.
+See <a href="/docs/tasks/administer-cluster/kubelet-config-file/">Set Kubelet parameters via a config file</a>
+and <a href="/docs/tasks/administer-cluster/reconfigure-kubelet/">Reconfigure a Node&rsquo;s Kubelet in a Live Cluster</a>
+for more information about Dynamic Kubelet Configuration.
+This functionality is now by default disabled as it is behind a feature gate, but is expected to be a default in future versions.</p></li>
+
+<li><p>Generates static Pod manifests for the API server,
+controller manager and scheduler. In case an external etcd is not provided,
+an additional static Pod manifest are generated for etcd.</p></li>
+</ol>
+
+<p>Static Pod manifests are written to <code>/etc/kubernetes/manifests</code>; the kubelet
+   watches this directory for Pods to create on startup.</p>
+
+<p>Once control plane Pods are up and running, the <code>kubeadm init</code> sequence can continue.</p>
+
+<ol>
+<li><p>If kubeadm is invoked with <code>--feature-gates=DynamicKubeletConfig</code> enabled,
+it completes the kubelet dynamic configuration by creating a ConfigMap and some RBAC rules that enable
+kubelets to access to it, and updates the node by pointing <code>Node.spec.configSource</code> to the
+newly-created ConfigMap.
+This functionality is now by default disabled as it is behind a feature gate, but is expected to be a default in future versions.</p></li>
+
+<li><p>Apply labels and taints to the master node so that no additional workloads will
+run there.</p></li>
+
+<li><p>Generates the token that additional nodes can use to register
+themselves with the master in the future.  Optionally, the user can provide a
+token via <code>--token</code>, as described in the
+<a href="/docs/reference/setup-tools/kubeadm/kubeadm-token/">kubeadm token</a> docs.</p></li>
+
+<li><p>Makes all the necessary configurations for allowing node joining with the
+<a href="/docs/admin/bootstrap-tokens/">Bootstrap Tokens</a> and
+<a href="/docs/admin/kubelet-tls-bootstrapping/">TLS Bootstrap</a>
+mechanism:</p>
+
+<ul>
+<li><p>Write a ConfigMap for making available all the information required
+for joining, and set up related RBAC access rules.</p></li>
+
+<li><p>Let Bootstrap Tokens access the CSR signing API.</p></li>
+
+<li><p>Configure auto-approval for new CSR requests.</p></li>
+</ul></li>
+</ol>
+
+<p>See <a href="/docs/reference/setup-tools/kubeadm/kubeadm-join/">kubeadm join</a> for additional info.</p>
+
+<ol>
+<li><p>Installs a DNS server (CoreDNS) and the kube-proxy addon components via the API server.
+In Kubernetes version 1.11 and later CoreDNS is the default DNS server.
+To install kube-dns instead of CoreDNS, kubeadm must be invoked with <code>--feature-gates=CoreDNS=false</code>.
+Please note that although the DNS server is deployed, it will not be scheduled until CNI is installed.</p></li>
+
+<li><p>If <code>kubeadm init</code> is invoked with the alpha self-hosting feature enabled,
+(<code>--feature-gates=SelfHosting=true</code>), the static Pod based control plane is
+transformed into a <a href="#self-hosting">self-hosted control plane</a>.</p></li>
+</ol>
+
+<h3 id="config-file">Using kubeadm init with a configuration file</h3>
+
+<blockquote class="caution">
+  <div><strong>Caution:</strong> The config file is
+still considered alpha and may change in future versions.</div>
+</blockquote>
+
+<p>It&rsquo;s possible to configure <code>kubeadm init</code> with a configuration file instead of command
+line flags, and some more advanced features may only be available as
+configuration file options. This file is passed in the <code>--config</code> option.</p>
+
+<p>In Kubernetes 1.11 and later, the default configuration can be printed out using the
+<a href="/docs/reference/setup-tools/kubeadm/kubeadm-config/">kubeadm config print-default</a> command.</p>
+
+<p>For more details on each field in the configuration you can navigate to our
+<a href="https://godoc.org/k8s.io/kubernetes/cmd/kubeadm/app/apis/kubeadm#MasterConfiguration" target="_blank">API reference pages.</a></p>
+
+<p>Example of the kubeadm MasterConfiguration version <code>v1alpha2</code>:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>kubeadm.k8s.io/v1alpha2<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>MasterConfiguration<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kubernetesVersion:<span style="color:#bbb"> </span>v1.<span style="color:#666">11.0</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>api:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>advertiseAddress:<span style="color:#bbb"> </span><span style="color:#666">192.168</span>.<span style="color:#666">0.102</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>bindPort:<span style="color:#bbb"> </span><span style="color:#666">6443</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>controlPlaneEndpoint:<span style="color:#bbb"> </span><span style="color:#b44">&#34;&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>auditPolicy:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>logDir:<span style="color:#bbb"> </span>/var/log/kubernetes/audit<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>logMaxAge:<span style="color:#bbb"> </span><span style="color:#666">2</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>path:<span style="color:#bbb"> </span><span style="color:#b44">&#34;&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>bootstrapTokens:<span style="color:#bbb">
+</span><span style="color:#bbb"></span>-<span style="color:#bbb"> </span>groups:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>system:bootstrappers:kubeadm:default-node-token<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>token:<span style="color:#bbb"> </span>abcdef.0123456789abcdef<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>ttl:<span style="color:#bbb"> </span>24h0m0s<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>usages:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>signing<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>authentication<span style="color:#bbb">
+</span><span style="color:#bbb"></span>certificatesDir:<span style="color:#bbb"> </span>/etc/kubernetes/pki<span style="color:#bbb">
+</span><span style="color:#bbb"></span>clusterName:<span style="color:#bbb"> </span>kubernetes<span style="color:#bbb">
+</span><span style="color:#bbb"></span>etcd:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>local:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>dataDir:<span style="color:#bbb"> </span>/var/lib/etcd<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>image:<span style="color:#bbb"> </span><span style="color:#b44">&#34;&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>imageRepository:<span style="color:#bbb"> </span>k8s.gcr.io<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kubeProxy:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>config:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>bindAddress:<span style="color:#bbb"> </span><span style="color:#666">0.0</span>.<span style="color:#666">0.0</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>clientConnection:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>acceptContentTypes:<span style="color:#bbb"> </span><span style="color:#b44">&#34;&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">      </span>burst:<span style="color:#bbb"> </span><span style="color:#666">10</span><span style="color:#bbb">
+</span><span style="color:#bbb">      </span>contentType:<span style="color:#bbb"> </span>application/vnd.kubernetes.protobuf<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>kubeconfig:<span style="color:#bbb"> </span>/var/lib/kube-proxy/kubeconfig.conf<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>qps:<span style="color:#bbb"> </span><span style="color:#666">5</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>clusterCIDR:<span style="color:#bbb"> </span><span style="color:#b44">&#34;&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>configSyncPeriod:<span style="color:#bbb"> </span>15m0s<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>conntrack:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>max:<span style="color:#bbb"> </span><span style="color:#a2f;font-weight:bold">null</span><span style="color:#bbb">
+</span><span style="color:#bbb">      </span>maxPerCore:<span style="color:#bbb"> </span><span style="color:#666">32768</span><span style="color:#bbb">
+</span><span style="color:#bbb">      </span>min:<span style="color:#bbb"> </span><span style="color:#666">131072</span><span style="color:#bbb">
+</span><span style="color:#bbb">      </span>tcpCloseWaitTimeout:<span style="color:#bbb"> </span>1h0m0s<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>tcpEstablishedTimeout:<span style="color:#bbb"> </span>24h0m0s<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>enableProfiling:<span style="color:#bbb"> </span><span style="color:#a2f;font-weight:bold">false</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>healthzBindAddress:<span style="color:#bbb"> </span><span style="color:#666">0.0</span>.<span style="color:#666">0.0</span>:<span style="color:#666">10256</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>hostnameOverride:<span style="color:#bbb"> </span><span style="color:#b44">&#34;&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>iptables:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>masqueradeAll:<span style="color:#bbb"> </span><span style="color:#a2f;font-weight:bold">false</span><span style="color:#bbb">
+</span><span style="color:#bbb">      </span>masqueradeBit:<span style="color:#bbb"> </span><span style="color:#666">14</span><span style="color:#bbb">
+</span><span style="color:#bbb">      </span>minSyncPeriod:<span style="color:#bbb"> </span>0s<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>syncPeriod:<span style="color:#bbb"> </span>30s<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>ipvs:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>ExcludeCIDRs:<span style="color:#bbb"> </span><span style="color:#a2f;font-weight:bold">null</span><span style="color:#bbb">
+</span><span style="color:#bbb">      </span>minSyncPeriod:<span style="color:#bbb"> </span>0s<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>scheduler:<span style="color:#bbb"> </span><span style="color:#b44">&#34;&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">      </span>syncPeriod:<span style="color:#bbb"> </span>30s<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>metricsBindAddress:<span style="color:#bbb"> </span><span style="color:#666">127.0</span>.<span style="color:#666">0.1</span>:<span style="color:#666">10249</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>mode:<span style="color:#bbb"> </span><span style="color:#b44">&#34;&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>nodePortAddresses:<span style="color:#bbb"> </span><span style="color:#a2f;font-weight:bold">null</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>oomScoreAdj:<span style="color:#bbb"> </span>-<span style="color:#666">999</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>portRange:<span style="color:#bbb"> </span><span style="color:#b44">&#34;&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>resourceContainer:<span style="color:#bbb"> </span>/kube-proxy<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>udpIdleTimeout:<span style="color:#bbb"> </span>250ms<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kubeletConfiguration:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>baseConfig:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>address:<span style="color:#bbb"> </span><span style="color:#666">0.0</span>.<span style="color:#666">0.0</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>authentication:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>anonymous:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>enabled:<span style="color:#bbb"> </span><span style="color:#a2f;font-weight:bold">false</span><span style="color:#bbb">
+</span><span style="color:#bbb">      </span>webhook:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>cacheTTL:<span style="color:#bbb"> </span>2m0s<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>enabled:<span style="color:#bbb"> </span><span style="color:#a2f;font-weight:bold">true</span><span style="color:#bbb">
+</span><span style="color:#bbb">      </span>x509:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>clientCAFile:<span style="color:#bbb"> </span>/etc/kubernetes/pki/ca.crt<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>authorization:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>mode:<span style="color:#bbb"> </span>Webhook<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>webhook:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>cacheAuthorizedTTL:<span style="color:#bbb"> </span>5m0s<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>cacheUnauthorizedTTL:<span style="color:#bbb"> </span>30s<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>cgroupDriver:<span style="color:#bbb"> </span>cgroupfs<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>cgroupsPerQOS:<span style="color:#bbb"> </span><span style="color:#a2f;font-weight:bold">true</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>clusterDNS:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>-<span style="color:#bbb"> </span><span style="color:#666">10.96</span>.<span style="color:#666">0.10</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>clusterDomain:<span style="color:#bbb"> </span>cluster.local<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>containerLogMaxFiles:<span style="color:#bbb"> </span><span style="color:#666">5</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>containerLogMaxSize:<span style="color:#bbb"> </span>10Mi<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>contentType:<span style="color:#bbb"> </span>application/vnd.kubernetes.protobuf<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>cpuCFSQuota:<span style="color:#bbb"> </span><span style="color:#a2f;font-weight:bold">true</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>cpuManagerPolicy:<span style="color:#bbb"> </span>none<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>cpuManagerReconcilePeriod:<span style="color:#bbb"> </span>10s<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>enableControllerAttachDetach:<span style="color:#bbb"> </span><span style="color:#a2f;font-weight:bold">true</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>enableDebuggingHandlers:<span style="color:#bbb"> </span><span style="color:#a2f;font-weight:bold">true</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>enforceNodeAllocatable:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>-<span style="color:#bbb"> </span>pods<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>eventBurst:<span style="color:#bbb"> </span><span style="color:#666">10</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>eventRecordQPS:<span style="color:#bbb"> </span><span style="color:#666">5</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>evictionHard:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>imagefs.available:<span style="color:#bbb"> </span><span style="color:#666">15</span>%<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>memory.available:<span style="color:#bbb"> </span>100Mi<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>nodefs.available:<span style="color:#bbb"> </span><span style="color:#666">10</span>%<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>nodefs.inodesFree:<span style="color:#bbb"> </span><span style="color:#666">5</span>%<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>evictionPressureTransitionPeriod:<span style="color:#bbb"> </span>5m0s<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>failSwapOn:<span style="color:#bbb"> </span><span style="color:#a2f;font-weight:bold">true</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>fileCheckFrequency:<span style="color:#bbb"> </span>20s<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>hairpinMode:<span style="color:#bbb"> </span>promiscuous-bridge<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>healthzBindAddress:<span style="color:#bbb"> </span><span style="color:#666">127.0</span>.<span style="color:#666">0.1</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>healthzPort:<span style="color:#bbb"> </span><span style="color:#666">10248</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>httpCheckFrequency:<span style="color:#bbb"> </span>20s<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>imageGCHighThresholdPercent:<span style="color:#bbb"> </span><span style="color:#666">85</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>imageGCLowThresholdPercent:<span style="color:#bbb"> </span><span style="color:#666">80</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>imageMinimumGCAge:<span style="color:#bbb"> </span>2m0s<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>iptablesDropBit:<span style="color:#bbb"> </span><span style="color:#666">15</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>iptablesMasqueradeBit:<span style="color:#bbb"> </span><span style="color:#666">14</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>kubeAPIBurst:<span style="color:#bbb"> </span><span style="color:#666">10</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>kubeAPIQPS:<span style="color:#bbb"> </span><span style="color:#666">5</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>makeIPTablesUtilChains:<span style="color:#bbb"> </span><span style="color:#a2f;font-weight:bold">true</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>maxOpenFiles:<span style="color:#bbb"> </span><span style="color:#666">1000000</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>maxPods:<span style="color:#bbb"> </span><span style="color:#666">110</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>nodeStatusUpdateFrequency:<span style="color:#bbb"> </span>10s<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>oomScoreAdj:<span style="color:#bbb"> </span>-<span style="color:#666">999</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>podPidsLimit:<span style="color:#bbb"> </span>-<span style="color:#666">1</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>port:<span style="color:#bbb"> </span><span style="color:#666">10250</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>registryBurst:<span style="color:#bbb"> </span><span style="color:#666">10</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>registryPullQPS:<span style="color:#bbb"> </span><span style="color:#666">5</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>resolvConf:<span style="color:#bbb"> </span>/etc/resolv.conf<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>rotateCertificates:<span style="color:#bbb"> </span><span style="color:#a2f;font-weight:bold">true</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>runtimeRequestTimeout:<span style="color:#bbb"> </span>2m0s<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>serializeImagePulls:<span style="color:#bbb"> </span><span style="color:#a2f;font-weight:bold">true</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>staticPodPath:<span style="color:#bbb"> </span>/etc/kubernetes/manifests<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>streamingConnectionIdleTimeout:<span style="color:#bbb"> </span>4h0m0s<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>syncFrequency:<span style="color:#bbb"> </span>1m0s<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>volumeStatsAggPeriod:<span style="color:#bbb"> </span>1m0s<span style="color:#bbb">
+</span><span style="color:#bbb"></span>networking:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>dnsDomain:<span style="color:#bbb"> </span>cluster.local<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>podSubnet:<span style="color:#bbb"> </span><span style="color:#b44">&#34;&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>serviceSubnet:<span style="color:#bbb"> </span><span style="color:#666">10.96</span>.<span style="color:#666">0.0</span>/<span style="color:#666">12</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>nodeRegistration:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>criSocket:<span style="color:#bbb"> </span>/var/run/dockershim.sock<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>your-host-name<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>taints:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>effect:<span style="color:#bbb"> </span>NoSchedule<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>key:<span style="color:#bbb"> </span>node-role.kubernetes.io/master<span style="color:#bbb">
+</span><span style="color:#bbb"></span>unifiedControlPlaneImage:<span style="color:#bbb"> </span><span style="color:#b44">&#34;&#34;</span></code></pre></div>
+<h3 id="kube-proxy">Adding kube-proxy parameters</h3>
+
+<p>For information about kube-proxy parameters in the MasterConfiguration see:
+- <a href="https://godoc.org/k8s.io/kubernetes/pkg/proxy/apis/kubeproxyconfig/v1alpha1#KubeProxyConfiguration" target="_blank">kube-proxy</a></p>
+
+<h3 id="custom-args">Passing custom arguments to control plane components</h3>
+
+<p>If you would like to override or extend the behaviour of a control plane component, you can provide
+extra arguments to kubeadm. When the component is deployed, these additional arguments are added to
+the Pod command itself.</p>
+
+<p>For example, to add additional feature-gate arguments to the API server, your <a href="#config-file">configuration file</a>
+will need to look like this:</p>
+
+<pre><code>apiVersion: kubeadm.k8s.io/v1alpha2
+kind: MasterConfiguration
+apiServerExtraArgs:
+  feature-gates: APIResponseCompression=true
+</code></pre>
+
+<p>To customize the scheduler or controller-manager, use <code>schedulerExtraArgs</code> and <code>controllerManagerExtraArgs</code> respectively.</p>
+
+<p>For more information on parameters for the controller-manager and scheduler, see:
+- <a href="/docs/setup/independent/high-availability">high-availability</a></p>
+
+<h3 id="custom-images">Using custom images</h3>
+
+<p>By default, kubeadm pulls images from <code>k8s.gcr.io</code>, unless
+the requested Kubernetes version is a CI version. In this case,
+<code>gcr.io/kubernetes-ci-images</code> is used.</p>
+
+<p>You can override this behavior by using <a href="#config-file">kubeadm with a configuration file</a>.
+Allowed customization are:</p>
+
+<ul>
+<li>To provide an alternative <code>imageRepository</code> to be used instead of
+<code>k8s.gcr.io</code>.</li>
+<li>To provide a <code>unifiedControlPlaneImage</code> to be used instead of different images for control plane components.</li>
+<li>To provide a specific <code>etcd.image</code> to be used instead of the image available at<code>k8s.gcr.io</code>.</li>
+</ul>
+
+<h3 id="custom-certificates">Using custom certificates</h3>
+
+<p>By default, kubeadm generates all the certificates needed for a cluster to run.
+You can override this behavior by providing your own certificates.</p>
+
+<p>To do so, you must place them in whatever directory is specified by the
+<code>--cert-dir</code> flag or <code>CertificatesDir</code> configuration file key. By default this
+is <code>/etc/kubernetes/pki</code>.</p>
+
+<p>If a given certificate and private key pair exists, kubeadm skips the
+generation step and existing files are used for the prescribed
+use case. This means you can, for example, copy an existing CA into <code>/etc/kubernetes/pki/ca.crt</code>
+and <code>/etc/kubernetes/pki/ca.key</code>, and kubeadm will use this CA for signing the rest
+of the certs.</p>
+
+<h4 id="external-ca-mode">External CA mode</h4>
+
+<p>It is also possible to provide just the <code>ca.crt</code> file and not the
+<code>ca.key</code> file (this is only available for the root CA file, not other cert pairs).
+If all other certificates and kubeconfig files are in place, kubeadm recognizes
+this condition and activates the &ldquo;External CA&rdquo; mode. kubeadm will proceed without the
+CA key on disk.</p>
+
+<p>Instead, run the controller-manager standalone with <code>--controllers=csrsigner</code> and
+point to the CA certificate and key.</p>
+
+<h3 id="kubelet-drop-in">Managing the kubeadm drop-in file for the kubelet</h3>
+
+<p>The kubeadm package ships with configuration for how the kubelet should
+be run. Note that the <code>kubeadm</code> CLI command never touches this drop-in file.
+This drop-in file belongs to the kubeadm deb/rpm package.</p>
+
+<p>This is what it looks like:</p>
+
+<pre><code>[Service]
+Environment=&quot;KUBELET_KUBECONFIG_ARGS=--bootstrap-kubeconfig=/etc/kubernetes/bootstrap-kubelet.conf --kubeconfig=/etc/kubernetes/kubelet.conf&quot;
+Environment=&quot;KUBELET_SYSTEM_PODS_ARGS=--pod-manifest-path=/etc/kubernetes/manifests --allow-privileged=true&quot;
+Environment=&quot;KUBELET_NETWORK_ARGS=--network-plugin=cni --cni-conf-dir=/etc/cni/net.d --cni-bin-dir=/opt/cni/bin&quot;
+Environment=&quot;KUBELET_DNS_ARGS=--cluster-dns=10.96.0.10 --cluster-domain=cluster.local&quot;
+Environment=&quot;KUBELET_AUTHZ_ARGS=--authorization-mode=Webhook --client-ca-file=/etc/kubernetes/pki/ca.crt&quot;
+Environment=&quot;KUBELET_CADVISOR_ARGS=--cadvisor-port=0&quot;
+Environment=&quot;KUBELET_CERTIFICATE_ARGS=--rotate-certificates=true --cert-dir=/var/lib/kubelet/pki&quot;
+ExecStart=/usr/bin/kubelet $KUBELET_KUBECONFIG_ARGS $KUBELET_SYSTEM_PODS_ARGS $KUBELET_NETWORK_ARGS $KUBELET_DNS_ARGS $KUBELET_AUTHZ_ARGS $KUBELET_CADVISOR_ARGS $KUBELET_CERTIFICATE_ARGS $KUBELET_EXTRA_ARGS
+</code></pre>
+
+<p>Here&rsquo;s a breakdown of what/why:</p>
+
+<ul>
+<li><code>--bootstrap-kubeconfig=/etc/kubernetes/bootstrap-kubelet.conf</code> path to a kubeconfig
+file that is used to get client certificates for kubelet during node join.
+On success, a kubeconfig file is written to the path specified by <code>--kubeconfig</code>.</li>
+<li><code>--kubeconfig=/etc/kubernetes/kubelet.conf</code> points to the kubeconfig file that
+tells the kubelet where the API server is. This file also has the kubelet&rsquo;s
+credentials.</li>
+<li><code>--pod-manifest-path=/etc/kubernetes/manifests</code> specifies from where to read
+static Pod manifests used for starting the control plane.</li>
+<li><code>--allow-privileged=true</code> allows this kubelet to run privileged Pods.</li>
+<li><code>--network-plugin=cni</code> uses CNI networking.</li>
+<li><code>--cni-conf-dir=/etc/cni/net.d</code> specifies where to look for the
+<a href="https://github.com/containernetworking/cni/blob/master/SPEC.md" target="_blank">CNI spec file(s)</a>.</li>
+<li><code>--cni-bin-dir=/opt/cni/bin</code> specifies where to look for the actual CNI binaries.</li>
+<li><code>--cluster-dns=10.96.0.10</code> use this cluster-internal DNS server for <code>nameserver</code>
+entries in Pods&rsquo; <code>/etc/resolv.conf</code>.</li>
+<li><code>--cluster-domain=cluster.local</code> uses this cluster-internal DNS domain for
+<code>search</code> entries in Pods&rsquo; <code>/etc/resolv.conf</code>.</li>
+<li><code>--client-ca-file=/etc/kubernetes/pki/ca.crt</code> authenticates requests to the Kubelet
+API using this CA certificate.</li>
+<li><code>--authorization-mode=Webhook</code> authorizes requests to the Kubelet API by <code>POST</code>-ing
+a <code>SubjectAccessReview</code> to the API server.</li>
+<li><code>--cadvisor-port=0</code> disables cAdvisor from listening to <code>0.0.0.0:4194</code> by default.
+cAdvisor will still be run inside of the kubelet and its API can be accessed at
+<code>https://{node-ip}:10250/stats/</code>. If you want to enable cAdvisor to listen on a
+wide-open port, run:</li>
+</ul>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">   sed -e <span style="color:#b44">&#34;/cadvisor-port=0/d&#34;</span> -i /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+   systemctl daemon-reload
+   systemctl restart kubelet</code></pre></div>
+<ul>
+<li><code>--rotate-certificates</code> auto rotate the kubelet client certificates by requesting new
+certificates from the <code>kube-apiserver</code> when the certificate expiration approaches.</li>
+<li><code>--cert-dir</code>the directory where the TLS certs are located.</li>
+</ul>
+
+<h3 id="use-kubeadm-with-other-cri-runtimes">Use kubeadm with other CRI runtimes</h3>
+
+<p>Since v1.6.0, Kubernetes has enabled the use of CRI, Container Runtime Interface, by default.
+The container runtime used by default is Docker, which is enabled through the built-in
+<code>dockershim</code> CRI implementation inside of the <code>kubelet</code>.</p>
+
+<p>Other CRI-based runtimes include:</p>
+
+<ul>
+<li><a href="https://github.com/containerd/cri-containerd" target="_blank">cri-containerd</a></li>
+<li><a href="https://github.com/kubernetes-incubator/cri-o" target="_blank">cri-o</a></li>
+<li><a href="https://github.com/kubernetes/frakti" target="_blank">frakti</a></li>
+<li><a href="https://github.com/kubernetes-incubator/rktlet" target="_blank">rkt</a></li>
+</ul>
+
+<p>After you have successfully installed <code>kubeadm</code> and <code>kubelet</code>, execute
+these two additional steps:</p>
+
+<ol>
+<li><p>Install the runtime shim on every node, following the installation
+document in the runtime shim project listing above.</p></li>
+
+<li><p>Configure kubelet to use the remote CRI runtime. Please remember to change
+<code>RUNTIME_ENDPOINT</code> to your own value like <code>/var/run/{your_runtime}.sock</code>:</p></li>
+</ol>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cat &gt; /etc/systemd/system/kubelet.service.d/20-cri.conf <span style="color:#b44">&lt;&lt;EOF
+</span><span style="color:#b44">[Service]
+</span><span style="color:#b44">Environment=&#34;KUBELET_EXTRA_ARGS=--container-runtime=remote --container-runtime-endpoint=$RUNTIME_ENDPOINT&#34;
+</span><span style="color:#b44">EOF</span>
+systemctl daemon-reload</code></pre></div>
+<p>Now <code>kubelet</code> is ready to use the specified CRI runtime, and you can continue
+with the <code>kubeadm init</code> and <code>kubeadm join</code> workflow to deploy Kubernetes cluster.</p>
+
+<p>You may also want to set <code>--cri-socket</code> to <code>kubeadm init</code> and <code>kubeadm reset</code> when
+using an external CRI implementation.</p>
+
+<h3 id="using-internal-ips-in-your-cluster">Using internal IPs in your cluster</h3>
+
+<p>In order to set up a cluster where the master and worker nodes communicate with internal IP addresses (instead of public ones), execute following steps.</p>
+
+<ol>
+<li>When running init, you must make sure you specify an internal IP for the API server&rsquo;s bind address, like so:</li>
+</ol>
+
+<p><code>kubeadm init --apiserver-advertise-address=&lt;private-master-ip&gt;</code></p>
+
+<ol>
+<li>When a master or worker node has been provisioned, add a flag to <code>/etc/systemd/system/kubelet.service.d/10-kubeadm.conf</code> that specifies the private IP of the worker node:</li>
+</ol>
+
+<p><code>--node-ip=&lt;private-node-ip&gt;</code></p>
+
+<ol>
+<li>Finally, when you run <code>kubeadm join</code>, make sure you provide the private IP of the API server addressed as defined in step 1.</li>
+</ol>
+
+<h3 id="setting-the-node-name">Setting the node name</h3>
+
+<p>By default, <code>kubeadm</code> assigns a node name based on a machine&rsquo;s host address. You can override this setting with the  <code>--node-name</code>flag.
+The flag passes the appropriate <a href="https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/#options" target="_blank"><code>--hostname-override</code></a>
+to the kubelet.</p>
+
+<p>Be aware that overriding the hostname can <a href="https://github.com/kubernetes/website/pull/8873" target="_blank">interfere with cloud providers</a>.</p>
+
+<h3 id="self-hosting">Self-hosting the Kubernetes control plane</h3>
+
+<p>As of 1.8, you can experimentally create a <em>self-hosted</em> Kubernetes control
+plane. This means that key components such as the API server, controller
+manager, and scheduler run as <a href="/docs/concepts/workloads/controllers/daemonset/">DaemonSet pods</a>
+configured via the Kubernetes API instead of <a href="/docs/tasks/administer-cluster/static-pod/">static pods</a>
+configured in the kubelet via static files.</p>
+
+<blockquote class="caution">
+  <div><strong>Caution:</strong> Self-hosting is alpha, but is expected to become the default in
+a future version. To create a self-hosted cluster, pass the <code>--feature-gates=SelfHosting=true</code>
+flag to <code>kubeadm init</code>.</div>
+</blockquote>
+
+<blockquote class="warning">
+  <div><strong>Warning:</strong> See self-hosted caveats and limitations.</div>
+</blockquote>
+
+<h4 id="caveats">Caveats</h4>
+
+<p>Self-hosting in 1.8 has some important limitations. In particular, a
+self-hosted cluster <em>cannot recover from a reboot of the master node</em>
+without manual intervention. This and other limitations are expected to be
+resolved before self-hosting graduates from alpha.</p>
+
+<p>By default, self-hosted control plane Pods rely on credentials loaded from
+<a href="https://kubernetes.io/docs/concepts/storage/volumes/#hostpath" target="_blank"><code>hostPath</code></a>
+volumes. Except for initial creation, these credentials are not managed by
+kubeadm. You can use <code>--feature-gates=StoreCertsInSecrets=true</code> to enable an
+experimental mode where control plane credentials are loaded from Secrets
+instead. This requires very careful control over the authentication and
+authorization configuration for your cluster, and may not be appropriate for
+your environment.</p>
+
+<p>In kubeadm 1.8, the self-hosted portion of the control plane does not include etcd,
+which still runs as a static Pod.</p>
+
+<h4 id="process">Process</h4>
+
+<p>The self-hosting bootstrap process is documented in the <a href="https://github.com/kubernetes/kubeadm/blob/master/docs/design/design_v1.9.md#optional-self-hosting" target="_blank">kubeadm design
+document</a>.</p>
+
+<p>In summary, <code>kubeadm init --feature-gates=SelfHosting=true</code> works as follows:</p>
+
+<ol>
+<li><p>Waits for this bootstrap static control plane to be running and
+healthy. This is identical to the <code>kubeadm init</code> process without self-hosting.</p></li>
+
+<li><p>Uses the static control plane Pod manifests to construct a set of
+DaemonSet manifests that will run the self-hosted control plane.
+It also modifies these manifests where necessary, for example adding new volumes
+for secrets.</p></li>
+
+<li><p>Creates DaemonSets in the <code>kube-system</code> namespace and waits for the
+ resulting Pods to be running.</p></li>
+
+<li><p>Once self-hosted Pods are operational, their associated static Pods are deleted
+ and kubeadm moves on to install the next component. This triggers kubelet to
+ stop those static Pods.</p></li>
+
+<li><p>When the original static control plane stops, the new self-hosted control
+plane is able to bind to listening ports and become active.</p></li>
+</ol>
+
+<p>This process (steps 3-6) can also be triggered with <code>kubeadm phase selfhosting convert-from-staticpods</code>.</p>
+
+<h3 id="running-kubeadm-without-an-internet-connection">Running kubeadm without an internet connection</h3>
+
+<p>For running kubeadm without an internet connection you have to pre-pull the required master images for the version of choice:</p>
+
+<table>
+<thead>
+<tr>
+<th>Image Name</th>
+<th>v1.8 release branch version</th>
+<th>v1.9 release branch version</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>k8s.gcr.io/kube-apiserver-${ARCH}</td>
+<td>v1.8.x</td>
+<td>v1.9.x</td>
+</tr>
+
+<tr>
+<td>k8s.gcr.io/kube-controller-manager-${ARCH}</td>
+<td>v1.8.x</td>
+<td>v1.9.x</td>
+</tr>
+
+<tr>
+<td>k8s.gcr.io/kube-scheduler-${ARCH}</td>
+<td>v1.8.x</td>
+<td>v1.9.x</td>
+</tr>
+
+<tr>
+<td>k8s.gcr.io/kube-proxy-${ARCH}</td>
+<td>v1.8.x</td>
+<td>v1.9.x</td>
+</tr>
+
+<tr>
+<td>k8s.gcr.io/etcd-${ARCH}</td>
+<td>3.0.17</td>
+<td>3.1.10</td>
+</tr>
+
+<tr>
+<td>k8s.gcr.io/pause-${ARCH}</td>
+<td>3.0</td>
+<td>3.0</td>
+</tr>
+
+<tr>
+<td>k8s.gcr.io/k8s-dns-sidecar-${ARCH}</td>
+<td>1.14.5</td>
+<td>1.14.7</td>
+</tr>
+
+<tr>
+<td>k8s.gcr.io/k8s-dns-kube-dns-${ARCH}</td>
+<td>1.14.5</td>
+<td>1.14.7</td>
+</tr>
+
+<tr>
+<td>k8s.gcr.io/k8s-dns-dnsmasq-nanny-${ARCH}</td>
+<td>1.14.5</td>
+<td>1.14.7</td>
+</tr>
+</tbody>
+</table>
+
+<p>Here <code>v1.8.x</code> means the &ldquo;latest patch release of the v1.8 branch&rdquo;.</p>
+
+<p><code>${ARCH}</code> can be one of: <code>amd64</code>, <code>arm</code>, <code>arm64</code>, <code>ppc64le</code> or <code>s390x</code>.</p>
+
+<p>If you run Kubernetes version 1.10 or earlier, and if you set <code>--feature-gates=CoreDNS=true</code>,
+you must also use the image <code>coredns/coredns:1.0.2</code>, instead of the three <code>k8s-dns-*</code> images.</p>
+
+<p>In Kubernetes 1.11 and later, you can list and pull the images using the <code>kubeadm config images</code> sub-command:</p>
+
+<pre><code>kubeadm config images list
+kubeadm config images pull
+</code></pre>
+
+<h3 id="automating-kubeadm">Automating kubeadm</h3>
+
+<p>Rather than copying the token you obtained from <code>kubeadm init</code> to each node, as
+in the <a href="/docs/setup/independent/create-cluster-kubeadm/">basic kubeadm tutorial</a>, you can parallelize the
+token distribution for easier automation. To implement this automation, you must
+know the IP address that the master will have after it is started.</p>
+
+<ol>
+<li><p>Generate a token. This token must have the form  <code>&lt;6 character string&gt;.&lt;16
+character string&gt;</code>.  More formally, it must match the regex:
+<code>[a-z0-9]{6}\.[a-z0-9]{16}</code>.</p>
+
+<p>kubeadm can generate a token for you:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">kubeadm token generate</code></pre></div></li>
+
+<li><p>Start both the master node and the worker nodes concurrently with this token.
+As they come up they should find each other and form the cluster.  The same
+<code>--token</code> argument can be used on both <code>kubeadm init</code> and <code>kubeadm join</code>.</p></li>
+</ol>
+
+<p>Once the cluster is up, you can grab the admin credentials from the master node
+at <code>/etc/kubernetes/admin.conf</code> and use that to talk to the cluster.</p>
+
+<p>Note that this style of bootstrap has some relaxed security guarantees because
+it does not allow the root CA hash to be validated with
+<code>--discovery-token-ca-cert-hash</code> (since it&rsquo;s not generated when the nodes are
+provisioned). For details, see the <a href="/docs/reference/setup-tools/kubeadm/kubeadm-join/">kubeadm join</a>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="what-s-next">What&#39;s next</h2>
+<ul>
+<li><a href="/docs/reference/setup-tools/kubeadm/kubeadm-join/">kubeadm join</a> to bootstrap a Kubernetes worker node and join it to the cluster</li>
+<li><a href="/docs/reference/setup-tools/kubeadm/kubeadm-upgrade/">kubeadm upgrade</a> to upgrade a Kubernetes cluster to a newer version</li>
+<li><a href="/docs/reference/setup-tools/kubeadm/kubeadm-reset/">kubeadm reset</a> to revert any changes made to this host by <code>kubeadm init</code> or <code>kubeadm join</code></li>
+</ul>
+
+
+
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/reference/setup-tools/kubeadm/kubeadm-init.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/reference\/setup-tools\/kubeadm\/kubeadm-init\/",
+					"title" : "kubeadm init",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/reference\/setup-tools\/kubeadm\/kubeadm-init\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/reference/setup-tools/kubeadm/kubeadm-init.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>查看 Pods 和节点 - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="查看 Pods 和节点" />
+<meta property="og:description" content="查看 Pods 和节点" />
+
+<meta property="og:url" content="https://kubernetes.io/cn/docs/tutorials/kubernetes-basics/explore-intro/" />
+<meta property="og:title" content="查看 Pods 和节点 - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+             <li>
+                <a href="#">
+                    Chinese <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/">English</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+         
+        
+        <a class="item" data-title="Tutorials" href="/cn/docs/tutorials/"></a>
+
+	
+	
+		
+		
+<a class="item" data-title="Kubernetes 对象管理" href="/cn/docs/tutorials/object-management-kubectl/object-management/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="StatefulSet基本使用" href="/cn/docs/tutorials/stateful-application/basic-stateful-set/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Try Our Interactive Tutorials">
+		<div class="container">
+		
+		
+		<a class="item" data-title="Try Our Interactive Tutorials" href="/cn/docs/tutorials/kubernetes-basics/"></a>
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="互动教程 - 创建集群" href="/cn/docs/tutorials/kubernetes-basics/cluster-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 应用外部可见" href="/cn/docs/tutorials/kubernetes-basics/expose-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 应用程序探索" href="/cn/docs/tutorials/kubernetes-basics/explore-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 扩展您的应用程序" href="/cn/docs/tutorials/kubernetes-basics/scale-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 更新您的应用程序" href="/cn/docs/tutorials/kubernetes-basics/update-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 部署应用程序" href="/cn/docs/tutorials/kubernetes-basics/deploy-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Minikube 创建一个集群" href="/cn/docs/tutorials/kubernetes-basics/cluster-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 kubectl 创建部署" href="/cn/docs/tutorials/kubernetes-basics/deploy-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用服务发布您的应用程序" href="/cn/docs/tutorials/kubernetes-basics/expose-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="执行滚动更新" href="/cn/docs/tutorials/kubernetes-basics/update-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="查看 Pods 和节点" href="/cn/docs/tutorials/kubernetes-basics/explore-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="运行应用程序的多个实例" href="/cn/docs/tutorials/kubernetes-basics/scale-intro/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="“示例：使用 Stateful Sets 部署 Cassandra”" href="/cn/docs/tutorials/stateful-application/cassandra/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Source IP" href="/cn/docs/tutorials/services/source-ip/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用ConfigMap来配置Redis" href="/cn/docs/tutorials/configuration/configure-redis-using-configmap/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用命令式的方式管理 Kubernetes 对象" href="/cn/docs/tutorials/object-management-kubectl/imperative-object-management-command/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="基于 Persistent Volumes 搭建 WordPress 和 MySQL 应用" href="/cn/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="运行 ZooKeeper， 一个 CP 分布式系统" href="/cn/docs/tutorials/stateful-application/zookeeper/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/tutorials/kubernetes-basics/explore-intro.html" id="editPageButton">Edit This Page</a></p>
+
+<h1>查看 Pods 和节点</h1>
+
+
+
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<body>
+
+<link href="/docs/tutorials/kubernetes-basics/public/css/styles.css" rel="stylesheet">
+
+
+<div class="layout" id="top">
+
+	<main class="content">
+
+		<div class="row">
+
+     <div class="col-md-8">
+      	<h3>目标</h3>
+				<ul>
+					<li>了解 Kubernetes Pods</li>
+					<li>了解 Kubernetes Nodes</li>
+					<li>已部署应用的故障排除</li>
+				</ul>
+			</div>
+
+			<div class="col-md-8">
+				<h2>Kubernetes Pods</h2>
+				<p>当您在模块 <a href="/docs/tutorials/kubernetes-basics/deploy-intro/">2</a>中创建部署时，Kubernetes 创建了一个 <b>Pod</b> 来托管您的应用程序实例。Pod 是一个 Kubernetes 的资源抽象，表示一个或多个应用容器 (例如 Docker 或 rkt) 组，以及一些用于这些容器的共享资源。这些资源包括:</p>
+				<ul>
+					<li>共享存储，如卷</li>
+					<li>网络，作为唯一的集群 IP 地址</li>
+					<li>每个容器如何运行的信息，例如容器镜像版本或要使用的特定端口</li>
+				</ul>
+				<p>Pod 模型可以理解为应用程序特定的 "逻辑主机"，并且可以包含相对紧密耦合的不同应用程序容器。例如，Pod 可能包含带有 Node.js 应用程序的容器以及另一个要吸收 Node.js Web 服务器提供的数据的不同容器。Pod 中的容器共享 IP 地址和端口空间，始终位于同一位置并且统一调度，并在相同的节点上运行，共享上下文环境。</p>
+
+			<p>Pods 是 Kubernetes 平台上原子级别的单元。当我们在 Kubernetes 上创建一个部署时，该部署将在其中创建包含容器的 Pod (而不是直接创建容器)。每个 Pod 都绑定到它被调度的节点，并且始终在那里，直到终止 (根据重启策略) 或删除。在节点故障的情况下，在集群中的其他可用节点上调度相同的 Pod。</p>
+
+			</div>
+			<div class="col-md-4">
+				<div class="content__box content__box_lined">
+					<h3>概要:</h3>
+					<ul>
+						<li>Pods</li>
+						<li>节点</li>
+						<li>Kubectl 主要命令</li>
+					</ul>
+				</div>
+				<div class="content__box content__box_fill">
+						<p><i>
+							Pod是由一个或者多个应用程序容器构成的(例如 Docker 或 rkt)，包含共享存储 (卷)，IP 地址以及有关如何运行它们的信息。
+						</i></p>
+				</div>
+			</div>
+		</div>
+		<br>
+
+		<div class="row">
+			<div class="col-md-8">
+				<h2 style="color: #3771e3;">Pods 概览</h2>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-8">
+				<p><img src="/docs/tutorials/kubernetes-basics/public/images/module_03_pods.svg"></p>
+			</div>
+		</div>
+		<br>
+
+		<div class="row">
+			<div class="col-md-8">
+				<h2>节点</h2>
+				<p>Pod 总是运行在 <b>Node</b>上。Node 是 Kubernetes 的工作机器，可以是虚拟机或物理机，这取决于在集群的安装情况。每个节点由 Master 管理。一个节点上可以有多个 Pod, Kubernetes master 会自动处理调度集群各个节点上的 Pod。 Master 在自动调度时，会考虑每个 Node 上的可用资源。</p>
+
+				<p>每个 Kubernetes 节点至少运行以下组件:</p>
+				<ul>
+					<li>Kubelet 是负责 Kubernetes Master 和 所有节点之间通信的进程，它管理机器上运行的 Pod 和容器。</li>
+					<li>容器运行时(例如 Docker, rkt) 负责从镜像仓库中拉取容器镜像，解包容器并运行应用程序。</li>
+				</ul>
+
+			</div>
+			<div class="col-md-4">
+				<div class="content__box content__box_fill">
+					<p><i> 如果一些容器属于强耦合并且需要共享资源(例如 磁盘)，那么这些容器应该放到单个 Pod 中一起调度。 </i></p>
+				</div>
+			</div>
+		</div>
+
+		<br>
+
+		<div class="row">
+			<div class="col-md-8">
+				<h2 style="color: #3771e3;">节点概述</h2>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-8">
+				<p><img src="/docs/tutorials/kubernetes-basics/public/images/module_03_nodes.svg"></p>
+			</div>
+		</div>
+		<br>
+
+		<div class="row">
+			<div class="col-md-8">
+				<h2>使用 kubectl 进行故障排除</h2>
+				<p>在模块 <a href="/docs/tutorials/kubernetes-basics/deploy-intro/">2</a>中，您使用了 Kubectl 命令行接口。您将在模块 3 中继续使用它来获取有关已部署应用程序及其环境的信息。最常见的操作可以通过以下 kubectl 命令完成:</p>
+				<ul>
+					<li><b>kubectl get</b> - 列出可用资源</li>
+					<li><b>kubectl describe</b> - 显示有关资源的详细信息</li>
+					<li><b>kubectl logs</b> - 从 Pod 中的容器打印日志</li>
+					<li><b>kubectl exec</b> - 在 Pod 中的容器执行命令</li>
+				</ul>
+
+				<p>您可以使用这些命令来查看应用程序部署的时间，它们当前的状态，运行的位置及其配置。</p>
+
+				<p>现在我们更多地了解了集群组件和命令行交互，接下来，一起来探索分析我们的应用程序。</p>
+
+			</div>
+			<div class="col-md-4">
+				<div class="content__box content__box_fill">
+					<p><i> 节点是 Kubernetes 中的工作机器，可能是物理机或虚拟机，具体取决于集群的安装配置。多个 Pod 可以在一个节点上运行。 </i></p>
+				</div>
+			</div>
+		</div>
+		<br>
+
+		<div class="row">
+			<div class="col-md-12">
+				<a class="btn btn-lg btn-success" href="/docs/tutorials/kubernetes-basics/explore-interactive/" role="button">启动互动教程<span class="btn__next">›</span></a>
+			</div>
+		</div>
+
+	</main>
+
+</div>
+
+</body>
+</html>
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/tutorials/kubernetes-basics/explore-intro.html?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/cn\/docs\/tutorials\/kubernetes-basics\/explore-intro\/",
+					"title" : "查看 Pods 和节点",
+					"permalink" : "https:\/\/kubernetes.io\/cn\/docs\/tutorials\/kubernetes-basics\/explore-intro\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/tutorials/kubernetes-basics/explore-intro.html" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

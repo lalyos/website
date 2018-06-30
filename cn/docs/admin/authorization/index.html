@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>概述 - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="概述" />
+<meta property="og:description" content="概述" />
+
+<meta property="og:url" content="https://kubernetes.io/cn/docs/admin/authorization/" />
+<meta property="og:title" content="概述 - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+             <li>
+                <a href="#">
+                    Chinese <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/">English</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Admins" href="/cn/docs/admin/"></a>
+
+	
+	
+		
+		
+<a class="item" data-title="Kubelet authentication/authorization" href="/cn/docs/admin/kubelet-authentication-authorization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes API访问控制" href="/cn/docs/admin/accessing-the-api/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes OpenVSwitch GRE/VxLAN 网络" href="/cn/docs/admin/ovs-networking/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="TLS bootstrapping" href="/cn/docs/admin/kubelet-tls-bootstrapping/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kube-apiserver" href="/cn/docs/admin/kube-apiserver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用启动引导令牌（Bootstrap Tokens）认证" href="/cn/docs/admin/bootstrap-tokens/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="创建大规模集群" href="/cn/docs/admin/cluster-large/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="多区域运行" href="/cn/docs/admin/multiple-zones/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="构建高可用集群">
+		<div class="container">
+		
+		
+		<a class="item" data-title="构建高可用集群" href="/cn/docs/admin/high-availability/"></a>
+		
+		
+	
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="概述">
+		<div class="container">
+		
+		
+		<a class="item" data-title="概述" href="/cn/docs/admin/authorization/"></a>
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="ABAC 模式" href="/cn/docs/admin/authorization/abac/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Webhook Mode" href="/cn/docs/admin/authorization/webhook/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="管理Service Accounts" href="/cn/docs/admin/service-accounts-admin/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="节点设置校验" href="/cn/docs/admin/node-conformance/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+	 
+	 <p><a href="/docs/editdocs#docs/admin/authorization/_index.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>概述</h1>
+
+
+
+<p>学习有关 Kubernetes 授权的更多信息，包括有关使用支持的授权模块创建策略的详细信息。</p>
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+<li><a href="#%e7%a1%ae%e5%ae%9a%e8%af%b7%e6%b1%82%e6%98%af%e5%85%81%e8%ae%b8%e8%bf%98%e6%98%af%e8%a2%ab%e6%8b%92%e7%bb%9d">确定请求是允许还是被拒绝</a></li>
+
+
+
+
+<li><a href="#%e6%9f%a5%e7%9c%8b%e6%82%a8%e7%9a%84%e8%af%b7%e6%b1%82%e5%b1%9e%e6%80%a7">查看您的请求属性</a></li>
+
+
+
+
+<li><a href="#%e7%a1%ae%e5%ae%9a%e8%af%b7%e6%b1%82%e5%8a%a8%e8%af%8d">确定请求动词</a></li>
+
+
+
+
+<li><a href="#%e6%8e%88%e6%9d%83%e6%a8%a1%e5%9d%97">授权模块</a></li>
+
+
+
+
+<li><a href="#%e4%b8%ba%e6%82%a8%e7%9a%84%e6%8e%88%e6%9d%83%e6%a8%a1%e5%9d%97%e4%bd%bf%e7%94%a8%e6%a0%87%e5%bf%97">为您的授权模块使用标志</a></li>
+
+
+
+
+<li><a href="#%e7%89%88%e6%9c%ac%e6%8e%a7%e5%88%b6">版本控制</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#what-s-next">What's next</a></li>
+
+
+
+</ul>
+
+
+<p>在 Kubernetes 里，您必须经过身份验证(登录)，才能授权您的请求(授予访问权限).。有关认证的信息，请参阅<a href="/docs/admin/access-the-api/">访问控制概述</a>。</p>
+
+<p>Kubernetes 提供通用的 REST API 请求。这意味着 Kubernetes 授权可以与现有的组织或云提供商的访问控制系统一起使用，该系统可以处理除 Kubernetes API 之外的其他 API。</p>
+
+<h2 id="确定请求是允许还是被拒绝">确定请求是允许还是被拒绝</h2>
+
+<p>Kubernetes 使用 API​​ 服务器授权 API 请求。它根据所有策略评估所有请求属性，并允许或拒绝请求。某些策略必须允许 API 请求的所有部分继续进行，这意味着默认情况下是拒绝权限。</p>
+
+<p>(虽然 Kubernetes 使用 API ​​服务器，访问控制和依赖特定类型对象的特定领域策略由 Admission 控制器处理。)</p>
+
+<p>当配置多个授权模块时，按顺序检查每个模块，如果有任何模块授权请求，则可以继续执行该请求。如果所有模块拒绝请求，则拒绝该请求(HTTP状态代码403)。</p>
+
+<h2 id="查看您的请求属性">查看您的请求属性</h2>
+
+<p>Kubernetes 仅查看以下API请求属性:</p>
+
+<ul>
+<li><strong>user</strong>  - 验证期间提供的 <code>user</code> 字符串</li>
+<li><strong>group</strong>  - 认证用户所属的组名列表</li>
+<li><strong>“extra&rdquo;</strong>  - 由认证层提供的任意字符串键到字符串值的映射</li>
+<li><strong>API</strong>  - 指示请求是否用于API资源</li>
+<li><strong>Request path</strong>  - 诸如<code>/api</code>或<code>/healthz</code>的其他非资源端点的路径(请参阅<a href="#kubectl">kubectl</a>).</li>
+<li><strong>API request verb</strong>  -  API 动词 <code>get</code>，<code>list</code>，<code>create</code>，<code>update</code>，<code>patch</code>，<code>watch</code>，<code>proxy</code>，<code>redirect</code>，<code>delete</code>和<code>deletecollection</code>用于资源请求。要确定资源 API 端点的请求动词，请参阅<strong>确定下面的请求动词</strong>.</li>
+<li><strong>HTTP request verb</strong>  -  HTTP动词<code>get</code>，<code>post</code>，<code>put</code>和<code>delete</code>用于非资源请求</li>
+<li><strong>Resource</strong>  - 正在访问的资源的ID或名称(仅适用于资源请求)
+&ndash;* 对于使用<code>get</code>, <code>update</code>, <code>patch</code>, 和 <code>delete</code>动词的资源请求，您必须提供资源名称。</li>
+<li><strong>Subresource</strong>  - 正在访问的子资源(仅用于资源请求)</li>
+<li><strong>Namespace</strong>  - 正在被访问的对象的命名空间(仅针对命名空间的资源请求)</li>
+<li><strong>API group</strong>  - 正在访问的API组(仅用于资源请求). 一个空字符串指定<a href="/docs/api/">核心 API 组</a>.</li>
+</ul>
+
+<h2 id="确定请求动词">确定请求动词</h2>
+
+<p>要确定资源 API 端点的请求动词，请查看所使用的HTTP动词以及请求是否对单个资源或资源集合进行操作:</p>
+
+<table>
+<thead>
+<tr>
+<th>HTTP动词</th>
+<th>请求动词</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>POST</td>
+<td>创建</td>
+</tr>
+
+<tr>
+<td>GET，HEAD</td>
+<td>获取(个人资源)，列表(集合)</td>
+</tr>
+
+<tr>
+<td>PUT</td>
+<td>更新</td>
+</tr>
+
+<tr>
+<td>PATCH</td>
+<td>补丁</td>
+</tr>
+
+<tr>
+<td>DELETE</td>
+<td>删除(个人资源)，删除(收藏)</td>
+</tr>
+</tbody>
+</table>
+
+<p>Kubernetes 有时会使用专门的动词检查授权以获得额外的权限。例如:</p>
+
+<ul>
+<li><a href="/docs/concepts/policy/pod-security-policy/">PodSecurityPolicy</a>在<code>extensions</code> API组中的<code>podsecuritypolicies</code>资源上检查<code>use</code>动词的授权。</li>
+<li><a href="/docs/admin/authorization/rbac/#privilege-escalation-prevention-and-bootstrapping">RBAC</a> 在<code>rbac.authorization.k8s.io</code> API组中的<code>roles</code>和<code>clusterroles</code>资源上检查<code>bind</code>动词的授权。</li>
+<li><a href="/docs/admin/authentication/">认证</a> 在核心API组中的<code>users</code>，<code>groups</code>和<code>serviceaccounts</code>上的<code>impersonate</code>动词的授权以及<code>authentication.k8s.io</code> API组中的<code>userextras</code>进行层次检查。</li>
+</ul>
+
+<h2 id="授权模块">授权模块</h2>
+
+<ul>
+<li><strong>ABAC模式</strong>  - 基于属性的访问控制(ABAC)定义了访问控制范例，通过使用将属性组合在一起的策略来授予用户访问权限。策略可以使用任何类型的属性(用户属性，资源属性，对象，环境属性等)。要了解有关使用ABAC模式的更多信息，请参阅<a href="/docs/admin/authorization/abac/">ABAC模式</a></li>
+<li><strong>RBAC模式</strong>  - 基于角色的访问控制(RBAC)是一种根据企业内个人用户的角色来调整对计算机或网络资源的访问的方法。在这种情况下，访问是单个用户执行特定任务(例如查看，创建或修改文件)的能力。要了解有关使用RBAC模式的更多信息，请参阅<a href="/docs/admin/authorization/rbac/">RBAC模式</a>
+*当指定 &ldquo;RBAC&rdquo;(基于角色的访问控制)使用 &ldquo;rbac.authorization.k8s.io&rdquo; API组来驱动授权决定时，允许管理员通过Kubernetes API动态配置权限策略.
+.. *截至1.6 RBAC模式是测试版.
+.. *要启用RBAC，请使用 <code>--authorization-mode=RBAC</code> 启动 apiserver.</li>
+<li><strong>Webhook模式</strong>  -  WebHook 是HTTP回调:发生事件时发生的HTTP POST; 通过HTTP POST简单的事件通知. 实施 WebHooks 的 Web 应用程序将在某些事情发生时向URL发送消息. 要了解有关使用Webhook模式的更多信息，请参阅<a href="/docs/admin/authorization/webhook/">Webhook模式</a></li>
+<li><strong>自定义模块</strong>  - 您可以创建使用Kubernetes的自定义模块. 要了解更多信息，请参阅下面的<strong>自定义模块</strong>。</li>
+</ul>
+
+<h3 id="自定义模块">自定义模块</h3>
+
+<p>可以相当容易地开发其他实现,APIserver 调用 Authorizer 接口：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a2f;font-weight:bold">type</span> Authorizer <span style="color:#a2f;font-weight:bold">interface</span> {
+  Authorize(a Attributes) <span style="color:#0b0;font-weight:bold">error</span>
+}</code></pre></div>
+<p>以确定是否允许每个API操作.</p>
+
+<p>授权插件是实现此接口的模块.授权插件代码位于 <code>pkg/auth/authorizer/$MODULENAME</code> 中。</p>
+
+<p>授权模块可以完全实现，也可以拨出远程授权服务。 授权模块可以实现自己的缓存，以减少具有相同或相似参数的重复授权调用的成本。 开发人员应该考虑缓存和撤销权限之间的交互。</p>
+
+<h4 id="检查api访问">检查API访问</h4>
+
+<p>Kubernetes 将 <code>subjectaccessreviews.v1.authorization.k8s.io</code>  资源公开为允许外部访问API授权者决策的普通资源。 无论您选择使用哪个授权器，您都可以使用<code>SubjectAccessReview</code>发出一个<code>POST</code>，就像webhook授权器的<code>apis/authorization.k8s.io/v1/subjectaccessreviews</code> 端点一样，并回复一个响应。 例如：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">kubectl create --v<span style="color:#666">=</span><span style="color:#666">8</span> -f -  <span style="color:#b44">&lt;&lt; __EOF__
+</span><span style="color:#b44">{
+</span><span style="color:#b44">  &#34;apiVersion&#34;: &#34;authorization.k8s.io/v1&#34;,
+</span><span style="color:#b44">  &#34;kind&#34;: &#34;SubjectAccessReview&#34;,
+</span><span style="color:#b44">  &#34;spec&#34;: {
+</span><span style="color:#b44">    &#34;resourceAttributes&#34;: {
+</span><span style="color:#b44">      &#34;namespace&#34;: &#34;kittensandponies&#34;,
+</span><span style="color:#b44">      &#34;verb&#34;: &#34;get&#34;,
+</span><span style="color:#b44">      &#34;group&#34;: &#34;unicorn.example.org&#34;,
+</span><span style="color:#b44">      &#34;resource&#34;: &#34;pods&#34;
+</span><span style="color:#b44">    },
+</span><span style="color:#b44">    &#34;user&#34;: &#34;jane&#34;,
+</span><span style="color:#b44">    &#34;group&#34;: [
+</span><span style="color:#b44">      &#34;group1&#34;,
+</span><span style="color:#b44">      &#34;group2&#34;
+</span><span style="color:#b44">    ],
+</span><span style="color:#b44">    &#34;extra&#34;: {
+</span><span style="color:#b44">      &#34;scopes&#34;: [
+</span><span style="color:#b44">        &#34;openid&#34;,
+</span><span style="color:#b44">        &#34;profile&#34;
+</span><span style="color:#b44">      ]
+</span><span style="color:#b44">    }
+</span><span style="color:#b44">  }
+</span><span style="color:#b44">}
+</span><span style="color:#b44">__EOF__</span>
+
+--- snip lots of output ---
+
+I0913 <span style="color:#666">08</span>:12:31.362873   <span style="color:#666">27425</span> request.go:908<span style="color:#666">]</span> Response Body: <span style="color:#666">{</span><span style="color:#b44">&#34;kind&#34;</span>:<span style="color:#b44">&#34;SubjectAccessReview&#34;</span>,<span style="color:#b44">&#34;apiVersion&#34;</span>:<span style="color:#b44">&#34;authorization.k8s.io/v1&#34;</span>,<span style="color:#b44">&#34;metadata&#34;</span>:<span style="color:#666">{</span><span style="color:#b44">&#34;creationTimestamp&#34;</span>:null<span style="color:#666">}</span>,<span style="color:#b44">&#34;spec&#34;</span>:<span style="color:#666">{</span><span style="color:#b44">&#34;resourceAttributes&#34;</span>:<span style="color:#666">{</span><span style="color:#b44">&#34;namespace&#34;</span>:<span style="color:#b44">&#34;kittensandponies&#34;</span>,<span style="color:#b44">&#34;verb&#34;</span>:<span style="color:#b44">&#34;GET&#34;</span>,<span style="color:#b44">&#34;group&#34;</span>:<span style="color:#b44">&#34;unicorn.example.org&#34;</span>,<span style="color:#b44">&#34;resource&#34;</span>:<span style="color:#b44">&#34;pods&#34;</span><span style="color:#666">}</span>,<span style="color:#b44">&#34;user&#34;</span>:<span style="color:#b44">&#34;jane&#34;</span>,<span style="color:#b44">&#34;group&#34;</span>:<span style="color:#666">[</span><span style="color:#b44">&#34;group1&#34;</span>,<span style="color:#b44">&#34;group2&#34;</span><span style="color:#666">]</span>,<span style="color:#b44">&#34;extra&#34;</span>:<span style="color:#666">{</span><span style="color:#b44">&#34;scopes&#34;</span>:<span style="color:#666">[</span><span style="color:#b44">&#34;openid&#34;</span>,<span style="color:#b44">&#34;profile&#34;</span><span style="color:#666">]}}</span>,<span style="color:#b44">&#34;status&#34;</span>:<span style="color:#666">{</span><span style="color:#b44">&#34;allowed&#34;</span>:true<span style="color:#666">}}</span>
+subjectaccessreview <span style="color:#b44">&#34;&#34;</span> created</code></pre></div>
+<p>这对于调试访问问题非常有用，因为您可以使用此资源来确定授权者授予哪些访问权限。</p>
+
+<h2 id="为您的授权模块使用标志">为您的授权模块使用标志</h2>
+
+<p>您的策略中必须包含一个标志，以指出您的策略包含哪个授权模块:</p>
+
+<p>可以使用以下标志:
+ - <code>--authorization-mode=ABAC</code> 基于属性的访问控制(ABAC)模式允许您使用本地文件配置策略。
+ - <code>--authorization-mode=RBAC</code> 基于角色的访问控制(RBAC)模式允许您使用Kubernetes API创建和存储策略.
+ - <code>--authorization-mode=Webhook</code> WebHook是一种HTTP回调模式，允许您使用远程REST管理授权。
+ - <code>--authorization-mode=AlwaysDeny</code> 此标志阻止所有请求. 仅使用此标志进行测试。
+ - <code>--authorization-mode=AlwaysAllow</code> 此标志允许所有请求. 只有在您不需要API请求授权的情况下才能使用此标志。</p>
+
+<p>您可以选择多个授权模块. 如果其中一种模式为 <code>AlwaysAllow</code>，则覆盖其他模式，并允许所有API请求。</p>
+
+<h2 id="版本控制">版本控制</h2>
+
+<p>对于版本 1.2，配置了 kube-up.sh 创建的集群，以便任何请求都不需要授权。</p>
+
+<p>从版本 1.3 开始，配置由 kube-up.sh 创建的集群，使得 ABAC 授权模块处于启用状态。但是，其输入文件最初设置为允许所有用户执行所有操作，集群管理员需要编辑该文件，或者配置不同的授权器来限制用户可以执行的操作。</p>
+
+
+
+
+
+<p>
+</p>
+
+
+
+
+<h2 id="what-s-next">What&#39;s next</h2>
+<ul>
+<li>要学习有关身份验证的更多信息，请参阅<strong>身份验证</strong><a href="docs/admin/access-the-api/" target="_blank">控制访问 Kubernetes API</a>。</li>
+<li>要了解有关入学管理的更多信息，请参阅<a href="docs/admin/admission-controllers/" target="_blank">使用 Admission 控制器</a>。
+*</li>
+</ul>
+
+
+
+
+
+	 
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/admin/authorization/_index.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/cn\/docs\/admin\/authorization\/",
+					"title" : "概述",
+					"permalink" : "https:\/\/kubernetes.io\/cn\/docs\/admin\/authorization\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/admin/authorization/_index.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

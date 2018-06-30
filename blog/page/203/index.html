@@ -1,0 +1,3336 @@
+<!DOCTYPE html>
+<html id="blog" lang="en" class="gr__kubernetes_io fontawesome-i2svg-active fontawesome-i2svg-complete">
+	<head>
+		<meta charset="utf-8">
+<title>Blog - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="Blog" />
+<meta property="og:description" content="Blog" />
+
+<meta property="og:url" content="https://kubernetes.io/blog/" />
+<meta property="og:title" content="Blog - Kubernetes" />
+
+
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+		<link rel='stylesheet' type='text/css' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'>
+		<script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+		<link rel="stylesheet" type="text/css" href="/css/blog.css">
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		<section id="hero" class="light-text no-sub">
+			<h1>Kubernetes Blog</h1>
+		</section>
+		<div class="container-fluid" style="padding-top: 2em">
+			<div class="row">
+				<div class="col-xs-12 col-md-9 text blog-content">
+					
+	
+	<h4 class="date-header">Friday, May 15, 2015</h4>
+<h3 class="post-title entry-title"><a href="https://kubernetes.io/blog/2015/05/kubernetes-release-0170/"> Kubernetes Release: 0.17.0 </a></h3>
+<p>Release Notes:</p>
+
+<ul>
+<li><p>Cleanups</p>
+
+<ul>
+<li>Remove old salt configs <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/8065" title="Remove old salt configs" target="_blank">#8065</a> (roberthbailey)</li>
+<li>Kubelet: minor cleanups <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/8069" title="Kubelet: minor cleanups" target="_blank">#8069</a> (yujuhong)</li>
+</ul></li>
+
+<li><p>v1beta3</p>
+
+<ul>
+<li>update example/walkthrough to v1beta3 <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7940" title="update example/walkthrough to v1beta3" target="_blank">#7940</a> (caesarxuchao)</li>
+<li>update example/rethinkdb to v1beta3 <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7946" title="update example/rethinkdb to v1beta3" target="_blank">#7946</a> (caesarxuchao)</li>
+<li>verify the v1beta3 yaml files all work; merge the yaml files <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7917" title="verify the v1beta3 yaml files all work; merge the yaml files" target="_blank">#7917</a> (caesarxuchao)</li>
+<li>update examples/cassandra to api v1beta3 <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7258" title="update examples/cassandra to api v1beta3" target="_blank">#7258</a> (caesarxuchao)</li>
+<li>update service.json in persistent-volume example to v1beta3 <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7899" title="update service.json in persistent-volume example to v1beta3" target="_blank">#7899</a> (caesarxuchao)</li>
+<li>update mysql-wordpress example to use v1beta3 API <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7864" title="update mysql-wordpress example to use v1beta3 API" target="_blank">#7864</a> (caesarxuchao)</li>
+<li>Update examples/meteor to use API v1beta3 <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7848" title="Update examples/meteor to use API v1beta3" target="_blank">#7848</a> (caesarxuchao)</li>
+<li>update node-selector example to API v1beta3 <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7872" title="update node-selector example to API v1beta3" target="_blank">#7872</a> (caesarxuchao)</li>
+<li>update logging-demo to use API v1beta3; modify the way to access Elasticsearch and Kibana services <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7824" title="update logging-demo to use API v1beta3; modify the way to access Elasticsearch and Kibana services" target="_blank">#7824</a> (caesarxuchao)</li>
+<li>Convert the skydns rc to use v1beta3 and add a health check to it <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7619" title="Convert the skydns rc to use v1beta3 and add a health check to it" target="_blank">#7619</a> (a-robinson)</li>
+<li>update the hazelcast example to API version v1beta3 <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7728" title="update the hazelcast example to API version v1beta3" target="_blank">#7728</a> (caesarxuchao)</li>
+<li>Fix YAML parsing for v1beta3 objects in the kubelet for file/http <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7515" title="Fix YAML parsing for v1beta3 objects in the kubelet for file/http" target="_blank">#7515</a> (brendandburns)</li>
+<li>Updated kubectl cluster-info to show v1beta3 addresses <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7502" title="Updated kubectl cluster-info to show v1beta3 addresses" target="_blank">#7502</a> (piosz)</li>
+</ul></li>
+
+<li><p>Kubelet</p>
+
+<ul>
+<li>kubelet: Fix racy kubelet tests. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7980" title="kubelet: Fix racy kubelet tests." target="_blank">#7980</a> (yifan-gu)</li>
+<li>kubelet/container: Move prober.ContainerCommandRunner to container. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/8079" title="kubelet/container: Move prober.ContainerCommandRunner to container." target="_blank">#8079</a> (yifan-gu)</li>
+<li>Kubelet: set host field in the pending pod status <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/6127" title="Kubelet: set host field in the pending pod status" target="_blank">#6127</a> (yujuhong)</li>
+<li>Fix the kubelet node watch <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/6442" title="Fix the kubelet node watch" target="_blank">#6442</a> (yujuhong)</li>
+<li>Kubelet: recreate mirror pod if the static pod changes <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/6607" title="Kubelet: recreate mirror pod if the static pod changes" target="_blank">#6607</a> (yujuhong)</li>
+<li>Kubelet: record the timestamp correctly in the runtime cache <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7749" title="Kubelet: record the timestamp correctly in the runtime cache" target="_blank">#7749</a> (yujuhong)</li>
+<li>Kubelet: wait until container runtime is up <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7729" title="Kubelet: wait until container runtime is up" target="_blank">#7729</a> (yujuhong)</li>
+<li>Kubelet: replace DockerManager with the Runtime interface <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7674" title="Kubelet: replace DockerManager with the Runtime interface" target="_blank">#7674</a> (yujuhong)</li>
+<li>Kubelet: filter out terminated pods in SyncPods <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7301" title="Kubelet: filter out terminated pods in SyncPods" target="_blank">#7301</a> (yujuhong)</li>
+<li>Kubelet: parallelize cleaning up containers in unwanted pods <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7048" title="Kubelet: parallelize cleaning up containers in unwanted pods" target="_blank">#7048</a> (yujuhong)</li>
+<li>kubelet: Add container runtime option for rkt. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7952" title="kubelet: Add container runtime option for rkt." target="_blank">#7952</a> (yifan-gu)</li>
+<li>kubelet/rkt: Remove build label. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7916" title="kubelet/rkt: Remove build label." target="_blank">#7916</a> (yifan-gu)</li>
+<li>kubelet/metrics: Move instrumented_docker.go to dockertools. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7327" title="kubelet/metrics: Move instrumented_docker.go to dockertools." target="_blank">#7327</a> (yifan-gu)</li>
+<li>kubelet/rkt: Add GetPods() for rkt. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7599" title="kubelet/rkt: Add GetPods() for rkt." target="_blank">#7599</a> (yifan-gu)</li>
+<li>kubelet/rkt: Add KillPod() and GetPodStatus() for rkt. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7605" title="kubelet/rkt: Add KillPod() and GetPodStatus() for rkt." target="_blank">#7605</a> (yifan-gu)</li>
+<li>pkg/kubelet: Fix logging. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/4755" title="pkg/kubelet: Fix logging." target="_blank">#4755</a> (yifan-gu)</li>
+<li>kubelet: Refactor RunInContainer/ExecInContainer/PortForward. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/6491" title="kubelet: Refactor RunInContainer/ExecInContainer/PortForward." target="_blank">#6491</a> (yifan-gu)</li>
+<li>kubelet/DockerManager: Fix returning empty error from GetPodStatus(). <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/6609" title="kubelet/DockerManager: Fix returning empty error from GetPodStatus()." target="_blank">#6609</a> (yifan-gu)</li>
+<li>kubelet: Move pod infra container image setting to dockertools. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/6634" title="kubelet: Move pod infra container image setting to dockertools." target="_blank">#6634</a> (yifan-gu)</li>
+<li>kubelet/fake_docker_client: Use self&rsquo;s PID instead of 42 in testing. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/6653" title="kubelet/fake_docker_client: Use self's PID instead of 42 in testing." target="_blank">#6653</a> (yifan-gu)</li>
+<li>kubelet/dockertool: Move Getpods() to DockerManager. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/6778" title="kubelet/dockertool: Move Getpods() to DockerManager." target="_blank">#6778</a> (yifan-gu)</li>
+<li>kubelet/dockertools: Add puller interfaces in the containerManager. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/6776" title="kubelet/dockertools: Add puller interfaces in the containerManager." target="_blank">#6776</a> (yifan-gu)</li>
+<li>kubelet: Introduce PodInfraContainerChanged(). <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/6608" title="kubelet: Introduce PodInfraContainerChanged()." target="_blank">#6608</a> (yifan-gu)</li>
+<li>kubelet/container: Replace DockerCache with RuntimeCache. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/6795" title="kubelet/container: Replace DockerCache with RuntimeCache." target="_blank">#6795</a> (yifan-gu)</li>
+<li>kubelet: Clean up computePodContainerChanges. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/6844" title="kubelet: Clean up computePodContainerChanges." target="_blank">#6844</a> (yifan-gu)</li>
+<li>kubelet: Refactor prober. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7009" title="kubelet: Refactor prober." target="_blank">#7009</a> (yifan-gu)</li>
+<li>kubelet/container: Update the runtime interface. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7466" title="kubelet/container: Update the runtime interface." target="_blank">#7466</a> (yifan-gu)</li>
+<li>kubelet: Refactor isPodRunning() in runonce.go <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7477" title="kubelet: Refactor isPodRunning() in runonce.go" target="_blank">#7477</a> (yifan-gu)</li>
+<li>kubelet/rkt: Add basic rkt runtime routines. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7465" title="kubelet/rkt: Add basic rkt runtime routines." target="_blank">#7465</a> (yifan-gu)</li>
+<li>kubelet/rkt: Add podInfo. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7555" title="kubelet/rkt: Add podInfo." target="_blank">#7555</a> (yifan-gu)</li>
+<li>kubelet/container: Add GetContainerLogs to runtime interface. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7488" title="kubelet/container: Add GetContainerLogs to runtime interface." target="_blank">#7488</a> (yifan-gu)</li>
+<li>kubelet/rkt: Add routines for converting kubelet pod to rkt pod. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7543" title="kubelet/rkt: Add routines for converting kubelet pod to rkt pod." target="_blank">#7543</a> (yifan-gu)</li>
+<li>kubelet/rkt: Add RunPod() for rkt. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7589" title="kubelet/rkt: Add RunPod() for rkt." target="_blank">#7589</a> (yifan-gu)</li>
+<li>kubelet/rkt: Add RunInContainer()/ExecInContainer()/PortForward(). <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7553" title="kubelet/rkt: Add RunInContainer()/ExecInContainer()/PortForward()." target="_blank">#7553</a> (yifan-gu)</li>
+<li>kubelet/container: Move ShouldContainerBeRestarted() to runtime. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7613" title="kubelet/container: Move ShouldContainerBeRestarted() to runtime." target="_blank">#7613</a> (yifan-gu)</li>
+<li>kubelet/rkt: Add SyncPod() to rkt. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7611" title="kubelet/rkt: Add SyncPod() to rkt." target="_blank">#7611</a> (yifan-gu)</li>
+<li>Kubelet: persist restart count of a container <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/6794" title="Kubelet: persist restart count of a container" target="_blank">#6794</a> (yujuhong)</li>
+<li>kubelet/container: Move pty*.go to container runtime package. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7951" title="kubelet/container: Move pty*.go to container runtime package." target="_blank">#7951</a> (yifan-gu)</li>
+<li>kubelet: Add container runtime option for rkt. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7900" title="kubelet: Add container runtime option for rkt." target="_blank">#7900</a> (yifan-gu)</li>
+<li>kubelet/rkt: Add docker prefix to image string. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7803" title="kubelet/rkt: Add docker prefix to image string." target="_blank">#7803</a> (yifan-gu)</li>
+<li>kubelet/rkt: Inject dependencies to rkt. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7849" title="kubelet/rkt: Inject dependencies to rkt." target="_blank">#7849</a> (yifan-gu)</li>
+<li>kubelet/rkt: Remove dependencies on rkt.store <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7859" title="kubelet/rkt: Remove dependencies on rkt.store" target="_blank">#7859</a> (yifan-gu)</li>
+<li>Kubelet talks securely to apiserver <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/2387" title="Kubelet talks securely to apiserver" target="_blank">#2387</a> (erictune)</li>
+<li>Rename EnvVarSource.FieldPath -&gt; FieldRef and add example <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7592" title="Rename EnvVarSource.FieldPath -&gt; FieldRef and add example" target="_blank">#7592</a> (pmorie)</li>
+<li>Add containerized option to kubelet binary <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7741" title="Add containerized option to kubelet binary" target="_blank">#7741</a> (pmorie)</li>
+<li>Ease building kubelet image <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7948" title="Ease building kubelet image" target="_blank">#7948</a> (pmorie)</li>
+<li>Remove unnecessary bind-mount from dockerized kubelet run <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7854" title="Remove unnecessary bind-mount from dockerized kubelet run" target="_blank">#7854</a> (pmorie)</li>
+<li>Add ability to dockerize kubelet in local cluster <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7798" title="Add ability to dockerize kubelet in local cluster" target="_blank">#7798</a> (pmorie)</li>
+<li>Create docker image for kubelet <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7797" title="Create docker image for kubelet" target="_blank">#7797</a> (pmorie)</li>
+<li>Security context - types, kubelet, admission <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7343" title="Security context - types, kubelet, admission" target="_blank">#7343</a> (pweil-)</li>
+<li>Kubelet: Add rkt as a runtime option <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7743" title="Kubelet: Add rkt as a runtime option" target="_blank">#7743</a> (vmarmol)</li>
+<li>Fix kubelet&rsquo;s docker RunInContainer implementation <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7746" title="Fix kubelet's docker RunInContainer implementation " target="_blank">#7746</a> (vishh)</li>
+</ul></li>
+
+<li><p>AWS</p>
+
+<ul>
+<li>AWS: Don&rsquo;t try to copy gce_keys in jenkins e2e job <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/8018" title="AWS: Don't try to copy gce_keys in jenkins e2e job" target="_blank">#8018</a> (justinsb)</li>
+<li>AWS: Copy some new properties from config-default =&gt; config.test <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7992" title="AWS: Copy some new properties from config-default =&gt; config.test" target="_blank">#7992</a> (justinsb)</li>
+<li>AWS: make it possible to disable minion public ip assignment <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7928" title="AWS: make it possible to disable minion public ip assignment" target="_blank">#7928</a> (manolitto)</li>
+<li>update AWS CloudFormation template and cloud-configs <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7667" title="update AWS CloudFormation template and cloud-configs" target="_blank">#7667</a> (antoineco)</li>
+<li>AWS: Fix variable naming that meant not all tokens were written <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7736" title="AWS: Fix variable naming that meant not all tokens were written" target="_blank">#7736</a> (justinsb)</li>
+<li>AWS: Change apiserver to listen on 443 directly, not through nginx <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7678" title="AWS: Change apiserver to listen on 443 directly, not through nginx" target="_blank">#7678</a> (justinsb)</li>
+<li>AWS: Improving getting existing VPC and subnet <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/6606" title="AWS: Improving getting existing VPC and subnet" target="_blank">#6606</a> (gust1n)</li>
+<li>AWS EBS volume support <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/5138" title="AWS EBS volume support" target="_blank">#5138</a> (justinsb)</li>
+</ul></li>
+
+<li><p>Introduce an &lsquo;svc&rsquo; segment for DNS search <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/8089" title="Introduce an 'svc' segment for DNS search" target="_blank">#8089</a> (thockin)</p></li>
+
+<li><p>Adds ability to define a prefix for etcd paths <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/5707" title="Adds ability to define a prefix for etcd paths" target="_blank">#5707</a> (kbeecher)</p></li>
+
+<li><p>Add kubectl log &ndash;previous support to view last terminated container log <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7973" title="Add kubectl log --previous support to view last terminated container log" target="_blank">#7973</a> (dchen1107)</p></li>
+
+<li><p>Add a flag to disable legacy APIs <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/8083" title="Add a flag to disable legacy APIs" target="_blank">#8083</a> (brendandburns)</p></li>
+
+<li><p>make the dockerkeyring handle mutiple matching credentials <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7971" title="make the dockerkeyring handle mutiple matching credentials" target="_blank">#7971</a> (deads2k)</p></li>
+
+<li><p>Convert Fluentd to Cloud Logging pod specs to YAML <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/8078" title="Convert Fluentd to Cloud Logging pod specs to YAML" target="_blank">#8078</a> (satnam6502)</p></li>
+
+<li><p>Use etcd to allocate PortalIPs instead of in-mem <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7704" title="Use etcd to allocate PortalIPs instead of in-mem" target="_blank">#7704</a> (smarterclayton)</p></li>
+
+<li><p>eliminate auth-path <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/8064" title="eliminate auth-path" target="_blank">#8064</a> (deads2k)</p></li>
+
+<li><p>Record failure reasons for image pulling <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7981" title="Record failure reasons for image pulling" target="_blank">#7981</a> (yujuhong)</p></li>
+
+<li><p>Rate limit replica creation <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7869" title="Rate limit replica creation" target="_blank">#7869</a> (bprashanth)</p></li>
+
+<li><p>Upgrade to Kibana 4 for cluster logging <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7995" title="Upgrade to Kibana 4 for cluster logging" target="_blank">#7995</a> (satnam6502)</p></li>
+
+<li><p>Added name to kube-dns service <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/8049" title="Added name to kube-dns service" target="_blank">#8049</a> (piosz)</p></li>
+
+<li><p>Fix validation by moving it into the resource builder. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7919" title="Fix validation by moving it into the resource builder." target="_blank">#7919</a> (brendandburns)</p></li>
+
+<li><p>Add cache with multiple shards to decrease lock contention <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/8050" title="Add cache with multiple shards to decrease lock contention" target="_blank">#8050</a> (fgrzadkowski)</p></li>
+
+<li><p>Delete status from displayable resources <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/8039" title="Delete status from displayable resources" target="_blank">#8039</a> (nak3)</p></li>
+
+<li><p>Refactor volume interfaces to receive pod instead of ObjectReference <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/8044" title="Refactor volume interfaces to receive pod instead of ObjectReference" target="_blank">#8044</a> (pmorie)</p></li>
+
+<li><p>fix kube-down for provider gke <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7565" title="fix kube-down for provider gke" target="_blank">#7565</a> (jlowdermilk)</p></li>
+
+<li><p>Service port names are required for multi-port <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7786" title="Service port names are required for multi-port" target="_blank">#7786</a> (thockin)</p></li>
+
+<li><p>Increase disk size for kubernetes master. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/8051" title="Increase disk size for kubernetes master." target="_blank">#8051</a> (fgrzadkowski)</p></li>
+
+<li><p>expose: Load input object for increased safety <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7774" title="expose: Load input object for increased safety" target="_blank">#7774</a> (kargakis)</p></li>
+
+<li><p>Improments to conversion methods generator <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7896" title="Improments to conversion methods generator" target="_blank">#7896</a> (wojtek-t)</p></li>
+
+<li><p>Added displaying external IPs to kubectl cluster-info <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7557" title="Added displaying external IPs to kubectl cluster-info" target="_blank">#7557</a> (piosz)</p></li>
+
+<li><p>Add missing Errorf formatting directives <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/8037" title="Add missing Errorf formatting directives" target="_blank">#8037</a> (shawnps)</p></li>
+
+<li><p>Add startup code to apiserver to migrate etcd keys <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7567" title="WIP: Add startup code to apiserver to migrate etcd keys" target="_blank">#7567</a> (kbeecher)</p></li>
+
+<li><p>Use error type from docker go-client instead of string <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/8021" title="Use error type from docker go-client instead of string" target="_blank">#8021</a> (ddysher)</p></li>
+
+<li><p>Accurately get hardware cpu count in Vagrantfile. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/8024" title="Accurately get hardware cpu count in Vagrantfile." target="_blank">#8024</a> (BenTheElder)</p></li>
+
+<li><p>Stop setting a GKE specific version of the kubeconfig file <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7921" title="Stop setting a GKE specific version of the kubeconfig file" target="_blank">#7921</a> (roberthbailey)</p></li>
+
+<li><p>Make the API server deal with HEAD requests via the service proxy <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7950" title="Make the API server deal with HEAD requests via the service proxy" target="_blank">#7950</a> (satnam6502)</p></li>
+
+<li><p>GlusterFS Critical Bug Resolved - Removing warning in README <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7983" title="GlusterFS Critical Bug Resolved - Removing warning in README" target="_blank">#7983</a> (wattsteve)</p></li>
+
+<li><p>Don&rsquo;t use the first token <code>uname -n</code> as the hostname <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7967" title="Don't use the first token `uname -n` as the hostname" target="_blank">#7967</a> (yujuhong)</p></li>
+
+<li><p>Call kube-down in test-teardown for vagrant. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7982" title="Call kube-down in test-teardown for vagrant." target="_blank">#7982</a> (BenTheElder)</p></li>
+
+<li><p>defaults_tests: verify defaults when converting to an API object <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/6235" title="defaults_tests: verify defaults when converting to an API object" target="_blank">#6235</a> (yujuhong)</p></li>
+
+<li><p>Use the full hostname for mirror pod name. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7910" title="Use the full hostname for mirror pod name." target="_blank">#7910</a> (yujuhong)</p></li>
+
+<li><p>Removes RunPod in the Runtime interface <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7657" title="Removes RunPod in the Runtime interface" target="_blank">#7657</a> (yujuhong)</p></li>
+
+<li><p>Clean up dockertools/manager.go and add more unit tests <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7533" title="Clean up dockertools/manager.go and add more unit tests" target="_blank">#7533</a> (yujuhong)</p></li>
+
+<li><p>Adapt pod killing and cleanup for generic container runtime <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7525" title="Adapt pod killing and cleanup for generic container runtime" target="_blank">#7525</a> (yujuhong)</p></li>
+
+<li><p>Fix pod filtering in replication controller <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7198" title="Fix pod filtering in replication controller" target="_blank">#7198</a> (yujuhong)</p></li>
+
+<li><p>Print container statuses in <code>kubectl get pods</code> <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7116" title="Print container statuses in `kubectl get pods`" target="_blank">#7116</a> (yujuhong)</p></li>
+
+<li><p>Prioritize deleting the non-running pods when reducing replicas <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/6992" title="Prioritize deleting the non-running pods when reducing replicas" target="_blank">#6992</a> (yujuhong)</p></li>
+
+<li><p>Fix locking issue in pod manager <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/6872" title="Fix locking issue in pod manager" target="_blank">#6872</a> (yujuhong)</p></li>
+
+<li><p>Limit the number of concurrent tests in integration.go <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/6655" title="Limit the number of concurrent tests in integration.go" target="_blank">#6655</a> (yujuhong)</p></li>
+
+<li><p>Fix typos in different config comments <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7931" title="Fix typos in different config comments" target="_blank">#7931</a> (pmorie)</p></li>
+
+<li><p>Update cAdvisor dependency. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7929" title="Update cAdvisor dependency." target="_blank">#7929</a> (vmarmol)</p></li>
+
+<li><p>Ubuntu-distro: deprecate &amp; merge ubuntu single node work to ubuntu cluster node stuff<a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/5498" title="Ubuntu-distro: deprecate &amp; merge ubuntu single node work to ubuntu cluster node stuff" target="_blank">#5498</a> (resouer)</p></li>
+
+<li><p>Add control variables to Jenkins E2E script <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7935" title="Add control variables to Jenkins E2E script" target="_blank">#7935</a> (saad-ali)</p></li>
+
+<li><p>Check node status as part of validate-cluster.sh. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7932" title="Check node status as part of validate-cluster.sh." target="_blank">#7932</a> (fabioy)</p></li>
+
+<li><p>Add old endpoint cleanup function <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7821" title="Add old endpoint cleanup function" target="_blank">#7821</a> (lavalamp)</p></li>
+
+<li><p>Support recovery from in the middle of a rename. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7620" title="Support recovery from in the middle of a rename." target="_blank">#7620</a> (brendandburns)</p></li>
+
+<li><p>Update Exec and Portforward client to use pod subresource <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7715" title="Update Exec and Portforward client to use pod subresource" target="_blank">#7715</a> (csrwng)</p></li>
+
+<li><p>Added NFS to PV structs <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7564" title="Added NFS to PV structs" target="_blank">#7564</a> (markturansky)</p></li>
+
+<li><p>Fix environment variable error in Vagrant docs <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7904" title="Fix environment variable error in Vagrant docs" target="_blank">#7904</a> (posita)</p></li>
+
+<li><p>Adds a simple release-note builder that scrapes the Github API for recent PRs <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7616" title="Adds a simple release-note builder that scrapes the Github API for recent PRs" target="_blank">#7616</a>(brendandburns)</p></li>
+
+<li><p>Scheduler ignores nodes that are in a bad state <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7668" title="Scheduler ignores nodes that are in a bad state" target="_blank">#7668</a> (bprashanth)</p></li>
+
+<li><p>Set GOMAXPROCS for etcd <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7863" title="Set GOMAXPROCS for etcd" target="_blank">#7863</a> (fgrzadkowski)</p></li>
+
+<li><p>Auto-generated conversion methods calling one another <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7556" title="Auto-generated conversion methods calling one another" target="_blank">#7556</a> (wojtek-t)</p></li>
+
+<li><p>Bring up a kuberenetes cluster using coreos image as worker nodes <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7445" title="Bring up a kuberenetes cluster using coreos image as worker nodes" target="_blank">#7445</a> (dchen1107)</p></li>
+
+<li><p>Godep: Add godep for rkt. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7410" title="Godep: Add godep for rkt." target="_blank">#7410</a> (yifan-gu)</p></li>
+
+<li><p>Add volumeGetter to rkt. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7870" title="Add volumeGetter to rkt." target="_blank">#7870</a> (yifan-gu)</p></li>
+
+<li><p>Update cAdvisor dependency. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7897" title="Update cAdvisor dependency." target="_blank">#7897</a> (vmarmol)</p></li>
+
+<li><p>DNS: expose 53/TCP <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7822" title="DNS: expose 53/TCP" target="_blank">#7822</a> (thockin)</p></li>
+
+<li><p>Set NodeReady=False when docker is dead <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7763" title="Set NodeReady=False when docker is dead" target="_blank">#7763</a> (wojtek-t)</p></li>
+
+<li><p>Ignore latency metrics for events <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7857" title="Ignore latency metrics for events" target="_blank">#7857</a> (fgrzadkowski)</p></li>
+
+<li><p>SecurityContext admission clean up <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7792" title="SecurityContext admission clean up" target="_blank">#7792</a> (pweil-)</p></li>
+
+<li><p>Support manually-created and generated conversion functions <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7832" title="Support manually-created and generated conversion functions" target="_blank">#7832</a> (wojtek-t)</p></li>
+
+<li><p>Add latency metrics for etcd operations <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7833" title="Add latency metrics for etcd operations" target="_blank">#7833</a> (fgrzadkowski)</p></li>
+
+<li><p>Update errors_test.go <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7885" title="Update errors_test.go" target="_blank">#7885</a> (hurf)</p></li>
+
+<li><p>Change signature of container runtime PullImage to allow pull w/ secret <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7861" title="Change signature of container runtime PullImage to allow pull w/ secret" target="_blank">#7861</a> (pmorie)</p></li>
+
+<li><p>Fix bug in Service documentation: incorrect location of &ldquo;selector&rdquo; in JSON <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7873" title="Fix bug in Service documentation: incorrect location of &quot;selector&quot; in JSON" target="_blank">#7873</a>(bkeroackdsc)</p></li>
+
+<li><p>Fix controller-manager manifest for providers that don&rsquo;t specify CLUSTER_IP_RANGE<a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7876" title="Fix controller-manager manifest for providers that don't specify CLUSTER_IP_RANGE" target="_blank">#7876</a> (cjcullen)</p></li>
+
+<li><p>Fix controller unittests <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7867" title="Fix controller unittests" target="_blank">#7867</a> (bprashanth)</p></li>
+
+<li><p>Enable GCM and GCL instead of InfluxDB on GCE <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7751" title="Enable GCM and GCL instead of InfluxDB on GCE" target="_blank">#7751</a> (saad-ali)</p></li>
+
+<li><p>Remove restriction that cluster-cidr be a class-b <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7862" title="Remove restriction that cluster-cidr be a class-b" target="_blank">#7862</a> (cjcullen)</p></li>
+
+<li><p>Fix OpenShift example <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7591" title="Fix OpenShift example" target="_blank">#7591</a> (derekwaynecarr)</p></li>
+
+<li><p>API Server - pass path name in context of create request for subresource <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7718" title="API Server - pass path name in context of create request for subresource" target="_blank">#7718</a> (csrwng)</p></li>
+
+<li><p>Rolling Updates: Add support for &ndash;rollback. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7575" title="Rolling Updates: Add support for --rollback." target="_blank">#7575</a> (brendandburns)</p></li>
+
+<li><p>Update to container-vm-v20150505 (Also updates GCE to Docker 1.6) <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7820" title="Update to container-vm-v20150505 (Also updates GCE to Docker 1.6)" target="_blank">#7820</a> (zmerlynn)</p></li>
+
+<li><p>Fix metric label <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7830" title="Fix metric label" target="_blank">#7830</a> (rhcarvalho)</p></li>
+
+<li><p>Fix v1beta1 typos in v1beta2 conversions <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7838" title="Fix v1beta1 typos in v1beta2 conversions" target="_blank">#7838</a> (pmorie)</p></li>
+
+<li><p>skydns: use the etcd-2.x native syntax, enable IANA attributed ports. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7764" title="skydns: use the etcd-2.x native syntax, enable IANA attributed ports." target="_blank">#7764</a>(AntonioMeireles)</p></li>
+
+<li><p>Added port 6443 to kube-proxy default IP address for api-server <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7794" title="Added port 6443 to kube-proxy default IP address for api-server" target="_blank">#7794</a> (markllama)</p></li>
+
+<li><p>Added client header info for authentication doc. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7834" title="Added client header info for authentication doc." target="_blank">#7834</a> (ashcrow)</p></li>
+
+<li><p>Clean up safe_format_and_mount spam in the startup logs <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7827" title="Clean up safe_format_and_mount spam in the startup logs" target="_blank">#7827</a> (zmerlynn)</p></li>
+
+<li><p>Set allocate_node_cidrs to be blank by default. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7829" title="Set allocate_node_cidrs to be blank by default." target="_blank">#7829</a> (roberthbailey)</p></li>
+
+<li><p>Fix sync problems in <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/5246" title="Make nodecontroller configure nodes' pod IP ranges" target="_blank">#5246</a> <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7799" title="Fix sync problems in #5246" target="_blank">#7799</a> (cjcullen)</p></li>
+
+<li><p>Fix event doc link <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7823" title="Fix event doc link" target="_blank">#7823</a> (saad-ali)</p></li>
+
+<li><p>Cobra update and bash completions fix <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7776" title="Cobra update and bash completions fix" target="_blank">#7776</a> (eparis)</p></li>
+
+<li><p>Fix kube2sky flakes. Fix tools.GetEtcdVersion to work with etcd &gt; 2.0.7 <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7675" title="Fix kube2sky flakes. Fix tools.GetEtcdVersion to work with etcd &gt; 2.0.7" target="_blank">#7675</a> (cjcullen)</p></li>
+
+<li><p>Change kube2sky to use token-system-dns secret, point at https endpoint &hellip; <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7154" title="Change kube2sky to use token-system-dns secret, point at https endpoint ..." target="_blank">#7154</a>(cjcullen)</p></li>
+
+<li><p>replica: serialize created-by reference <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7468" title="replica: serialize created-by reference" target="_blank">#7468</a> (simon3z)</p></li>
+
+<li><p>Inject mounter into volume plugins <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7702" title="Inject mounter into volume plugins" target="_blank">#7702</a> (pmorie)</p></li>
+
+<li><p>bringing CoreOS cloud-configs up-to-date (against 0.15.x and latest OS&rsquo; alpha) <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/6973" title="bringing CoreOS cloud-configs up-to-date (against 0.15.x and latest OS' alpha) " target="_blank">#6973</a>(AntonioMeireles)</p></li>
+
+<li><p>Update kubeconfig-file doc. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7787" title="Update kubeconfig-file doc." target="_blank">#7787</a> (jlowdermilk)</p></li>
+
+<li><p>Throw an API error when deleting namespace in termination <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7780" title="Throw an API error when deleting namespace in termination" target="_blank">#7780</a> (derekwaynecarr)</p></li>
+
+<li><p>Fix command field PodExecOptions <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7773" title="Fix command field PodExecOptions" target="_blank">#7773</a> (csrwng)</p></li>
+
+<li><p>Start ImageManager housekeeping in Run(). <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7785" title="Start ImageManager housekeeping in Run()." target="_blank">#7785</a> (vmarmol)</p></li>
+
+<li><p>fix DeepCopy to properly support runtime.EmbeddedObject <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7769" title="fix DeepCopy to properly support runtime.EmbeddedObject" target="_blank">#7769</a> (deads2k)</p></li>
+
+<li><p>fix master service endpoint system for multiple masters <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7273" title="fix master service endpoint system for multiple masters" target="_blank">#7273</a> (lavalamp)</p></li>
+
+<li><p>Add genbashcomp to KUBE_TEST_TARGETS <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7757" title="Add genbashcomp to KUBE_TEST_TARGETS" target="_blank">#7757</a> (nak3)</p></li>
+
+<li><p>Change the cloud provider TCPLoadBalancerExists function to GetTCPLoadBalancer&hellip;<a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7669" title="Change the cloud provider TCPLoadBalancerExists function to GetTCPLoadBalancer..." target="_blank">#7669</a> (a-robinson)</p></li>
+
+<li><p>Add containerized option to kubelet binary <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7772" title="Add containerized option to kubelet binary" target="_blank">#7772</a> (pmorie)</p></li>
+
+<li><p>Fix swagger spec <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7779" title="Fix swagger spec" target="_blank">#7779</a> (pmorie)</p></li>
+
+<li><p>FIX: Issue <a href="https://github.com/GoogleCloudPlatform/kubernetes/issues/7750" title="Hyperkube image requires root certificates to work with cloud-providers (at least AWS)" target="_blank">#7750</a> - Hyperkube docker image needs certificates to connect to cloud-providers<a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7755" title="FIX: Issue #7750 - Hyperkube docker image needs certificates to connect to cloud-providers" target="_blank">#7755</a> (viklas)</p></li>
+
+<li><p>Add build labels to rkt <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7752" title="Add build labels to rkt" target="_blank">#7752</a> (vmarmol)</p></li>
+
+<li><p>Check license boilerplate for python files <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7672" title="Check license boilerplate for python files" target="_blank">#7672</a> (eparis)</p></li>
+
+<li><p>Reliable updates in rollingupdate <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7705" title="Reliable updates in rollingupdate" target="_blank">#7705</a> (bprashanth)</p></li>
+
+<li><p>Don&rsquo;t exit abruptly if there aren&rsquo;t yet any minions right after the cluster is created. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7650" title="Don't exit abruptly if there aren't yet any minions right after the cluster is created." target="_blank">#7650</a>(roberthbailey)</p></li>
+
+<li><p>Make changes suggested in <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7675" title="Fix kube2sky flakes. Fix tools.GetEtcdVersion to work with etcd &gt; 2.0.7" target="_blank">#7675</a> <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7742" title="Make changes suggested in #7675" target="_blank">#7742</a> (cjcullen)</p></li>
+
+<li><p>A guide to set up kubernetes multiple nodes cluster with flannel on fedora <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7357" title="A guide to set up kubernetes multiple nodes cluster with flannel on fedora" target="_blank">#7357</a>(aveshagarwal)</p></li>
+
+<li><p>Setup generators in factory <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7760" title="Setup generators in factory" target="_blank">#7760</a> (kargakis)</p></li>
+
+<li><p>Reduce usage of time.After <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7737" title="Reduce usage of time.After" target="_blank">#7737</a> (lavalamp)</p></li>
+
+<li><p>Remove node status from &ldquo;componentstatuses&rdquo; call. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7735" title="Remove node status from &quot;componentstatuses&quot; call." target="_blank">#7735</a> (fabioy)</p></li>
+
+<li><p>React to failure by growing the remaining clusters <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7614" title="React to failure by growing the remaining clusters" target="_blank">#7614</a> (tamsky)</p></li>
+
+<li><p>Fix typo in runtime_cache.go <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7725" title="Fix typo in runtime_cache.go" target="_blank">#7725</a> (pmorie)</p></li>
+
+<li><p>Update non-GCE Salt distros to 1.6.0, fallback to ContainerVM Docker version on GCE<a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7740" title="Update non-GCE Salt distros to 1.6.0, fallback to ContainerVM Docker version on GCE" target="_blank">#7740</a> (zmerlynn)</p></li>
+
+<li><p>Skip SaltStack install if it&rsquo;s already installed <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7744" title="Skip SaltStack install if it's already installed" target="_blank">#7744</a> (zmerlynn)</p></li>
+
+<li><p>Expose pod name as a label on containers. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7712" title="Expose pod name as a label on containers." target="_blank">#7712</a> (rjnagal)</p></li>
+
+<li><p>Log which SSH key is used in e2e SSH test <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7732" title="Log which SSH key is used in e2e SSH test" target="_blank">#7732</a> (mbforbes)</p></li>
+
+<li><p>Add a central simple getting started guide with kubernetes guide. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7649" title="Add a central simple getting started guide with kubernetes guide." target="_blank">#7649</a> (brendandburns)</p></li>
+
+<li><p>Explicitly state the lack of support for &lsquo;Requests&rsquo; for the purposes of scheduling <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7443" title="Explicitly state the lack of support for 'Requests' for the purposes of scheduling" target="_blank">#7443</a>(vishh)</p></li>
+
+<li><p>Select IPv4-only from host interfaces <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7721" title="Select IPv4-only from host interfaces" target="_blank">#7721</a> (smarterclayton)</p></li>
+
+<li><p>Metrics tests can&rsquo;t run on Mac <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7723" title="Metrics tests can't run on Mac" target="_blank">#7723</a> (smarterclayton)</p></li>
+
+<li><p>Add step to API changes doc for swagger regen <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7727" title="Add step to API changes doc for swagger regen" target="_blank">#7727</a> (pmorie)</p></li>
+
+<li><p>Add NsenterMounter mount implementation <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7703" title="Add NsenterMounter mount implementation" target="_blank">#7703</a> (pmorie)</p></li>
+
+<li><p>add StringSet.HasAny <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7509" title="add StringSet.HasAny" target="_blank">#7509</a> (deads2k)</p></li>
+
+<li><p>Add an integration test that checks for the metrics we expect to be exported from the master <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/6941" title="Add an integration test that checks for the metrics we expect to be exported from the master" target="_blank">#6941</a> (a-robinson)</p></li>
+
+<li><p>Minor bash update found by shellcheck.net <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7722" title="Minor bash update found by shellcheck.net" target="_blank">#7722</a> (eparis)</p></li>
+
+<li><p>Add &ndash;hostport to run-container. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7536" title="Add --hostport to run-container." target="_blank">#7536</a> (rjnagal)</p></li>
+
+<li><p>Have rkt implement the container Runtime interface <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7659" title="Have rkt implement the container Runtime interface" target="_blank">#7659</a> (vmarmol)</p></li>
+
+<li><p>Change the order the different versions of API are registered <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7629" title="Change the order the different versions of API are registered " target="_blank">#7629</a> (caesarxuchao)</p></li>
+
+<li><p>expose: Create objects in a generic way <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7699" title="expose: Create objects in a generic way" target="_blank">#7699</a> (kargakis)</p></li>
+
+<li><p>Requeue rc if a single get/put retry on status.Replicas fails <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7643" title="Requeue rc if a single get/put retry on status.Replicas fails" target="_blank">#7643</a> (bprashanth)</p></li>
+
+<li><p>logs for master components <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7316" title="logs for master components" target="_blank">#7316</a> (ArtfulCoder)</p></li>
+
+<li><p>cloudproviders: add ovirt getting started guide <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7522" title="cloudproviders: add ovirt getting started guide" target="_blank">#7522</a> (simon3z)</p></li>
+
+<li><p>Make rkt-install a oneshot. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7671" title="Make rkt-install a oneshot." target="_blank">#7671</a> (vmarmol)</p></li>
+
+<li><p>Provide container_runtime flag to Kubelet in CoreOS. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7665" title="Provide container_runtime flag to Kubelet in CoreOS." target="_blank">#7665</a> (vmarmol)</p></li>
+
+<li><p>Boilerplate speedup <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7654" title="Boilerplate speedup" target="_blank">#7654</a> (eparis)</p></li>
+
+<li><p>Log host for failed pod in Density test <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7700" title="Log host for failed pod in Density test" target="_blank">#7700</a> (wojtek-t)</p></li>
+
+<li><p>Removes spurious quotation mark <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7655" title="Removes spurious quotation mark" target="_blank">#7655</a> (alindeman)</p></li>
+
+<li><p>Add kubectl_label to custom functions in bash completion <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7694" title="Add kubectl_label to custom functions in bash completion" target="_blank">#7694</a> (nak3)</p></li>
+
+<li><p>Enable profiling in kube-controller <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7696" title="Enable profiling in kube-controller" target="_blank">#7696</a> (wojtek-t)</p></li>
+
+<li><p>Set vagrant test cluster default NUM_MINIONS=2 <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7690" title="Set vagrant test cluster default NUM_MINIONS=2" target="_blank">#7690</a> (BenTheElder)</p></li>
+
+<li><p>Add metrics to measure cache hit ratio <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7695" title="Add metrics to measure cache hit ratio" target="_blank">#7695</a> (fgrzadkowski)</p></li>
+
+<li><p>Change IP to IP(S) in service columns for kubectl get <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7662" title="Change IP to IP(S) in service columns for kubectl get" target="_blank">#7662</a> (jlowdermilk)</p></li>
+
+<li><p>annotate required flags for bash_completions <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7076" title="annotate required flags for bash_completions" target="_blank">#7076</a> (eparis)</p></li>
+
+<li><p>(minor) Add pgrep debugging to etcd error <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7685" title="(minor) Add pgrep debugging to etcd error" target="_blank">#7685</a> (jayunit100)</p></li>
+
+<li><p>Fixed nil pointer issue in describe when volume is unbound <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7676" title="Fixed nil pointer issue in describe when volume is unbound" target="_blank">#7676</a> (markturansky)</p></li>
+
+<li><p>Removed unnecessary closing bracket <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7691" title="Removed unnecessary closing bracket" target="_blank">#7691</a> (piosz)</p></li>
+
+<li><p>Added TerminationGracePeriod field to PodSpec and grace-period flag to kubectl stop<a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7432" title="Added TerminationGracePeriod field to PodSpec and grace-period flag to kubectl stop" target="_blank">#7432</a> (piosz)</p></li>
+
+<li><p>Fix boilerplate in test/e2e/scale.go <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7689" title="Fix boilerplate in test/e2e/scale.go" target="_blank">#7689</a> (wojtek-t)</p></li>
+
+<li><p>Update expiration timeout based on observed latencies <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7628" title="Update expiration timeout based on observed latencies" target="_blank">#7628</a> (bprashanth)</p></li>
+
+<li><p>Output generated conversion functions/names <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7644" title="Output generated conversion functions/names" target="_blank">#7644</a> (liggitt)</p></li>
+
+<li><p>Moved the Scale tests into a scale file. <a href="https://github.com/GoogleCloudPlatform/kubernetes/issues/7645" title="Move the scale tests into a separate file" target="_blank">#7645</a> <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7646" title="Moved the Scale tests into a scale file. #7645" target="_blank">#7646</a> (rrati)</p></li>
+
+<li><p>Truncate GCE load balancer names to 63 chars <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7609" title="Truncate GCE load balancer names to 63 chars" target="_blank">#7609</a> (brendandburns)</p></li>
+
+<li><p>Add SyncPod() and remove Kill/Run InContainer(). <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7603" title="Add SyncPod() and remove Kill/Run InContainer()." target="_blank">#7603</a> (vmarmol)</p></li>
+
+<li><p>Merge release 0.16 to master <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7663" title="Merge release 0.16 to master" target="_blank">#7663</a> (brendandburns)</p></li>
+
+<li><p>Update license boilerplate for examples/rethinkdb <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7637" title="Update license boilerplate for examples/rethinkdb" target="_blank">#7637</a> (eparis)</p></li>
+
+<li><p>First part of improved rolling update, allow dynamic next replication controller generation.<a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7268" title="First part of improved rolling update, allow dynamic next replication controller generation." target="_blank">#7268</a> (brendandburns)</p></li>
+
+<li><p>Add license boilerplate to examples/phabricator <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7638" title="Add license boilerplate to examples/phabricator" target="_blank">#7638</a> (eparis)</p></li>
+
+<li><p>Use generic copyright holder name in license boilerplate <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7597" title="Use generic copyright holder name in license boilerplate" target="_blank">#7597</a> (eparis)</p></li>
+
+<li><p>Retry incrementing quota if there is a conflict <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7633" title="Retry incrementing quota if there is a conflict" target="_blank">#7633</a> (derekwaynecarr)</p></li>
+
+<li><p>Remove GetContainers from Runtime interface <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7568" title="Remove GetContainers from Runtime interface" target="_blank">#7568</a> (yujuhong)</p></li>
+
+<li><p>Add image-related methods to DockerManager <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7578" title="Add image-related methods to DockerManager" target="_blank">#7578</a> (yujuhong)</p></li>
+
+<li><p>Remove more docker references in kubelet <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7586" title="Remove more docker references in kubelet" target="_blank">#7586</a> (yujuhong)</p></li>
+
+<li><p>Add KillContainerInPod in DockerManager <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7601" title="Add KillContainerInPod in DockerManager" target="_blank">#7601</a> (yujuhong)</p></li>
+
+<li><p>Kubelet: Add container runtime option. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7652" title="Kubelet: Add container runtime option." target="_blank">#7652</a> (vmarmol)</p></li>
+
+<li><p>bump heapster to v0.11.0 and grafana to v0.7.0 <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7626" title="bump heapster to v0.11.0 and grafana to v0.7.0" target="_blank">#7626</a> (idosh)</p></li>
+
+<li><p>Build github.com/onsi/ginkgo/ginkgo as a part of the release <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7593" title="Build github.com/onsi/ginkgo/ginkgo as a part of the release" target="_blank">#7593</a> (ixdy)</p></li>
+
+<li><p>Do not automatically decode runtime.RawExtension <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7490" title="Do not automatically decode runtime.RawExtension" target="_blank">#7490</a> (smarterclayton)</p></li>
+
+<li><p>Update changelog. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7500" title="Update changelog." target="_blank">#7500</a> (brendandburns)</p></li>
+
+<li><p>Add SyncPod() to DockerManager and use it in Kubelet <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7610" title="Add SyncPod() to DockerManager and use it in Kubelet" target="_blank">#7610</a> (vmarmol)</p></li>
+
+<li><p>Build: Push .md5 and .sha1 files for every file we push to GCS <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7602" title="Build: Push .md5 and .sha1 files for every file we push to GCS" target="_blank">#7602</a> (zmerlynn)</p></li>
+
+<li><p>Fix rolling update &ndash;image <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7540" title="Fix rolling update --image " target="_blank">#7540</a> (bprashanth)</p></li>
+
+<li><p>Update license boilerplate for docs/man/md2man-all.sh <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7636" title="Update license boilerplate for docs/man/md2man-all.sh" target="_blank">#7636</a> (eparis)</p></li>
+
+<li><p>Include shell license boilerplate in examples/k8petstore <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7632" title="Include shell license boilerplate in examples/k8petstore" target="_blank">#7632</a> (eparis)</p></li>
+
+<li><p>Add &ndash;cgroup_parent flag to Kubelet to set the parent cgroup for pods <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7277" title="Add --cgroup_parent flag to Kubelet to set the parent cgroup for pods" target="_blank">#7277</a> (guenter)</p></li>
+
+<li><p>change the current dir to the config dir <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7209" title="change the current dir to the config dir" target="_blank">#7209</a> (you-n-g)</p></li>
+
+<li><p>Set Weave To 0.9.0 And Update Etcd Configuration For Azure <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7158" title="Set Weave To 0.9.0 And Update Etcd Configuration For Azure" target="_blank">#7158</a> (idosh)</p></li>
+
+<li><p>Augment describe to search for matching things if it doesn&rsquo;t match the original resource.<a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7467" title="Augment describe to search for matching things if it doesn't match the original resource." target="_blank">#7467</a> (brendandburns)</p></li>
+
+<li><p>Add a simple cache for objects stored in etcd. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7559" title="Add a simple cache for objects stored in etcd." target="_blank">#7559</a> (fgrzadkowski)</p></li>
+
+<li><p>Rkt gc <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7549" title="Rkt gc" target="_blank">#7549</a> (yifan-gu)</p></li>
+
+<li><p>Rkt pull <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7550" title="Rkt pull" target="_blank">#7550</a> (yifan-gu)</p></li>
+
+<li><p>Implement Mount interface using mount(8) and umount(8) <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/6400" title="Implement Mount interface using mount(8) and umount(8)" target="_blank">#6400</a> (ddysher)</p></li>
+
+<li><p>Trim Fleuntd tag for Cloud Logging <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7588" title="Trim Fleuntd tag for Cloud Logging" target="_blank">#7588</a> (satnam6502)</p></li>
+
+<li><p>GCE CoreOS cluster - set master name based on variable <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7569" title="GCE CoreOS cluster - set master name based on variable" target="_blank">#7569</a> (bakins)</p></li>
+
+<li><p>Capitalization of KubeProxyVersion wrong in JSON <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7535" title="Capitalization of KubeProxyVersion wrong in JSON" target="_blank">#7535</a> (smarterclayton)</p></li>
+
+<li><p>Make nodes report their external IP rather than the master&rsquo;s. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7530" title="Make nodes report their external IP rather than the master's." target="_blank">#7530</a> (mbforbes)</p></li>
+
+<li><p>Trim cluster log tags to pod name and container name <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7539" title="Trim cluster log tags to pod name and container name" target="_blank">#7539</a> (satnam6502)</p></li>
+
+<li><p>Handle conversion of boolean query parameters with a value of &ldquo;false&rdquo; <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7541" title="Handle conversion of boolean query parameters with a value of &quot;false&quot;" target="_blank">#7541</a> (csrwng)</p></li>
+
+<li><p>Add image-related methods to Runtime interface. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7532" title="Add image-related methods to Runtime interface." target="_blank">#7532</a> (vmarmol)</p></li>
+
+<li><p>Test whether auto-generated conversions weren&rsquo;t manually edited <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7560" title="Test whether auto-generated conversions weren't manually edited" target="_blank">#7560</a> (wojtek-t)</p></li>
+
+<li><p>Mention :latest behavior for image version tag <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7484" title="Mention :latest behavior for image version tag" target="_blank">#7484</a> (colemickens)</p></li>
+
+<li><p>readinessProbe calls livenessProbe.Exec.Command which cause &ldquo;invalid memory address or nil pointer dereference&rdquo;. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7487" title="readinessProbe calls livenessProbe.Exec.Command which cause &quot;invalid memory address or nil pointer dereference&quot;." target="_blank">#7487</a> (njuicsgz)</p></li>
+
+<li><p>Add RuntimeHooks to abstract Kubelet logic <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7520" title="Add RuntimeHooks to abstract Kubelet logic" target="_blank">#7520</a> (vmarmol)</p></li>
+
+<li><p>Expose URL() on Request to allow building URLs <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7546" title="Expose URL() on Request to allow building URLs" target="_blank">#7546</a> (smarterclayton)</p></li>
+
+<li><p>Add a simple cache for objects stored in etcd <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7288" title="Add a simple cache for objects stored in etcd" target="_blank">#7288</a> (fgrzadkowski)</p></li>
+
+<li><p>Prepare for chaining autogenerated conversion methods <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7431" title="Prepare for chaining autogenerated conversion methods " target="_blank">#7431</a> (wojtek-t)</p></li>
+
+<li><p>Increase maxIdleConnection limit when creating etcd client in apiserver. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7353" title="Increase maxIdleConnection limit when creating etcd client in apiserver." target="_blank">#7353</a> (wojtek-t)</p></li>
+
+<li><p>Improvements to generator of conversion methods. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7354" title="Improvements to generator of conversion methods." target="_blank">#7354</a> (wojtek-t)</p></li>
+
+<li><p>Code to automatically generate conversion methods <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7107" title="Code to automatically generate conversion methods" target="_blank">#7107</a> (wojtek-t)</p></li>
+
+<li><p>Support recovery for anonymous roll outs <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7407" title="Support recovery for anonymous roll outs" target="_blank">#7407</a> (brendandburns)</p></li>
+
+<li><p>Bump kube2sky to 1.2. Point it at https endpoint (3rd try). <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7527" title="Bump kube2sky to 1.2. Point it at https endpoint (3rd try)." target="_blank">#7527</a> (cjcullen)</p></li>
+
+<li><p>cluster/gce/coreos: Add metadata-service in node.yaml <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7526" title="cluster/gce/coreos: Add metadata-service in node.yaml" target="_blank">#7526</a> (yifan-gu)</p></li>
+
+<li><p>Move ComputePodChanges to the Docker runtime <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7480" title="Move ComputePodChanges to the Docker runtime" target="_blank">#7480</a> (vmarmol)</p></li>
+
+<li><p>Cobra rebase <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7510" title="Cobra rebase" target="_blank">#7510</a> (eparis)</p></li>
+
+<li><p>Adding system oom events from kubelet <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/6718" title="Adding system oom events from kubelet" target="_blank">#6718</a> (vishh)</p></li>
+
+<li><p>Move Prober to its own subpackage <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7479" title="Move Prober to its own subpackage" target="_blank">#7479</a> (vmarmol)</p></li>
+
+<li><p>Fix parallel-e2e.sh to work on my macbook (bash v3.2) <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7513" title="Fix parallel-e2e.sh to work on my macbook (bash v3.2)" target="_blank">#7513</a> (cjcullen)</p></li>
+
+<li><p>Move network plugin TearDown to DockerManager <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7449" title="Move network plugin TearDown to DockerManager" target="_blank">#7449</a> (vmarmol)</p></li>
+
+<li><p>Fixes <a href="https://github.com/GoogleCloudPlatform/kubernetes/issues/7498" title="CoreOS Getting Started Guide not working" target="_blank">#7498</a> - CoreOS Getting Started Guide had invalid cloud config <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7499" title="Fixes #7498 - CoreOS Getting Started Guide had invalid cloud config" target="_blank">#7499</a> (elsonrodriguez)</p></li>
+
+<li><p>Fix invalid character &lsquo;&ldquo;&rsquo; after object key:value pair <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7504" title="Fix invalid character '&quot;' after object key:value pair" target="_blank">#7504</a> (resouer)</p></li>
+
+<li><p>Fixed kubelet deleting data from volumes on stop (<a href="https://github.com/GoogleCloudPlatform/kubernetes/issues/7317" title="GlusterFS Volume Plugin deletes the contents of the mounted volume upon Pod deletion" target="_blank">#7317</a>). <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7503" title="Fixed kubelet deleting data from volumes on stop (#7317)." target="_blank">#7503</a> (jsafrane)</p></li>
+
+<li><p>Fixing hooks/description to catch API fields without description tags <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7482" title="Fixing hooks/description to catch API fields without description tags" target="_blank">#7482</a> (nikhiljindal)</p></li>
+
+<li><p>cadvisor is obsoleted so kubelet service does not require it. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7457" title="cadvisor is obsoleted so kubelet service does not require it." target="_blank">#7457</a> (aveshagarwal)</p></li>
+
+<li><p>Set the default namespace for events to be &ldquo;default&rdquo; <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7408" title="Set the default namespace for events to be &quot;default&quot;" target="_blank">#7408</a> (vishh)</p></li>
+
+<li><p>Fix typo in namespace conversion <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7446" title="Fix typo in namespace conversion" target="_blank">#7446</a> (liggitt)</p></li>
+
+<li><p>Convert Secret registry to use update/create strategy, allow filtering by Type <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7419" title="Convert Secret registry to use update/create strategy, allow filtering by Type" target="_blank">#7419</a> (liggitt)</p></li>
+
+<li><p>Use pod namespace when looking for its GlusterFS endpoints. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7102" title="Use pod namespace when looking for its GlusterFS endpoints." target="_blank">#7102</a> (jsafrane)</p></li>
+
+<li><p>Fixed name of kube-proxy path in deployment scripts. <a href="https://github.com/GoogleCloudPlatform/kubernetes/pull/7427" title="Fixed name of kube-proxy path in deployment scripts." target="_blank">#7427</a> (jsafrane)</p></li>
+</ul>
+
+<p>To download, please visit <a href="https://github.com/GoogleCloudPlatform/kubernetes/releases/tag/v0.17.0" target="_blank">https://github.com/GoogleCloudPlatform/kubernetes/releases/tag/v0.17.0</a></p>
+
+<p>Simple theme. Powered by [Blogger][385].</p>
+
+<p>[ ![][327] ][386]</p>
+
+<p>[</p>
+
+
+	
+	<div class="PageNavigation">
+	
+
+<ul class="pagination">
+    
+    <li>
+        <a href="/blog/" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
+    </li>
+    
+    <li
+    >
+    <a href="/blog/page/202/" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+    </li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li
+    ><a href="/blog/">1</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li
+    ><a href="/blog/page/2/">2</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li
+    ><a href="/blog/page/3/">3</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="disabled"><span aria-hidden="true">&hellip;</span></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li
+    ><a href="/blog/page/202/">202</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li
+    class="active"><a href="/blog/page/203/">203</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li
+    ><a href="/blog/page/204/">204</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="disabled"><span aria-hidden="true">&hellip;</span></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li
+    ><a href="/blog/page/220/">220</a></li>
+    
+    
+    <li
+    >
+    <a href="/blog/page/204/" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+    </li>
+    
+    <li>
+        <a href="/blog/page/220/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+    </li>
+    
+</ul>
+
+	</div>
+
+				</div>
+				<div class="col-xs-12 col-md-3 text">
+					<div class="widget-content">
+						<link rel="alternate" type="application/rss" href="https://kubernetes.io/feed.xml" title="Kubernetes">
+						<a class="widget-link" href="https://kubernetes.io/feed.xml"> <i class="fas fa-rss fab-icon"> </i> </a>
+						<a class="widget-link" href="https://twitter.com/kubernetesio"> <i class="fab fa-twitter-square fab-icon"> </i> @Kubernetesio</a>
+						<a class="widget-link" href="https://github.com/kubernetes/kubernetes"> <i class="fab fa-github-square fab-icon"></i> View on Github </a>
+						<a class="widget-link" href="http://slack.k8s.io"><i class="fab fa-slack fab-icon"> </i> #kubernetes-users </a>
+						<a class="widget-link" href="http://stackoverflow.com/questions/tagged/kubernetes"><i class="fab fa-stack-overflow fab-icon"></i> Stack Overflow</a>
+						<a class="widget-link" href="https://discuss.kubernetes.io"><i class="fab fa-discourse fab-icon"></i>Forum</a>
+						<a class="widget-link" href="http://get.k8s.io/"><i class="fab fa-stack-overflow fab-icon"></i> Download Kubernetes</a>
+					</div>
+					<div class="panel-group" id="blog-archive">
+  
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+      <a data-toggle="collapse" data-parent="#archive" href="#collapse-2018">
+      2018</a>
+      </h4>
+    </div>
+    <div id="collapse-2018" class="panel-collapse collapse in">
+      <div class="panel-body">
+        <ul class="list-group">
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2018/06/28/airflow-on-kubernetes-part-1-a-different-kind-of-operator/">Airflow on Kubernetes (Part 1): A Different Kind of Operator</a> <span class="date">Jun 28</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2018/06/27/kubernetes-1.11-release-announcement/">Kubernetes 1.11: In-Cluster Load Balancing and CoreDNS Plugin Graduate to General Availability</a> <span class="date">Jun 27</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2018/06/07/dynamic-ingress-in-kubernetes/">Dynamic Ingress in Kubernetes</a> <span class="date">Jun 7</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2018/06/06/4-years-of-k8s/">4 Years of K8s</a> <span class="date">Jun 6</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2018/05/30/say-hello-to-discuss-kubernetes/">Say Hello to Discuss Kubernetes</a> <span class="date">May 30</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2018/05/29/introducing-kustomize-template-free-configuration-customization-for-kubernetes/">Introducing kustomize; Template-free Configuration Customization for Kubernetes</a> <span class="date">May 29</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2018/05/24/kubernetes-containerd-integration-goes-ga/">Kubernetes Containerd Integration Goes GA</a> <span class="date">May 24</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2018/05/22/getting-to-know-kubevirt/">Getting to Know Kubevirt</a> <span class="date">May 22</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2018/05/17/gardener/">Gardener - The Kubernetes Botanist</a> <span class="date">May 17</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2018/05/05/hugo-migration/">Docs are Migrating from Jekyll to Hugo</a> <span class="date">May 5</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2018/05/04/announcing-kubeflow-0.1/">Announcing Kubeflow 0.1</a> <span class="date">May 4</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2018/05/02/policy-in-kubernetes/">Current State of Policy in Kubernetes</a> <span class="date">May 2</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2018/05/01/developing-on-kubernetes/">Developing on Kubernetes</a> <span class="date">May 1</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2018/04/30/zero-downtime-deployment-kubernetes-jenkins/">Zero-downtime Deployment in Kubernetes with Jenkins</a> <span class="date">Apr 30</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2018/04/25/open-source-charts-2017/">Kubernetes Community - Top of the Open Source Charts in 2017</a> <span class="date">Apr 25</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2018/04/24/kubernetes-application-survey-results-2018/">Kubernetes Application Survey 2018 Results</a> <span class="date">Apr 24</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2018/04/13/local-persistent-volumes-beta/">Local Persistent Volumes for Kubernetes Goes Beta</a> <span class="date">Apr 13</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2018/04/11/migrating-the-kubernetes-blog/">Migrating the Kubernetes Blog</a> <span class="date">Apr 11</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2018/04/10/container-storage-interface-beta/">Container Storage Interface (CSI) for Kubernetes Goes Beta</a> <span class="date">Apr 10</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2018/04/04/fixing-subpath-volume-vulnerability/">Fixing the Subpath Volume Vulnerability in Kubernetes</a> <span class="date">Apr 4</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2018/03/26/kubernetes-1.10-stabilizing-storage-security-networking/">Kubernetes 1.10: Stabilizing Storage, Security, and Networking </a> <span class="date">Mar 26</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2018/03/principles-of-container-app-design/">Principles of Container-based Application Design</a> <span class="date">Mar 15</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2018/03/expanding-user-support-with-office-hours/">Expanding User Support with Office Hours</a> <span class="date">Mar 14</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2018/03/how-to-integrate-rollingupdate-strategy/">How to Integrate RollingUpdate Strategy for TPR in Kubernetes</a> <span class="date">Mar 13</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2018/03/apache-spark-23-with-native-kubernetes/">Apache Spark 2.3 with Native Kubernetes Support</a> <span class="date">Mar 6</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2018/03/first-beta-version-of-kubernetes-1-10/">Kubernetes: First Beta Version of Kubernetes 1.10 is Here</a> <span class="date">Mar 2</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2018/01/reporting-errors-using-kubernetes-events/">Reporting Errors from Control Plane to Applications Using Kubernetes Events</a> <span class="date">Jan 25</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2018/01/core-workloads-api-ga/">Core Workloads API GA</a> <span class="date">Jan 15</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2018/01/introducing-client-go-version-6/">Introducing client-go version 6</a> <span class="date">Jan 12</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2018/01/extensible-admission-is-beta/">Extensible Admission is Beta</a> <span class="date">Jan 11</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2018/01/introducing-container-storage-interface/"> Introducing Container Storage Interface (CSI) Alpha for Kubernetes </a> <span class="date">Jan 10</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2018/01/kubernetes-v19-beta-windows-support/">Kubernetes v1.9 releases beta support for Windows Server Containers</a> <span class="date">Jan 9</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2018/01/five-days-of-kubernetes-19/"> Five Days of Kubernetes 1.9 </a> <span class="date">Jan 8</span> </li>
+          
+        </ul>
+      </div>
+    </div>
+  </div>
+  
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+      <a data-toggle="collapse" data-parent="#archive" href="#collapse-2017">
+      2017</a>
+      </h4>
+    </div>
+    <div id="collapse-2017" class="panel-collapse collapse">
+      <div class="panel-body">
+        <ul class="list-group">
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/12/introducing-kubeflow-composable/"> Introducing Kubeflow - A Composable, Portable, Scalable ML Stack Built for Kubernetes </a> <span class="date">Dec 21</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/12/kubernetes-19-workloads-expanded-ecosystem/"> Kubernetes 1.9: Apps Workloads GA and Expanded Ecosystem </a> <span class="date">Dec 15</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/12/using-ebpf-in-kubernetes/">Using eBPF in Kubernetes</a> <span class="date">Dec 7</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/12/paddle-paddle-fluid-elastic-learning/"> PaddlePaddle Fluid: Elastic Deep Learning on Kubernetes </a> <span class="date">Dec 6</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/11/autoscaling-in-kubernetes/"> Autoscaling in Kubernetes </a> <span class="date">Nov 17</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/11/certified-kubernetes-conformance/"> Certified Kubernetes Conformance Program: Launch Celebration Round Up </a> <span class="date">Nov 16</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/11/kubernetes-is-still-hard-for-developers/"> Kubernetes is Still Hard (for Developers) </a> <span class="date">Nov 15</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/11/securing-software-supply-chain-grafeas/"> Securing Software Supply Chain with Grafeas </a> <span class="date">Nov 3</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/11/containerd-container-runtime-options-kubernetes/">  Containerd Brings More Container Runtime Options for Kubernetes </a> <span class="date">Nov 2</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/11/kubernetes-easy-way/"> Kubernetes the Easy Way </a> <span class="date">Nov 1</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/10/enforcing-network-policies-in-kubernetes/"> Enforcing Network Policies in Kubernetes </a> <span class="date">Oct 30</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/10/using-rbac-generally-available-18/"> Using RBAC, Generally Available in Kubernetes v1.8 </a> <span class="date">Oct 28</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/10/it-takes-village-to-raise-kubernetes/"> It Takes a Village to Raise a Kubernetes </a> <span class="date">Oct 26</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/10/kubeadm-v18-released/">  kubeadm v1.8 Released: Introducing Easy Upgrades for Kubernetes Clusters </a> <span class="date">Oct 25</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/10/five-days-of-kubernetes-18/"> Five Days of Kubernetes 1.8 </a> <span class="date">Oct 24</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/10/software-conformance-certification/"> Introducing Software Certification for Kubernetes </a> <span class="date">Oct 19</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/10/request-routing-and-policy-management/"> Request Routing and Policy Management with the Istio Service Mesh </a> <span class="date">Oct 10</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/10/kubernetes-community-steering-committee-election-results/"> Kubernetes Community Steering Committee Election Results </a> <span class="date">Oct 5</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/09/kubernetes-18-security-workloads-and/"> Kubernetes 1.8: Security, Workloads and Feature Depth </a> <span class="date">Sep 29</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/09/kubernetes-statefulsets-daemonsets/"> Kubernetes StatefulSets &amp; DaemonSets Updates </a> <span class="date">Sep 27</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/09/introducing-resource-management-working/"> Introducing the Resource Management Working Group </a> <span class="date">Sep 21</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/09/windows-networking-at-parity-with-linux/"> Windows Networking at Parity with Linux for Kubernetes </a> <span class="date">Sep 8</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/08/kubernetes-meets-high-performance/"> Kubernetes Meets High-Performance Computing </a> <span class="date">Aug 22</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/08/high-performance-networking-with-ec2/"> High Performance Networking with EC2 Virtual Private Clouds </a> <span class="date">Aug 11</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/08/kompose-helps-developers-move-docker/"> Kompose Helps Developers Move Docker Compose Files to Kubernetes </a> <span class="date">Aug 10</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/07/happy-second-birthday-kubernetes/"> Happy Second Birthday: A Kubernetes Retrospective </a> <span class="date">Jul 28</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/07/how-watson-health-cloud-deploys/"> How Watson Health Cloud Deploys Applications with Kubernetes </a> <span class="date">Jul 14</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/06/kubernetes-1.7-security-hardening-stateful-application-extensibility-updates"> Kubernetes 1.7: Security Hardening, Stateful Application Updates and Extensibility </a> <span class="date">Jun 30</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/05/draft-kubernetes-container-development/"> Draft: Kubernetes container development made easy </a> <span class="date">May 31</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/05/managing-microservices-with-istio-service-mesh/">  Managing microservices with the Istio service mesh </a> <span class="date">May 31</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/05/kubespray-ansible-collaborative-kubernetes-ops/"> Kubespray Ansible Playbooks foster Collaborative Kubernetes Ops </a> <span class="date">May 19</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/05/kubernetes-monitoring-guide/"> Kubernetes: a monitoring guide </a> <span class="date">May 19</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/05/kubernetes-security-process-explained/"> Dancing at the Lip of a Volcano: The Kubernetes Security Process - Explained </a> <span class="date">May 18</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/04/multi-stage-canary-deployments-with-kubernetes-in-the-cloud-onprem/"> How Bitmovin is Doing Multi-Stage Canary Deployments with Kubernetes in the Cloud and On-Prem </a> <span class="date">Apr 21</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/04/rbac-support-in-kubernetes/"> RBAC Support in Kubernetes </a> <span class="date">Apr 6</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/04/configuring-private-dns-zones-upstream-nameservers-kubernetes/"> Configuring Private DNS Zones and Upstream Nameservers in Kubernetes </a> <span class="date">Apr 4</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/03/advanced-scheduling-in-kubernetes/"> Advanced Scheduling in Kubernetes </a> <span class="date">Mar 31</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/03/scalability-updates-in-kubernetes-1.6"> Scalability updates in Kubernetes 1.6: 5,000 node and 150,000 pod clusters </a> <span class="date">Mar 30</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/03/five-days-of-kubernetes-1.6"> Five Days of Kubernetes 1.6 </a> <span class="date">Mar 29</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/03/dynamic-provisioning-and-storage-classes-kubernetes/"> Dynamic Provisioning and Storage Classes in Kubernetes </a> <span class="date">Mar 29</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/03/kubernetes-1.6-multi-user-multi-workloads-at-scale"> Kubernetes 1.6: Multi-user, Multi-workloads at Scale </a> <span class="date">Mar 28</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/03/k8sport-engaging-the-kubernetes-community/"> The K8sPort: Engaging Kubernetes Community One Activity at a Time </a> <span class="date">Mar 24</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/02/postgresql-clusters-kubernetes-statefulsets/"> Deploying PostgreSQL Clusters using StatefulSets </a> <span class="date">Feb 24</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/02/caas-the-foundation-for-next-gen-paas/"> Containers as a Service, the foundation for next generation PaaS </a> <span class="date">Feb 21</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/02/inside-jd-com-shift-to-kubernetes-from-openstack/"> Inside JD.com&#39;s Shift to Kubernetes from OpenStack </a> <span class="date">Feb 10</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/02/run-deep-learning-with-paddlepaddle-on-kubernetes/"> Run Deep Learning with PaddlePaddle on Kubernetes </a> <span class="date">Feb 8</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/02/highly-available-kubernetes-clusters/"> Highly Available Kubernetes Clusters </a> <span class="date">Feb 2</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/01/running-mongodb-on-kubernetes-with-statefulsets/"> Running MongoDB on Kubernetes with StatefulSets </a> <span class="date">Jan 30</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/01/fission-serverless-functions-as-service-for-kubernetes/"> Fission: Serverless Functions as a Service for Kubernetes </a> <span class="date">Jan 30</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/01/how-we-run-kubernetes-in-kubernetes-kubeception/"> How we run Kubernetes in Kubernetes aka Kubeception </a> <span class="date">Jan 20</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/01/scaling-kubernetes-deployments-with-policy-base-networking/"> Scaling Kubernetes deployments with Policy-Based Networking </a> <span class="date">Jan 19</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/01/stronger-foundation-for-creating-and-managing-kubernetes-clusters/"> A Stronger Foundation for Creating and Managing Kubernetes Clusters </a> <span class="date">Jan 12</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2017/01/kubernetes-ux-survey-infographic/"> Kubernetes UX Survey Infographic </a> <span class="date">Jan 9</span> </li>
+          
+        </ul>
+      </div>
+    </div>
+  </div>
+  
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+      <a data-toggle="collapse" data-parent="#archive" href="#collapse-2016">
+      2016</a>
+      </h4>
+    </div>
+    <div id="collapse-2016" class="panel-collapse collapse">
+      <div class="panel-body">
+        <ul class="list-group">
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/12/kubernetes-supports-openapi/"> Kubernetes supports OpenAPI </a> <span class="date">Dec 23</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/12/cluster-federation-in-kubernetes-1.5"> Cluster Federation in Kubernetes 1.5 </a> <span class="date">Dec 22</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/12/windows-server-support-kubernetes/"> Windows Server Support Comes to Kubernetes </a> <span class="date">Dec 21</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/12/statefulset-run-scale-stateful-applications-in-kubernetes/"> StatefulSet: Run and Scale Stateful Applications Easily in Kubernetes </a> <span class="date">Dec 20</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/12/container-runtime-interface-cri-in-kubernetes/"> Introducing Container Runtime Interface (CRI) in Kubernetes </a> <span class="date">Dec 19</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/12/five-days-of-kubernetes-1.5"> Five Days of Kubernetes 1.5 </a> <span class="date">Dec 19</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/12/kubernetes-1.5-supporting-production-workloads"> Kubernetes 1.5: Supporting Production Workloads </a> <span class="date">Dec 13</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/12/from-network-policies-to-security-policies/"> From Network Policies to Security Policies </a> <span class="date">Dec 8</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/11/kompose-tool-go-from-docker-compose-to-kubernetes/"> Kompose: a tool to go from Docker-compose to Kubernetes </a> <span class="date">Nov 22</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/11/kubernetes-containers-logging-monitoring-with-sematext/"> Kubernetes Containers Logging and Monitoring with Sematext </a> <span class="date">Nov 18</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/11/visualize-kubelet-performance-with-node-dashboard/"> Visualize Kubelet Performance with Node Dashboard </a> <span class="date">Nov 17</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/11/kubernetes-certification-training-and-managed-service-provider-program/"> CNCF Partners With The Linux Foundation To Launch New Kubernetes Certification, Training and Managed Service Provider Program </a> <span class="date">Nov 8</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/11/skytap-modernizing-microservice-architecture-with-kubernetes/"> Modernizing the Skytap Cloud Micro-Service Architecture with Kubernetes </a> <span class="date">Nov 7</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/11/bringing-kubernetes-support-to-azure/"> Bringing Kubernetes Support to Azure Container Service </a> <span class="date">Nov 7</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/10/tail-kubernetes-with-stern/"> Tail Kubernetes with Stern </a> <span class="date">Oct 31</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/10/kubernetes-service-technology-partners-program/"> Introducing Kubernetes Service Partners program and a redesigned Partners page </a> <span class="date">Oct 31</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/10/kubernetes-and-openstack-at-yahoo-japan/">  How We Architected and Run Kubernetes on OpenStack at Scale at Yahoo! JAPAN </a> <span class="date">Oct 24</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/10/globally-distributed-services-kubernetes-cluster-federation/"> Building Globally Distributed Services using Kubernetes Cluster Federation </a> <span class="date">Oct 14</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/10/helm-charts-making-it-simple-to-package-and-deploy-apps-on-kubernetes/"> Helm Charts: making it simple to package and deploy common applications on Kubernetes </a> <span class="date">Oct 10</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/10/dynamic-provisioning-and-storage-in-kubernetes/"> Dynamic Provisioning and Storage Classes in Kubernetes </a> <span class="date">Oct 7</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/10/production-kubernetes-dashboard-ui-1.4-improvements_3"> How we improved Kubernetes Dashboard UI in 1.4 for your production needs​ </a> <span class="date">Oct 3</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/09/how-we-made-kubernetes-easy-to-install/"> How we made Kubernetes insanely easy to install </a> <span class="date">Sep 28</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/09/how-qbox-saved-50-percent-on-aws-bills/"> How Qbox Saved 50% per Month on AWS Bills Using Kubernetes and Supergiant </a> <span class="date">Sep 27</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/09/kubernetes-1.4-making-it-easy-to-run-on-kuberentes-anywhere"> Kubernetes 1.4: Making it easy to run on Kubernetes anywhere </a> <span class="date">Sep 26</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/09/high-performance-network-policies-kubernetes/"> High performance network policies in Kubernetes clusters </a> <span class="date">Sep 21</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/09/creating-postgresql-cluster-using-helm/"> Creating a PostgreSQL Cluster using Helm </a> <span class="date">Sep 9</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/09/deploying-to-multiple-kubernetes-with-kit/"> Deploying to Multiple Kubernetes Clusters with kit </a> <span class="date">Sep 6</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/09/cloud-native-application-interfaces/"> Cloud Native Application Interfaces </a> <span class="date">Sep 1</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/08/security-best-practices-kubernetes-deployment/"> Security Best Practices for Kubernetes Deployment </a> <span class="date">Aug 31</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/08/stateful-applications-using-kubernetes-datera/"> Scaling Stateful Applications using Kubernetes Pet Sets and FlexVolumes with Datera Elastic Data Fabric </a> <span class="date">Aug 29</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/08/sig-apps-running-apps-in-kubernetes/"> SIG Apps: build apps for and operate them in Kubernetes </a> <span class="date">Aug 16</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/08/kubernetes-namespaces-use-cases-insights/"> Kubernetes Namespaces: use cases and insights </a> <span class="date">Aug 16</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/08/create-couchbase-cluster-using-kubernetes/"> Create a Couchbase cluster using Kubernetes </a> <span class="date">Aug 15</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/08/challenges-remotely-managed-onpremise-kubernetes-cluster/"> Challenges of a Remotely Managed, On-Premises, Bare-Metal Kubernetes Cluster </a> <span class="date">Aug 2</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/07/openstack-kubernetes-communities/"> Why OpenStack&#39;s embrace of Kubernetes is great for both communities </a> <span class="date">Jul 26</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/07/the-bet-on-kubernetes/"> The Bet on Kubernetes, a Red Hat Perspective </a> <span class="date">Jul 21</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/07/oh-the-places-you-will-go/"> Happy Birthday Kubernetes. Oh, the places you’ll go! </a> <span class="date">Jul 21</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/07/happy-k8sbday-1/"> A Very Happy Birthday Kubernetes </a> <span class="date">Jul 21</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/07/bringing-end-to-end-kubernetes-testing-to-azure-2/"> Bringing End-to-End Kubernetes Testing to Azure (Part 2) </a> <span class="date">Jul 18</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/07/automation-platform-at-wercker-with-kubernetes/"> Steering an Automation Platform at Wercker with Kubernetes </a> <span class="date">Jul 15</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/07/dashboard-web-interface-for-kubernetes/"> Dashboard - Full Featured Web Interface for Kubernetes </a> <span class="date">Jul 15</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/07/cross-cluster-services/"> Cross Cluster Services - Achieving Higher Availability for your Kubernetes Applications </a> <span class="date">Jul 14</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/07/citrix-netscaler-and-kubernetes/"> Citrix &#43; Kubernetes = A Home Run </a> <span class="date">Jul 14</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/07/thousand-instances-of-cassandra-using-kubernetes-pet-set/"> Thousand Instances of Cassandra using Kubernetes Pet Set </a> <span class="date">Jul 13</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/07/stateful-applications-in-containers-kubernetes/"> Stateful Applications in Containers!? Kubernetes 1.3 Says “Yes!” </a> <span class="date">Jul 13</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/07/kubernetes-in-rancher-further-evolution/"> Kubernetes in Rancher: the further evolution </a> <span class="date">Jul 12</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/07/autoscaling-in-kubernetes/"> Autoscaling in Kubernetes </a> <span class="date">Jul 12</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/07/rktnetes-brings-rkt-container-engine-to-kubernetes/"> rktnetes brings rkt container engine to Kubernetes </a> <span class="date">Jul 11</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/07/minikube-easily-run-kubernetes-locally/"> Minikube: easily run Kubernetes locally  </a> <span class="date">Jul 11</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/07/five-days-of-kubernetes-1.3"> Five Days of Kubernetes 1.3 </a> <span class="date">Jul 11</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/07/update-on-kubernetes-for-windows-server-containers/"> Updates to Performance and Scalability in Kubernetes 1.3 -- 2,000 node 60,000 pod clusters </a> <span class="date">Jul 7</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/07/kubernetes-1.3-bridging-cloud-native-and-enterprise-workloads"> Kubernetes 1.3: Bridging Cloud Native and Enterprise Workloads </a> <span class="date">Jul 6</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/06/container-design-patterns/"> Container Design Patterns </a> <span class="date">Jun 21</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/06/illustrated-childrens-guide-to-kubernetes/"> The Illustrated Children&#39;s Guide to Kubernetes </a> <span class="date">Jun 9</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/06/bringing-end-to-end-testing-to-azure/"> Bringing End-to-End Kubernetes Testing to Azure (Part 1) </a> <span class="date">Jun 6</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/05/hypernetes-security-and-multi-tenancy-in-kubernetes/"> Hypernetes: Bringing Security and Multi-tenancy to Kubernetes </a> <span class="date">May 24</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/05/coreosfest2016-kubernetes-community/"> CoreOS Fest 2016: CoreOS and Kubernetes Community meet in Berlin (&amp; San Francisco) </a> <span class="date">May 3</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/04/introducing-kubernetes-openstack-sig/"> Introducing the Kubernetes OpenStack Special Interest Group </a> <span class="date">Apr 22</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/04/building-awesome-user-interfaces-for-kubernetes/"> SIG-UI: the place for building awesome user interfaces for Kubernetes </a> <span class="date">Apr 20</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/04/sig-clusterops-promote-operability-and-interoperability-of-k8s-clusters/"> SIG-ClusterOps: Promote operability and interoperability of Kubernetes clusters </a> <span class="date">Apr 19</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/04/kubernetes-network-policy-apis/"> SIG-Networking: Kubernetes Network Policy APIs Coming in 1.3 </a> <span class="date">Apr 18</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/04/kubernetes-on-aws_15/"> How to deploy secure, auditable, and reproducible Kubernetes clusters on AWS </a> <span class="date">Apr 15</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/04/container-survey-results-march-2016/"> Container survey results - March 2016 </a> <span class="date">Apr 8</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/04/adding-support-for-kubernetes-in-rancher/"> Adding Support for Kubernetes in Rancher </a> <span class="date">Apr 8</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/04/configuration-management-with-containers/"> Configuration management with Containers </a> <span class="date">Apr 4</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/04/using-deployment-objects-with/"> Using Deployment objects with Kubernetes 1.2 </a> <span class="date">Apr 1</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/03/kubernetes-1.2-and-simplifying-advanced-networking-with-ingress"> Kubernetes 1.2 and simplifying advanced networking with Ingress </a> <span class="date">Mar 31</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/03/using-spark-and-zeppelin-to-process-big-data-on-kubernetes/"> Using Spark and Zeppelin to process big data on Kubernetes 1.2 </a> <span class="date">Mar 30</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/03/building-highly-available-applications-using-kubernetes-new-multi-zone-clusters-a.k.a-ubernetes-lite"> Building highly available applications using Kubernetes new multi-zone clusters (a.k.a. &#39;Ubernetes Lite&#39;) </a> <span class="date">Mar 29</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/03/appformix-helping-enterprises/"> AppFormix: Helping Enterprises Operationalize Kubernetes </a> <span class="date">Mar 29</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/03/how-container-metadata-changes-your-point-of-view/"> How container metadata changes your point of view </a> <span class="date">Mar 28</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/03/five-days-of-kubernetes-12/"> Five Days of Kubernetes 1.2 </a> <span class="date">Mar 28</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/03/1000-nodes-and-beyond-updates-to-kubernetes-performance-and-scalability-in-12/"> 1000 nodes and beyond: updates to Kubernetes performance and scalability in 1.2 </a> <span class="date">Mar 28</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/03/scaling-neural-network-image-classification-using-kubernetes-with-tensorflow-serving/"> Scaling neural network image classification using Kubernetes with TensorFlow Serving  </a> <span class="date">Mar 23</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/03/kubernetes-1.2-even-more-performance-upgrades-plus-easier-application-deployment-and-management"> Kubernetes 1.2: Even more performance upgrades, plus easier application deployment and management  </a> <span class="date">Mar 17</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/03/kubernetes-in-enterprise-with-fujitsus/"> Kubernetes in the Enterprise with Fujitsu’s Cloud Load Control </a> <span class="date">Mar 11</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/03/elasticbox-introduces-elastickube-to/"> ElasticBox introduces ElasticKube to help manage Kubernetes within the enterprise </a> <span class="date">Mar 11</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/03/state-of-container-world-february-2016/"> State of the Container World, February 2016 </a> <span class="date">Mar 1</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/03/kubernetes-community-meeting-notes/"> Kubernetes Community Meeting Notes - 20160225 </a> <span class="date">Mar 1</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/02/kubecon-eu-2016-kubernetes-community-in/"> KubeCon EU 2016: Kubernetes Community in London </a> <span class="date">Feb 24</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/02/kubernetes-community-meeting-notes_23/"> Kubernetes Community Meeting Notes - 20160218 </a> <span class="date">Feb 23</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/02/kubernetes-community-meeting-notes-20160211/"> Kubernetes Community Meeting Notes - 20160211 </a> <span class="date">Feb 16</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/02/sharethis-kubernetes-in-production/"> ShareThis: Kubernetes In Production </a> <span class="date">Feb 11</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/02/kubernetes-community-meeting-notes/"> Kubernetes Community Meeting Notes - 20160204 </a> <span class="date">Feb 9</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/02/kubernetes-community-meeting-notes-20160128/"> Kubernetes Community Meeting Notes - 20160128 </a> <span class="date">Feb 2</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/02/state-of-container-world-january-2016/"> State of the Container World, January 2016 </a> <span class="date">Feb 1</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/01/kubernetes-community-meeting-notes_28/">Kubernetes Community Meeting Notes - 20160121</a> <span class="date">Jan 28</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/01/kubernetes-community-meeting-notes/"> Kubernetes Community Meeting Notes - 20160114 </a> <span class="date">Jan 28</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/01/why-kubernetes-doesnt-use-libnetwork/"> Why Kubernetes doesn’t use libnetwork </a> <span class="date">Jan 14</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2016/01/simple-leader-election-with-kubernetes/"> Simple leader election with Kubernetes and Docker </a> <span class="date">Jan 11</span> </li>
+          
+        </ul>
+      </div>
+    </div>
+  </div>
+  
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+      <a data-toggle="collapse" data-parent="#archive" href="#collapse-2015">
+      2015</a>
+      </h4>
+    </div>
+    <div id="collapse-2015" class="panel-collapse collapse">
+      <div class="panel-body">
+        <ul class="list-group">
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2015/12/creating-raspberry-pi-cluster-running/"> Creating a Raspberry Pi cluster running Kubernetes, the installation (Part 2) </a> <span class="date">Dec 22</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2015/12/managing-kubernetes-pods-services-and-replication-controllers-with-puppet/"> Managing Kubernetes Pods, Services and Replication Controllers with Puppet </a> <span class="date">Dec 17</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2015/12/how-weave-built-a-multi-deployment-solution-for-scope-using-kubernetes/"> How Weave built a multi-deployment solution for Scope using Kubernetes </a> <span class="date">Dec 12</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2015/11/creating-a-raspberry-pi-cluster-running-kubernetes-the-shopping-list-part-1/"> Creating a Raspberry Pi cluster running Kubernetes, the shopping list (Part 1) </a> <span class="date">Nov 25</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2015/11/monitoring-kubernetes-with-sysdig/"> Monitoring Kubernetes with Sysdig </a> <span class="date">Nov 19</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2015/11/one-million-requests-per-second-dependable-and-dynamic-distributed-systems-at-scale/"> One million requests per second: Dependable and dynamic distributed systems at scale </a> <span class="date">Nov 11</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2015/11/kubernetes-1-1-performance-upgrades-improved-tooling-and-a-growing-community/"> Kubernetes 1.1 Performance upgrades, improved tooling and a growing community  </a> <span class="date">Nov 9</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2015/11/kubernetes-as-foundation-for-cloud-native-paas/"> Kubernetes as Foundation for Cloud Native PaaS </a> <span class="date">Nov 3</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2015/10/some-things-you-didnt-know-about-kubectl_28/"> Some things you didn’t know about kubectl </a> <span class="date">Oct 28</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2015/09/kubernetes-performance-measurements-and/"> Kubernetes Performance Measurements and Roadmap </a> <span class="date">Sep 10</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2015/08/using-kubernetes-namespaces-to-manage/"> Using Kubernetes Namespaces to Manage Environments </a> <span class="date">Aug 28</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2015/08/weekly-kubernetes-community-hangout/"> Weekly Kubernetes Community Hangout Notes - July 31 2015 </a> <span class="date">Aug 4</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2015/07/the-growing-kubernetes-ecosystem/"> The Growing Kubernetes Ecosystem </a> <span class="date">Jul 24</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2015/07/weekly-kubernetes-community-hangout_23/"> Weekly Kubernetes Community Hangout Notes - July 17 2015 </a> <span class="date">Jul 23</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2015/07/strong-simple-ssl-for-kubernetes/"> Strong, Simple SSL for Kubernetes Services </a> <span class="date">Jul 14</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2015/07/weekly-kubernetes-community-hangout/"> Weekly Kubernetes Community Hangout Notes - July 10 2015 </a> <span class="date">Jul 13</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2015/07/announcing-first-kubernetes-enterprise/"> Announcing the First Kubernetes Enterprise Training Course </a> <span class="date">Jul 8</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2015/07/kubernetes-10-launch-party-at-oscon/"> Kubernetes 1.0 Launch Event at OSCON </a> <span class="date">Jul 2</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2015/07/how-did-quake-demo-from-dockercon-work/"> How did the Quake demo from DockerCon Work? </a> <span class="date">Jul 2</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2015/06/the-distributed-system-toolkit-patterns/"> The Distributed System ToolKit: Patterns for Composite Containers </a> <span class="date">Jun 29</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2015/06/slides-cluster-management-with/"> Slides: Cluster Management with Kubernetes, talk given at the University of Edinburgh </a> <span class="date">Jun 26</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2015/06/cluster-level-logging-with-kubernetes/"> Cluster Level Logging with Kubernetes </a> <span class="date">Jun 11</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2015/06/weekly-kubernetes-community-hangout/"> Weekly Kubernetes Community Hangout Notes - May 22 2015 </a> <span class="date">Jun 2</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2015/05/kubernetes-on-openstack/"> Kubernetes on OpenStack </a> <span class="date">May 19</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2015/05/weekly-kubernetes-community-hangout_18/"> Weekly Kubernetes Community Hangout Notes - May 15 2015 </a> <span class="date">May 18</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2015/05/docker-and-kubernetes-and-appc/"> Docker and Kubernetes and AppC  </a> <span class="date">May 18</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2015/05/kubernetes-release-0170/"> Kubernetes Release: 0.17.0 </a> <span class="date">May 15</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2015/05/resource-usage-monitoring-kubernetes/">Resource Usage Monitoring in Kubernetes</a> <span class="date">May 12</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2015/05/weekly-kubernetes-community-hangout/"> Weekly Kubernetes Community Hangout Notes - May 1 2015 </a> <span class="date">May 11</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2015/05/kubernetes-release-0160/"> Kubernetes Release: 0.16.0 </a> <span class="date">May 11</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2015/05/appc-support-for-kubernetes-through-rkt/"> AppC Support for Kubernetes through RKT </a> <span class="date">May 4</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2015/04/weekly-kubernetes-community-hangout_29/"> Weekly Kubernetes Community Hangout Notes - April 24 2015 </a> <span class="date">Apr 30</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2015/04/borg-predecessor-to-kubernetes/"> Borg: The Predecessor to Kubernetes </a> <span class="date">Apr 23</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2015/04/kubernetes-and-mesosphere-dcos/"> Kubernetes and the Mesosphere DCOS </a> <span class="date">Apr 22</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2015/04/weekly-kubernetes-community-hangout_17/"> Weekly Kubernetes Community Hangout Notes - April 17 2015 </a> <span class="date">Apr 17</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2015/04/kubernetes-release-0150/"> Kubernetes Release: 0.15.0 </a> <span class="date">Apr 16</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2015/04/introducing-kubernetes-v1beta3/"> Introducing Kubernetes API Version v1beta3 </a> <span class="date">Apr 16</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2015/04/weekly-kubernetes-community-hangout_11/"> Weekly Kubernetes Community Hangout Notes - April 10 2015 </a> <span class="date">Apr 11</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2015/04/faster-than-speeding-latte/"> Faster than a speeding Latte </a> <span class="date">Apr 6</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2015/04/weekly-kubernetes-community-hangout/"> Weekly Kubernetes Community Hangout Notes - April 3 2015 </a> <span class="date">Apr 4</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2015/03/paricipate-in-kubernetes-user/"> Paricipate in a Kubernetes User Experience Study </a> <span class="date">Mar 31</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2015/03/weekly-kubernetes-community-hangout/"> Weekly Kubernetes Community Hangout Notes - March 27 2015 </a> <span class="date">Mar 28</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2015/03/kubernetes-gathering-videos/"> Kubernetes Gathering Videos </a> <span class="date">Mar 23</span> </li>
+          
+          <li class="list-group-item"><a href="https://kubernetes.io/blog/2015/03/welcome-to-kubernetes-blog/">Welcome to the Kubernetes Blog!</a> <span class="date">Mar 20</span> </li>
+          
+        </ul>
+      </div>
+    </div>
+  </div>
+  
+</div>
+				</div>
+			</div>
+		</div>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

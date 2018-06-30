@@ -1,0 +1,2358 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Run a Replicated Stateful Application - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="Run a Replicated Stateful Application" />
+<meta property="og:description" content="Run a Replicated Stateful Application" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/tasks/run-application/run-replicated-stateful-application/" />
+<meta property="og:title" content="Run a Replicated Stateful Application - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+
+
+
+
+<h1>Tasks</h1>
+<h5></h5>
+
+
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/" class="YAH">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Tasks" href="/docs/tasks/"></a>
+
+	
+	
+		
+		
+	<div class="item" data-title="Install Tools">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Install and Set Up kubectl" href="/docs/tasks/tools/install-kubectl/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Install Minikube" href="/docs/tasks/tools/install-minikube/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Installing kubeadm" href="/docs/tasks/tools/install-kubeadm/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Administer a Cluster">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+	<div class="item" data-title="Administration with kubeadm">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Upgrading kubeadm HA clusters from 1.9.x to 1.9.y" href="/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-ha/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Upgrading kubeadm clusters from 1.7 to 1.8" href="/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-1-8/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Upgrading kubeadm clusters from v1.10 to v1.11" href="/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-1-11/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Upgrading/downgrading kubeadm clusters between v1.8 to v1.9" href="/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-1-9/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Manage Memory, CPU, and API Resources">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Configure Default Memory Requests and Limits for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/memory-default-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Default CPU Requests and Limits for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/cpu-default-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Minimum and Maximum Memory Constraints for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/memory-constraint-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Minimum and Maximum CPU Constraints for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/cpu-constraint-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Memory and CPU Quotas for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/quota-memory-cpu-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod Quota for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/quota-pod-namespace/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Install a Network Policy Provider">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Use Calico for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/calico-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use Cilium for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/cilium-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use Kube-router for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/kube-router-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Romana for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/romana-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Weave Net for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/weave-network-policy/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Access Clusters Using the Kubernetes API" href="/docs/tasks/administer-cluster/access-cluster-api/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Access Services Running on Clusters" href="/docs/tasks/administer-cluster/access-cluster-services/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Advertise Extended Resources for a Node" href="/docs/tasks/administer-cluster/extended-resource-node/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Autoscale the DNS Service in a Cluster" href="/docs/tasks/administer-cluster/dns-horizontal-autoscaling/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Change the Reclaim Policy of a PersistentVolume" href="/docs/tasks/administer-cluster/change-pv-reclaim-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Change the default StorageClass" href="/docs/tasks/administer-cluster/change-default-storage-class/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Cluster Management" href="/docs/tasks/administer-cluster/cluster-management/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Multiple Schedulers" href="/docs/tasks/administer-cluster/configure-multiple-schedulers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Out Of Resource Handling" href="/docs/tasks/administer-cluster/out-of-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Quotas for API Objects" href="/docs/tasks/administer-cluster/quota-api-object/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Control CPU Management Policies on the Node" href="/docs/tasks/administer-cluster/cpu-management-policies/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Customizing DNS Service" href="/docs/tasks/administer-cluster/dns-custom-nameservers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debugging DNS Resolution" href="/docs/tasks/administer-cluster/dns-debugging-resolution/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Declare Network Policy" href="/docs/tasks/administer-cluster/declare-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Developing Cloud Controller Manager" href="/docs/tasks/administer-cluster/developing-cloud-controller-manager/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Encrypting Secret Data at Rest" href="/docs/tasks/administer-cluster/encrypt-data/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Guaranteed Scheduling For Critical Add-On Pods" href="/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="IP Masquerade Agent User Guide" href="/docs/tasks/administer-cluster/ip-masq-agent/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes Cloud Controller Manager" href="/docs/tasks/administer-cluster/running-cloud-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Limit Storage Consumption" href="/docs/tasks/administer-cluster/limit-storage-consumption/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Namespaces Walkthrough" href="/docs/tasks/administer-cluster/namespaces-walkthrough/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Operating etcd clusters for Kubernetes" href="/docs/tasks/administer-cluster/configure-upgrade-etcd/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Reconfigure a Node&#39;s Kubelet in a Live Cluster" href="/docs/tasks/administer-cluster/reconfigure-kubelet/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Reserve Compute Resources for System Daemons" href="/docs/tasks/administer-cluster/reserve-compute-resources/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Safely Drain a Node while Respecting Application SLOs" href="/docs/tasks/administer-cluster/safely-drain-node/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Securing a Cluster" href="/docs/tasks/administer-cluster/securing-a-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set Kubelet parameters via a config file" href="/docs/tasks/administer-cluster/kubelet-config-file/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up High-Availability Kubernetes Masters" href="/docs/tasks/administer-cluster/highly-available-master/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up a Highly Availabile etcd Cluster With kubeadm" href="/docs/tasks/administer-cluster/setup-ha-etcd-with-kubeadm/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Share a Cluster with Namespaces" href="/docs/tasks/administer-cluster/namespaces/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Static Pods" href="/docs/tasks/administer-cluster/static-pod/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Storage Object in Use Protection" href="/docs/tasks/administer-cluster/storage-object-in-use-protection/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using CoreDNS for Service Discovery" href="/docs/tasks/administer-cluster/coredns/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using a KMS provider for data encryption" href="/docs/tasks/administer-cluster/kms-provider/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using sysctls in a Kubernetes Cluster" href="/docs/tasks/administer-cluster/sysctl-cluster/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Configure Pods and Containers">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Assign Memory Resources to Containers and Pods" href="/docs/tasks/configure-pod-container/assign-memory-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Assign CPU Resources to Containers and Pods" href="/docs/tasks/configure-pod-container/assign-cpu-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Quality of Service for Pods" href="/docs/tasks/configure-pod-container/quality-service-pod/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Assign Extended Resources to a Container" href="/docs/tasks/configure-pod-container/extended-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod to Use a Volume for Storage" href="/docs/tasks/configure-pod-container/configure-volume-storage/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod to Use a PersistentVolume for Storage" href="/docs/tasks/configure-pod-container/configure-persistent-volume-storage/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod to Use a Projected Volume for Storage" href="/docs/tasks/configure-pod-container/configure-projected-volume-storage/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Security Context for a Pod or Container" href="/docs/tasks/configure-pod-container/security-context/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Service Accounts for Pods" href="/docs/tasks/configure-pod-container/configure-service-account/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pull an Image from a Private Registry" href="/docs/tasks/configure-pod-container/pull-image-private-registry/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Liveness and Readiness Probes" href="/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Assign Pods to Nodes" href="/docs/tasks/configure-pod-container/assign-pods-nodes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Pod Initialization" href="/docs/tasks/configure-pod-container/configure-pod-initialization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Attach Handlers to Container Lifecycle Events" href="/docs/tasks/configure-pod-container/attach-handler-lifecycle-event/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod to Use a ConfigMap" href="/docs/tasks/configure-pod-container/configure-pod-configmap/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Share Process Namespace between Containers in a Pod" href="/docs/tasks/configure-pod-container/share-process-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Translate a Docker Compose File to Kubernetes Resources" href="/docs/tasks/configure-pod-container/translate-compose-kubernetes/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Inject Data Into Applications">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Define a Command and Arguments for a Container" href="/docs/tasks/inject-data-application/define-command-argument-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Define Environment Variables for a Container" href="/docs/tasks/inject-data-application/define-environment-variable-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Expose Pod Information to Containers Through Environment Variables" href="/docs/tasks/inject-data-application/environment-variable-expose-pod-information/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Expose Pod Information to Containers Through Files" href="/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Distribute Credentials Securely Using Secrets" href="/docs/tasks/inject-data-application/distribute-credentials-secure/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Inject Information into Pods Using a PodPreset" href="/docs/tasks/inject-data-application/podpreset/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Run Applications">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Run a Stateless Application Using a Deployment" href="/docs/tasks/run-application/run-stateless-application-deployment/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Run a Single-Instance Stateful Application" href="/docs/tasks/run-application/run-single-instance-stateful-application/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Run a Replicated Stateful Application" href="/docs/tasks/run-application/run-replicated-stateful-application/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Update API Objects in Place Using kubectl patch" href="/docs/tasks/run-application/update-api-object-kubectl-patch/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Scale a StatefulSet" href="/docs/tasks/run-application/scale-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Delete a StatefulSet" href="/docs/tasks/run-application/delete-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Force Delete StatefulSet Pods" href="/docs/tasks/run-application/force-delete-stateful-set-pod/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Perform Rolling Update Using a Replication Controller" href="/docs/tasks/run-application/rolling-update-replication-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Horizontal Pod Autoscaler" href="/docs/tasks/run-application/horizontal-pod-autoscale/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Horizontal Pod Autoscaler Walkthrough" href="/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Specifying a Disruption Budget for your Application" href="/docs/tasks/run-application/configure-pdb/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Run Jobs">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Running automated tasks with cron jobs" href="/docs/tasks/job/automated-tasks-with-cron-jobs/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Parallel Processing using Expansions" href="/docs/tasks/job/parallel-processing-expansion/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Coarse Parallel Processing Using a Work Queue" href="/docs/tasks/job/coarse-parallel-processing-work-queue/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Fine Parallel Processing Using a Work Queue" href="/docs/tasks/job/fine-parallel-processing-work-queue/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Access Applications in a Cluster">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Web UI (Dashboard)" href="/docs/tasks/access-application-cluster/web-ui-dashboard/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Accessing Clusters" href="/docs/tasks/access-application-cluster/access-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Access to Multiple Clusters" href="/docs/tasks/access-application-cluster/configure-access-multiple-clusters/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use Port Forwarding to Access Applications in a Cluster" href="/docs/tasks/access-application-cluster/port-forward-access-application-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Provide Load-Balanced Access to an Application in a Cluster" href="/docs/tasks/access-application-cluster/load-balance-access-application-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use a Service to Access an Application in a Cluster" href="/docs/tasks/access-application-cluster/service-access-application-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Connect a Front End to a Back End Using a Service" href="/docs/tasks/access-application-cluster/connecting-frontend-backend/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Create an External Load Balancer" href="/docs/tasks/access-application-cluster/create-external-load-balancer/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Your Cloud Provider&#39;s Firewalls" href="/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="List All Container Images Running in a Cluster" href="/docs/tasks/access-application-cluster/list-all-running-container-images/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Communicate Between Containers in the Same Pod Using a Shared Volume" href="/docs/tasks/access-application-cluster/communicate-containers-same-pod-shared-volume/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure DNS for a Cluster" href="/docs/tasks/access-application-cluster/configure-dns-cluster/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Monitor, Log, and Debug">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Application Introspection and Debugging" href="/docs/tasks/debug-application-cluster/debug-application-introspection/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Auditing" href="/docs/tasks/debug-application-cluster/audit/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Core metrics pipeline" href="/docs/tasks/debug-application-cluster/core-metrics-pipeline/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debug Init Containers" href="/docs/tasks/debug-application-cluster/debug-init-containers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debug Pods and Replication Controllers" href="/docs/tasks/debug-application-cluster/debug-pod-replication-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debug Services" href="/docs/tasks/debug-application-cluster/debug-service/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debug a StatefulSet" href="/docs/tasks/debug-application-cluster/debug-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debugging Kubernetes nodes with crictl" href="/docs/tasks/debug-application-cluster/crictl/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Determine the Reason for Pod Failure" href="/docs/tasks/debug-application-cluster/determine-reason-pod-failure/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Developing and debugging services locally" href="/docs/tasks/debug-application-cluster/local-debugging/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Events in Stackdriver" href="/docs/tasks/debug-application-cluster/events-stackdriver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Get a Shell to a Running Container" href="/docs/tasks/debug-application-cluster/get-shell-running-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Logging Using Elasticsearch and Kibana" href="/docs/tasks/debug-application-cluster/logging-elasticsearch-kibana/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Logging Using Stackdriver" href="/docs/tasks/debug-application-cluster/logging-stackdriver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Monitor Node Health" href="/docs/tasks/debug-application-cluster/monitor-node-health/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Tools for Monitoring Compute, Storage, and Network Resources" href="/docs/tasks/debug-application-cluster/resource-usage-monitoring/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Troubleshoot Applications" href="/docs/tasks/debug-application-cluster/debug-application/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Troubleshoot Clusters" href="/docs/tasks/debug-application-cluster/debug-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Troubleshooting" href="/docs/tasks/debug-application-cluster/troubleshooting/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Extend Kubernetes">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Configure the aggregation layer" href="/docs/tasks/access-kubernetes-api/configure-aggregation-layer/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Use Custom Resources">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Extend the Kubernetes API with CustomResourceDefinitions" href="/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Versions of CustomResourceDefinitions" href="/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definition-versioning/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Migrate a ThirdPartyResource to CustomResourceDefinition" href="/docs/tasks/access-kubernetes-api/custom-resources/migrate-third-party-resource/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Setup an extension API server" href="/docs/tasks/access-kubernetes-api/setup-extension-api-server/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use an HTTP Proxy to Access the Kubernetes API" href="/docs/tasks/access-kubernetes-api/http-proxy-access-api/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="TLS">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Certificate Rotation" href="/docs/tasks/tls/certificate-rotation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Manage TLS Certificates in a Cluster" href="/docs/tasks/tls/managing-tls-in-a-cluster/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Federation - Run an App on Multiple Clusters">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Cross-cluster Service Discovery using Federated Services" href="/docs/tasks/federation/federation-service-discovery/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up Cluster Federation with Kubefed" href="/docs/tasks/federation/set-up-cluster-federation-kubefed/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up CoreDNS as DNS provider for Cluster Federation" href="/docs/tasks/federation/set-up-coredns-provider-federation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up placement policies in Federation" href="/docs/tasks/federation/set-up-placement-policies-federation/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Manage Cluster Daemons">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Perform a Rolling Update on a DaemonSet" href="/docs/tasks/manage-daemon/update-daemon-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Performing a Rollback on a DaemonSet" href="/docs/tasks/manage-daemon/rollback-daemon-set/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Install Service Catalog">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Install Service Catalog using Helm" href="/docs/tasks/service-catalog/install-service-catalog-using-helm/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Install Service Catalog using SC" href="/docs/tasks/service-catalog/install-service-catalog-using-sc/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Federation - Run an App on Multiple Clusters">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Federated Cluster" href="/docs/tasks/administer-federation/cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated ConfigMap" href="/docs/tasks/administer-federation/configmap/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated DaemonSet" href="/docs/tasks/administer-federation/daemonset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Deployment" href="/docs/tasks/administer-federation/deployment/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Events" href="/docs/tasks/administer-federation/events/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Horizontal Pod Autoscalers (HPA)" href="/docs/tasks/administer-federation/hpa/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Ingress" href="/docs/tasks/administer-federation/ingress/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Jobs" href="/docs/tasks/administer-federation/job/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Namespaces" href="/docs/tasks/administer-federation/namespaces/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated ReplicaSets" href="/docs/tasks/administer-federation/replicaset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Secrets" href="/docs/tasks/administer-federation/secret/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Extend kubectl with plugins" href="/docs/tasks/extend-kubectl/kubectl-plugins/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Manage HugePages" href="/docs/tasks/manage-hugepages/scheduling-hugepages/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Schedule GPUs" href="/docs/tasks/manage-gpus/scheduling-gpus/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/tasks/run-application/run-replicated-stateful-application.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>Run a Replicated Stateful Application</h1>
+
+
+
+<p>This page shows how to run a replicated stateful application using a
+<a href="/docs/concepts/workloads/controllers/statefulset/">StatefulSet</a> controller.
+The example is a MySQL single-master topology with multiple slaves running
+asynchronous replication.</p>
+
+<p>Note that <strong>this is not a production configuration</strong>.
+In particular, MySQL settings remain on insecure defaults to keep the focus
+on general patterns for running stateful applications in Kubernetes.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+<li><a href="#objectives">Objectives</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#before-you-begin">Before you begin</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#deploy-mysql">Deploy MySQL</a></li>
+
+
+
+
+<li><a href="#understanding-stateful-pod-initialization">Understanding stateful Pod initialization</a></li>
+
+
+
+
+<li><a href="#sending-client-traffic">Sending client traffic</a></li>
+
+
+
+
+<li><a href="#simulating-pod-and-node-downtime">Simulating Pod and Node downtime</a></li>
+
+
+
+
+<li><a href="#scaling-the-number-of-slaves">Scaling the number of slaves</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#cleaning-up">Cleaning up</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#what-s-next">What's next</a></li>
+
+
+
+</ul>
+
+
+
+<h2 id="objectives">Objectives</h2>
+<ul>
+<li>Deploy a replicated MySQL topology with a StatefulSet controller.</li>
+<li>Send MySQL client traffic.</li>
+<li>Observe resistance to downtime.</li>
+<li>Scale the StatefulSet up and down.</li>
+</ul>
+
+
+
+
+
+<h2 id="before-you-begin">Before you begin</h2>
+<ul>
+<li><p>You need to have a Kubernetes cluster, and the kubectl command-line tool must
+be configured to communicate with your cluster. If you do not already have a
+cluster, you can create one by using
+<a href="/docs/getting-started-guides/minikube">Minikube</a>,
+or you can use one of these Kubernetes playgrounds:</p></li>
+</ul>
+
+<ul>
+<li><a href="https://www.katacoda.com/courses/kubernetes/playground" target="_blank">Katacoda</a></li>
+<li><a href="http://labs.play-with-k8s.com/" target="_blank">Play with Kubernetes</a></li>
+</ul>
+ 
+
+<p>To check the version, enter <code>kubectl version</code>.</p>
+
+<ul>
+<li><p>You need to either have a dynamic PersistentVolume provisioner with a default
+<a href="/docs/concepts/storage/storage-classes/">StorageClass</a>,
+or <a href="/docs/user-guide/persistent-volumes/#provisioning">statically provision PersistentVolumes</a>
+yourself to satisfy the <a href="/docs/user-guide/persistent-volumes/#persistentvolumeclaims">PersistentVolumeClaims</a>
+used here.</p></li>
+
+<li><p>This tutorial assumes you are familiar with
+<a href="/docs/concepts/storage/persistent-volumes/">PersistentVolumes</a>
+and <a href="/docs/concepts/workloads/controllers/statefulset/">StatefulSets</a>,
+as well as other core concepts like <a href="/docs/concepts/workloads/pods/pod/">Pods</a>,
+<a href="/docs/concepts/services-networking/service/">Services</a>, and
+<a href="/docs/tasks/configure-pod-container/configure-pod-configmap/">ConfigMaps</a>.</p></li>
+
+<li><p>Some familiarity with MySQL helps, but this tutorial aims to present
+general patterns that should be useful for other systems.</p></li>
+</ul>
+
+
+
+
+<h2 id="deploy-mysql">Deploy MySQL</h2>
+
+<p>The example MySQL deployment consists of a ConfigMap, two Services,
+and a StatefulSet.</p>
+
+<h3 id="configmap">ConfigMap</h3>
+
+<p>Create the ConfigMap from the following YAML configuration file:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl create -f https://k8s.io/docs/tasks/run-application/mysql-configmap.yaml</code></pre></div>
+<table class="includecode" id="mysql-configmap-yaml">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://github.com/kubernetes/website/blob/master/content/en/docs/tasks/run-application/mysql-configmap.yaml" download="mysql-configmap.yaml">
+                    <code>mysql-configmap.yaml docs/tasks/run-application</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('mysql-configmap-yaml')" title="Copy mysql-configmap.yaml to clipboard">
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>ConfigMap<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>mysql<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>labels:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>app:<span style="color:#bbb"> </span>mysql<span style="color:#bbb">
+</span><span style="color:#bbb"></span>data:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>master.cnf:<span style="color:#bbb"> </span><span style="color:#b44;font-style:italic">|
+</span><span style="color:#b44;font-style:italic">    # Apply this config only on the master.
+</span><span style="color:#b44;font-style:italic">    [mysqld]
+</span><span style="color:#b44;font-style:italic">    log-bin</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>slave.cnf:<span style="color:#bbb"> </span><span style="color:#b44;font-style:italic">|
+</span><span style="color:#b44;font-style:italic">    # Apply this config only on slaves.
+</span><span style="color:#b44;font-style:italic">    [mysqld]
+</span><span style="color:#b44;font-style:italic">    super-read-only</span><span style="color:#bbb">
+</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span></code></pre></div>  </td>
+        </tr>
+    </tbody>
+</table>
+
+<p>This ConfigMap provides <code>my.cnf</code> overrides that let you independently control
+configuration on the MySQL master and slaves.
+In this case, you want the master to be able to serve replication logs to slaves
+and you want slaves to reject any writes that don&rsquo;t come via replication.</p>
+
+<p>There&rsquo;s nothing special about the ConfigMap itself that causes different
+portions to apply to different Pods.
+Each Pod decides which portion to look at as it&rsquo;s initializing,
+based on information provided by the StatefulSet controller.</p>
+
+<h3 id="services">Services</h3>
+
+<p>Create the Services from the following YAML configuration file:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl create -f https://k8s.io/docs/tasks/run-application/mysql-services.yaml</code></pre></div>
+<table class="includecode" id="mysql-services-yaml">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://github.com/kubernetes/website/blob/master/content/en/docs/tasks/run-application/mysql-services.yaml" download="mysql-services.yaml">
+                    <code>mysql-services.yaml docs/tasks/run-application</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('mysql-services-yaml')" title="Copy mysql-services.yaml to clipboard">
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#080;font-style:italic"># Headless service for stable DNS entries of StatefulSet members.</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>apiVersion:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Service<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>mysql<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>labels:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>app:<span style="color:#bbb"> </span>mysql<span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>ports:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>mysql<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>port:<span style="color:#bbb"> </span><span style="color:#666">3306</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>clusterIP:<span style="color:#bbb"> </span>None<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>selector:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>app:<span style="color:#bbb"> </span>mysql<span style="color:#bbb">
+</span><span style="color:#bbb"></span>---<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#080;font-style:italic"># Client service for connecting to any MySQL instance for reads.</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#080;font-style:italic"># For writes, you must instead connect to the master: mysql-0.mysql.</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>apiVersion:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Service<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>mysql-read<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>labels:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>app:<span style="color:#bbb"> </span>mysql<span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>ports:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>mysql<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>port:<span style="color:#bbb"> </span><span style="color:#666">3306</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>selector:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>app:<span style="color:#bbb"> </span>mysql<span style="color:#bbb">
+</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span></code></pre></div>  </td>
+        </tr>
+    </tbody>
+</table>
+
+<p>The Headless Service provides a home for the DNS entries that the StatefulSet
+controller creates for each Pod that&rsquo;s part of the set.
+Because the Headless Service is named <code>mysql</code>, the Pods are accessible by
+resolving <code>&lt;pod-name&gt;.mysql</code> from within any other Pod in the same Kubernetes
+cluster and namespace.</p>
+
+<p>The Client Service, called <code>mysql-read</code>, is a normal Service with its own
+cluster IP that distributes connections across all MySQL Pods that report
+being Ready. The set of potential endpoints includes the MySQL master and all
+slaves.</p>
+
+<p>Note that only read queries can use the load-balanced Client Service.
+Because there is only one MySQL master, clients should connect directly to the
+MySQL master Pod (through its DNS entry within the Headless Service) to execute
+writes.</p>
+
+<h3 id="statefulset">StatefulSet</h3>
+
+<p>Finally, create the StatefulSet from the following YAML configuration file:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl create -f https://k8s.io/docs/tasks/run-application/mysql-statefulset.yaml</code></pre></div>
+<table class="includecode" id="mysql-statefulset-yaml">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://github.com/kubernetes/website/blob/master/content/en/docs/tasks/run-application/mysql-statefulset.yaml" download="mysql-statefulset.yaml">
+                    <code>mysql-statefulset.yaml docs/tasks/run-application</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('mysql-statefulset-yaml')" title="Copy mysql-statefulset.yaml to clipboard">
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>apps/v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>StatefulSet<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>mysql<span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>selector:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>matchLabels:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>app:<span style="color:#bbb"> </span>mysql<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>serviceName:<span style="color:#bbb"> </span>mysql<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>replicas:<span style="color:#bbb"> </span><span style="color:#666">3</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>template:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>labels:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>app:<span style="color:#bbb"> </span>mysql<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>initContainers:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>init-mysql<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>image:<span style="color:#bbb"> </span>mysql:<span style="color:#666">5.7</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span>command:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span>bash<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span><span style="color:#b44">&#34;-c&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span><span style="color:#b44;font-style:italic">|
+</span><span style="color:#b44;font-style:italic">          set -ex
+</span><span style="color:#b44;font-style:italic">          # Generate mysql server-id from pod ordinal index.
+</span><span style="color:#b44;font-style:italic">          [[ `hostname` =~ -([0-9]+)$ ]] || exit 1
+</span><span style="color:#b44;font-style:italic">          ordinal=${BASH_REMATCH[1]}
+</span><span style="color:#b44;font-style:italic">          echo [mysqld] &gt; /mnt/conf.d/server-id.cnf
+</span><span style="color:#b44;font-style:italic">          # Add an offset to avoid reserved server-id=0 value.
+</span><span style="color:#b44;font-style:italic">          echo server-id=$((100 + $ordinal)) &gt;&gt; /mnt/conf.d/server-id.cnf
+</span><span style="color:#b44;font-style:italic">          # Copy appropriate conf.d files from config-map to emptyDir.
+</span><span style="color:#b44;font-style:italic">          if [[ $ordinal -eq 0 ]]; then
+</span><span style="color:#b44;font-style:italic">            cp /mnt/config-map/master.cnf /mnt/conf.d/
+</span><span style="color:#b44;font-style:italic">          else
+</span><span style="color:#b44;font-style:italic">            cp /mnt/config-map/slave.cnf /mnt/conf.d/
+</span><span style="color:#b44;font-style:italic">          fi</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span>volumeMounts:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>conf<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>mountPath:<span style="color:#bbb"> </span>/mnt/conf.d<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>config-map<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>mountPath:<span style="color:#bbb"> </span>/mnt/config-map<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>clone-mysql<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>image:<span style="color:#bbb"> </span>gcr.io/google-samples/xtrabackup:<span style="color:#666">1.0</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span>command:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span>bash<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span><span style="color:#b44">&#34;-c&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span><span style="color:#b44;font-style:italic">|
+</span><span style="color:#b44;font-style:italic">          set -ex
+</span><span style="color:#b44;font-style:italic">          # Skip the clone if data already exists.
+</span><span style="color:#b44;font-style:italic">          [[ -d /var/lib/mysql/mysql ]] &amp;&amp; exit 0
+</span><span style="color:#b44;font-style:italic">          # Skip the clone on master (ordinal index 0).
+</span><span style="color:#b44;font-style:italic">          [[ `hostname` =~ -([0-9]+)$ ]] || exit 1
+</span><span style="color:#b44;font-style:italic">          ordinal=${BASH_REMATCH[1]}
+</span><span style="color:#b44;font-style:italic">          [[ $ordinal -eq 0 ]] &amp;&amp; exit 0
+</span><span style="color:#b44;font-style:italic">          # Clone data from previous peer.
+</span><span style="color:#b44;font-style:italic">          ncat --recv-only mysql-$(($ordinal-1)).mysql 3307 | xbstream -x -C /var/lib/mysql
+</span><span style="color:#b44;font-style:italic">          # Prepare the backup.
+</span><span style="color:#b44;font-style:italic">          xtrabackup --prepare --target-dir=/var/lib/mysql</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span>volumeMounts:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>data<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>mountPath:<span style="color:#bbb"> </span>/var/lib/mysql<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>subPath:<span style="color:#bbb"> </span>mysql<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>conf<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>mountPath:<span style="color:#bbb"> </span>/etc/mysql/conf.d<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>containers:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>mysql<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>image:<span style="color:#bbb"> </span>mysql:<span style="color:#666">5.7</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span>env:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>MYSQL_ALLOW_EMPTY_PASSWORD<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>value:<span style="color:#bbb"> </span><span style="color:#b44">&#34;1&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span>ports:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>mysql<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>containerPort:<span style="color:#bbb"> </span><span style="color:#666">3306</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span>volumeMounts:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>data<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>mountPath:<span style="color:#bbb"> </span>/var/lib/mysql<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>subPath:<span style="color:#bbb"> </span>mysql<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>conf<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>mountPath:<span style="color:#bbb"> </span>/etc/mysql/conf.d<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>resources:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>requests:<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>cpu:<span style="color:#bbb"> </span>500m<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>memory:<span style="color:#bbb"> </span>1Gi<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>livenessProbe:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>exec:<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>command:<span style="color:#bbb"> </span>[<span style="color:#b44">&#34;mysqladmin&#34;</span>,<span style="color:#bbb"> </span><span style="color:#b44">&#34;ping&#34;</span>]<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>initialDelaySeconds:<span style="color:#bbb"> </span><span style="color:#666">30</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span>periodSeconds:<span style="color:#bbb"> </span><span style="color:#666">10</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span>timeoutSeconds:<span style="color:#bbb"> </span><span style="color:#666">5</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span>readinessProbe:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>exec:<span style="color:#bbb">
+</span><span style="color:#bbb">            </span><span style="color:#080;font-style:italic"># Check we can execute queries over TCP (skip-networking is off).</span><span style="color:#bbb">
+</span><span style="color:#bbb">            </span>command:<span style="color:#bbb"> </span>[<span style="color:#b44">&#34;mysql&#34;</span>,<span style="color:#bbb"> </span><span style="color:#b44">&#34;-h&#34;</span>,<span style="color:#bbb"> </span><span style="color:#b44">&#34;127.0.0.1&#34;</span>,<span style="color:#bbb"> </span><span style="color:#b44">&#34;-e&#34;</span>,<span style="color:#bbb"> </span><span style="color:#b44">&#34;SELECT 1&#34;</span>]<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>initialDelaySeconds:<span style="color:#bbb"> </span><span style="color:#666">5</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span>periodSeconds:<span style="color:#bbb"> </span><span style="color:#666">2</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span>timeoutSeconds:<span style="color:#bbb"> </span><span style="color:#666">1</span><span style="color:#bbb">
+</span><span style="color:#bbb">      </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>xtrabackup<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>image:<span style="color:#bbb"> </span>gcr.io/google-samples/xtrabackup:<span style="color:#666">1.0</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span>ports:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>xtrabackup<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>containerPort:<span style="color:#bbb"> </span><span style="color:#666">3307</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span>command:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span>bash<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span><span style="color:#b44">&#34;-c&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span><span style="color:#b44;font-style:italic">|
+</span><span style="color:#b44;font-style:italic">          set -ex
+</span><span style="color:#b44;font-style:italic">          cd /var/lib/mysql
+</span><span style="color:#b44;font-style:italic">
+</span><span style="color:#b44;font-style:italic">          # Determine binlog position of cloned data, if any.
+</span><span style="color:#b44;font-style:italic">          if [[ -f xtrabackup_slave_info ]]; then
+</span><span style="color:#b44;font-style:italic">            # XtraBackup already generated a partial &#34;CHANGE MASTER TO&#34; query
+</span><span style="color:#b44;font-style:italic">            # because we&#39;re cloning from an existing slave.
+</span><span style="color:#b44;font-style:italic">            mv xtrabackup_slave_info change_master_to.sql.in
+</span><span style="color:#b44;font-style:italic">            # Ignore xtrabackup_binlog_info in this case (it&#39;s useless).
+</span><span style="color:#b44;font-style:italic">            rm -f xtrabackup_binlog_info
+</span><span style="color:#b44;font-style:italic">          elif [[ -f xtrabackup_binlog_info ]]; then
+</span><span style="color:#b44;font-style:italic">            # We&#39;re cloning directly from master. Parse binlog position.
+</span><span style="color:#b44;font-style:italic">            [[ `cat xtrabackup_binlog_info` =~ ^(.*?)[[:space:]]+(.*?)$ ]] || exit 1
+</span><span style="color:#b44;font-style:italic">            rm xtrabackup_binlog_info
+</span><span style="color:#b44;font-style:italic">            echo &#34;CHANGE MASTER TO MASTER_LOG_FILE=&#39;${BASH_REMATCH[1]}&#39;,\
+</span><span style="color:#b44;font-style:italic">                  MASTER_LOG_POS=${BASH_REMATCH[2]}&#34; &gt; change_master_to.sql.in
+</span><span style="color:#b44;font-style:italic">          fi
+</span><span style="color:#b44;font-style:italic">
+</span><span style="color:#b44;font-style:italic">          # Check if we need to complete a clone by starting replication.
+</span><span style="color:#b44;font-style:italic">          if [[ -f change_master_to.sql.in ]]; then
+</span><span style="color:#b44;font-style:italic">            echo &#34;Waiting for mysqld to be ready (accepting connections)&#34;
+</span><span style="color:#b44;font-style:italic">            until mysql -h 127.0.0.1 -e &#34;SELECT 1&#34;; do sleep 1; done
+</span><span style="color:#b44;font-style:italic">
+</span><span style="color:#b44;font-style:italic">            echo &#34;Initializing replication from clone position&#34;
+</span><span style="color:#b44;font-style:italic">            # In case of container restart, attempt this at-most-once.
+</span><span style="color:#b44;font-style:italic">            mv change_master_to.sql.in change_master_to.sql.orig
+</span><span style="color:#b44;font-style:italic">            mysql -h 127.0.0.1 &lt;&lt;EOF
+</span><span style="color:#b44;font-style:italic">          $(&lt;change_master_to.sql.orig),
+</span><span style="color:#b44;font-style:italic">            MASTER_HOST=&#39;mysql-0.mysql&#39;,
+</span><span style="color:#b44;font-style:italic">            MASTER_USER=&#39;root&#39;,
+</span><span style="color:#b44;font-style:italic">            MASTER_PASSWORD=&#39;&#39;,
+</span><span style="color:#b44;font-style:italic">            MASTER_CONNECT_RETRY=10;
+</span><span style="color:#b44;font-style:italic">          START SLAVE;
+</span><span style="color:#b44;font-style:italic">          EOF
+</span><span style="color:#b44;font-style:italic">          fi
+</span><span style="color:#b44;font-style:italic">
+</span><span style="color:#b44;font-style:italic">          # Start a server to send backups when requested by peers.
+</span><span style="color:#b44;font-style:italic">          exec ncat --listen --keep-open --send-only --max-conns=1 3307 -c \
+</span><span style="color:#b44;font-style:italic">            &#34;xtrabackup --backup --slave-info --stream=xbstream --host=127.0.0.1 --user=root&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span>volumeMounts:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>data<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>mountPath:<span style="color:#bbb"> </span>/var/lib/mysql<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>subPath:<span style="color:#bbb"> </span>mysql<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>conf<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>mountPath:<span style="color:#bbb"> </span>/etc/mysql/conf.d<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>resources:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>requests:<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>cpu:<span style="color:#bbb"> </span>100m<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>memory:<span style="color:#bbb"> </span>100Mi<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>volumes:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>conf<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>emptyDir:<span style="color:#bbb"> </span>{}<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>config-map<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>configMap:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>name:<span style="color:#bbb"> </span>mysql<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>volumeClaimTemplates:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>name:<span style="color:#bbb"> </span>data<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>accessModes:<span style="color:#bbb"> </span>[<span style="color:#b44">&#34;ReadWriteOnce&#34;</span>]<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>resources:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>requests:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>storage:<span style="color:#bbb"> </span>10Gi<span style="color:#bbb">
+</span><span style="color:#bbb"></span></code></pre></div>  </td>
+        </tr>
+    </tbody>
+</table>
+
+<p>You can watch the startup progress by running:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl get pods -l <span style="color:#b8860b">app</span><span style="color:#666">=</span>mysql --watch</code></pre></div>
+<p>After a while, you should see all 3 Pods become Running:</p>
+
+<pre><code>NAME      READY     STATUS    RESTARTS   AGE
+mysql-0   2/2       Running   0          2m
+mysql-1   2/2       Running   0          1m
+mysql-2   2/2       Running   0          1m
+</code></pre>
+
+<p>Press <strong>Ctrl+C</strong> to cancel the watch.
+If you don&rsquo;t see any progress, make sure you have a dynamic PersistentVolume
+provisioner enabled as mentioned in the <a href="#before-you-begin">prerequisites</a>.</p>
+
+<p>This manifest uses a variety of techniques for managing stateful Pods as part of
+a StatefulSet. The next section highlights some of these techniques to explain
+what happens as the StatefulSet creates Pods.</p>
+
+<h2 id="understanding-stateful-pod-initialization">Understanding stateful Pod initialization</h2>
+
+<p>The StatefulSet controller starts Pods one at a time, in order by their
+ordinal index.
+It waits until each Pod reports being Ready before starting the next one.</p>
+
+<p>In addition, the controller assigns each Pod a unique, stable name of the form
+<code>&lt;statefulset-name&gt;-&lt;ordinal-index&gt;</code>.
+In this case, that results in Pods named <code>mysql-0</code>, <code>mysql-1</code>, and <code>mysql-2</code>.</p>
+
+<p>The Pod template in the above StatefulSet manifest takes advantage of these
+properties to perform orderly startup of MySQL replication.</p>
+
+<h3 id="generating-configuration">Generating configuration</h3>
+
+<p>Before starting any of the containers in the Pod spec, the Pod first runs any
+<a href="/docs/concepts/workloads/pods/init-containers/">Init Containers</a>
+in the order defined.</p>
+
+<p>The first Init Container, named <code>init-mysql</code>, generates special MySQL config
+files based on the ordinal index.</p>
+
+<p>The script determines its own ordinal index by extracting it from the end of
+the Pod name, which is returned by the <code>hostname</code> command.
+Then it saves the ordinal (with a numeric offset to avoid reserved values)
+into a file called <code>server-id.cnf</code> in the MySQL <code>conf.d</code> directory.
+This translates the unique, stable identity provided by the StatefulSet
+controller into the domain of MySQL server IDs, which require the same
+properties.</p>
+
+<p>The script in the <code>init-mysql</code> container also applies either <code>master.cnf</code> or
+<code>slave.cnf</code> from the ConfigMap by copying the contents into <code>conf.d</code>.
+Because the example topology consists of a single MySQL master and any number of
+slaves, the script simply assigns ordinal <code>0</code> to be the master, and everyone
+else to be slaves.
+Combined with the StatefulSet controller&rsquo;s
+<a href="/docs/concepts/workloads/controllers/statefulset/#deployment-and-scaling-guarantees/">deployment order guarantee</a>,
+this ensures the MySQL master is Ready before creating slaves, so they can begin
+replicating.</p>
+
+<h3 id="cloning-existing-data">Cloning existing data</h3>
+
+<p>In general, when a new Pod joins the set as a slave, it must assume the MySQL
+master might already have data on it. It also must assume that the replication
+logs might not go all the way back to the beginning of time.
+These conservative assumptions are the key to allow a running StatefulSet
+to scale up and down over time, rather than being fixed at its initial size.</p>
+
+<p>The second Init Container, named <code>clone-mysql</code>, performs a clone operation on
+a slave Pod the first time it starts up on an empty PersistentVolume.
+That means it copies all existing data from another running Pod,
+so its local state is consistent enough to begin replicating from the master.</p>
+
+<p>MySQL itself does not provide a mechanism to do this, so the example uses a
+popular open-source tool called Percona XtraBackup.
+During the clone, the source MySQL server might suffer reduced performance.
+To minimize impact on the MySQL master, the script instructs each Pod to clone
+from the Pod whose ordinal index is one lower.
+This works because the StatefulSet controller always ensures Pod <code>N</code> is
+Ready before starting Pod <code>N+1</code>.</p>
+
+<h3 id="starting-replication">Starting replication</h3>
+
+<p>After the Init Containers complete successfully, the regular containers run.
+The MySQL Pods consist of a <code>mysql</code> container that runs the actual <code>mysqld</code>
+server, and an <code>xtrabackup</code> container that acts as a
+<a href="https://kubernetes.io/blog/2015/06/the-distributed-system-toolkit-patterns" target="_blank">sidecar</a>.</p>
+
+<p>The <code>xtrabackup</code> sidecar looks at the cloned data files and determines if
+it&rsquo;s necessary to initialize MySQL replication on the slave.
+If so, it waits for <code>mysqld</code> to be ready and then executes the
+<code>CHANGE MASTER TO</code> and <code>START SLAVE</code> commands with replication parameters
+extracted from the XtraBackup clone files.</p>
+
+<p>Once a slave begins replication, it remembers its MySQL master and
+reconnects automatically if the server restarts or the connection dies.
+Also, because slaves look for the master at its stable DNS name
+(<code>mysql-0.mysql</code>), they automatically find the master even if it gets a new
+Pod IP due to being rescheduled.</p>
+
+<p>Lastly, after starting replication, the <code>xtrabackup</code> container listens for
+connections from other Pods requesting a data clone.
+This server remains up indefinitely in case the StatefulSet scales up, or in
+case the next Pod loses its PersistentVolumeClaim and needs to redo the clone.</p>
+
+<h2 id="sending-client-traffic">Sending client traffic</h2>
+
+<p>You can send test queries to the MySQL master (hostname <code>mysql-0.mysql</code>)
+by running a temporary container with the <code>mysql:5.7</code> image and running the
+<code>mysql</code> client binary.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl run mysql-client --image<span style="color:#666">=</span>mysql:5.7 -i --rm --restart<span style="color:#666">=</span>Never --<span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>  mysql -h mysql-0.mysql <span style="color:#b44">&lt;&lt;EOF
+</span><span style="color:#b44">CREATE DATABASE test;
+</span><span style="color:#b44">CREATE TABLE test.messages (message VARCHAR(250));
+</span><span style="color:#b44">INSERT INTO test.messages VALUES (&#39;hello&#39;);
+</span><span style="color:#b44">EOF</span></code></pre></div>
+<p>Use the hostname <code>mysql-read</code> to send test queries to any server that reports
+being Ready:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl run mysql-client --image<span style="color:#666">=</span>mysql:5.7 -i -t --rm --restart<span style="color:#666">=</span>Never --<span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>  mysql -h mysql-read -e <span style="color:#b44">&#34;SELECT * FROM test.messages&#34;</span></code></pre></div>
+<p>You should get output like this:</p>
+
+<pre><code>Waiting for pod default/mysql-client to be running, status is Pending, pod ready: false
++---------+
+| message |
++---------+
+| hello   |
++---------+
+pod &quot;mysql-client&quot; deleted
+</code></pre>
+
+<p>To demonstrate that the <code>mysql-read</code> Service distributes connections across
+servers, you can run <code>SELECT @@server_id</code> in a loop:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl run mysql-client-loop --image<span style="color:#666">=</span>mysql:5.7 -i -t --rm --restart<span style="color:#666">=</span>Never --<span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>  bash -ic <span style="color:#b44">&#34;while sleep 1; do mysql -h mysql-read -e &#39;SELECT @@server_id,NOW()&#39;; done&#34;</span></code></pre></div>
+<p>You should see the reported <code>@@server_id</code> change randomly, because a different
+endpoint might be selected upon each connection attempt:</p>
+
+<pre><code>+-------------+---------------------+
+| @@server_id | NOW()               |
++-------------+---------------------+
+|         100 | 2006-01-02 15:04:05 |
++-------------+---------------------+
++-------------+---------------------+
+| @@server_id | NOW()               |
++-------------+---------------------+
+|         102 | 2006-01-02 15:04:06 |
++-------------+---------------------+
++-------------+---------------------+
+| @@server_id | NOW()               |
++-------------+---------------------+
+|         101 | 2006-01-02 15:04:07 |
++-------------+---------------------+
+</code></pre>
+
+<p>You can press <strong>Ctrl+C</strong> when you want to stop the loop, but it&rsquo;s useful to keep
+it running in another window so you can see the effects of the following steps.</p>
+
+<h2 id="simulating-pod-and-node-downtime">Simulating Pod and Node downtime</h2>
+
+<p>To demonstrate the increased availability of reading from the pool of slaves
+instead of a single server, keep the <code>SELECT @@server_id</code> loop from above
+running while you force a Pod out of the Ready state.</p>
+
+<h3 id="break-the-readiness-probe">Break the Readiness Probe</h3>
+
+<p>The <a href="/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/#define-readiness-probes">readiness probe</a>
+for the <code>mysql</code> container runs the command <code>mysql -h 127.0.0.1 -e 'SELECT 1'</code>
+to make sure the server is up and able to execute queries.</p>
+
+<p>One way to force this readiness probe to fail is to break that command:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl <span style="color:#a2f">exec</span> mysql-2 -c mysql -- mv /usr/bin/mysql /usr/bin/mysql.off</code></pre></div>
+<p>This reaches into the actual container&rsquo;s filesystem for Pod <code>mysql-2</code> and
+renames the <code>mysql</code> command so the readiness probe can&rsquo;t find it.
+After a few seconds, the Pod should report one of its containers as not Ready,
+which you can check by running:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl get pod mysql-2</code></pre></div>
+<p>Look for <code>1/2</code> in the <code>READY</code> column:</p>
+
+<pre><code>NAME      READY     STATUS    RESTARTS   AGE
+mysql-2   1/2       Running   0          3m
+</code></pre>
+
+<p>At this point, you should see your <code>SELECT @@server_id</code> loop continue to run,
+although it never reports <code>102</code> anymore.
+Recall that the <code>init-mysql</code> script defined <code>server-id</code> as <code>100 + $ordinal</code>,
+so server ID <code>102</code> corresponds to Pod <code>mysql-2</code>.</p>
+
+<p>Now repair the Pod and it should reappear in the loop output
+after a few seconds:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl <span style="color:#a2f">exec</span> mysql-2 -c mysql -- mv /usr/bin/mysql.off /usr/bin/mysql</code></pre></div>
+<h3 id="delete-pods">Delete Pods</h3>
+
+<p>The StatefulSet also recreates Pods if they&rsquo;re deleted, similar to what a
+ReplicaSet does for stateless Pods.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl delete pod mysql-2</code></pre></div>
+<p>The StatefulSet controller notices that no <code>mysql-2</code> Pod exists anymore,
+and creates a new one with the same name and linked to the same
+PersistentVolumeClaim.
+You should see server ID <code>102</code> disappear from the loop output for a while
+and then return on its own.</p>
+
+<h3 id="drain-a-node">Drain a Node</h3>
+
+<p>If your Kubernetes cluster has multiple Nodes, you can simulate Node downtime
+(such as when Nodes are upgraded) by issuing a
+<a href="/docs/reference/generated/kubectl/kubectl-commands/#drain">drain</a>.</p>
+
+<p>First determine which Node one of the MySQL Pods is on:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl get pod mysql-2 -o wide</code></pre></div>
+<p>The Node name should show up in the last column:</p>
+
+<pre><code>NAME      READY     STATUS    RESTARTS   AGE       IP            NODE
+mysql-2   2/2       Running   0          15m       10.244.5.27   kubernetes-minion-group-9l2t
+</code></pre>
+
+<p>Then drain the Node by running the following command, which cordons it so
+no new Pods may schedule there, and then evicts any existing Pods.
+Replace <code>&lt;node-name&gt;</code> with the name of the Node you found in the last step.</p>
+
+<p>This might impact other applications on the Node, so it&rsquo;s best to
+<strong>only do this in a test cluster</strong>.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl drain &lt;node-name&gt; --force --delete-local-data --ignore-daemonsets</code></pre></div>
+<p>Now you can watch as the Pod reschedules on a different Node:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl get pod mysql-2 -o wide --watch</code></pre></div>
+<p>It should look something like this:</p>
+
+<pre><code>NAME      READY   STATUS          RESTARTS   AGE       IP            NODE
+mysql-2   2/2     Terminating     0          15m       10.244.1.56   kubernetes-minion-group-9l2t
+[...]
+mysql-2   0/2     Pending         0          0s        &lt;none&gt;        kubernetes-minion-group-fjlm
+mysql-2   0/2     Init:0/2        0          0s        &lt;none&gt;        kubernetes-minion-group-fjlm
+mysql-2   0/2     Init:1/2        0          20s       10.244.5.32   kubernetes-minion-group-fjlm
+mysql-2   0/2     PodInitializing 0          21s       10.244.5.32   kubernetes-minion-group-fjlm
+mysql-2   1/2     Running         0          22s       10.244.5.32   kubernetes-minion-group-fjlm
+mysql-2   2/2     Running         0          30s       10.244.5.32   kubernetes-minion-group-fjlm
+</code></pre>
+
+<p>And again, you should see server ID <code>102</code> disappear from the
+<code>SELECT @@server_id</code> loop output for a while and then return.</p>
+
+<p>Now uncordon the Node to return it to a normal state:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl uncordon &lt;node-name&gt;</code></pre></div>
+<h2 id="scaling-the-number-of-slaves">Scaling the number of slaves</h2>
+
+<p>With MySQL replication, you can scale your read query capacity by adding slaves.
+With StatefulSet, you can do this with a single command:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl scale statefulset mysql  --replicas<span style="color:#666">=</span><span style="color:#666">5</span></code></pre></div>
+<p>Watch the new Pods come up by running:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl get pods -l <span style="color:#b8860b">app</span><span style="color:#666">=</span>mysql --watch</code></pre></div>
+<p>Once they&rsquo;re up, you should see server IDs <code>103</code> and <code>104</code> start appearing in
+the <code>SELECT @@server_id</code> loop output.</p>
+
+<p>You can also verify that these new servers have the data you added before they
+existed:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl run mysql-client --image<span style="color:#666">=</span>mysql:5.7 -i -t --rm --restart<span style="color:#666">=</span>Never --<span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>  mysql -h mysql-3.mysql -e <span style="color:#b44">&#34;SELECT * FROM test.messages&#34;</span></code></pre></div>
+<pre><code>Waiting for pod default/mysql-client to be running, status is Pending, pod ready: false
++---------+
+| message |
++---------+
+| hello   |
++---------+
+pod &quot;mysql-client&quot; deleted
+</code></pre>
+
+<p>Scaling back down is also seamless:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl scale statefulset mysql --replicas<span style="color:#666">=</span><span style="color:#666">3</span></code></pre></div>
+<p>Note, however, that while scaling up creates new PersistentVolumeClaims
+automatically, scaling down does not automatically delete these PVCs.
+This gives you the choice to keep those initialized PVCs around to make
+scaling back up quicker, or to extract data before deleting them.</p>
+
+<p>You can see this by running:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl get pvc -l <span style="color:#b8860b">app</span><span style="color:#666">=</span>mysql</code></pre></div>
+<p>Which shows that all 5 PVCs still exist, despite having scaled the
+StatefulSet down to 3:</p>
+
+<pre><code>NAME           STATUS    VOLUME                                     CAPACITY   ACCESSMODES   AGE
+data-mysql-0   Bound     pvc-8acbf5dc-b103-11e6-93fa-42010a800002   10Gi       RWO           20m
+data-mysql-1   Bound     pvc-8ad39820-b103-11e6-93fa-42010a800002   10Gi       RWO           20m
+data-mysql-2   Bound     pvc-8ad69a6d-b103-11e6-93fa-42010a800002   10Gi       RWO           20m
+data-mysql-3   Bound     pvc-50043c45-b1c5-11e6-93fa-42010a800002   10Gi       RWO           2m
+data-mysql-4   Bound     pvc-500a9957-b1c5-11e6-93fa-42010a800002   10Gi       RWO           2m
+</code></pre>
+
+<p>If you don&rsquo;t intend to reuse the extra PVCs, you can delete them:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl delete pvc data-mysql-3
+kubectl delete pvc data-mysql-4</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="cleaning-up">Cleaning up</h2>
+<ol>
+<li>Cancel the <code>SELECT @@server_id</code> loop by pressing <strong>Ctrl+C</strong> in its terminal,
+or running the following from another terminal:</li>
+</ol>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">   kubectl delete pod mysql-client-loop --now</code></pre></div>
+<ol>
+<li>Delete the StatefulSet. This also begins terminating the Pods.</li>
+</ol>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">   kubectl delete statefulset mysql</code></pre></div>
+<ol>
+<li>Verify that the Pods disappear.
+They might take some time to finish terminating.</li>
+</ol>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">   kubectl get pods -l <span style="color:#b8860b">app</span><span style="color:#666">=</span>mysql</code></pre></div>
+<p>You&rsquo;ll know the Pods have terminated when the above returns:</p>
+
+<pre><code>   No resources found.
+</code></pre>
+
+<ol>
+<li>Delete the ConfigMap, Services, and PersistentVolumeClaims.</li>
+</ol>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">   kubectl delete configmap,service,pvc -l <span style="color:#b8860b">app</span><span style="color:#666">=</span>mysql</code></pre></div>
+<ol>
+<li>If you manually provisioned PersistentVolumes, you also need to manually
+delete them, as well as release the underlying resources.
+If you used a dynamic provisioner, it automatically deletes the
+PersistentVolumes when it sees that you deleted the PersistentVolumeClaims.
+Some dynamic provisioners (such as those for EBS and PD) also release the
+underlying resources upon deleting the PersistentVolumes.</li>
+</ol>
+
+
+
+
+
+<h2 id="what-s-next">What&#39;s next</h2>
+<ul>
+<li>Look in the <a href="https://github.com/kubernetes/charts" target="_blank">Helm Charts repository</a>
+for other stateful application examples.</li>
+</ul>
+
+
+
+
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/tasks/run-application/run-replicated-stateful-application.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/tasks\/run-application\/run-replicated-stateful-application\/",
+					"title" : "Run a Replicated Stateful Application",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/tasks\/run-application\/run-replicated-stateful-application\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/tasks/run-application/run-replicated-stateful-application.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

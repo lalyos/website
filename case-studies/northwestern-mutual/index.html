@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html id="caseStudies" lang="en" class="">
+	<head>
+		<meta charset="utf-8">
+<title>Northwestern Mutual Case Study - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/case_study_styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style_case_studies.css">
+
+
+<meta name="description" content="Northwestern Mutual Case Study" />
+<meta property="og:description" content="Northwestern Mutual Case Study" />
+
+<meta property="og:url" content="https://kubernetes.io/case-studies/northwestern-mutual/" />
+<meta property="og:title" content="Northwestern Mutual Case Study - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+	<div class="banner1 desktop" style="background-image: url('/images/CaseStudy_northwestern_banner1.jpg')">
+  <h1> CASE STUDY:<img src="/images/northwestern_logo.png" style="margin-bottom:-1%" class="header_logo"><br> <div class="subhead">Cloud Native at Northwestern Mutual
+
+
+</div></h1>
+
+</div>
+
+<div class="details">
+    Company &nbsp;<b>Northwestern Mutual</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Location &nbsp;<b>Milwaukee, WI</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Industry &nbsp;<b>Insurance and Financial Services</b>
+</div>
+
+<hr>
+<section class="section1">
+<div class="cols">
+  <div class="col1">
+    <h2>Challenge</h2>
+    In the spring of 2015, Northwestern Mutual acquired a fintech startup, LearnVest, and decided to take "Northwestern Mutual’s leading products and services and meld it with LearnVest’s digital experience and innovative financial planning platform," says Brad Williams, Director of Engineering for Client Experience, Northwestern Mutual. The company’s existing infrastructure had been optimized for batch workflows hosted on on-prem networks; deployments were very traditional, and had to be initiated in the company’s Milwaukee headquarters. "We had to build a platform that was elastically scalable, but also much more responsive, so we could quickly get data to the client website so that our end customers have the experience that they’ve grown to expect," says Williams.
+<br>
+    <h2>Solution</h2>
+    The platform team came up with a plan for using the public cloud (AWS), Docker containers, and Kubernetes for orchestration. "Kubernetes gave us that base framework so teams can be very autonomous in what they’re building and deliver very quickly and frequently," says Northwestern Mutual Cloud Native Engineer Frank Greco Jr. The team also built and open sourced <a href="https://github.com/northwesternmutual/kanali">Kanali</a>, a Kubernetes-native API management tool that uses <a href="http://opentracing.io/">OpenTracing</a>, <a href="https://www.jaegertracing.io/">Jaeger</a>, and <a href="https://grpc.io/about/">gRPC</a>.
+
+</div>
+
+<div class="col2">
+
+<h2>Impact</h2>
+  Before, infrastructure deployments could take two weeks; now, it is done in a matter of minutes. The number of deployments has increased dramatically, from about 24 a year to more than 500 in just the first 10 months of 2017. Availability has also increased: There used to be a six-hour control window for commits every Sunday morning, as well as other periods of general maintenance during which outages could happen. "Now there’s no such thing because there’s no outage window," says Bryan Pfremmer, App Platform Teams Manager, Northwestern Mutual. <a href="https://github.com/northwesternmutual/kanali">Kanali</a> has had an impact on the bottom line. The vendor API management product that the company previously used required 23 servers in production, "dedicated, doing nothing but that," says Pfremmer. "Now it’s all integrated in the existing stack, so that many EC2 instances every month are gone. And that’s just one environment. Between the three that we had plus the test, that’s hard dollar savings."
+  <br>
+</div>
+
+</div>
+</section>
+<div class="banner2">
+  <div class="banner2text" style="width:70% !important;padding-left:15%">
+"You may not be at a point where your whole stack can be cloud native. What if you can take your API management tool and make it cloud native, but still proxy to legacy systems? Using different pieces that are cloud native, open source and Kubernetes native, you can do pretty innovative stuff."  </div>
+</div>
+<section class="section2">
+<div class="fullcol">
+  <h2>For more than 160 years, Northwestern Mutual has maintained its industry leadership by keeping a strong focus on risk management, and for a long time, the company took a similar approach to managing its technology.</h2>
+  With a recent transformation to advance its digital strategy, the company has been making a lot of noise in the cloud native world. <br><br>
+  In the spring of 2015, this insurance and financial services company acquired a fintech startup, LearnVest, and decided to take "Northwestern Mutual’s leading products and services and meld it with LearnVest’s digital experience and innovative financial planning platform," says Brad Williams, Director of Engineering for Client Experience, Northwestern Mutual. The company’s existing infrastructure had been optimized for batch workflows hosted on an on-premise datacenter; deployments were very traditional, and had to be initiated in the company’s Milwaukee headquarters. <br><br>
+  In order to give the company’s 4.5 million clients the digital experience they’d come to expect, says Williams, "We had to build a platform that was elastically scalable, but also much more responsive, so we could quickly get data to the client website. We essentially said, ‘All the controls are off. You build the system that you think is necessary to support a new, modern-facing one.’ That’s why we departed from anything legacy."
+
+</div>
+</section>
+<div class="banner3" style="background-image: url('/images/CaseStudy_northwestern_banner3.jpg')">
+  <div class="banner3text">
+    "Kubernetes has definitely been the right choice for us. It gave us that base framework so teams can be autonomous in what they’re building and deliver very quickly and frequently."
+
+  </div>
+</div>
+<section class="section3">
+<div class="fullcol">
+  Williams and the rest of the platform team decided that the first step would be to start moving from private data centers to AWS. With a new microservice architecture in mind—and the company’s headquarters taken out of the equation—they began using Docker containers. After looking into the various container orchestration options, they went with Kubernetes, even though it was still in beta at the time. "There was some debate whether we should build something ourselves, or just leverage that product and evolve with it," says Northwestern Mutual Cloud Native Engineer Frank Greco Jr. "Kubernetes has definitely been the right choice for us. It gave us that base framework so teams can be autonomous in what they’re building and deliver very quickly and frequently."<br><br>
+  As early adopters, the team had to do a lot of work with Ansible scripts to stand up the cluster. "We had a lot of hard security requirements given the nature of our business," says Northwestern Mutual App Platform Teams Manager Bryan Pfremmer. "We found ourselves running a configuration that very few other people ever tried." The client experience group was the first to use the new platform; today, a few hundred of the company’s 1,500 engineers are using it and more are eager to get on board.<br><br>
+  The results have been dramatic. Before, infrastructure deployments could take two weeks; now, it is done in a matter of minutes. Without the bottleneck that was created at the company’s headquarters, "You can take an app to production in that same day if you want to," says Pfremmer. <br><br>
+  The process used to be so cumbersome that minor bug releases would be bundled with feature releases. With the new streamlined system enabled by Kubernetes, the number of deployments has increased from about 24 a year to more than 500 in just the first 10 months of 2017. Availability has also been improved: There used to be a six-hour control window for commits every early Sunday morning, as well as other periods of general maintenance during which outages could happen. "Now there’s no such thing because there’s no outage window," says Pfremmer.
+
+</div>
+</section>
+<div class="banner4" style="background-image: url('/images/CaseStudy_northwestern_banner4.jpg')">
+  <div class="banner4text">
+"Now the API management is all integrated in the existing stack, so that many EC2 instances every month are gone. And that’s just one environment. Between the three that we had plus the test, that’s hard dollar savings."
+  </div>
+</div>
+
+<section class="section5" style="padding:0px !important;">
+<div class="fullcol">
+  Northwestern Mutual built that API management tool—called Kanali—and open sourced it in the summer of 2017. The team took on the project because the vendor product that they’d been using worked in an "anti-cloud native way that was different than everything else we were doing," says Greco. It required 23 servers in production, "dedicated, doing nothing but that," says Pfremmer. "Now the API management is all integrated in the existing stack, so that many EC2 instances every month are gone. And that’s just one environment. Between the three that we had plus the test, that’s hard dollar savings."<br><br>
+  Kanali has OpenTracing and Jaeger built in. "We wanted to do cloud native, open source tracing," says Greco. "We found that there was a CNCF project, OpenTracing, and it made sense because it was vendor agnostic and that speaks for itself. You only have to instrument it once, and then you control whatever you write on top of it. Then as I was looking at the different UIs that implemented OpenTracing, Jaeger seemed to be the one that looked the best."<br><br>
+  Now the engineers using the Kubernetes deployment platform have the added benefit of visibility in production—and autonomy. "Before, if you wanted to trace, you had to go to the centralized team that managed the vendor product and have them run a trace for you," says Greco. "Now, developers can just use this whenever they want, however they want. It becomes more valuable the more instrumentation downstream that happens, as we mature in it."
+
+</div>
+
+<div class="banner5">
+  <div class="banner5text">
+    As the team continues to improve its stack and share its Kubernetes best practices, it feels that Northwestern Mutual’s reputation as a technology-first company is evolving too. "No one would think a company that’s 160-plus years old is foraying this deep into the cloud and infrastructure stack."<br>
+    <span style="font-size:16px">— APP PLATFORM TEAMS MANAGER, BRYAN PFREMMER
+  </div>
+</div>
+
+<div class="fullcol">
+  But the team didn’t stop there. "In a large enterprise, you’re going to have people using Kubernetes, but then you’re also going to have people using WAS and .NET," says Greco. "You may not be at a point where your whole stack can be cloud native. What if you can take your API management tool and make it cloud native, but still proxy to legacy systems? Using different pieces that are cloud native, open source and Kubernetes native, you can do pretty innovative stuff."<br><br>
+  As the team continues to improve its stack and share its Kubernetes best practices, it feels that Northwestern Mutual’s reputation as a technology-first company is evolving too. "No one would think a company that’s 160-plus years old is foraying this deep into the cloud and infrastructure stack," says Pfremmer. And they’re hoping that means they’ll be able to attract new talent. "We’re trying to make what we’re doing known so that we can find people who are like, ‘Yeah, that’s interesting. I want to come do it!’"
+
+</div>
+
+</section>
+
+
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>多区域运行 - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="多区域运行" />
+<meta property="og:description" content="多区域运行" />
+
+<meta property="og:url" content="https://kubernetes.io/cn/docs/admin/multiple-zones/" />
+<meta property="og:title" content="多区域运行 - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+             <li>
+                <a href="#">
+                    Chinese <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/">English</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Admins" href="/cn/docs/admin/"></a>
+
+	
+	
+		
+		
+<a class="item" data-title="Kubelet authentication/authorization" href="/cn/docs/admin/kubelet-authentication-authorization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes API访问控制" href="/cn/docs/admin/accessing-the-api/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes OpenVSwitch GRE/VxLAN 网络" href="/cn/docs/admin/ovs-networking/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="TLS bootstrapping" href="/cn/docs/admin/kubelet-tls-bootstrapping/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kube-apiserver" href="/cn/docs/admin/kube-apiserver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用启动引导令牌（Bootstrap Tokens）认证" href="/cn/docs/admin/bootstrap-tokens/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="创建大规模集群" href="/cn/docs/admin/cluster-large/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="多区域运行" href="/cn/docs/admin/multiple-zones/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="构建高可用集群">
+		<div class="container">
+		
+		
+		<a class="item" data-title="构建高可用集群" href="/cn/docs/admin/high-availability/"></a>
+		
+		
+	
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="概述">
+		<div class="container">
+		
+		
+		<a class="item" data-title="概述" href="/cn/docs/admin/authorization/"></a>
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="ABAC 模式" href="/cn/docs/admin/authorization/abac/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Webhook Mode" href="/cn/docs/admin/authorization/webhook/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="管理Service Accounts" href="/cn/docs/admin/service-accounts-admin/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="节点设置校验" href="/cn/docs/admin/node-conformance/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/admin/multiple-zones.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>多区域运行</h1>
+
+
+
+
+
+<h2 id="介绍">介绍</h2>
+
+<p>Kubernetes 从v1.2开始支持将集群运行在多个故障域中。
+(GCE 中称其为 &ldquo;区（Zones）&rdquo;， AWS 中称其为 &ldquo;可用区（Availability Zones）&rdquo;，这里我们也称其为 &ldquo;区&rdquo;)。
+它是广泛意义上的集群联邦特性的轻量级版本 (之前被称为 <a href="https://github.com/kubernetes/community/blob/master/contributors/design-proposals/multicluster/federation.md" target="_blank">&ldquo;Ubernetes&rdquo;</a>)。
+完整的集群联邦能够将多个分别运行在不同区或云供应商（或本地数据中心）的集群集中管理。
+然而，很多用户只是希望通过将单一云供应商上的Kubernetes集群运行在多个区域，来提高集群的可用性，
+这就是1.2版本中提供的对多区域的支持。
+(之前被称为 &ldquo;Ubernetes Lite&rdquo;)。</p>
+
+<p>多区域的支持是有明确限制的： Kubernetes集群能够运行在多个区，但必须在同一个地域内 (云供应商也须一致)。
+目前只有GCE和AWS自动支持 (尽管在其他云甚至裸机上，也很容易通过为节点和卷添加合适的标签来实现类似的支持)。</p>
+
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#介绍">介绍</a></li>
+<li><a href="#功能">功能</a></li>
+<li><a href="#限制">限制</a></li>
+<li><a href="#演练">演练</a>
+<ul>
+<li><a href="#创建集群">创建集群</a></li>
+<li><a href="#标记节点">标记节点</a></li>
+<li><a href="#添加其它区中的节点">添加其它区中的节点</a></li>
+<li><a href="#卷的亲和性">卷的亲和性</a></li>
+<li><a href="#pod的跨区域分布">Pod的跨区域分布</a></li>
+<li><a href="#停止集群">停止集群</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+
+<h2 id="功能">功能</h2>
+
+<p>节点启动时，Kubelet自动为其添加区信息的标签。</p>
+
+<p>在单一区域的集群中，Kubernetes 会自动将副本管理器或服务的pod分布到各节点上 (以减轻单实例故障的影响)。
+在多区域的集群中，这种分布的行为扩展到了区域级别
+(以减少区域故障对整体的影响)。  (通过 <code>SelectorSpreadPriority</code> 来实现)。
+这种分发是尽力而为（best-effort）的，所以如果集群在各个区之间是异构的
+(比如，各区间的节点数量不同、节点类型不同、pod的资源需求不同等)可能导致pod无法完全均匀地分布。
+如果需要的话，用户可以使用同质的区(节点数量和节点类型相同)来减少区域之间分配不均匀的可能。</p>
+
+<p>当卷被创建时， <code>PersistentVolumeLabel</code>准入控制器会自动为其添加区域的标签。
+调度器 (通过 <code>VolumeZonePredicate</code> 断言) 会确申领该卷的pod被调度到该卷对应的区域，
+因为卷是不支持跨区挂载的。</p>
+
+<h2 id="限制">限制</h2>
+
+<p>对多区的支持有一些重要的限制：</p>
+
+<ul>
+<li><p>我们假设不同的区域间在网络上离得很近，所以我们不做任何的区域感知路由。 特别是，通过服务的网络访问可能跨区域 (即使该服务后端pod的其中一些运行在与客户端相同的区域中)，这可能导致额外的延迟和损耗。</p></li>
+
+<li><p>卷的区域亲和性只对 <code>PersistentVolume</code>有效。 例如，如果你在pod的spec中直接指定一个EBS的卷，则不会生效。</p></li>
+
+<li><p>集群不支持跨云平台或地域 (这些功能需要完整的集群联邦特性支持)。</p></li>
+
+<li><p>尽管节点位于多区域，目前默认情况下 kube-up 创建的管理节点是单实例的。 所以尽管服务是高可用的，并且能够容忍跨区域的性能损耗，管理平面还是单区域的。 需要高可用的管理平面的用户可以按照 <a href="/docs/admin/high-availability">高可用</a> 指导来操作。</p></li>
+
+<li><p>目前StatefulSet的卷动态创建时的跨区域分配，与pod的亲和性/反亲和性不兼容。</p></li>
+
+<li><p>StatefulSet的名称包含破折号 (&ldquo;-&rdquo;)时，可能影响到卷在区域间的均匀分布。</p></li>
+
+<li><p>为deployment或pod指定多个PVC时，要求其StorageClass处于同一区域内，否则，相应的PV卷需要在一个区域中静态配置。 另一种方式是使用StatefulSet，这可以确保同一副本所挂载的卷位于同一区内。</p></li>
+</ul>
+
+<h2 id="演练">演练</h2>
+
+<p>接下来我们将介绍如何同时在 GCE 和 AWS 上创建和使用多区域的集群。 为此，你需要创建一个完整的集群
+(指定 <code>MULTIZONE=true</code>)，然后再次执行 <code>kube-up</code>（指定 <code>KUBE_USE_EXISTING_MASTER=true</code>）来添加其他区域的节点。</p>
+
+<h3 id="创建集群">创建集群</h3>
+
+<p>按正常方式创建集群，但是传入 MULTIZONE 来通知集群对多区域进行管理。 在 us-central1-a 区域创建节点。</p>
+
+<p>GCE:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">curl -sS https://get.k8s.io | <span style="color:#b8860b">MULTIZONE</span><span style="color:#666">=</span><span style="color:#a2f">true</span> <span style="color:#b8860b">KUBERNETES_PROVIDER</span><span style="color:#666">=</span>gce <span style="color:#b8860b">KUBE_GCE_ZONE</span><span style="color:#666">=</span>us-central1-a <span style="color:#b8860b">NUM_NODES</span><span style="color:#666">=</span><span style="color:#666">3</span> bash</code></pre></div>
+<p>AWS:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">curl -sS https://get.k8s.io | <span style="color:#b8860b">MULTIZONE</span><span style="color:#666">=</span><span style="color:#a2f">true</span> <span style="color:#b8860b">KUBERNETES_PROVIDER</span><span style="color:#666">=</span>aws <span style="color:#b8860b">KUBE_AWS_ZONE</span><span style="color:#666">=</span>us-west-2a <span style="color:#b8860b">NUM_NODES</span><span style="color:#666">=</span><span style="color:#666">3</span> bash</code></pre></div>
+<p>该步骤按正常方式创建了集群，仍然运行在单个区域中。
+但 <code>MULTIZONE=true</code> 已经开启了多区域的能力。</p>
+
+<h3 id="标记节点">标记节点</h3>
+
+<p>查看节点，你可以发现节点上打了区域信息的标签。
+节点位于 <code>us-central1-a</code> (GCE) 或者 <code>us-west-2a</code> (AWS)。 标签 <code>failure-domain.beta.kubernetes.io/region</code> 用于区分地域，
+标签 <code>failure-domain.beta.kubernetes.io/zone</code> 用于区分区域。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">&gt; kubectl get nodes --show-labels
+
+
+NAME                     STATUS                     AGE   VERSION          LABELS
+kubernetes-master        Ready,SchedulingDisabled   6m    v1.6.0+fff5156   beta.kubernetes.io/instance-type<span style="color:#666">=</span>n1-standard-1,failure-domain.beta.kubernetes.io/region<span style="color:#666">=</span>us-central1,failure-domain.beta.kubernetes.io/zone<span style="color:#666">=</span>us-central1-a,kubernetes.io/hostname<span style="color:#666">=</span>kubernetes-master
+kubernetes-minion-87j9   Ready                      6m    v1.6.0+fff5156   beta.kubernetes.io/instance-type<span style="color:#666">=</span>n1-standard-2,failure-domain.beta.kubernetes.io/region<span style="color:#666">=</span>us-central1,failure-domain.beta.kubernetes.io/zone<span style="color:#666">=</span>us-central1-a,kubernetes.io/hostname<span style="color:#666">=</span>kubernetes-minion-87j9
+kubernetes-minion-9vlv   Ready                      6m    v1.6.0+fff5156   beta.kubernetes.io/instance-type<span style="color:#666">=</span>n1-standard-2,failure-domain.beta.kubernetes.io/region<span style="color:#666">=</span>us-central1,failure-domain.beta.kubernetes.io/zone<span style="color:#666">=</span>us-central1-a,kubernetes.io/hostname<span style="color:#666">=</span>kubernetes-minion-9vlv
+kubernetes-minion-a12q   Ready                      6m    v1.6.0+fff5156   beta.kubernetes.io/instance-type<span style="color:#666">=</span>n1-standard-2,failure-domain.beta.kubernetes.io/region<span style="color:#666">=</span>us-central1,failure-domain.beta.kubernetes.io/zone<span style="color:#666">=</span>us-central1-a,kubernetes.io/hostname<span style="color:#666">=</span>kubernetes-minion-a12q</code></pre></div>
+<h3 id="添加其它区中的节点">添加其它区中的节点</h3>
+
+<p>接下来我们复用已有的管理节点，添加运行于其它区域 （us-central1-b或us-west-2b）中的节点。
+再次执行 kube-up， 通过指定 <code>KUBE_USE_EXISTING_MASTER=true</code>，
+kube-up 不会创建新的管理节点，而是会复用之前创建的。</p>
+
+<p>GCE:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#b8860b">KUBE_USE_EXISTING_MASTER</span><span style="color:#666">=</span><span style="color:#a2f">true</span> <span style="color:#b8860b">MULTIZONE</span><span style="color:#666">=</span><span style="color:#a2f">true</span> <span style="color:#b8860b">KUBERNETES_PROVIDER</span><span style="color:#666">=</span>gce <span style="color:#b8860b">KUBE_GCE_ZONE</span><span style="color:#666">=</span>us-central1-b <span style="color:#b8860b">NUM_NODES</span><span style="color:#666">=</span><span style="color:#666">3</span> kubernetes/cluster/kube-up.sh</code></pre></div>
+<p>在 AWS 中我们还需要为新增的子网指定网络CIDR，还有管理节点的内部IP地址。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#b8860b">KUBE_USE_EXISTING_MASTER</span><span style="color:#666">=</span><span style="color:#a2f">true</span> <span style="color:#b8860b">MULTIZONE</span><span style="color:#666">=</span><span style="color:#a2f">true</span> <span style="color:#b8860b">KUBERNETES_PROVIDER</span><span style="color:#666">=</span>aws <span style="color:#b8860b">KUBE_AWS_ZONE</span><span style="color:#666">=</span>us-west-2b <span style="color:#b8860b">NUM_NODES</span><span style="color:#666">=</span><span style="color:#666">3</span> <span style="color:#b8860b">KUBE_SUBNET_CIDR</span><span style="color:#666">=</span><span style="color:#666">172</span>.20.1.0/24 <span style="color:#b8860b">MASTER_INTERNAL_IP</span><span style="color:#666">=</span><span style="color:#666">172</span>.20.0.9 kubernetes/cluster/kube-up.sh</code></pre></div>
+<p>再次查看节点，3个新增的节点已经启动，并被标记为us-central1-b：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">&gt; kubectl get nodes --show-labels
+
+NAME                     STATUS                     AGE   VERSION           LABELS
+kubernetes-master        Ready,SchedulingDisabled   16m   v1.6.0+fff5156    beta.kubernetes.io/instance-type<span style="color:#666">=</span>n1-standard-1,failure-domain.beta.kubernetes.io/region<span style="color:#666">=</span>us-central1,failure-domain.beta.kubernetes.io/zone<span style="color:#666">=</span>us-central1-a,kubernetes.io/hostname<span style="color:#666">=</span>kubernetes-master
+kubernetes-minion-281d   Ready                      2m    v1.6.0+fff5156    beta.kubernetes.io/instance-type<span style="color:#666">=</span>n1-standard-2,failure-domain.beta.kubernetes.io/region<span style="color:#666">=</span>us-central1,failure-domain.beta.kubernetes.io/zone<span style="color:#666">=</span>us-central1-b,kubernetes.io/hostname<span style="color:#666">=</span>kubernetes-minion-281d
+kubernetes-minion-87j9   Ready                      16m   v1.6.0+fff5156    beta.kubernetes.io/instance-type<span style="color:#666">=</span>n1-standard-2,failure-domain.beta.kubernetes.io/region<span style="color:#666">=</span>us-central1,failure-domain.beta.kubernetes.io/zone<span style="color:#666">=</span>us-central1-a,kubernetes.io/hostname<span style="color:#666">=</span>kubernetes-minion-87j9
+kubernetes-minion-9vlv   Ready                      16m   v1.6.0+fff5156    beta.kubernetes.io/instance-type<span style="color:#666">=</span>n1-standard-2,failure-domain.beta.kubernetes.io/region<span style="color:#666">=</span>us-central1,failure-domain.beta.kubernetes.io/zone<span style="color:#666">=</span>us-central1-a,kubernetes.io/hostname<span style="color:#666">=</span>kubernetes-minion-9vlv
+kubernetes-minion-a12q   Ready                      17m   v1.6.0+fff5156    beta.kubernetes.io/instance-type<span style="color:#666">=</span>n1-standard-2,failure-domain.beta.kubernetes.io/region<span style="color:#666">=</span>us-central1,failure-domain.beta.kubernetes.io/zone<span style="color:#666">=</span>us-central1-a,kubernetes.io/hostname<span style="color:#666">=</span>kubernetes-minion-a12q
+kubernetes-minion-pp2f   Ready                      2m    v1.6.0+fff5156    beta.kubernetes.io/instance-type<span style="color:#666">=</span>n1-standard-2,failure-domain.beta.kubernetes.io/region<span style="color:#666">=</span>us-central1,failure-domain.beta.kubernetes.io/zone<span style="color:#666">=</span>us-central1-b,kubernetes.io/hostname<span style="color:#666">=</span>kubernetes-minion-pp2f
+kubernetes-minion-wf8i   Ready                      2m    v1.6.0+fff5156    beta.kubernetes.io/instance-type<span style="color:#666">=</span>n1-standard-2,failure-domain.beta.kubernetes.io/region<span style="color:#666">=</span>us-central1,failure-domain.beta.kubernetes.io/zone<span style="color:#666">=</span>us-central1-b,kubernetes.io/hostname<span style="color:#666">=</span>kubernetes-minion-wf8i</code></pre></div>
+<h3 id="卷的亲和性">卷的亲和性</h3>
+
+<p>使用动态创建卷的功能创建一个卷 (只有PV持久卷才支持区域亲和性)：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json"><span style="">kubectl</span> <span style="">create</span> <span style="">-f</span> <span style="">-</span> <span style="">&lt;&lt;EOF</span>
+{
+  <span style="color:#008000;font-weight:bold">&#34;kind&#34;</span>: <span style="color:#b44">&#34;PersistentVolumeClaim&#34;</span>,
+  <span style="color:#008000;font-weight:bold">&#34;apiVersion&#34;</span>: <span style="color:#b44">&#34;v1&#34;</span>,
+  <span style="color:#008000;font-weight:bold">&#34;metadata&#34;</span>: {
+    <span style="color:#008000;font-weight:bold">&#34;name&#34;</span>: <span style="color:#b44">&#34;claim1&#34;</span>,
+    <span style="color:#008000;font-weight:bold">&#34;annotations&#34;</span>: {
+        <span style="color:#008000;font-weight:bold">&#34;volume.alpha.kubernetes.io/storage-class&#34;</span>: <span style="color:#b44">&#34;foo&#34;</span>
+    }
+  },
+  <span style="color:#008000;font-weight:bold">&#34;spec&#34;</span>: {
+    <span style="color:#008000;font-weight:bold">&#34;accessModes&#34;</span>: [
+      <span style="color:#b44">&#34;ReadWriteOnce&#34;</span>
+    ],
+    <span style="color:#008000;font-weight:bold">&#34;resources&#34;</span>: {
+      <span style="color:#008000;font-weight:bold">&#34;requests&#34;</span>: {
+        <span style="color:#008000;font-weight:bold">&#34;storage&#34;</span>: <span style="color:#b44">&#34;5Gi&#34;</span>
+      }
+    }
+  }
+}
+<span style="">EOF</span></code></pre></div>
+<p><strong>注意：</strong> Kubernetes 1.3以上的版本中可以将PVC分发到多个已配置的区域中，在1.2版本中， 动态卷只能创建在管理节点所在的区域内(即这里的 us-central1-a / us-west-2a)；相关issue
+(<a href="https://github.com/kubernetes/kubernetes/issues/23330" target="_blank">#23330</a>)
+在1.3后续的版本中已解决。</p>
+
+<p>现在我们验证一下 Kubernetes 自动为创建的PV打上了所在地域和区域的标签。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">&gt; kubectl get pv --show-labels
+NAME           CAPACITY   ACCESSMODES   STATUS    CLAIM            REASON    AGE       LABELS
+pv-gce-mj4gm   5Gi        RWO           Bound     default/claim1             46s       failure-domain.beta.kubernetes.io/region<span style="color:#666">=</span>us-central1,failure-domain.beta.kubernetes.io/zone<span style="color:#666">=</span>us-central1-a</code></pre></div>
+<p>现在我们将创建使用这些PVC的pod。
+因为 GCE 的PD存储 / AWS 的EBS 卷 不支持跨区域挂载，
+这意味着相应的pod只能创建在卷所在的区域中。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">kubectl<span style="color:#bbb"> </span>create<span style="color:#bbb"> </span>-f<span style="color:#bbb"> </span>-<span style="color:#bbb"> </span>&lt;&lt;EOF<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Pod<span style="color:#bbb">
+</span><span style="color:#bbb"></span>apiVersion:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>mypod<span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>containers:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>myfrontend<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>image:<span style="color:#bbb"> </span>nginx<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>volumeMounts:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>-<span style="color:#bbb"> </span>mountPath:<span style="color:#bbb"> </span><span style="color:#b44">&#34;/var/www/html&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span>name:<span style="color:#bbb"> </span>mypd<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>volumes:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>mypd<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>persistentVolumeClaim:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>claimName:<span style="color:#bbb"> </span>claim1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>EOF</code></pre></div>
+<p>注意pod被自动创建在了卷所在的区域中，因为云供应商通常不支持卷的跨区域挂载（attach）。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">&gt; kubectl describe pod mypod | grep Node
+Node:        kubernetes-minion-9vlv/10.240.0.5
+&gt; kubectl get node kubernetes-minion-9vlv --show-labels
+NAME                     STATUS    AGE    VERSION          LABELS
+kubernetes-minion-9vlv   Ready     22m    v1.6.0+fff5156   beta.kubernetes.io/instance-type<span style="color:#666">=</span>n1-standard-2,failure-domain.beta.kubernetes.io/region<span style="color:#666">=</span>us-central1,failure-domain.beta.kubernetes.io/zone<span style="color:#666">=</span>us-central1-a,kubernetes.io/hostname<span style="color:#666">=</span>kubernetes-minion-9vlv</code></pre></div>
+<h3 id="pod的跨区域分布">Pod的跨区域分布</h3>
+
+<p>副本管理器或服务的pod被自动创建在了不同的区域。  首先，在第三个区域内启动节点：</p>
+
+<p>GCE:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#b8860b">KUBE_USE_EXISTING_MASTER</span><span style="color:#666">=</span><span style="color:#a2f">true</span> <span style="color:#b8860b">MULTIZONE</span><span style="color:#666">=</span><span style="color:#a2f">true</span> <span style="color:#b8860b">KUBERNETES_PROVIDER</span><span style="color:#666">=</span>gce <span style="color:#b8860b">KUBE_GCE_ZONE</span><span style="color:#666">=</span>us-central1-f <span style="color:#b8860b">NUM_NODES</span><span style="color:#666">=</span><span style="color:#666">3</span> kubernetes/cluster/kube-up.sh</code></pre></div>
+<p>AWS:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#b8860b">KUBE_USE_EXISTING_MASTER</span><span style="color:#666">=</span><span style="color:#a2f">true</span> <span style="color:#b8860b">MULTIZONE</span><span style="color:#666">=</span><span style="color:#a2f">true</span> <span style="color:#b8860b">KUBERNETES_PROVIDER</span><span style="color:#666">=</span>aws <span style="color:#b8860b">KUBE_AWS_ZONE</span><span style="color:#666">=</span>us-west-2c <span style="color:#b8860b">NUM_NODES</span><span style="color:#666">=</span><span style="color:#666">3</span> <span style="color:#b8860b">KUBE_SUBNET_CIDR</span><span style="color:#666">=</span><span style="color:#666">172</span>.20.2.0/24 <span style="color:#b8860b">MASTER_INTERNAL_IP</span><span style="color:#666">=</span><span style="color:#666">172</span>.20.0.9 kubernetes/cluster/kube-up.sh</code></pre></div>
+<p>验证你现在在3个区域内拥有节点:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl get nodes --show-labels</code></pre></div>
+<p>创建 guestbook-go 示例应用， 它包含一个副本数为3的RC，运行一个简单的网络应用：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">find kubernetes/examples/guestbook-go/ -name <span style="color:#b44">&#39;*.json&#39;</span> | xargs -I <span style="color:#666">{}</span> kubectl create -f <span style="color:#666">{}</span></code></pre></div>
+<p>Pod应该分布在全部3个区域上：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">&gt;  kubectl describe pod -l <span style="color:#b8860b">app</span><span style="color:#666">=</span>guestbook | grep Node
+Node:        kubernetes-minion-9vlv/10.240.0.5
+Node:        kubernetes-minion-281d/10.240.0.8
+Node:        kubernetes-minion-olsh/10.240.0.11
+
+ &gt; kubectl get node kubernetes-minion-9vlv kubernetes-minion-281d kubernetes-minion-olsh --show-labels
+NAME                     STATUS    AGE    VERSION          LABELS
+kubernetes-minion-9vlv   Ready     34m    v1.6.0+fff5156   beta.kubernetes.io/instance-type<span style="color:#666">=</span>n1-standard-2,failure-domain.beta.kubernetes.io/region<span style="color:#666">=</span>us-central1,failure-domain.beta.kubernetes.io/zone<span style="color:#666">=</span>us-central1-a,kubernetes.io/hostname<span style="color:#666">=</span>kubernetes-minion-9vlv
+kubernetes-minion-281d   Ready     20m    v1.6.0+fff5156   beta.kubernetes.io/instance-type<span style="color:#666">=</span>n1-standard-2,failure-domain.beta.kubernetes.io/region<span style="color:#666">=</span>us-central1,failure-domain.beta.kubernetes.io/zone<span style="color:#666">=</span>us-central1-b,kubernetes.io/hostname<span style="color:#666">=</span>kubernetes-minion-281d
+kubernetes-minion-olsh   Ready     3m     v1.6.0+fff5156   beta.kubernetes.io/instance-type<span style="color:#666">=</span>n1-standard-2,failure-domain.beta.kubernetes.io/region<span style="color:#666">=</span>us-central1,failure-domain.beta.kubernetes.io/zone<span style="color:#666">=</span>us-central1-f,kubernetes.io/hostname<span style="color:#666">=</span>kubernetes-minion-olsh</code></pre></div>
+<p>负载平衡器覆盖集群中的所有区域； guestbook-go 示例包含一个
+负载均衡服务的例子：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">&gt; kubectl describe service guestbook | grep LoadBalancer.Ingress
+LoadBalancer Ingress:   <span style="color:#666">130</span>.211.126.21
+
+&gt; <span style="color:#b8860b">ip</span><span style="color:#666">=</span><span style="color:#666">130</span>.211.126.21
+
+&gt; curl -s http://<span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">ip</span><span style="color:#b68;font-weight:bold">}</span>:3000/env | grep HOSTNAME
+  <span style="color:#b44">&#34;HOSTNAME&#34;</span>: <span style="color:#b44">&#34;guestbook-44sep&#34;</span>,
+
+&gt; <span style="color:#666">(</span><span style="color:#a2f;font-weight:bold">for</span> i in <span style="color:#b44">`</span>seq <span style="color:#666">20</span><span style="color:#b44">`</span>; <span style="color:#a2f;font-weight:bold">do</span> curl -s http://<span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">ip</span><span style="color:#b68;font-weight:bold">}</span>:3000/env | grep HOSTNAME; <span style="color:#a2f;font-weight:bold">done</span><span style="color:#666">)</span>  | sort | uniq
+  <span style="color:#b44">&#34;HOSTNAME&#34;</span>: <span style="color:#b44">&#34;guestbook-44sep&#34;</span>,
+  <span style="color:#b44">&#34;HOSTNAME&#34;</span>: <span style="color:#b44">&#34;guestbook-hum5n&#34;</span>,
+  <span style="color:#b44">&#34;HOSTNAME&#34;</span>: <span style="color:#b44">&#34;guestbook-ppm40&#34;</span>,</code></pre></div>
+<p>负载平衡器正确指向了所有的pod，即使它们位于不同的区域内。</p>
+
+<h3 id="停止集群">停止集群</h3>
+
+<p>使用完成后，进行清理：</p>
+
+<p>GCE:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#b8860b">KUBERNETES_PROVIDER</span><span style="color:#666">=</span>gce <span style="color:#b8860b">KUBE_USE_EXISTING_MASTER</span><span style="color:#666">=</span><span style="color:#a2f">true</span> <span style="color:#b8860b">KUBE_GCE_ZONE</span><span style="color:#666">=</span>us-central1-f kubernetes/cluster/kube-down.sh
+<span style="color:#b8860b">KUBERNETES_PROVIDER</span><span style="color:#666">=</span>gce <span style="color:#b8860b">KUBE_USE_EXISTING_MASTER</span><span style="color:#666">=</span><span style="color:#a2f">true</span> <span style="color:#b8860b">KUBE_GCE_ZONE</span><span style="color:#666">=</span>us-central1-b kubernetes/cluster/kube-down.sh
+<span style="color:#b8860b">KUBERNETES_PROVIDER</span><span style="color:#666">=</span>gce <span style="color:#b8860b">KUBE_GCE_ZONE</span><span style="color:#666">=</span>us-central1-a kubernetes/cluster/kube-down.sh</code></pre></div>
+<p>AWS:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#b8860b">KUBERNETES_PROVIDER</span><span style="color:#666">=</span>aws <span style="color:#b8860b">KUBE_USE_EXISTING_MASTER</span><span style="color:#666">=</span><span style="color:#a2f">true</span> <span style="color:#b8860b">KUBE_AWS_ZONE</span><span style="color:#666">=</span>us-west-2c kubernetes/cluster/kube-down.sh
+<span style="color:#b8860b">KUBERNETES_PROVIDER</span><span style="color:#666">=</span>aws <span style="color:#b8860b">KUBE_USE_EXISTING_MASTER</span><span style="color:#666">=</span><span style="color:#a2f">true</span> <span style="color:#b8860b">KUBE_AWS_ZONE</span><span style="color:#666">=</span>us-west-2b kubernetes/cluster/kube-down.sh
+<span style="color:#b8860b">KUBERNETES_PROVIDER</span><span style="color:#666">=</span>aws <span style="color:#b8860b">KUBE_AWS_ZONE</span><span style="color:#666">=</span>us-west-2a kubernetes/cluster/kube-down.sh</code></pre></div>
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/admin/multiple-zones.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/cn\/docs\/admin\/multiple-zones\/",
+					"title" : "多区域运行",
+					"permalink" : "https:\/\/kubernetes.io\/cn\/docs\/admin\/multiple-zones\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/admin/multiple-zones.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

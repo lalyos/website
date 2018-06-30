@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html id="caseStudies" lang="en" class="">
+	<head>
+		<meta charset="utf-8">
+<title>Pearson Case Study - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/case_study_styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style_case_studies.css">
+
+
+<meta name="description" content="Pearson Case Study" />
+<meta property="og:description" content="Pearson Case Study" />
+
+<meta property="og:url" content="https://kubernetes.io/case-studies/pearson/" />
+<meta property="og:title" content="Pearson Case Study - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+	<div class="banner1" style="background-image: url('/images/CaseStudy_pearson_banner1.jpg')">
+  <h1> CASE STUDY:<img src="/images/pearson_logo.png" style="margin-bottom:-1.5%;" class="header_logo"><br> <div class="subhead">Reinventing the World’s Largest Education Company With Kubernetes
+
+
+</div></h1>
+
+</div>
+
+<div class="details">
+    Company &nbsp;<b>Pearson</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Location &nbsp;<b>Global
+</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Industry &nbsp;<b>Education</b>
+</div>
+
+<hr>
+<section class="section1">
+<div class="cols">
+  <div class="col1">
+    <h2>Challenge</h2>
+    A global education company serving 75 million learners, Pearson set a goal to more than double that number, to 200 million, by 2025. A key part of this growth is in digital learning experiences, and Pearson was having difficulty in scaling and adapting to its growing online audience. They needed an infrastructure platform that would be able to scale quickly and deliver products to market faster.
+
+    <br>
+    <h2>Solution</h2>
+    "To transform our infrastructure, we had to think beyond simply enabling automated provisioning," says Chris Jackson, Director for Cloud Platforms & SRE at Pearson. "We realized we had to build a platform that would allow Pearson developers to build, manage and deploy applications in a completely different way." The team chose Docker container technology and Kubernetes orchestration "because of its flexibility, ease of management and the way it would improve our engineers’ productivity."
+    <br>
+    </div>
+
+<div class="col2">
+
+  <h2>Impact</h2>
+  With the platform, there has been substantial improvements in productivity and speed of delivery. "In some cases, we’ve gone from nine months to provision physical assets in a data center to just a few minutes to provision and to get a new idea in front of a customer," says John Shirley, Lead Site Reliability Engineer for the Cloud Platform Team. Jackson estimates they’ve achieved 15-20% developer productivity savings. Before, outages were an issue during their busiest time of year, the back-to-school period. Now, there’s high confidence in their ability to meet aggressive customer SLAs.
+  <br>
+</div>
+
+</div>
+
+</section>
+  <div class="banner2" style="padding-top:% !important">
+    <div class="banner2text" style="width:70% !important">
+
+    "We’re already seeing tremendous benefits with Kubernetes—improved engineering productivity, faster delivery of applications and a simplified infrastructure. But this is just the beginning. Kubernetes will help transform the way that educational content is delivered online."<span style="font-size:16px;text-transform:uppercase;letter-spacing:0.1em;">— Chris Jackson, Director for Cloud Platforms & SRE at Pearson</span>
+  </div>
+</div>
+<section class="section2">
+<div class="fullcol">
+  In 2015, Pearson was already serving 75 million learners as the world’s largest education company, offering curriculum and assessment tools for Pre-K through college and beyond. Understanding that innovating the digital education experience was the key to the future of all forms of education, the company set out to increase its reach to 200 million people by 2025.<br><br>
+  That goal would require a transformation of its existing infrastructure, which was in data centers. In some cases, it took nine months to provision physical assets. In order to adapt to the demands of its growing online audience, Pearson needed an infrastructure platform that would be able to scale quickly and deliver business-critical products to market faster. "We had to think beyond simply enabling automated provisioning," says Chris Jackson, Director for Cloud Platforms & SRE at Pearson. "We realized we had to build a platform that would allow Pearson developers to build, manage and deploy applications in a completely different way." <br><br>
+  With 400 development groups and diverse brands with varying business and technical needs, Pearson embraced Docker container technology so that each brand could experiment with building new types of content using their preferred technologies, and then deliver it using containers. Jackson chose Kubernetes orchestration "because of its flexibility, ease of management and the way it would improve our engineers’ productivity," he says.<br><br>
+  The team adopted Kubernetes when it was still version 1.2 and are still going strong now on 1.7; they use Terraform and Ansible to deploy it on to basic AWS primitives. "We were trying to understand how we can create value for Pearson from this technology," says Ben Somogyi, Principal Architect for the Cloud Platforms. "It turned out that Kubernetes’ benefits are huge. We’re trying to help our applications development teams that use our platform go faster, so we filled that gap with a CI/CD pipeline that builds their images for them, standardizes them, patches everything up, allows them to deploy their different environments onto the cluster, and obfuscates the details of how difficult the work underneath the covers is."
+
+</div>
+</section>
+<div class="banner3" style="background-image: url('/images/CaseStudy_pearson_banner3.jpg')">
+  <div class="banner3text">
+  "Your internal customers need to feel like they are choosing the very best option for them. We are experiencing this first hand in the growth of adoption. We are seeing triple-digit, year-on-year growth of the service."
+  </div>
+</div>
+<section class="section3">
+<div class="fullcol">
+  That work resulted in two tools for building and deploying applications in the cluster that Pearson has open sourced. "We’re an education company, so we want to share what we can," says Somogyi.<br><br>
+  Now that development teams no longer have to worry about infrastructure, there have been substantial improvements in productivity and speed of delivery. "In some cases, we’ve gone from nine months to provision physical assets in a data center to just a few minutes to provision and to get a new idea in front of a customer," says John Shirley, Lead Site Reliability Engineer for the Cloud Platform Team. <br><br>
+  According to Jackson, the Cloud Platforms team can "provision a new proof-of-concept environment for a development team in minutes, and then they can take that to production as quickly as they are able to. This is the value proposition of all major technology services, and we had to compete like one to become our developers’ preferred choice. Just because you work for the same company, you do not have the right to force people into a mediocre service. Your internal customers need to feel like they are choosing the very best option for them. We are experiencing this first hand in the growth of adoption. We are seeing triple-digit, year-on-year growth of the service."<br><br>
+  Jackson estimates they’ve achieved a 15-20% boost in productivity for developer teams who adopt the platform. They also see a reduction in the number of customer-impacting incidents. Plus, says Jackson, "Teams who were previously limited to 1-2 releases per academic year can now ship code multiple times per day!"
+</div>
+</section>
+<div class="banner4" style="background-image: url('/images/CaseStudy_pearson_banner4.jpg')">
+  <div class="banner4text">
+     "Teams who were previously limited to 1-2 releases per academic year can now ship code multiple times per day!"
+  </div>
+</div>
+
+<section class="section5" style="padding:0px !important">
+<div class="fullcol">
+  Availability has also been positively impacted. The back-to-school period is the company’s busiest time of year, and "you have to keep applications up," says Somogyi. Before, this was a pain point for the legacy infrastructure. Now, for the applications that have been migrated to the Kubernetes platform, "We have 100% uptime. We’re not worried about 9s. There aren’t any. It’s 100%, which is pretty astonishing for us, compared to some of the existing platforms that have legacy challenges," says Shirley.
+<br><br>
+  "You can’t even begin to put a price on how much that saves the company," Jackson explains. "A reduction in the number of support cases takes load out of our operations. The customer sentiment of having a reliable product drives customer retention and growth. It frees us to think about investing more into our digital transformation and taking a better quality of education to a global scale."
+<br><br>
+  The platform itself is also being broken down, "so we can quickly release smaller pieces of the platform, like upgrading our Kubernetes or all the different modules that make up our platform," says Somogyi. "One of the big focuses in 2018 is this scheme of delivery to update the platform itself."
+<br><br>
+  Guided by Pearson’s overarching goal of getting to 200 million users, the team has run internal tests of the platform’s scalability. "We had a challenge: 28 million requests within a 10 minute period," says Shirley. "And we demonstrated that we can hit that, with an acceptable latency. We saw that we could actually get that pretty readily, and we scaled up in just a few seconds, using open source tools entirely. Shout out to <a href="https://locust.io/">Locust</a> for that one. So that’s amazing."
+</div>
+
+<div class="banner5">
+  <div class="banner5text">
+  "We have 100% uptime. We’re not worried about 9s. There aren’t any. It’s 100%, which is pretty astonishing for us, compared to some of the existing platforms that have legacy challenges. You can’t even begin to put a price on how much that saves the company."</div>
+  </div>
+
+<div class="fullcol">
+  In just two years, "We’re already seeing tremendous benefits with Kubernetes—improved engineering productivity, faster delivery of applications and a simplified infrastructure," says Jackson. "But this is just the beginning. Kubernetes will help transform the way that educational content is delivered online."<br><br>
+  So far, about 15 production products are running on the new platform, including Pearson’s new flagship digital education service, the Global Learning Platform. The Cloud Platform team continues to prepare, onboard and support customers that are a good fit for the platform. Some existing products will be refactored into 12-factor apps, while others are being developed so that they can live on the platform from the get-go. "There are challenges with bringing in new customers of course, because we have to help them to see a different way of developing, a different way of building," says Shirley. <br><br>
+  But, he adds, "It is our corporate motto: Always Learning. We encourage those teams that haven’t started a cloud native journey, to see the future of technology, to learn, to explore. It will pique your interest. Keep learning."
+
+</div>
+</section>
+
+
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

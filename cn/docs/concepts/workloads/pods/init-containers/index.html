@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Init 容器 - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="Init 容器" />
+<meta property="og:description" content="Init 容器" />
+
+<meta property="og:url" content="https://kubernetes.io/cn/docs/concepts/workloads/pods/init-containers/" />
+<meta property="og:title" content="Init 容器 - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+             <li>
+                <a href="#">
+                    Chinese <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/">English</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+        
+        <a class="item" data-title="Home" href="/cn/docs/"></a>
+
+	
+	
+		
+		
+<a class="item" data-title="" href="/cn/docs/concepts/architecture/cloud-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="" href="/cn/docs/concepts/overview/kubernetes-api/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Admins">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Kubelet authentication/authorization" href="/cn/docs/admin/kubelet-authentication-authorization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes API访问控制" href="/cn/docs/admin/accessing-the-api/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes OpenVSwitch GRE/VxLAN 网络" href="/cn/docs/admin/ovs-networking/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="TLS bootstrapping" href="/cn/docs/admin/kubelet-tls-bootstrapping/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kube-apiserver" href="/cn/docs/admin/kube-apiserver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用启动引导令牌（Bootstrap Tokens）认证" href="/cn/docs/admin/bootstrap-tokens/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="创建大规模集群" href="/cn/docs/admin/cluster-large/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="多区域运行" href="/cn/docs/admin/multiple-zones/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="构建高可用集群">
+		<div class="container">
+		
+		
+		<a class="item" data-title="构建高可用集群" href="/cn/docs/admin/high-availability/"></a>
+		
+		
+	
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="概述">
+		<div class="container">
+		
+		
+		<a class="item" data-title="概述" href="/cn/docs/admin/authorization/"></a>
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="ABAC 模式" href="/cn/docs/admin/authorization/abac/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Webhook Mode" href="/cn/docs/admin/authorization/webhook/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="管理Service Accounts" href="/cn/docs/admin/service-accounts-admin/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="节点设置校验" href="/cn/docs/admin/node-conformance/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Cron Job" href="/cn/docs/concepts/workloads/controllers/cron-jobs/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="DNS Pod 与 Service" href="/cn/docs/concepts/services-networking/dns-pod-service/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="DaemonSet" href="/cn/docs/concepts/workloads/controllers/daemonset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Deployments" href="/cn/docs/concepts/workloads/controllers/deployment/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Docker 用户使用 kubectl 命令指南" href="/cn/docs/user-guide/docker-cli-to-kubectl/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Init 容器" href="/cn/docs/concepts/workloads/pods/init-containers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="JSONPath 支持" href="/cn/docs/user-guide/jsonpath/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes 中的代理" href="/cn/docs/concepts/cluster-administration/proxies/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes 组件" href="/cn/docs/concepts/overview/components/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes集群中使用Sysctls" href="/cn/docs/concepts/cluster-administration/sysctl-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Managing Compute Resources for Containers" href="/cn/docs/concepts/configuration/manage-compute-resources-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Master 节点通信" href="/cn/docs/concepts/architecture/master-node-communication/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Nodes" href="/cn/docs/concepts/architecture/nodes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pod Preset" href="/cn/docs/concepts/workloads/pods/podpreset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pod 安全策略" href="/cn/docs/concepts/policy/pod-security-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pod 的生命周期" href="/cn/docs/concepts/workloads/pods/pod-lifecycle/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Secret" href="/cn/docs/concepts/configuration/secret/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Service" href="/cn/docs/concepts/services-networking/service/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Tutorials">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Kubernetes 对象管理" href="/cn/docs/tutorials/object-management-kubectl/object-management/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="StatefulSet基本使用" href="/cn/docs/tutorials/stateful-application/basic-stateful-set/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Try Our Interactive Tutorials">
+		<div class="container">
+		
+		
+		<a class="item" data-title="Try Our Interactive Tutorials" href="/cn/docs/tutorials/kubernetes-basics/"></a>
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="互动教程 - 创建集群" href="/cn/docs/tutorials/kubernetes-basics/cluster-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 应用外部可见" href="/cn/docs/tutorials/kubernetes-basics/expose-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 应用程序探索" href="/cn/docs/tutorials/kubernetes-basics/explore-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 扩展您的应用程序" href="/cn/docs/tutorials/kubernetes-basics/scale-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 更新您的应用程序" href="/cn/docs/tutorials/kubernetes-basics/update-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 部署应用程序" href="/cn/docs/tutorials/kubernetes-basics/deploy-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Minikube 创建一个集群" href="/cn/docs/tutorials/kubernetes-basics/cluster-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 kubectl 创建部署" href="/cn/docs/tutorials/kubernetes-basics/deploy-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用服务发布您的应用程序" href="/cn/docs/tutorials/kubernetes-basics/expose-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="执行滚动更新" href="/cn/docs/tutorials/kubernetes-basics/update-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="查看 Pods 和节点" href="/cn/docs/tutorials/kubernetes-basics/explore-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="运行应用程序的多个实例" href="/cn/docs/tutorials/kubernetes-basics/scale-intro/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="“示例：使用 Stateful Sets 部署 Cassandra”" href="/cn/docs/tutorials/stateful-application/cassandra/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Source IP" href="/cn/docs/tutorials/services/source-ip/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用ConfigMap来配置Redis" href="/cn/docs/tutorials/configuration/configure-redis-using-configmap/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用命令式的方式管理 Kubernetes 对象" href="/cn/docs/tutorials/object-management-kubectl/imperative-object-management-command/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="基于 Persistent Volumes 搭建 WordPress 和 MySQL 应用" href="/cn/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="运行 ZooKeeper， 一个 CP 分布式系统" href="/cn/docs/tutorials/stateful-application/zookeeper/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="kubectl概述" href="/cn/docs/user-guide/kubectl-overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="为容器设置启动时要执行的命令及其入参" href="/cn/docs/tasks/inject-data-application/define-command-argument-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="为容器设置环境变量" href="/cn/docs/tasks/inject-data-application/define-environment-variable-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="云供应商" href="/cn/docs/concepts/cluster-administration/cloud-providers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Calico 来提供 NetworkPolicy" href="/cn/docs/tasks/administer-cluster/calico-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 HostAliases 向 Pod /etc/hosts 文件添加条目" href="/cn/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 PodPreset 将信息注入 Pods" href="/cn/docs/tasks/inject-data-application/podpreset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Romana 来提供 NetworkPolicy" href="/cn/docs/tasks/administer-cluster/romana-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Secret 安全地分发凭证" href="/cn/docs/tasks/inject-data-application/distribute-credentials-secure/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Service 把前端连接到后端" href="/cn/docs/tasks/access-application-cluster/connecting-frontend-backend/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Weave 网络来提供 NetworkPolicy" href="/cn/docs/tasks/administer-cluster/weave-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用Deployment运行一个无状态应用" href="/cn/docs/tasks/run-application/run-stateless-application-deployment/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="关键插件 Pod 的调度保证" href="/cn/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="同 Pod 内的容器使用共享卷通信" href="/cn/docs/tasks/access-application-cluster/communicate-containers-same-pod-shared-volume/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="在 Kubernetes 中配置私有 DNS 和上游域名服务器" href="/cn/docs/tasks/administer-cluster/dns-custom-nameservers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="垃圾收集" href="/cn/docs/concepts/workloads/controllers/garbage-collection/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="基于Replication Controller执行滚动升级" href="/cn/docs/tasks/run-application/rolling-update-replication-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="声明网络策略" href="/cn/docs/tasks/administer-cluster/declare-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="安装扩展（Addons）" href="/cn/docs/concepts/cluster-administration/addons/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="容器环境变量" href="/cn/docs/concepts/containers/container-environment-variables/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="对 DaemonSet 执行回滚" href="/cn/docs/tasks/manage-daemon/rollback-daemon-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="应用故障排查" href="/cn/docs/tasks/debug-application-cluster/debug-application/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="应用资源配额和限额" href="/cn/docs/tasks/administer-cluster/apply-resource-quota-limit/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="应用连接到 Service" href="/cn/docs/concepts/services-networking/connect-applications-service/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="弹缩StatefulSet" href="/cn/docs/tasks/run-application/scale-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="控制节点上的CPU管理策略" href="/cn/docs/tasks/administer-cluster/cpu-management-policies/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="改变默认 StorageClass" href="/cn/docs/tasks/administer-cluster/change-default-storage-class/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="更改 PersistentVolume 的回收策略" href="/cn/docs/tasks/administer-cluster/change-pv-reclaim-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="概念模板示例" href="/cn/docs/concepts/example-concept-template/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="理解 Kubernetes 对象" href="/cn/docs/concepts/overview/working-with-objects/kubernetes-objects/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="知名标签（Label）、注解（Annotation）和 Taints" href="/cn/docs/reference/labels-annotations-taints/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="管理巨页（HugePages）" href="/cn/docs/tasks/manage-hugepages/scheduling-hugepages/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="给容器分配非透明整型资源" href="/cn/docs/tasks/configure-pod-container/opaque-integer-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="网络策略" href="/cn/docs/concepts/services-networking/network-policies/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="联邦" href="/cn/docs/concepts/cluster-administration/federation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="认识 Kubernetes?" href="/cn/docs/concepts/overview/what-is-kubernetes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="认识 Kubernetes?" href="/cn/docs/whatisk8s/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="设备插件" href="/cn/docs/concepts/cluster-administration/device-plugins/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="设置 Pod CPU 和内存限制" href="/cn/docs/tasks/administer-cluster/cpu-memory-limit/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="访问集群上运行的服务" href="/cn/docs/tasks/administer-cluster/access-cluster-services/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="证书" href="/cn/docs/concepts/cluster-administration/certificates/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="证书轮换" href="/cn/docs/tasks/tls/certificate-rotation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="调度 GPU" href="/cn/docs/tasks/manage-gpus/scheduling-gpus/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="调试Pods和Replication Controllers" href="/cn/docs/tasks/debug-application-cluster/debug-pod-replication-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="调试StatefulSet" href="/cn/docs/tasks/debug-application-cluster/debug-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="资源配额" href="/cn/docs/concepts/policy/resource-quotas/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="运行一个单实例有状态应用" href="/cn/docs/tasks/run-application/run-single-instance-stateful-application/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="通过文件将Pod信息呈现给容器" href="/cn/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="通过环境变量将Pod信息呈现给容器" href="/cn/docs/tasks/inject-data-application/environment-variable-expose-pod-information/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="通过配置文件设置 Kubelet 参数" href="/cn/docs/tasks/administer-cluster/kubelet-config-file/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="配置你的云平台防火墙" href="/cn/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="配置命名空间下pod总数" href="/cn/docs/tasks/administer-cluster/quota-pod-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="配置对多集群的访问" href="/cn/docs/tasks/access-application-cluster/configure-access-multiple-clusters/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="镜像" href="/cn/docs/concepts/containers/images/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="集群故障排查" href="/cn/docs/tasks/debug-application-cluster/debug-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="集群管理" href="/cn/docs/tasks/administer-cluster/cluster-management/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="集群管理概述" href="/cn/docs/concepts/cluster-administration/cluster-administration-overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="静态Pods" href="/cn/docs/tasks/administer-cluster/static-pod/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/concepts/workloads/pods/init-containers.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>Init 容器</h1>
+
+
+
+<p>本页提供了 Init 容器的概览，它是一种专用的容器，在应用容器启动之前运行，并包括一些应用镜像中不存在的实用工具和安装脚本。</p>
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+<li><a href="#%e7%90%86%e8%a7%a3-init-%e5%ae%b9%e5%99%a8">理解 Init 容器</a></li>
+
+
+
+
+<li><a href="#init-%e5%ae%b9%e5%99%a8%e8%83%bd%e5%81%9a%e4%bb%80%e4%b9%88">Init 容器能做什么？</a></li>
+
+
+
+
+<li><a href="#%e5%85%b7%e4%bd%93%e8%a1%8c%e4%b8%ba">具体行为</a></li>
+
+
+
+
+<li><a href="#%e6%94%af%e6%8c%81%e4%b8%8e%e5%85%bc%e5%ae%b9%e6%80%a7">支持与兼容性</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#what-s-next">What's next</a></li>
+
+
+
+</ul>
+
+
+<h2 id="理解-init-容器">理解 Init 容器</h2>
+
+<p><a href="/docs/concepts/abstractions/pod/">Pod</a> 能够具有多个容器，应用运行在容器里面，但是它也可能有一个或多个先于应用容器启动的 Init 容器。</p>
+
+<p>Init 容器与普通的容器非常像，除了如下两点：</p>
+
+<ul>
+<li>它们总是运行到完成。</li>
+<li>每个都必须在下一个启动之前成功完成。</li>
+</ul>
+
+<p>如果 Pod 的 Init 容器失败，Kubernetes 会不断地重启该 Pod，直到 Init 容器成功为止。然而，如果 Pod 对应的 <code>restartPolicy</code> 值为 Never，它不会重新启动。</p>
+
+<p>指定容器为 Init 容器，需要在 PodSpec 中添加 <code>initContainers</code> 字段，以 <a href="/docs/api-reference/v1.6/#container-v1-core">v1.Container</a> 类型对象的 JSON 数组的形式，还有 app 的 <code>containers</code> 数组。
+Init 容器的状态在 <code>status.initContainerStatuses</code> 字段中以容器状态数组的格式返回（类似 <code>status.containerStatuses</code> 字段）。</p>
+
+<h3 id="与普通容器的不同之处">与普通容器的不同之处</h3>
+
+<p>Init 容器支持应用容器的全部字段和特性，包括资源限制、数据卷和安全设置。
+然而，Init 容器对资源请求和限制的处理稍有不同，在下面 <a href="#resources">资源</a> 处有说明。
+而且 Init 容器不支持 Readiness Probe，因为它们必须在 Pod 就绪之前运行完成。</p>
+
+<p>如果为一个 Pod 指定了多个 Init 容器，那些容器会按顺序一次运行一个。
+每个 Init 容器必须运行成功，下一个才能够运行。
+当所有的 Init 容器运行完成时，Kubernetes 初始化 Pod 并像平常一样运行应用容器。</p>
+
+<h2 id="init-容器能做什么">Init 容器能做什么？</h2>
+
+<p>因为 Init 容器具有与应用容器分离的单独镜像，它们的启动相关代码具有如下优势：</p>
+
+<ul>
+<li>它们可以包含并运行实用工具，处于安全考虑，是不建议在应用容器镜像中包含这些实用工具的。</li>
+<li>它们可以包含使用工具和定制化代码来安装，但是不能出现在应用镜像中。例如，创建镜像没必要 <code>FROM</code> 另一个镜像，只需要在安装过程中使用类似 <code>sed</code>、 <code>awk</code>、 <code>python</code> 或 <code>dig</code> 这样的工具。</li>
+<li>应用镜像可以分离出创建和部署的角色，而没有必要联合它们构建一个单独的镜像。</li>
+<li>它们使用 Linux Namespace，所以对应用容器具有不同的文件系统视图。因此，它们能够具有访问 Secret 的权限，而应用容器不能够访问。</li>
+<li>它们在应用容器启动之前运行完成，然而应用容器并行运行，所以 Init 容器提供了一种简单的方式来阻塞或延迟应用容器的启动，直到满足了一组先决条件。</li>
+</ul>
+
+<h3 id="示例">示例</h3>
+
+<p>下面是一些如何使用 Init 容器的想法：</p>
+
+<ul>
+<li><p>等待一个 Service 完成创建，通过类似如下 shell 命令：</p>
+
+<pre><code>for i in {1..100}; do sleep 1; if dig myservice; then exit 0; fi; exit 1
+</code></pre></li>
+
+<li><p>注册这个 Pod 到远程服务器，通过在命令中调用 API，类似如下：</p>
+
+<pre><code>curl -X POST http://$MANAGEMENT_SERVICE_HOST:$MANAGEMENT_SERVICE_PORT/register -d 'instance=$(&lt;POD_NAME&gt;)&amp;ip=$(&lt;POD_IP&gt;)'
+</code></pre></li>
+
+<li><p>在启动应用容器之前等一段时间，使用类似 <code>sleep 60</code> 的命令。</p></li>
+
+<li><p>克隆 Git 仓库到数据卷。</p></li>
+
+<li><p>将配置值放到配置文件中，运行模板工具为主应用容器动态地生成配置文件。例如，在配置文件中存放 POD_IP 值，并使用 Jinja 生成主应用配置文件。</p></li>
+</ul>
+
+<p>更多详细用法示例，可以在 <a href="/docs/concepts/abstractions/controllers/statefulsets/">StatefulSet 文档</a> 和 <a href="/docs/tasks/configure-pod-container/configure-pod-initialization">Pod 初始化</a>  中找到。</p>
+
+<h3 id="使用-init-容器">使用 Init 容器</h3>
+
+<p>下面是 Kubernetes 1.5 版本 yaml 文件，展示了一个具有 2 个 Init 容器的简单 Pod。
+第一个等待  <code>myservice</code> 启动，第二个等待 <code>mydb</code> 启动。
+一旦这两个 Service 都启动完成，Pod 将开始启动。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Pod<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>myapp-pod<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>labels:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>app:<span style="color:#bbb"> </span>myapp<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>annotations:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>pod.beta.kubernetes.io/init-containers:<span style="color:#bbb"> </span><span style="color:#b44">&#39;[
+</span><span style="color:#b44">        {
+</span><span style="color:#b44">            &#34;name&#34;: &#34;init-myservice&#34;,
+</span><span style="color:#b44">            &#34;image&#34;: &#34;busybox&#34;,
+</span><span style="color:#b44">            &#34;command&#34;: [&#34;sh&#34;, &#34;-c&#34;, &#34;until nslookup myservice; do echo waiting for myservice; sleep 2; done;&#34;]
+</span><span style="color:#b44">        },
+</span><span style="color:#b44">        {
+</span><span style="color:#b44">            &#34;name&#34;: &#34;init-mydb&#34;,
+</span><span style="color:#b44">            &#34;image&#34;: &#34;busybox&#34;,
+</span><span style="color:#b44">            &#34;command&#34;: [&#34;sh&#34;, &#34;-c&#34;, &#34;until nslookup mydb; do echo waiting for mydb; sleep 2; done;&#34;]
+</span><span style="color:#b44">        }
+</span><span style="color:#b44">    ]&#39;</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>containers:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>myapp-container<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>image:<span style="color:#bbb"> </span>busybox<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>command:<span style="color:#bbb"> </span>[<span style="color:#b44">&#39;sh&#39;</span>,<span style="color:#bbb"> </span><span style="color:#b44">&#39;-c&#39;</span>,<span style="color:#bbb"> </span><span style="color:#b44">&#39;echo The app is running! &amp;&amp; sleep 3600&#39;</span>]</code></pre></div>
+<p>这是 Kubernetes 1.6 版本的新语法，尽管老的 annotation 语法仍然可以使用。我们已经把 Init 容器的声明移到 <code>spec</code> 中：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Pod<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>myapp-pod<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>labels:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>app:<span style="color:#bbb"> </span>myapp<span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>containers:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>myapp-container<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>image:<span style="color:#bbb"> </span>busybox<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>command:<span style="color:#bbb"> </span>[<span style="color:#b44">&#39;sh&#39;</span>,<span style="color:#bbb"> </span><span style="color:#b44">&#39;-c&#39;</span>,<span style="color:#bbb"> </span><span style="color:#b44">&#39;echo The app is running! &amp;&amp; sleep 3600&#39;</span>]<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>initContainers:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>init-myservice<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>image:<span style="color:#bbb"> </span>busybox<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>command:<span style="color:#bbb"> </span>[<span style="color:#b44">&#39;sh&#39;</span>,<span style="color:#bbb"> </span><span style="color:#b44">&#39;-c&#39;</span>,<span style="color:#bbb"> </span><span style="color:#b44">&#39;until nslookup myservice; do echo waiting for myservice; sleep 2; done;&#39;</span>]<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>init-mydb<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>image:<span style="color:#bbb"> </span>busybox<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>command:<span style="color:#bbb"> </span>[<span style="color:#b44">&#39;sh&#39;</span>,<span style="color:#bbb"> </span><span style="color:#b44">&#39;-c&#39;</span>,<span style="color:#bbb"> </span><span style="color:#b44">&#39;until nslookup mydb; do echo waiting for mydb; sleep 2; done;&#39;</span>]</code></pre></div>
+<p>1.5 版本的语法在 1.6 版本仍然可以使用，但是我们推荐使用 1.6 版本的新语法。
+在 Kubernetes 1.6 版本中，Init 容器在 API 中新建了一个字段。
+虽然期望使用 beta 版本的 annotation，但在未来发行版将会被废弃掉。</p>
+
+<p>下面的 yaml 文件展示了 <code>mydb</code> 和 <code>myservice</code> 两个 Service：</p>
+
+<pre><code>kind: Service
+apiVersion: v1
+metadata:
+  name: myservice
+spec:
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 9376
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: mydb
+spec:
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 9377
+</code></pre>
+
+<p>这个 Pod 可以使用下面的命令进行启动和调试：</p>
+
+<pre><code>$ kubectl create -f myapp.yaml
+pod &quot;myapp-pod&quot; created
+$ kubectl get -f myapp.yaml
+NAME        READY     STATUS     RESTARTS   AGE
+myapp-pod   0/1       Init:0/2   0          6m
+$ kubectl describe -f myapp.yaml 
+Name:          myapp-pod
+Namespace:     default
+[...]
+Labels:        app=myapp
+Status:        Pending
+[...]
+Init Containers:
+  init-myservice:
+[...]
+    State:         Running
+[...]
+  init-mydb:
+[...]
+    State:         Waiting
+      Reason:      PodInitializing
+    Ready:         False
+[...]
+Containers:
+  myapp-container:
+[...]
+    State:         Waiting
+      Reason:      PodInitializing
+    Ready:         False
+[...]
+Events:
+  FirstSeen    LastSeen    Count    From                      SubObjectPath                           Type          Reason        Message
+  ---------    --------    -----    ----                      -------------                           --------      ------        -------
+  16s          16s         1        {default-scheduler }                                              Normal        Scheduled     Successfully assigned myapp-pod to 172.17.4.201
+  16s          16s         1        {kubelet 172.17.4.201}    spec.initContainers{init-myservice}     Normal        Pulling       pulling image &quot;busybox&quot;
+  13s          13s         1        {kubelet 172.17.4.201}    spec.initContainers{init-myservice}     Normal        Pulled        Successfully pulled image &quot;busybox&quot;
+  13s          13s         1        {kubelet 172.17.4.201}    spec.initContainers{init-myservice}     Normal        Created       Created container with docker id 5ced34a04634; Security:[seccomp=unconfined]
+  13s          13s         1        {kubelet 172.17.4.201}    spec.initContainers{init-myservice}     Normal        Started       Started container with docker id 5ced34a04634
+$ kubectl logs myapp-pod -c init-myservice # Inspect the first init container
+$ kubectl logs myapp-pod -c init-mydb      # Inspect the second init container
+</code></pre>
+
+<p>一旦我们启动了 <code>mydb</code> 和 <code>myservice</code> 这两个 Service，我们能够看到 Init 容器完成，并且 <code>myapp-pod</code> 被创建：</p>
+
+<pre><code>$ kubectl create -f services.yaml
+service &quot;myservice&quot; created
+service &quot;mydb&quot; created
+$ kubectl get -f myapp.yaml
+NAME        READY     STATUS    RESTARTS   AGE
+myapp-pod   1/1       Running   0          9m
+</code></pre>
+
+<p>这个例子非常简单，但是应该能够为创建自己的 Init 容器提供一些启发。</p>
+
+<h2 id="具体行为">具体行为</h2>
+
+<p>在 Pod 启动过程中，Init 容器会按顺序在网络和数据卷初始化之后启动。
+每个容器必须在下一个容器启动之前成功退出。
+如果由于运行时或失败退出，导致容器启动失败，它会根据 Pod 的 <code>restartPolicy</code> 指定的策略进行重试。
+然而，如果 Pod 的 <code>restartPolicy</code> 设置为 Always，Init 容器失败时会使用 <code>RestartPolicy</code> 策略。</p>
+
+<p>在所有的 Init 容器没有成功之前，Pod 将不会变成 <code>Ready</code> 状态。
+Init 容器的端口将不会在 Service 中进行聚集。
+正在初始化中的 Pod 处于 <code>Pending</code> 状态，但应该会将条件 <code>Initializing</code> 设置为 true。</p>
+
+<p>如果 Pod <a href="#pod-restart-reasons">重启</a>，所有 Init 容器必须重新执行。</p>
+
+<p>对 Init 容器 spec 的修改，被限制在容器 image 字段中。
+更改 Init 容器的 image 字段，等价于重启该 Pod。</p>
+
+<p>因为 Init 容器可能会被重启、重试或者重新执行，所以 Init 容器的代码应该是幂等的。
+特别地，被写到 <code>EmptyDirs</code> 中文件的代码，应该对输出文件可能已经存在做好准备。</p>
+
+<p>Init 容器具有应用容器的所有字段。
+然而 Kubernetes 禁止使用 <code>readinessProbe</code>，因为 Init 容器不能够定义不同于完成（completion）的就绪（readiness）。
+这会在验证过程中强制执行。</p>
+
+<p>在 Pod 上使用 <code>activeDeadlineSeconds</code>，在容器上使用 <code>livenessProbe</code>，这样能够避免 Init 容器一直失败。
+这就为 Init 容器活跃设置了一个期限。</p>
+
+<p>在 Pod 中的每个 app 和 Init 容器的名称必须唯一；与任何其它容器共享同一个名称，会在验证时抛出错误。</p>
+
+<h3 id="资源">资源</h3>
+
+<p>为 Init 容器指定顺序和执行逻辑，下面对资源使用的规则将被应用：</p>
+
+<ul>
+<li>在所有 Init 容器上定义的，任何特殊资源请求或限制的最大值，是 <em>有效初始请求/限制</em></li>
+<li>Pod 对资源的 <em>有效请求/限制</em> 要高于：
+
+<ul>
+<li>所有应用容器对某个资源的请求/限制之和</li>
+<li>对某个资源的有效初始请求/限制</li>
+</ul></li>
+<li>基于有效请求/限制完成调度，这意味着 Init 容器能够为初始化预留资源，这些资源在 Pod 生命周期过程中并没有被使用。</li>
+<li>Pod 的 *有效 QoS 层*，是 Init 容器和应用容器相同的 QoS 层。</li>
+</ul>
+
+<p>基于有效 Pod 请求和限制来应用配额和限制。
+Pod 级别的 cgroups 是基于有效 Pod 请求和限制，和调度器相同。</p>
+
+<h3 id="pod-重启的原因">Pod 重启的原因</h3>
+
+<p>Pod 能够重启，会导致 Init 容器重新执行，主要有如下几个原因：</p>
+
+<ul>
+<li>用户更新 PodSpec 导致 Init 容器镜像发生改变。应用容器镜像的变更只会重启应用容器。</li>
+<li>Pod 基础设施容器被重启。这不多见，但某些具有 root 权限可访问 Node 的人可能会这样做。</li>
+<li>当 <code>restartPolicy</code> 设置为 Always，Pod 中所有容器会终止，强制重启，由于垃圾收集导致 Init 容器完成的记录丢失。</li>
+</ul>
+
+<h2 id="支持与兼容性">支持与兼容性</h2>
+
+<p>Apiserver 版本为 1.6 或更高版本的集群，通过使用 <code>spec.initContainers</code> 字段来支持 Init 容器。
+之前的版本可以使用 alpha 和 beta 注解支持 Init 容器。
+<code>spec.initContainers</code> 字段也被加入到 alpha 和 beta 注解中，所以 Kubernetes 1.3.0 版本或更高版本可以执行 Init 容器，并且 1.6 版本的 apiserver 能够安全的回退到 1.5.x 版本，而不会使存在的已创建 Pod 失去 Init 容器的功能。</p>
+
+
+
+
+
+
+
+<p>这个特性在 1.6 版本已经退出 beta 版本。Init 容器可以在 PodSpec 中同应用的 <code>containers</code> 数组一起来指定。
+beta 注解的值将仍然需要保留，并覆盖 PodSpec 字段值。</p>
+
+
+
+
+
+
+
+
+<h2 id="what-s-next">What&#39;s next</h2>
+<ul>
+<li><a href="/docs/tasks/configure-pod-container/configure-pod-initialization/#creating-a-pod-that-has-an-init-container">创建具有 Init 容器的 Pod</a></li>
+</ul>
+
+
+
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/concepts/workloads/pods/init-containers.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/cn\/docs\/concepts\/workloads\/pods\/init-containers\/",
+					"title" : "Init 容器",
+					"permalink" : "https:\/\/kubernetes.io\/cn\/docs\/concepts\/workloads\/pods\/init-containers\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/concepts/workloads/pods/init-containers.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

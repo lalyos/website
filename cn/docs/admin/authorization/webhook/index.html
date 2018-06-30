@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Webhook Mode - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="Webhook Mode" />
+<meta property="og:description" content="Webhook Mode" />
+
+<meta property="og:url" content="https://kubernetes.io/cn/docs/admin/authorization/webhook/" />
+<meta property="og:title" content="Webhook Mode - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+             <li>
+                <a href="#">
+                    Chinese <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/">English</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Admins" href="/cn/docs/admin/"></a>
+
+	
+	
+		
+		
+<a class="item" data-title="Kubelet authentication/authorization" href="/cn/docs/admin/kubelet-authentication-authorization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes API访问控制" href="/cn/docs/admin/accessing-the-api/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes OpenVSwitch GRE/VxLAN 网络" href="/cn/docs/admin/ovs-networking/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="TLS bootstrapping" href="/cn/docs/admin/kubelet-tls-bootstrapping/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kube-apiserver" href="/cn/docs/admin/kube-apiserver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用启动引导令牌（Bootstrap Tokens）认证" href="/cn/docs/admin/bootstrap-tokens/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="创建大规模集群" href="/cn/docs/admin/cluster-large/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="多区域运行" href="/cn/docs/admin/multiple-zones/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="构建高可用集群">
+		<div class="container">
+		
+		
+		<a class="item" data-title="构建高可用集群" href="/cn/docs/admin/high-availability/"></a>
+		
+		
+	
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="概述">
+		<div class="container">
+		
+		
+		<a class="item" data-title="概述" href="/cn/docs/admin/authorization/"></a>
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="ABAC 模式" href="/cn/docs/admin/authorization/abac/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Webhook Mode" href="/cn/docs/admin/authorization/webhook/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="管理Service Accounts" href="/cn/docs/admin/service-accounts-admin/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="节点设置校验" href="/cn/docs/admin/node-conformance/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/admin/authorization/webhook.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>Webhook Mode</h1>
+
+
+
+<p>WebHook 是一种 HTTP 回调：某些条件下触发的 HTTP POST 请求；通过 HTTP POST 发送的简单事件通知。一个基于 web 应用实现的 WebHook 会在特定事件发生时把消息发送给特定的 URL 。</p>
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+<li><a href="#%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6%e6%a0%bc%e5%bc%8f">配置文件格式</a></li>
+
+
+
+
+<li><a href="#%e8%af%b7%e6%b1%82%e8%bd%bd%e8%8d%b7">请求载荷</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</ul>
+
+
+<p>具体来说，当在判断用户权限时，<code>Webhook</code> 模式会使 Kubernetes 查询外部的 REST 服务。</p>
+
+<h2 id="配置文件格式">配置文件格式</h2>
+
+<p><code>Webhook</code> 模式需要一个 HTTP 配置文件，通过 <code>--authorization-webhook-config-file=SOME_FILENAME</code> 的参数声明。</p>
+
+<p>配置文件的格式使用 <a href="/docs/concepts/cluster-administration/authenticate-across-clusters-kubeconfig/">kubeconfig</a>。
+在文件中，&rdquo;users&rdquo; 代表着 API 服务器的 webhook，而 &ldquo;cluster&rdquo; 代表着远程服务。</p>
+
+<p>使用 HTTPS 客户端认证的配置例子：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#080;font-style:italic"># clusters 代表远程服务。</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>clusters:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>name-of-remote-authz-service<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>cluster:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>certificate-authority:<span style="color:#bbb"> </span>/path/to/ca.pem<span style="color:#bbb">      </span><span style="color:#080;font-style:italic"># 对远程服务进行身份认证的CA。</span><span style="color:#bbb">
+</span><span style="color:#bbb">      </span>server:<span style="color:#bbb"> </span>https://authz.example.com/authorize<span style="color:#bbb"> </span><span style="color:#080;font-style:italic"># 远程服务的查询 URL. 必须使用 &#39;https&#39;。</span><span style="color:#bbb">
+</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#080;font-style:italic"># users 代表 API 服务器的 webhook 配置.</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>users:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>name-of-api-server<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>user:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>client-certificate:<span style="color:#bbb"> </span>/path/to/cert.pem<span style="color:#bbb"> </span><span style="color:#080;font-style:italic"># webhook plugin 使用的 cert。</span><span style="color:#bbb">
+</span><span style="color:#bbb">      </span>client-key:<span style="color:#bbb"> </span>/path/to/key.pem<span style="color:#bbb">          </span><span style="color:#080;font-style:italic"># cert 所对应的 key。</span><span style="color:#bbb">
+</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#080;font-style:italic"># kubeconfig 文件必须有 context 。 需要提供一个给 API 服务器。</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>current-context:<span style="color:#bbb"> </span>webhook<span style="color:#bbb">
+</span><span style="color:#bbb"></span>contexts:<span style="color:#bbb">
+</span><span style="color:#bbb"></span>-<span style="color:#bbb"> </span>context:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>cluster:<span style="color:#bbb"> </span>name-of-remote-authz-service<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>user:<span style="color:#bbb"> </span>name-of-api-server<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>webhook</code></pre></div>
+<h2 id="请求载荷">请求载荷</h2>
+
+<p>在做认证决策时，API 服务器会 POST 一个 JSON 序列化的 api.authorization.v1beta1.SubjectAccessReview 对象来描述这个动作。这个对象包含了描述用户请求的字段，同时也包含了需要被访问资源或者请求特征的具体信息。</p>
+
+<p>需要注意的是 webhook API 对象与其他 Kubernetes API 对象一样都同样都服从 <a href="/docs/api/">版本兼容规则</a> 。
+实施人员应该了解 beta 对象的更宽松的兼容性承诺，同时确认请求的 &ldquo;apiVersion&rdquo; 字段以确保能被正确地反序列化。
+此外，API 服务器还必须启用 <code>authorization.k8s.io/v1beta1</code> API 扩展组(<code>--runtime-config=authorization.k8s.io/v1beta1=true</code>)。</p>
+
+<p>一个请求内容的例子：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+  <span style="color:#008000;font-weight:bold">&#34;apiVersion&#34;</span>: <span style="color:#b44">&#34;authorization.k8s.io/v1beta1&#34;</span>,
+  <span style="color:#008000;font-weight:bold">&#34;kind&#34;</span>: <span style="color:#b44">&#34;SubjectAccessReview&#34;</span>,
+  <span style="color:#008000;font-weight:bold">&#34;spec&#34;</span>: {
+    <span style="color:#008000;font-weight:bold">&#34;resourceAttributes&#34;</span>: {
+      <span style="color:#008000;font-weight:bold">&#34;namespace&#34;</span>: <span style="color:#b44">&#34;kittensandponies&#34;</span>,
+      <span style="color:#008000;font-weight:bold">&#34;verb&#34;</span>: <span style="color:#b44">&#34;get&#34;</span>,
+      <span style="color:#008000;font-weight:bold">&#34;group&#34;</span>: <span style="color:#b44">&#34;unicorn.example.org&#34;</span>,
+      <span style="color:#008000;font-weight:bold">&#34;resource&#34;</span>: <span style="color:#b44">&#34;pods&#34;</span>
+    },
+    <span style="color:#008000;font-weight:bold">&#34;user&#34;</span>: <span style="color:#b44">&#34;jane&#34;</span>,
+    <span style="color:#008000;font-weight:bold">&#34;group&#34;</span>: [
+      <span style="color:#b44">&#34;group1&#34;</span>,
+      <span style="color:#b44">&#34;group2&#34;</span>
+    ]
+  }
+}</code></pre></div>
+<p>远程服务被预期能填写请求和反馈的 SubjectAccessReviewStatus 字段，无论是允许访问还是拒绝访问。
+反馈内容的 &ldquo;spec&rdquo; 字段是被忽略的，也是可以被省略的。当请求是被允许的时候，返回的响应如下例所示：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+  <span style="color:#008000;font-weight:bold">&#34;apiVersion&#34;</span>: <span style="color:#b44">&#34;authorization.k8s.io/v1beta1&#34;</span>,
+  <span style="color:#008000;font-weight:bold">&#34;kind&#34;</span>: <span style="color:#b44">&#34;SubjectAccessReview&#34;</span>,
+  <span style="color:#008000;font-weight:bold">&#34;status&#34;</span>: {
+    <span style="color:#008000;font-weight:bold">&#34;allowed&#34;</span>: <span style="color:#a2f;font-weight:bold">true</span>
+  }
+}</code></pre></div>
+<p>如拒绝，远程服务器会返回：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+  <span style="color:#008000;font-weight:bold">&#34;apiVersion&#34;</span>: <span style="color:#b44">&#34;authorization.k8s.io/v1beta1&#34;</span>,
+  <span style="color:#008000;font-weight:bold">&#34;kind&#34;</span>: <span style="color:#b44">&#34;SubjectAccessReview&#34;</span>,
+  <span style="color:#008000;font-weight:bold">&#34;status&#34;</span>: {
+    <span style="color:#008000;font-weight:bold">&#34;allowed&#34;</span>: <span style="color:#a2f;font-weight:bold">false</span>,
+    <span style="color:#008000;font-weight:bold">&#34;reason&#34;</span>: <span style="color:#b44">&#34;user does not have read access to the namespace&#34;</span>
+  }
+}</code></pre></div>
+<p>对于非资源的路径访问是这么发送的：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+  <span style="color:#008000;font-weight:bold">&#34;apiVersion&#34;</span>: <span style="color:#b44">&#34;authorization.k8s.io/v1beta1&#34;</span>,
+  <span style="color:#008000;font-weight:bold">&#34;kind&#34;</span>: <span style="color:#b44">&#34;SubjectAccessReview&#34;</span>,
+  <span style="color:#008000;font-weight:bold">&#34;spec&#34;</span>: {
+    <span style="color:#008000;font-weight:bold">&#34;nonResourceAttributes&#34;</span>: {
+      <span style="color:#008000;font-weight:bold">&#34;path&#34;</span>: <span style="color:#b44">&#34;/debug&#34;</span>,
+      <span style="color:#008000;font-weight:bold">&#34;verb&#34;</span>: <span style="color:#b44">&#34;get&#34;</span>
+    },
+    <span style="color:#008000;font-weight:bold">&#34;user&#34;</span>: <span style="color:#b44">&#34;jane&#34;</span>,
+    <span style="color:#008000;font-weight:bold">&#34;group&#34;</span>: [
+      <span style="color:#b44">&#34;group1&#34;</span>,
+      <span style="color:#b44">&#34;group2&#34;</span>
+    ]
+  }
+}</code></pre></div>
+<p>非资源类的路径包括：<code>/api</code>, <code>/apis</code>, <code>/metrics</code>, <code>/resetMetrics</code>,
+<code>/logs</code>, <code>/debug</code>, <code>/healthz</code>, <code>/swagger-ui/</code>, <code>/swaggerapi/</code>, <code>/ui</code>, and
+<code>/version</code>。 客户端需要访问 <code>/api</code>, <code>/api/*</code>, <code>/apis</code>, <code>/apis/*</code>, 和 <code>/version</code> 以便
+能发现服务器上有什么资源和版本。对于其他非资源类的路径访问在没有 REST API 访问限制的情况下拒绝。</p>
+
+<p>更多信息可以参考 uthorization.v1beta1 API 对象和
+<a href="https://git.k8s.io/kubernetes/staging/src/k8s.io/apiserver/plugin/pkg/authorizer/webhook/webhook.go" target="_blank">webhook.go</a>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/admin/authorization/webhook.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/cn\/docs\/admin\/authorization\/webhook\/",
+					"title" : "Webhook Mode",
+					"permalink" : "https:\/\/kubernetes.io\/cn\/docs\/admin\/authorization\/webhook\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/admin/authorization/webhook.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

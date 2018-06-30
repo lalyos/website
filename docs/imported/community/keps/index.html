@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Kubernetes Enhancement Proposal Process - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="Kubernetes Enhancement Proposal Process" />
+<meta property="og:description" content="Kubernetes Enhancement Proposal Process" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/imported/community/keps/" />
+<meta property="og:title" content="Kubernetes Enhancement Proposal Process - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+         
+        
+        <a class="item" data-title="Imported Docs" href="/docs/imported/"></a>
+
+	
+	
+		
+		
+	<div class="item" data-title="Community">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Kubernetes Contributor Guide" href="/docs/imported/community/guide/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes Developer Guide" href="/docs/imported/community/devel/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes Enhancement Proposal Process" href="/docs/imported/community/keps/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes Mentoring Initiatives" href="/docs/imported/community/mentoring/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Downloading Kubernetes">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="v1.11 Release Notes" href="/docs/imported/release/notes/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/imported/community/keps.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>Kubernetes Enhancement Proposal Process</h1>
+
+
+
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#status-implementable">status: implementable</a></li>
+</ul></li>
+<li><a href="#kubernetes-enhancement-proposal-process">Kubernetes Enhancement Proposal Process</a>
+<ul>
+<li><a href="#table-of-contents">Table of Contents</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#motivation">Motivation</a></li>
+<li><a href="#reference-level-explanation">Reference-level explanation</a>
+<ul>
+<li><a href="#what-type-of-work-should-be-tracked-by-a-kep">What type of work should be tracked by a KEP</a></li>
+<li><a href="#kep-template">KEP Template</a></li>
+<li><a href="#kep-metadata">KEP Metadata</a></li>
+<li><a href="#kep-workflow">KEP Workflow</a></li>
+<li><a href="#git-and-github-implementation">Git and GitHub Implementation</a></li>
+<li><a href="#kep-editor-role">KEP Editor Role</a></li>
+<li><a href="#important-metrics">Important Metrics</a></li>
+<li><a href="#prior-art">Prior Art</a></li>
+</ul></li>
+<li><a href="#drawbacks">Drawbacks</a></li>
+<li><a href="#alternatives">Alternatives</a>
+<ul>
+<li><a href="#github-issues-vs-keps">Github issues vs. KEPs</a></li>
+</ul></li>
+<li><a href="#unresolved-questions">Unresolved Questions</a>
+<ul>
+<li><a href="#github-issues-vs-keps-1">Github issues vs. KEPs</a></li>
+</ul></li>
+<li><a href="#unresolved-questions-1">Unresolved Questions</a></li>
+<li><a href="#mentors">Mentors</a></li>
+</ul></li>
+</ul>
+</nav>
+
+
+
+<hr />
+
+<p>kep-number: 1
+title: Kubernetes Enhancement Proposal Process
+authors:
+  - &ldquo;@calebamiles&rdquo;
+  - &ldquo;@jbeda&rdquo;
+owning-sig: sig-architecture
+participating-sigs:
+  - kubernetes-wide
+reviewers:
+  - name: &ldquo;@timothysc&rdquo;
+approvers:
+  - name: &ldquo;@bgrant0607&rdquo;
+editor:
+  name: &ldquo;@jbeda&rdquo;
+creation-date: 2017-08-22</p>
+
+<h2 id="status-implementable">status: implementable</h2>
+
+<h1 id="kubernetes-enhancement-proposal-process">Kubernetes Enhancement Proposal Process</h1>
+
+<h2 id="table-of-contents">Table of Contents</h2>
+
+<ul>
+<li><a href="#kubernetes-enhancement-proposal-process">Kubernetes Enhancement Proposal Process</a>
+
+<ul>
+<li><a href="#metadata">Metadata</a></li>
+<li><a href="#table-of-contents">Table of Contents</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#motivation">Motivation</a></li>
+<li><a href="#reference-level-explanation">Reference-level explanation</a>
+
+<ul>
+<li><a href="#what-type-of-work-should-be-tracked-by-a-kep">What type of work should be tracked by a KEP</a></li>
+<li><a href="#kep-template">KEP Template</a></li>
+<li><a href="#kep-metadata">KEP Metadata</a></li>
+<li><a href="#kep-workflow">KEP Workflow</a></li>
+<li><a href="#git-and-github-implementation">Git and GitHub Implementation</a></li>
+<li><a href="#kep-editor-role">KEP Editor Role</a></li>
+<li><a href="#important-metrics">Important Metrics</a></li>
+<li><a href="#prior-art">Prior Art</a></li>
+</ul></li>
+<li><a href="#graduation-criteria">Graduation Criteria</a></li>
+<li><a href="#drawbacks">Drawbacks</a></li>
+<li><a href="#alternatives">Alternatives</a></li>
+<li><a href="#unresolved-questions">Unresolved Questions</a></li>
+<li><a href="#mentors">Mentors</a></li>
+</ul></li>
+</ul>
+
+<h2 id="summary">Summary</h2>
+
+<p>A standardized development process for Kubernetes is proposed in order to</p>
+
+<ul>
+<li>provide a common structure for proposing changes to Kubernetes</li>
+<li>ensure that the motivation for a change is clear</li>
+<li>allow for the enumeration stability milestones and stability graduation
+criteria</li>
+<li>persist project information in a Version Control System (VCS) for future
+Kubernauts</li>
+<li>support the creation of <em>high value user facing</em> information such as:
+
+<ul>
+<li>an overall project development roadmap</li>
+<li>motivation for impactful user facing changes</li>
+</ul></li>
+<li>reserve GitHub issues for tracking work in flight rather than creating &ldquo;umbrella&rdquo;
+issues</li>
+<li>ensure community participants are successfully able to drive changes to
+completion across one or more releases while stakeholders are adequately
+represented throughout the process</li>
+</ul>
+
+<p>This process is supported by a unit of work called a Kubernetes Enhancement Proposal or KEP.
+A KEP attempts to combine aspects of a</p>
+
+<ul>
+<li>feature, and effort tracking document</li>
+<li>a product requirements document</li>
+<li>design document</li>
+</ul>
+
+<p>into one file which is created incrementally in collaboration with one or more
+Special Interest Groups (SIGs).</p>
+
+<h2 id="motivation">Motivation</h2>
+
+<p>For cross project SIGs such as SIG PM and SIG Release an abstraction beyond a
+single GitHub Issue or Pull request seems to be required in order to understand
+and communicate upcoming changes to Kubernetes.  In a blog post describing the
+<a href="https://blog.golang.org/toward-go2" target="_blank">road to Go 2</a>, Russ Cox explains</p>
+
+<blockquote>
+<p>that it is difficult but essential to describe the significance of a problem
+in a way that someone working in a different environment can understand</p>
+</blockquote>
+
+<p>as a project it is vital to be able to track the chain of custody for a proposed
+enhancement from conception through implementation.</p>
+
+<p>Without a standardized mechanism for describing important enhancements our
+talented technical writers and product managers struggle to weave a coherent
+narrative explaining why a particular release is important. Additionally for
+critical infrastructure such as Kubernetes adopters need a forward looking road
+map in order to plan their adoption strategy.</p>
+
+<p>The purpose of the KEP process is to reduce the amount of &ldquo;tribal knowledge&rdquo; in
+our community. By moving decisions from a smattering of mailing lists, video
+calls and hallway conversations into a well tracked artifact this process aims
+to enhance communication and discoverability.</p>
+
+<p>A KEP is broken into sections which can be merged into source control
+incrementally in order to support an iterative development process. An important
+goal of the KEP process is ensuring that the process for submitting the content
+contained in <a href="/contributors/design-proposals">design proposals</a> is both clear and efficient. The KEP process
+is intended to create high quality uniform design and implementation documents
+for SIGs to deliberate.</p>
+
+<h2 id="reference-level-explanation">Reference-level explanation</h2>
+
+<h3 id="what-type-of-work-should-be-tracked-by-a-kep">What type of work should be tracked by a KEP</h3>
+
+<p>The definition of what constitutes an &ldquo;enhancement&rdquo; is a foundational concern
+for the Kubernetes project. Roughly any Kubernetes user or operator facing
+enhancement should follow the KEP process: if an enhancement would be described
+in either written or verbal communication to anyone besides the KEP author or
+developer then consider creating a KEP.</p>
+
+<p>Similarly, any technical effort (refactoring, major architectural change) that
+will impact a large section of the development community should also be
+communicated widely. The KEP process is suited for this even if it will have
+zero impact on the typical user or operator.</p>
+
+<p>As the local bodies of governance, SIGs should have broad latitude in describing
+what constitutes an enhancement which should be tracked through the KEP process.
+SIGs may find that helpful to enumerate what <em>does not</em> require a KEP rather
+than what does. SIGs also have the freedom to customize the KEP template
+according to their SIG specific concerns. For example the KEP template used to
+track API changes will likely have different subsections than the template for
+proposing governance changes. However, as changes start impacting other SIGs or
+the larger developer community outside of a SIG, the KEP process should be used
+to coordinate and communicate.</p>
+
+<p>Enhancements that have major impacts on multiple SIGs should use the KEP process.
+A single SIG will own the KEP but it is expected that the set of approvers will span the impacted SIGs.
+The KEP process is the way that SIGs can negotiate and communicate changes that cross boundaries.</p>
+
+<p>KEPs will also be used to drive large changes that will cut across all parts of the project.
+These KEPs will be owned by SIG-architecture and should be seen as a way to communicate the most fundamental aspects of what Kubernetes is.</p>
+
+<h3 id="kep-template">KEP Template</h3>
+
+<p>The template for a KEP is precisely defined <a href="https://github.com/kubernetes/community/tree/master/keps/0000-kep-template.md" target="_blank">here</a></p>
+
+<h3 id="kep-metadata">KEP Metadata</h3>
+
+<p>There is a place in each KEP for a YAML document that has standard metadata.
+This will be used to support tooling around filtering and display.  It is also
+critical to clearly communicate the status of a KEP.</p>
+
+<p>Metadata items:
+* <strong>kep-number</strong> Required
+  * Each proposal has a number.  This is to make all references to proposals as
+    clear as possible.  This is especially important as we create a network
+    cross references between proposals.
+  * Before having the <code>Approved</code> status, the number for the KEP will be in the
+    form of <code>draft-YYYYMMDD</code>.  The <code>YYYYMMDD</code> is replaced with the current date
+    when first creating the KEP.  The goal is to enable fast parallel merges of
+    pre-acceptance KEPs.
+  * On acceptance a sequential dense number will be assigned.  This will be done
+    by the editor and will be done in such a way as to minimize the chances of
+    conflicts.  The final number for a KEP will have no prefix.
+* <strong>title</strong> Required
+  * The title of the KEP in plain language.  The title will also be used in the
+    KEP filename.  See the template for instructions and details.
+* <strong>status</strong> Required
+  * The current state of the KEP.
+  * Must be one of <code>provisional</code>, <code>implementable</code>, <code>implemented</code>, <code>deferred</code>, <code>rejected</code>, <code>withdrawn</code>, or <code>replaced</code>.
+* <strong>authors</strong> Required
+  * A list of authors for the KEP.
+    This is simply the github ID.
+    In the future we may enhance this to include other types of identification.
+* <strong>owning-sig</strong> Required
+  * The SIG that is most closely associated with this KEP. If there is code or
+    other artifacts that will result from this KEP, then it is expected that
+    this SIG will take responsibility for the bulk of those artifacts.
+  * Sigs are listed as <code>sig-abc-def</code> where the name matches up with the
+    directory in the <code>kubernetes/community</code> repo.
+* <strong>participating-sigs</strong> Optional
+  * A list of SIGs that are involved or impacted by this KEP.
+  * A special value of <code>kubernetes-wide</code> will indicate that this KEP has impact
+    across the entire project.
+* <strong>reviewers</strong> Required
+  * Reviewer(s) chosen after triage according to proposal process
+  * If not yet chosen replace with <code>TBD</code>
+  * Same name/contact scheme as <code>authors</code>
+  * Reviewers should be a distinct set from authors.
+* <strong>approvers</strong> Required
+  * Approver(s) chosen after triage according to proposal process
+  * Approver(s) are drawn from the impacted SIGs.
+    It is up to the individual SIGs to determine how they pick approvers for KEPs impacting them.
+    The approvers are speaking for the SIG in the process of approving this KEP.
+    The SIGs in question can modify this list as necessary.
+  * The approvers are the individuals that make the call to move this KEP to the <code>approved</code> state.
+  * Approvers should be a distinct set from authors.
+  * If not yet chosen replace with <code>TBD</code>
+  * Same name/contact scheme as <code>authors</code>
+* <strong>editor</strong> Required
+  * Someone to keep things moving forward.
+  * If not yet chosen replace with <code>TBD</code>
+  * Same name/contact scheme as <code>authors</code>
+* <strong>creation-date</strong> Required
+  * The date that the KEP was first submitted in a PR.
+  * In the form <code>yyyy-mm-dd</code>
+  * While this info will also be in source control, it is helpful to have the set of KEP files stand on their own.
+* <strong>last-updated</strong> Optional
+  * The date that the KEP was last changed significantly.
+  * In the form <code>yyyy-mm-dd</code>
+* <strong>see-also</strong> Optional
+  * A list of other KEPs that are relevant to this KEP.
+  * In the form <code>KEP-123</code>
+* <strong>replaces</strong> Optional
+  * A list of KEPs that this KEP replaces.  Those KEPs should list this KEP in
+    their <code>superseded-by</code>.
+  * In the form <code>KEP-123</code>
+* <strong>superseded-by</strong>
+  * A list of KEPs that supersede this KEP. Use of this should be paired with
+    this KEP moving into the <code>Replaced</code> status.
+  * In the form <code>KEP-123</code></p>
+
+<h3 id="kep-workflow">KEP Workflow</h3>
+
+<p>A KEP has the following states</p>
+
+<ul>
+<li><code>provisional</code>: The KEP has been proposed and is actively being defined.
+This is the starting state while the KEP is being fleshed out and actively defined and discussed.
+The owning SIG has accepted that this is work that needs to be done.</li>
+<li><code>implementable</code>: The approvers have approved this KEP for implementation.</li>
+<li><code>implemented</code>: The KEP has been implemented and is no longer actively changed.</li>
+<li><code>deferred</code>: The KEP is proposed but not actively being worked on.</li>
+<li><code>rejected</code>: The approvers and authors have decided that this KEP is not moving forward.
+The KEP is kept around as a historical document.</li>
+<li><code>withdrawn</code>: The KEP has been withdrawn by the authors.</li>
+<li><code>replaced</code>: The KEP has been replaced by a new KEP.
+The <code>superseded-by</code> metadata value should point to the new KEP.</li>
+</ul>
+
+<h3 id="git-and-github-implementation">Git and GitHub Implementation</h3>
+
+<p>KEPs are checked into the community repo under the <code>/kep</code> directory.
+In the future, as needed we can add SIG specific subdirectories.
+KEPs in SIG specific subdirectories have limited impact outside of the SIG and can leverage SIG specific OWNERS files.</p>
+
+<p>New KEPs can be checked in with a file name in the form of <code>draft-YYYYMMDD-my-title.md</code>.
+As significant work is done on the KEP the authors can assign a KEP number.
+This is done by taking the next number in the NEXT_KEP_NUMBER file, incrementing that number, and renaming the KEP.
+No other changes should be put in that PR so that it can be approved quickly and minimize merge conflicts.
+The KEP number can also be done as part of the initial submission if the PR is likely to be uncontested and merged quickly.</p>
+
+<h3 id="kep-editor-role">KEP Editor Role</h3>
+
+<p>Taking a cue from the <a href="https://www.python.org/dev/peps/pep-0001/" target="_blank">Python PEP process</a>, we define the role of a KEP editor.
+The job of an KEP editor is likely very similar to the <a href="https://www.python.org/dev/peps/pep-0001/#pep-editor-responsibilities-workflow" target="_blank">PEP editor responsibilities</a> and will hopefully provide another opportunity for people who do not write code daily to contribute to Kubernetes.</p>
+
+<p>In keeping with the PEP editors which</p>
+
+<blockquote>
+<p>Read the PEP to check if it is ready: sound and complete. The ideas must make
+technical sense, even if they don&rsquo;t seem likely to be accepted.
+The title should accurately describe the content.
+Edit the PEP for language (spelling, grammar, sentence structure, etc.), markup
+(for reST PEPs), code style (examples should match PEP 8 &amp; 7).</p>
+</blockquote>
+
+<p>KEP editors should generally not pass judgement on a KEP beyond editorial corrections.
+KEP editors can also help inform authors about the process and otherwise help things move smoothly.</p>
+
+<h3 id="important-metrics">Important Metrics</h3>
+
+<p>It is proposed that the primary metrics which would signal the success or
+failure of the KEP process are</p>
+
+<ul>
+<li>how many &ldquo;enhancements&rdquo; are tracked with a KEP</li>
+<li>distribution of time a KEP spends in each state</li>
+<li>KEP rejection rate</li>
+<li>PRs referencing a KEP merged per week</li>
+<li>number of issued open which reference a KEP</li>
+<li>number of contributors who authored a KEP</li>
+<li>number of contributors who authored a KEP for the first time</li>
+<li>number of orphaned KEPs</li>
+<li>number of retired KEPs</li>
+<li>number of superseded KEPs</li>
+</ul>
+
+<h3 id="prior-art">Prior Art</h3>
+
+<p>The KEP process as proposed was essentially stolen from the <a href="https://github.com/rust-lang/rfcs" target="_blank">Rust RFC process</a> which
+itself seems to be very similar to the <a href="https://www.python.org/dev/peps/pep-0001/" target="_blank">Python PEP process</a></p>
+
+<h2 id="drawbacks">Drawbacks</h2>
+
+<p>Any additional process has the potential to engender resentment within the
+community. There is also a risk that the KEP process as designed will not
+sufficiently address the scaling challenges we face today. PR review bandwidth is
+already at a premium and we may find that the KEP process introduces an unreasonable
+bottleneck on our development velocity.</p>
+
+<p>It certainly can be argued that the lack of a dedicated issue/defect tracker
+beyond GitHub issues contributes to our challenges in managing a project as large
+as Kubernetes, however, given that other large organizations, including GitHub
+itself, make effective use of GitHub issues perhaps the argument is overblown.</p>
+
+<p>The centrality of Git and GitHub within the KEP process also may place too high
+a barrier to potential contributors, however, given that both Git and GitHub are
+required to contribute code changes to Kubernetes today perhaps it would be reasonable
+to invest in providing support to those unfamiliar with this tooling.</p>
+
+<p>Expanding the proposal template beyond the single sentence description currently
+required in the <a href="https://git.k8s.io/features/ISSUE_TEMPLATE.md" target="_blank">features issue template</a> may be a heavy burden for non native
+English speakers and here the role of the KEP editor combined with kindness and
+empathy will be crucial to making the process successful.</p>
+
+<h2 id="alternatives">Alternatives</h2>
+
+<p>This KEP process is related to
+- the generation of a <a href="https://github.com/kubernetes/community/issues/952" target="_blank">architectural roadmap</a>
+- the fact that the <a href="https://github.com/kubernetes/community/issues/531" target="_blank">what constitutes a feature</a> is still undefined
+- <a href="https://github.com/kubernetes/community/issues/580" target="_blank">issue management</a>
+- the difference between an <a href="https://github.com/kubernetes/community/issues/914" target="_blank">accepted design and a proposal</a>
+- <a href="https://github.com/kubernetes/community/issues/918" target="_blank">the organization of design proposals</a></p>
+
+<p>this proposal attempts to place these concerns within a general framework.</p>
+
+<h3 id="github-issues-vs-keps">Github issues vs. KEPs</h3>
+
+<p>The use of GitHub issues when proposing changes does not provide SIGs good
+facilities for signaling approval or rejection of a proposed change to Kubernetes
+since anyone can open a GitHub issue at any time. Additionally managing a proposed
+change across multiple releases is somewhat cumbersome as labels and milestones
+need to be updated for every release that a change spans. These long lived GitHub
+issues lead to an ever increasing number of issues open against
+<code>kubernetes/features</code> which itself has become a management problem.</p>
+
+<p>In addition to the challenge of managing issues over time, searching for text
+within an issue can be challenging. The flat hierarchy of issues can also make
+navigation and categorization tricky. While not all community members might
+not be comfortable using Git directly, it is imperative that as a community we
+work to educate people on a standard set of tools so they can take their
+experience to other projects they may decide to work on in the future. While
+git is a fantastic version control system (VCS), it is not a project management
+tool nor a cogent way of managing an architectural catalog or backlog; this
+proposal is limited to motivating the creation of a standardized definition of
+work in order to facilitate project management. This primitive for describing
+a unit of work may also allow contributors to create their own personalized
+view of the state of the project while relying on Git and GitHub for consistency
+and durable storage.</p>
+
+<h2 id="unresolved-questions">Unresolved Questions</h2>
+
+<ul>
+<li>How reviewers and approvers are assigned to a KEP</li>
+<li>Example schedule, deadline, and time frame for each stage of a KEP</li>
+<li>Communication/notification mechanisms</li>
+<li>Review meetings and escalation procedure
+roadmap][]</li>
+<li>the fact that the <a href="https://github.com/kubernetes/community/issues/531" target="_blank">what constitutes a feature</a> is still undefined</li>
+<li><a href="https://github.com/kubernetes/community/issues/580" target="_blank">issue management</a></li>
+<li>the difference between an <a href="https://github.com/kubernetes/community/issues/914" target="_blank">accepted design and a proposal</a></li>
+<li><a href="https://github.com/kubernetes/community/issues/918" target="_blank">the organization of design proposals</a></li>
+</ul>
+
+<p>this proposal attempts to place these concerns within a general framework.</p>
+
+<h3 id="github-issues-vs-keps-1">Github issues vs. KEPs</h3>
+
+<p>The use of GitHub issues when proposing changes does not provide SIGs good
+facilities for signaling approval or rejection of a proposed change to Kubernetes
+since anyone can open a GitHub issue at any time. Additionally managing a proposed
+change across multiple releases is somewhat cumbersome as labels and milestones
+need to be updated for every release that a change spans. These long lived GitHub
+issues lead to an ever increasing number of issues open against
+<code>kubernetes/features</code> which itself has become a management problem.</p>
+
+<p>In addition to the challenge of managing issues over time, searching for text
+within an issue can be challenging. The flat hierarchy of issues can also make
+navigation and categorization tricky. While not all community members might
+not be comfortable using Git directly, it is imperative that as a community we
+work to educate people on a standard set of tools so they can take their
+experience to other projects they may decide to work on in the future. While
+git is a fantastic version control system (VCS), it is not a project management
+tool nor a cogent way of managing an architectural catalog or backlog; this
+proposal is limited to motivating the creation of a standardized definition of
+work in order to facilitate project management. This primitive for describing
+a unit of work may also allow contributors to create their own personalized
+view of the state of the project while relying on Git and GitHub for consistency
+and durable storage.</p>
+
+<h2 id="unresolved-questions-1">Unresolved Questions</h2>
+
+<ul>
+<li>How reviewers and approvers are assigned to a KEP</li>
+<li>Approval decision process for a KEP</li>
+<li>Example schedule, deadline, and time frame for each stage of a KEP</li>
+<li>Communication/notification mechanisms</li>
+<li>Review meetings and escalation procedure</li>
+<li>Decision on where development should occur</li>
+</ul>
+
+<h2 id="mentors">Mentors</h2>
+
+<ul>
+<li>caleb miles
+
+<ul>
+<li>github: <a href="https://github.com/calebamiles/" target="_blank">calebamiles</a></li>
+<li>slack: <a href="https://coreos.slack.com/team/caleb.miles" target="_blank">calebamiles</a></li>
+<li>email: <a href="mailto:caleb.miles@coreos.com" target="_blank">caleb.miles@coreos.com</a></li>
+<li>pronoun: &ldquo;he&rdquo;</li>
+</ul></li>
+</ul>
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/imported/community/keps.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/imported\/community\/keps\/",
+					"title" : "Kubernetes Enhancement Proposal Process",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/imported\/community\/keps\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/imported/community/keps.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

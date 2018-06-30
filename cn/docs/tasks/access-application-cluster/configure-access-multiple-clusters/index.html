@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>配置对多集群的访问 - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="配置对多集群的访问" />
+<meta property="og:description" content="配置对多集群的访问" />
+
+<meta property="og:url" content="https://kubernetes.io/cn/docs/tasks/access-application-cluster/configure-access-multiple-clusters/" />
+<meta property="og:title" content="配置对多集群的访问 - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+             <li>
+                <a href="#">
+                    Chinese <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/">English</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+        
+        <a class="item" data-title="Home" href="/cn/docs/"></a>
+
+	
+	
+		
+		
+<a class="item" data-title="" href="/cn/docs/concepts/architecture/cloud-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="" href="/cn/docs/concepts/overview/kubernetes-api/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Admins">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Kubelet authentication/authorization" href="/cn/docs/admin/kubelet-authentication-authorization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes API访问控制" href="/cn/docs/admin/accessing-the-api/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes OpenVSwitch GRE/VxLAN 网络" href="/cn/docs/admin/ovs-networking/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="TLS bootstrapping" href="/cn/docs/admin/kubelet-tls-bootstrapping/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kube-apiserver" href="/cn/docs/admin/kube-apiserver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用启动引导令牌（Bootstrap Tokens）认证" href="/cn/docs/admin/bootstrap-tokens/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="创建大规模集群" href="/cn/docs/admin/cluster-large/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="多区域运行" href="/cn/docs/admin/multiple-zones/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="构建高可用集群">
+		<div class="container">
+		
+		
+		<a class="item" data-title="构建高可用集群" href="/cn/docs/admin/high-availability/"></a>
+		
+		
+	
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="概述">
+		<div class="container">
+		
+		
+		<a class="item" data-title="概述" href="/cn/docs/admin/authorization/"></a>
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="ABAC 模式" href="/cn/docs/admin/authorization/abac/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Webhook Mode" href="/cn/docs/admin/authorization/webhook/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="管理Service Accounts" href="/cn/docs/admin/service-accounts-admin/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="节点设置校验" href="/cn/docs/admin/node-conformance/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Cron Job" href="/cn/docs/concepts/workloads/controllers/cron-jobs/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="DNS Pod 与 Service" href="/cn/docs/concepts/services-networking/dns-pod-service/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="DaemonSet" href="/cn/docs/concepts/workloads/controllers/daemonset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Deployments" href="/cn/docs/concepts/workloads/controllers/deployment/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Docker 用户使用 kubectl 命令指南" href="/cn/docs/user-guide/docker-cli-to-kubectl/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Init 容器" href="/cn/docs/concepts/workloads/pods/init-containers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="JSONPath 支持" href="/cn/docs/user-guide/jsonpath/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes 中的代理" href="/cn/docs/concepts/cluster-administration/proxies/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes 组件" href="/cn/docs/concepts/overview/components/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes集群中使用Sysctls" href="/cn/docs/concepts/cluster-administration/sysctl-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Managing Compute Resources for Containers" href="/cn/docs/concepts/configuration/manage-compute-resources-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Master 节点通信" href="/cn/docs/concepts/architecture/master-node-communication/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Nodes" href="/cn/docs/concepts/architecture/nodes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pod Preset" href="/cn/docs/concepts/workloads/pods/podpreset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pod 安全策略" href="/cn/docs/concepts/policy/pod-security-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pod 的生命周期" href="/cn/docs/concepts/workloads/pods/pod-lifecycle/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Secret" href="/cn/docs/concepts/configuration/secret/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Service" href="/cn/docs/concepts/services-networking/service/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Tutorials">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Kubernetes 对象管理" href="/cn/docs/tutorials/object-management-kubectl/object-management/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="StatefulSet基本使用" href="/cn/docs/tutorials/stateful-application/basic-stateful-set/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Try Our Interactive Tutorials">
+		<div class="container">
+		
+		
+		<a class="item" data-title="Try Our Interactive Tutorials" href="/cn/docs/tutorials/kubernetes-basics/"></a>
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="互动教程 - 创建集群" href="/cn/docs/tutorials/kubernetes-basics/cluster-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 应用外部可见" href="/cn/docs/tutorials/kubernetes-basics/expose-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 应用程序探索" href="/cn/docs/tutorials/kubernetes-basics/explore-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 扩展您的应用程序" href="/cn/docs/tutorials/kubernetes-basics/scale-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 更新您的应用程序" href="/cn/docs/tutorials/kubernetes-basics/update-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 部署应用程序" href="/cn/docs/tutorials/kubernetes-basics/deploy-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Minikube 创建一个集群" href="/cn/docs/tutorials/kubernetes-basics/cluster-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 kubectl 创建部署" href="/cn/docs/tutorials/kubernetes-basics/deploy-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用服务发布您的应用程序" href="/cn/docs/tutorials/kubernetes-basics/expose-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="执行滚动更新" href="/cn/docs/tutorials/kubernetes-basics/update-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="查看 Pods 和节点" href="/cn/docs/tutorials/kubernetes-basics/explore-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="运行应用程序的多个实例" href="/cn/docs/tutorials/kubernetes-basics/scale-intro/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="“示例：使用 Stateful Sets 部署 Cassandra”" href="/cn/docs/tutorials/stateful-application/cassandra/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Source IP" href="/cn/docs/tutorials/services/source-ip/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用ConfigMap来配置Redis" href="/cn/docs/tutorials/configuration/configure-redis-using-configmap/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用命令式的方式管理 Kubernetes 对象" href="/cn/docs/tutorials/object-management-kubectl/imperative-object-management-command/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="基于 Persistent Volumes 搭建 WordPress 和 MySQL 应用" href="/cn/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="运行 ZooKeeper， 一个 CP 分布式系统" href="/cn/docs/tutorials/stateful-application/zookeeper/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="kubectl概述" href="/cn/docs/user-guide/kubectl-overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="为容器设置启动时要执行的命令及其入参" href="/cn/docs/tasks/inject-data-application/define-command-argument-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="为容器设置环境变量" href="/cn/docs/tasks/inject-data-application/define-environment-variable-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="云供应商" href="/cn/docs/concepts/cluster-administration/cloud-providers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Calico 来提供 NetworkPolicy" href="/cn/docs/tasks/administer-cluster/calico-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 HostAliases 向 Pod /etc/hosts 文件添加条目" href="/cn/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 PodPreset 将信息注入 Pods" href="/cn/docs/tasks/inject-data-application/podpreset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Romana 来提供 NetworkPolicy" href="/cn/docs/tasks/administer-cluster/romana-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Secret 安全地分发凭证" href="/cn/docs/tasks/inject-data-application/distribute-credentials-secure/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Service 把前端连接到后端" href="/cn/docs/tasks/access-application-cluster/connecting-frontend-backend/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Weave 网络来提供 NetworkPolicy" href="/cn/docs/tasks/administer-cluster/weave-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用Deployment运行一个无状态应用" href="/cn/docs/tasks/run-application/run-stateless-application-deployment/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="关键插件 Pod 的调度保证" href="/cn/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="同 Pod 内的容器使用共享卷通信" href="/cn/docs/tasks/access-application-cluster/communicate-containers-same-pod-shared-volume/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="在 Kubernetes 中配置私有 DNS 和上游域名服务器" href="/cn/docs/tasks/administer-cluster/dns-custom-nameservers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="垃圾收集" href="/cn/docs/concepts/workloads/controllers/garbage-collection/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="基于Replication Controller执行滚动升级" href="/cn/docs/tasks/run-application/rolling-update-replication-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="声明网络策略" href="/cn/docs/tasks/administer-cluster/declare-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="安装扩展（Addons）" href="/cn/docs/concepts/cluster-administration/addons/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="容器环境变量" href="/cn/docs/concepts/containers/container-environment-variables/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="对 DaemonSet 执行回滚" href="/cn/docs/tasks/manage-daemon/rollback-daemon-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="应用故障排查" href="/cn/docs/tasks/debug-application-cluster/debug-application/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="应用资源配额和限额" href="/cn/docs/tasks/administer-cluster/apply-resource-quota-limit/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="应用连接到 Service" href="/cn/docs/concepts/services-networking/connect-applications-service/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="弹缩StatefulSet" href="/cn/docs/tasks/run-application/scale-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="控制节点上的CPU管理策略" href="/cn/docs/tasks/administer-cluster/cpu-management-policies/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="改变默认 StorageClass" href="/cn/docs/tasks/administer-cluster/change-default-storage-class/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="更改 PersistentVolume 的回收策略" href="/cn/docs/tasks/administer-cluster/change-pv-reclaim-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="概念模板示例" href="/cn/docs/concepts/example-concept-template/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="理解 Kubernetes 对象" href="/cn/docs/concepts/overview/working-with-objects/kubernetes-objects/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="知名标签（Label）、注解（Annotation）和 Taints" href="/cn/docs/reference/labels-annotations-taints/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="管理巨页（HugePages）" href="/cn/docs/tasks/manage-hugepages/scheduling-hugepages/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="给容器分配非透明整型资源" href="/cn/docs/tasks/configure-pod-container/opaque-integer-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="网络策略" href="/cn/docs/concepts/services-networking/network-policies/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="联邦" href="/cn/docs/concepts/cluster-administration/federation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="认识 Kubernetes?" href="/cn/docs/concepts/overview/what-is-kubernetes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="认识 Kubernetes?" href="/cn/docs/whatisk8s/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="设备插件" href="/cn/docs/concepts/cluster-administration/device-plugins/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="设置 Pod CPU 和内存限制" href="/cn/docs/tasks/administer-cluster/cpu-memory-limit/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="访问集群上运行的服务" href="/cn/docs/tasks/administer-cluster/access-cluster-services/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="证书" href="/cn/docs/concepts/cluster-administration/certificates/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="证书轮换" href="/cn/docs/tasks/tls/certificate-rotation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="调度 GPU" href="/cn/docs/tasks/manage-gpus/scheduling-gpus/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="调试Pods和Replication Controllers" href="/cn/docs/tasks/debug-application-cluster/debug-pod-replication-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="调试StatefulSet" href="/cn/docs/tasks/debug-application-cluster/debug-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="资源配额" href="/cn/docs/concepts/policy/resource-quotas/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="运行一个单实例有状态应用" href="/cn/docs/tasks/run-application/run-single-instance-stateful-application/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="通过文件将Pod信息呈现给容器" href="/cn/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="通过环境变量将Pod信息呈现给容器" href="/cn/docs/tasks/inject-data-application/environment-variable-expose-pod-information/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="通过配置文件设置 Kubelet 参数" href="/cn/docs/tasks/administer-cluster/kubelet-config-file/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="配置你的云平台防火墙" href="/cn/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="配置命名空间下pod总数" href="/cn/docs/tasks/administer-cluster/quota-pod-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="配置对多集群的访问" href="/cn/docs/tasks/access-application-cluster/configure-access-multiple-clusters/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="镜像" href="/cn/docs/concepts/containers/images/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="集群故障排查" href="/cn/docs/tasks/debug-application-cluster/debug-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="集群管理" href="/cn/docs/tasks/administer-cluster/cluster-management/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="集群管理概述" href="/cn/docs/concepts/cluster-administration/cluster-administration-overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="静态Pods" href="/cn/docs/tasks/administer-cluster/static-pod/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/tasks/access-application-cluster/configure-access-multiple-clusters.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>配置对多集群的访问</h1>
+
+
+
+
+<p>本文展示如何使用配置文件来配置对多个集群的访问。 在将集群、用户和上下文定义在一个或多个配置文件中之后，用户可以使用 <code>kubectl config use-context</code> 命令快速地在集群之间进行切换。</p>
+
+<blockquote class="note">
+  <div><strong>注意：</strong> 用于配置集群访问的文件有时被称为 *kubeconfig 文件*。
+这是一种引用配置文件的通用方式，并不意味着存在一个名为 <code>kubeconfig</code> 的文件。</div>
+</blockquote>
+
+
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+<li><a href="#before-you-begin">Before you begin</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#%e5%ae%9a%e4%b9%89%e9%9b%86%e7%be%a4-%e7%94%a8%e6%88%b7%e5%92%8c%e4%b8%8a%e4%b8%8b%e6%96%87">定义集群、用户和上下文</a></li>
+
+
+
+
+<li><a href="#%e5%88%9b%e5%bb%ba%e7%ac%ac%e4%ba%8c%e4%b8%aa%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6">创建第二个配置文件</a></li>
+
+
+
+
+<li><a href="#%e8%ae%be%e7%bd%ae-kubeconfig-%e7%8e%af%e5%a2%83%e5%8f%98%e9%87%8f">设置 KUBECONFIG 环境变量</a></li>
+
+
+
+
+<li><a href="#%e6%8e%a2%e7%b4%a2-home-kube-%e7%9b%ae%e5%bd%95">探索 $HOME/.kube 目录</a></li>
+
+
+
+
+<li><a href="#%e5%b0%86-home-kube-config-%e8%bf%bd%e5%8a%a0%e5%88%b0-kubeconfig-%e7%8e%af%e5%a2%83%e5%8f%98%e9%87%8f%e4%b8%ad">将 $HOME/.kube/config 追加到 KUBECONFIG 环境变量中</a></li>
+
+
+
+
+<li><a href="#%e6%b8%85%e7%90%86">清理</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#what-s-next">What's next</a></li>
+
+
+
+</ul>
+
+
+
+<h2 id="before-you-begin">Before you begin</h2>
+<p>需要安装 <a href="/docs/tasks/tools/install-kubectl/"><code>kubectl</code></a> 命令行工具。</p>
+
+
+
+
+<h2 id="定义集群-用户和上下文">定义集群、用户和上下文</h2>
+
+<p>假设用户有两个集群，一个用于正式开发工作，一个用于其它临时用途（scratch）。
+在 <code>development</code> 集群中，前端开发者在名为 <code>frontend</code> 的名字空间下工作，
+存储开发者在名为 <code>storage</code> 的名字空间下工作。 在 <code>scratch</code> 集群中，
+开发人员可能在默认名字空间下工作，也可能视情况创建附加的名字空间。 访问开发集群需要通过证书进行认证。 访问其它临时用途的集群需要通过用户名和密码进行认证。</p>
+
+<p>创建名为 <code>config-exercise</code> 的目录。 在
+<code>config-exercise</code> 目录中，创建名为 <code>config-demo</code> 的文件，其内容为：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Config<span style="color:#bbb">
+</span><span style="color:#bbb"></span>preferences:<span style="color:#bbb"> </span>{}<span style="color:#bbb">
+</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>clusters:<span style="color:#bbb">
+</span><span style="color:#bbb"></span>-<span style="color:#bbb"> </span>cluster:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>development<span style="color:#bbb">
+</span><span style="color:#bbb"></span>-<span style="color:#bbb"> </span>cluster:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>scratch<span style="color:#bbb">
+</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>users:<span style="color:#bbb">
+</span><span style="color:#bbb"></span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>developer<span style="color:#bbb">
+</span><span style="color:#bbb"></span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>experimenter<span style="color:#bbb">
+</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>contexts:<span style="color:#bbb">
+</span><span style="color:#bbb"></span>-<span style="color:#bbb"> </span>context:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>dev-frontend<span style="color:#bbb">
+</span><span style="color:#bbb"></span>-<span style="color:#bbb"> </span>context:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>dev-storage<span style="color:#bbb">
+</span><span style="color:#bbb"></span>-<span style="color:#bbb"> </span>context:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>exp-scratch</code></pre></div>
+<p>配置文件描述了集群、用户名和上下文。  <code>config-demo</code> 文件中含有描述两个集群、两个用户和三个上下文的框架。</p>
+
+<p>进入 <code>config-exercise</code> 目录。 输入以下命令，将群集详细信息添加到配置文件中：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl config --kubeconfig<span style="color:#666">=</span>config-demo set-cluster development --server<span style="color:#666">=</span>https://1.2.3.4 --certificate-authority<span style="color:#666">=</span>fake-ca-file
+kubectl config --kubeconfig<span style="color:#666">=</span>config-demo set-cluster scratch --server<span style="color:#666">=</span>https://5.6.7.8 --insecure-skip-tls-verify</code></pre></div>
+<p>将用户详细信息添加到配置文件中：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl config --kubeconfig<span style="color:#666">=</span>config-demo set-credentials developer --client-certificate<span style="color:#666">=</span>fake-cert-file --client-key<span style="color:#666">=</span>fake-key-seefile
+kubectl config --kubeconfig<span style="color:#666">=</span>config-demo set-credentials experimenter --username<span style="color:#666">=</span>exp --password<span style="color:#666">=</span>some-password</code></pre></div>
+<p>将上下文详细信息添加到配置文件中：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl config --kubeconfig<span style="color:#666">=</span>config-demo set-context dev-frontend --cluster<span style="color:#666">=</span>development --namespace<span style="color:#666">=</span>frontend --user<span style="color:#666">=</span>developer
+kubectl config --kubeconfig<span style="color:#666">=</span>config-demo set-context dev-storage --cluster<span style="color:#666">=</span>development --namespace<span style="color:#666">=</span>storage --user<span style="color:#666">=</span>developer
+kubectl config --kubeconfig<span style="color:#666">=</span>config-demo set-context exp-scratch --cluster<span style="color:#666">=</span>scratch --namespace<span style="color:#666">=</span>default --user<span style="color:#666">=</span>experimenter</code></pre></div>
+<p>打开 <code>config-demo</code> 文件查看添加的详细信息。 也可以使用 <code>config view</code> 命令进行查看：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl config --kubeconfig<span style="color:#666">=</span>config-demo view</code></pre></div>
+<p>输出展示了两个集群、两个用户和三个上下文：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>clusters:<span style="color:#bbb">
+</span><span style="color:#bbb"></span>-<span style="color:#bbb"> </span>cluster:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>certificate-authority:<span style="color:#bbb"> </span>fake-ca-file<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>server:<span style="color:#bbb"> </span>https://<span style="color:#666">1.2</span>.<span style="color:#666">3.4</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>development<span style="color:#bbb">
+</span><span style="color:#bbb"></span>-<span style="color:#bbb"> </span>cluster:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>insecure-skip-tls-verify:<span style="color:#bbb"> </span><span style="color:#a2f;font-weight:bold">true</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>server:<span style="color:#bbb"> </span>https://<span style="color:#666">5.6</span>.<span style="color:#666">7.8</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>scratch<span style="color:#bbb">
+</span><span style="color:#bbb"></span>contexts:<span style="color:#bbb">
+</span><span style="color:#bbb"></span>-<span style="color:#bbb"> </span>context:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>cluster:<span style="color:#bbb"> </span>development<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>namespace:<span style="color:#bbb"> </span>frontend<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>user:<span style="color:#bbb"> </span>developer<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>dev-frontend<span style="color:#bbb">
+</span><span style="color:#bbb"></span>-<span style="color:#bbb"> </span>context:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>cluster:<span style="color:#bbb"> </span>development<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>namespace:<span style="color:#bbb"> </span>storage<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>user:<span style="color:#bbb"> </span>developer<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>dev-storage<span style="color:#bbb">
+</span><span style="color:#bbb"></span>-<span style="color:#bbb"> </span>context:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>cluster:<span style="color:#bbb"> </span>scratch<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>namespace:<span style="color:#bbb"> </span>default<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>user:<span style="color:#bbb"> </span>experimenter<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>exp-scratch<span style="color:#bbb">
+</span><span style="color:#bbb"></span>current-context:<span style="color:#bbb"> </span><span style="color:#b44">&#34;&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Config<span style="color:#bbb">
+</span><span style="color:#bbb"></span>preferences:<span style="color:#bbb"> </span>{}<span style="color:#bbb">
+</span><span style="color:#bbb"></span>users:<span style="color:#bbb">
+</span><span style="color:#bbb"></span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>developer<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>user:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>client-certificate:<span style="color:#bbb"> </span>fake-cert-file<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>client-key:<span style="color:#bbb"> </span>fake-key-file<span style="color:#bbb">
+</span><span style="color:#bbb"></span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>experimenter<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>user:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>password:<span style="color:#bbb"> </span>some-password<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>username:<span style="color:#bbb"> </span>exp</code></pre></div>
+<p>每个上下文包含三部分（集群、用户和名字空间），例如，
+<code>dev-frontend</code> 上下文表明：使用 <code>developer</code> 用户的凭证来访问 <code>development</code> 集群的 <code>frontend</code> 名字空间。</p>
+
+<p>设置当前上下文：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl config --kubeconfig<span style="color:#666">=</span>config-demo use-context dev-frontend</code></pre></div>
+<p>现在当输入 <code>kubectl</code> 命令时，相应动作会应用于 <code>dev-frontend</code> 上下文中所列的集群和名字空间，同时，命令会使用 <code>dev-frontend</code> 上下文中所列用户的凭证。</p>
+
+<p>使用 <code>--minify</code> 参数，来查看与当前上下文相关联的配置信息。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl config --kubeconfig<span style="color:#666">=</span>config-demo view --minify</code></pre></div>
+<p>输出结果展示了 <code>dev-frontend</code> 上下文相关的配置信息：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>clusters:<span style="color:#bbb">
+</span><span style="color:#bbb"></span>-<span style="color:#bbb"> </span>cluster:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>certificate-authority:<span style="color:#bbb"> </span>fake-ca-file<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>server:<span style="color:#bbb"> </span>https://<span style="color:#666">1.2</span>.<span style="color:#666">3.4</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>development<span style="color:#bbb">
+</span><span style="color:#bbb"></span>contexts:<span style="color:#bbb">
+</span><span style="color:#bbb"></span>-<span style="color:#bbb"> </span>context:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>cluster:<span style="color:#bbb"> </span>development<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>namespace:<span style="color:#bbb"> </span>frontend<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>user:<span style="color:#bbb"> </span>developer<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>dev-frontend<span style="color:#bbb">
+</span><span style="color:#bbb"></span>current-context:<span style="color:#bbb"> </span>dev-frontend<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Config<span style="color:#bbb">
+</span><span style="color:#bbb"></span>preferences:<span style="color:#bbb"> </span>{}<span style="color:#bbb">
+</span><span style="color:#bbb"></span>users:<span style="color:#bbb">
+</span><span style="color:#bbb"></span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>developer<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>user:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>client-certificate:<span style="color:#bbb"> </span>fake-cert-file<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>client-key:<span style="color:#bbb"> </span>fake-key-file</code></pre></div>
+<p>现在假设用户希望在其它临时用途集群中工作一段时间。</p>
+
+<p>将当前上下文更改为 <code>exp-scratch</code>：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl config --kubeconfig<span style="color:#666">=</span>config-demo use-context exp-scratch</code></pre></div>
+<p>现在用户 <code>kubectl</code> 下达的任何命令都将应用于 <code>scratch</code> 集群的默认名字空间。 同时，命令会使用 <code>exp-scratch</code> 上下文中所列用户的凭证。</p>
+
+<p>查看更新后的当前上下文 <code>exp-scratch</code> 相关的配置：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl config --kubeconfig<span style="color:#666">=</span>config-demo view --minify</code></pre></div>
+<p>最后，假设用户希望在 <code>development</code> 集群中的 <code>storage</code> 名字空间下工作一段时间。</p>
+
+<p>将当前上下文更改为 <code>dev-storage</code>：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl config --kubeconfig<span style="color:#666">=</span>config-demo use-context dev-storage</code></pre></div>
+<p>查看更新后的当前上下文 <code>dev-storage</code> 相关的配置：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl config --kubeconfig<span style="color:#666">=</span>config-demo view --minify</code></pre></div>
+<h2 id="创建第二个配置文件">创建第二个配置文件</h2>
+
+<p>在 <code>config-exercise</code> 目录中，创建名为 <code>config-demo-2</code> 的文件，其中包含以下内容：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Config<span style="color:#bbb">
+</span><span style="color:#bbb"></span>preferences:<span style="color:#bbb"> </span>{}<span style="color:#bbb">
+</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>contexts:<span style="color:#bbb">
+</span><span style="color:#bbb"></span>-<span style="color:#bbb"> </span>context:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>cluster:<span style="color:#bbb"> </span>development<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>namespace:<span style="color:#bbb"> </span>ramp<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>user:<span style="color:#bbb"> </span>developer<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>dev-ramp-up</code></pre></div>
+<p>上述配置文件定义了一个新的上下文，名为 <code>dev-ramp-up</code>。</p>
+
+<h2 id="设置-kubeconfig-环境变量">设置 KUBECONFIG 环境变量</h2>
+
+<p>查看是否有名为 <code>KUBECONFIG</code> 的环境变量。 如有，保存 <code>KUBECONFIG</code> 环境变量当前的值，以便稍后恢复。
+例如，在 Linux 中：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#a2f">export</span>  <span style="color:#b8860b">KUBECONFIG_SAVED</span><span style="color:#666">=</span><span style="color:#b8860b">$KUBECONFIG</span></code></pre></div>
+<p><code>KUBECONFIG</code> 环境变量是配置文件路径的列表，该列表在 Linux 和 Mac 中以冒号分隔，在 Windows 中以分号分隔。 如果有 <code>KUBECONFIG</code> 环境变量，请熟悉列表中的配置文件。</p>
+
+<p>临时添加两条路径到 <code>KUBECONFIG</code> 环境变量中。 例如，在 Linux 中：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#a2f">export</span>  <span style="color:#b8860b">KUBECONFIG</span><span style="color:#666">=</span><span style="color:#b8860b">$KUBECONFIG</span>:config-demo:config-demo-2</code></pre></div>
+<p>在 <code>config-exercise</code> 目录中输入以下命令：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl config view</code></pre></div>
+<p>输出展示了 <code>KUBECONFIG</code> 环境变量中所列举的所有文件合并后的信息。 特别地， 注意合并信息中包含来自 <code>config-demo-2</code> 文件的 <code>dev-ramp-up</code> 上下文和来自 <code>config-demo</code> 文件的三个上下文：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">contexts:<span style="color:#bbb">
+</span><span style="color:#bbb"></span>-<span style="color:#bbb"> </span>context:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>cluster:<span style="color:#bbb"> </span>development<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>namespace:<span style="color:#bbb"> </span>frontend<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>user:<span style="color:#bbb"> </span>developer<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>dev-frontend<span style="color:#bbb">
+</span><span style="color:#bbb"></span>-<span style="color:#bbb"> </span>context:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>cluster:<span style="color:#bbb"> </span>development<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>namespace:<span style="color:#bbb"> </span>ramp<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>user:<span style="color:#bbb"> </span>developer<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>dev-ramp-up<span style="color:#bbb">
+</span><span style="color:#bbb"></span>-<span style="color:#bbb"> </span>context:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>cluster:<span style="color:#bbb"> </span>development<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>namespace:<span style="color:#bbb"> </span>storage<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>user:<span style="color:#bbb"> </span>developer<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>dev-storage<span style="color:#bbb">
+</span><span style="color:#bbb"></span>-<span style="color:#bbb"> </span>context:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>cluster:<span style="color:#bbb"> </span>scratch<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>namespace:<span style="color:#bbb"> </span>default<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>user:<span style="color:#bbb"> </span>experimenter<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>exp-scratch</code></pre></div>
+<p>更多关于 kubeconfig 文件如何合并的信息，请参考
+<a href="/docs/concepts/configuration/organize-cluster-access-kubeconfig/">使用 kubeconfig 文件组织集群访问</a></p>
+
+<h2 id="探索-home-kube-目录">探索 $HOME/.kube 目录</h2>
+
+<p>如果用户已经拥有一个集群，可以使用 <code>kubectl</code> 与集群进行交互。 那么很可能在 <code>$HOME/.kube</code> 目录下有一个名为 <code>config</code> 的文件。</p>
+
+<p>进入 <code>$HOME/.kube</code> 目录， 看看那里有什么文件。 通常会有一个名为
+<code>config</code> 的文件，目录中可能还有其他配置文件。 请简单地熟悉这些文件的内容。</p>
+
+<h2 id="将-home-kube-config-追加到-kubeconfig-环境变量中">将 $HOME/.kube/config 追加到 KUBECONFIG 环境变量中</h2>
+
+<p>如果有 <code>$HOME/.kube/config</code> 文件，并且还未列在 <code>KUBECONFIG</code> 环境变量中，
+那么现在将它追加到 <code>KUBECONFIG</code> 环境变量中。
+例如，在 Linux 中：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#a2f">export</span> <span style="color:#b8860b">KUBECONFIG</span><span style="color:#666">=</span><span style="color:#b8860b">$KUBECONFIG</span>:<span style="color:#b8860b">$HOME</span>/.kube/config</code></pre></div>
+<p>在配置练习目录中输入以下命令，来查看当前 <code>KUBECONFIG</code> 环境变量中列举的所有文件合并后的配置信息：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl config view</code></pre></div>
+<h2 id="清理">清理</h2>
+
+<p>将 <code>KUBECONFIG</code> 环境变量还原为原始值。 例如，在 Linux 中：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#a2f">export</span> <span style="color:#b8860b">KUBECONFIG</span><span style="color:#666">=</span><span style="color:#b8860b">$KUBECONFIG_SAVED</span></code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="what-s-next">What&#39;s next</h2>
+<ul>
+<li><a href="/docs/concepts/configuration/organize-cluster-access-kubeconfig/">使用 kubeconfig 文件组织集群访问</a></li>
+<li><a href="/docs/user-guide/kubectl/v1.11/">kubectl 配置</a></li>
+</ul>
+
+
+
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/tasks/access-application-cluster/configure-access-multiple-clusters.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/cn\/docs\/tasks\/access-application-cluster\/configure-access-multiple-clusters\/",
+					"title" : "配置对多集群的访问",
+					"permalink" : "https:\/\/kubernetes.io\/cn\/docs\/tasks\/access-application-cluster\/configure-access-multiple-clusters\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/tasks/access-application-cluster/configure-access-multiple-clusters.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

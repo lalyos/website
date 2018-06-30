@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Installing Kubernetes On-premises/Cloud Providers with Kubespray - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="Installing Kubernetes On-premises/Cloud Providers with Kubespray" />
+<meta property="og:description" content="Installing Kubernetes On-premises/Cloud Providers with Kubespray" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/setup/custom-cloud/kubespray/" />
+<meta property="og:title" content="Installing Kubernetes On-premises/Cloud Providers with Kubespray - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+<h1>Setup</h1>
+<h5></h5>
+
+
+
+
+
+
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/" class="YAH">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Setup" href="/docs/setup/"></a>
+
+	
+	
+		
+		
+	<div class="item" data-title="Bootstrapping Clusters with kubeadm">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Customizing control plane configuration with kubeadm" href="/docs/setup/independent/control-plane-flags/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Creating Highly Available Clusters with kubeadm" href="/docs/setup/independent/high-availability/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Creating a single master cluster with kubeadm" href="/docs/setup/independent/create-cluster-kubeadm/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Troubleshooting kubeadm" href="/docs/setup/independent/troubleshooting-kubeadm/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Building Large Clusters" href="/docs/setup/cluster-large/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Building from Source" href="/docs/setup/building-from-source/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configuring Kubernetes with Salt" href="/docs/setup/salt/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Creating a Custom Cluster from Scratch" href="/docs/setup/scratch/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Custom Cloud Solutions">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="CoreOS on AWS or GCE" href="/docs/setup/custom-cloud/coreos/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Installing Kubernetes On-premises/Cloud Providers with Kubespray" href="/docs/setup/custom-cloud/kubespray/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Installing Kubernetes on AWS with kops" href="/docs/setup/custom-cloud/kops/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="On-Premises VMs">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Cloudstack" href="/docs/setup/on-premises-vm/cloudstack/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes on DCOS" href="/docs/setup/on-premises-vm/dcos/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="oVirt" href="/docs/setup/on-premises-vm/ovirt/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Picking the Right Solution" href="/docs/setup/pick-right-solution/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Running Kubernetes Locally via Minikube" href="/docs/setup/minikube/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Running in Multiple Zones" href="/docs/setup/multiple-zones/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Turnkey Cloud Solutions">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Running Kubernetes on AWS EC2" href="/docs/setup/turnkey/aws/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Running Kubernetes on Alibaba Cloud" href="/docs/setup/turnkey/alibaba-cloud/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Running Kubernetes on Azure" href="/docs/setup/turnkey/azure/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Running Kubernetes on CenturyLink Cloud" href="/docs/setup/turnkey/clc/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Running Kubernetes on Google Compute Engine" href="/docs/setup/turnkey/gce/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Running Kubernetes on Multiple Clouds with Stackpoint.io" href="/docs/setup/turnkey/stackpoint/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Validate Node Setup" href="/docs/setup/node-conformance/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/setup/custom-cloud/kubespray.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>Installing Kubernetes On-premises/Cloud Providers with Kubespray</h1>
+
+
+
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#creating-a-cluster">Creating a cluster</a>
+<ul>
+<li><a href="#1-5-meet-the-underlay-requirements-https-github-com-kubernetes-incubator-kubespray-requirements">(1/5) Meet the underlay <a href="https://github.com/kubernetes-incubator/kubespray#requirements" target="_blank">requirements</a></a></li>
+<li><a href="#2-5-compose-an-inventory-file">(2/5) Compose an inventory file</a></li>
+<li><a href="#3-5-plan-your-cluster-deployment">(3/5) Plan your cluster deployment</a></li>
+<li><a href="#4-5-deploy-a-cluster">(4/5) Deploy a Cluster</a></li>
+<li><a href="#5-5-verify-the-deployment">(5/5) Verify the deployment</a></li>
+</ul></li>
+<li><a href="#cluster-operations">Cluster operations</a>
+<ul>
+<li><a href="#scale-your-cluster">Scale your cluster</a></li>
+<li><a href="#upgrade-your-cluster">Upgrade your cluster</a></li>
+</ul></li>
+<li><a href="#what-s-next">What&rsquo;s next</a></li>
+<li><a href="#cleanup">Cleanup</a></li>
+<li><a href="#feedback">Feedback</a></li>
+</ul></li>
+</ul>
+</nav>
+
+
+
+<h2 id="overview">Overview</h2>
+
+<p>This quickstart helps to install a Kubernetes cluster hosted on GCE, Azure, OpenStack, AWS, or Baremetal with <a href="https://github.com/kubernetes-incubator/kubespray" target="_blank">Kubespray</a>.</p>
+
+<p>Kubespray is a composition of <a href="http://docs.ansible.com/" target="_blank">Ansible</a> playbooks, <a href="https://github.com/kubernetes-incubator/kubespray/blob/master/docs/ansible.md" target="_blank">inventory</a>, provisioning tools, and domain knowledge for generic OS/Kubernetes clusters configuration management tasks. Kubespray provides:</p>
+
+<ul>
+<li>a highly available cluster</li>
+<li>composable attributes</li>
+<li>support for most popular Linux distributions (CoreOS, Debian Jessie, Ubuntu 16.04, CentOS/RHEL 7, Fedora/CentOS Atomic)</li>
+<li>continuous integration tests</li>
+</ul>
+
+<p>To choose a tool which best fits your use case, read <a href="https://github.com/kubernetes-incubator/kubespray/blob/master/docs/comparisons.md" target="_blank">this comparison</a> to <a href="/docs/admin/kubeadm/">kubeadm</a> and <a href="../kops">kops</a>.</p>
+
+<h2 id="creating-a-cluster">Creating a cluster</h2>
+
+<h3 id="1-5-meet-the-underlay-requirements-https-github-com-kubernetes-incubator-kubespray-requirements">(1/5) Meet the underlay <a href="https://github.com/kubernetes-incubator/kubespray#requirements" target="_blank">requirements</a></h3>
+
+<p>Provision servers with the following requirements:</p>
+
+<ul>
+<li><code>Ansible v2.4</code> (or newer)</li>
+<li><code>Jinja 2.9</code> (or newer)</li>
+<li><code>python-netaddr</code> installed on the machine that running Ansible commands</li>
+<li>Target servers must have access to the Internet in order to pull docker images</li>
+<li>Target servers are configured to allow IPv4 forwarding</li>
+<li>Target servers have SSH connectivity ( tcp/22 ) directly to your nodes or through a bastion host/ssh jump box</li>
+<li>Target servers have a privileged user</li>
+<li>Your SSH key must be copied to all the servers that are part of your inventory</li>
+<li>Firewall rules configured properly to allow Ansible and Kubernetes components to communicate</li>
+<li>If using a cloud provider, you must have the appropriate credentials available and exported as environment variables</li>
+</ul>
+
+<p>Kubespray provides the following utilities to help provision your environment:</p>
+
+<ul>
+<li><a href="https://www.terraform.io/" target="_blank">Terraform</a> scripts for the following cloud providers:
+
+<ul>
+<li><a href="https://github.com/kubernetes-incubator/kubespray/tree/master/contrib/terraform/aws" target="_blank">AWS</a></li>
+<li><a href="https://github.com/kubernetes-incubator/kubespray/tree/master/contrib/terraform/openstack" target="_blank">OpenStack</a></li>
+</ul></li>
+</ul>
+
+<h3 id="2-5-compose-an-inventory-file">(2/5) Compose an inventory file</h3>
+
+<p>After you provision your servers, create an <a href="http://docs.ansible.com/ansible/intro_inventory.html" target="_blank">inventory file for Ansible</a>. You can do this manually or via a dynamic inventory script. For more information, see &ldquo;<a href="https://github.com/kubernetes-incubator/kubespray/blob/master/docs/getting-started.md#building-your-own-inventory" target="_blank">Building your own inventory</a>&rdquo;.</p>
+
+<h3 id="3-5-plan-your-cluster-deployment">(3/5) Plan your cluster deployment</h3>
+
+<p>Kubespray provides the ability to customize many aspects of the deployment:</p>
+
+<ul>
+<li>CNI (networking) plugins</li>
+<li>DNS configuration</li>
+<li>Choice of control plane: native/binary or containerized with docker or rkt)</li>
+<li>Component versions</li>
+<li>Calico route reflectors</li>
+<li>Component runtime options</li>
+<li>Certificate generation methods</li>
+</ul>
+
+<p>Kubespray customizations can be made to a <a href="http://docs.ansible.com/ansible/playbooks_variables.html" target="_blank">variable file</a>. If you are just getting started with Kubespray, consider using the Kubespray defaults to deploy your cluster and explore Kubernetes.</p>
+
+<h3 id="4-5-deploy-a-cluster">(4/5) Deploy a Cluster</h3>
+
+<p>Next, deploy your cluster:</p>
+
+<p>Cluster deployment using <a href="https://github.com/kubernetes-incubator/kubespray/blob/master/docs/getting-started.md#starting-custom-deployment" target="_blank">ansible-playbook</a>.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">ansible-playbook -i your/inventory/hosts.ini cluster.yml -b -v \
+  --private-key=~/.ssh/private_key</code></pre></div>
+<p>Large deployments (100+ nodes) may require <a href="https://github.com/kubernetes-incubator/kubespray/blob/master/docs/large-deployments.md" target="_blank">specific adjustments</a> for best results.</p>
+
+<h3 id="5-5-verify-the-deployment">(5/5) Verify the deployment</h3>
+
+<p>Kubespray provides a way to verify inter-pod connectivity and DNS resolve with <a href="https://github.com/kubernetes-incubator/kubespray/blob/master/docs/netcheck.md" target="_blank">Netchecker</a>. Netchecker ensures the netchecker-agents pods can resolve DNS requests and ping each over within the default namespace. Those pods mimic similar behavior of the rest of the workloads and serve as cluster health indicators.</p>
+
+<h2 id="cluster-operations">Cluster operations</h2>
+
+<p>Kubespray provides additional playbooks to manage your cluster: <em>scale</em> and <em>upgrade</em>.</p>
+
+<h3 id="scale-your-cluster">Scale your cluster</h3>
+
+<p>You can add worker nodes from your cluster by running the scale playbook. For more information, see &ldquo;<a href="https://github.com/kubernetes-incubator/kubespray/blob/master/docs/getting-started.md#adding-nodes" target="_blank">Adding nodes</a>&rdquo;.
+You can remove worker nodes from your cluster by running the remove-node playbook. For more information, see &ldquo;<a href="https://github.com/kubernetes-incubator/kubespray/blob/master/docs/getting-started.md#remove-nodes" target="_blank">Remove nodes</a>&rdquo;.</p>
+
+<h3 id="upgrade-your-cluster">Upgrade your cluster</h3>
+
+<p>You can upgrade your cluster by running the upgrade-cluster playbook. For more information, see &ldquo;<a href="https://github.com/kubernetes-incubator/kubespray/blob/master/docs/upgrades.md" target="_blank">Upgrades</a>&rdquo;.</p>
+
+<h2 id="what-s-next">What&rsquo;s next</h2>
+
+<p>Check out planned work on Kubespray&rsquo;s <a href="https://github.com/kubernetes-incubator/kubespray/blob/master/docs/roadmap.md" target="_blank">roadmap</a>.</p>
+
+<h2 id="cleanup">Cleanup</h2>
+
+<p>You can reset your nodes and wipe out all components installed with Kubespray via the <a href="https://github.com/kubernetes-incubator/kubespray/blob/master/reset.yml" target="_blank">reset playbook</a>.</p>
+
+<blockquote class="caution">
+  <div><strong>Caution:</strong> When running the reset playbook, be sure not to accidentally target your production cluster!</div>
+</blockquote>
+
+
+<h2 id="feedback">Feedback</h2>
+
+<ul>
+<li>Slack Channel: <a href="https://kubernetes.slack.com/messages/kubespray/" target="_blank">#kubespray</a></li>
+<li><a href="https://github.com/kubernetes-incubator/kubespray/issues" target="_blank">GitHub Issues</a></li>
+</ul>
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/setup/custom-cloud/kubespray.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/setup\/custom-cloud\/kubespray\/",
+					"title" : "Installing Kubernetes On-premises\/Cloud Providers with Kubespray",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/setup\/custom-cloud\/kubespray\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/setup/custom-cloud/kubespray.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

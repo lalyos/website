@@ -1,0 +1,1915 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Logging Using Stackdriver - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="Logging Using Stackdriver" />
+<meta property="og:description" content="Logging Using Stackdriver" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/tasks/debug-application-cluster/logging-stackdriver/" />
+<meta property="og:title" content="Logging Using Stackdriver - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+
+
+
+
+<h1>Tasks</h1>
+<h5></h5>
+
+
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/" class="YAH">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Tasks" href="/docs/tasks/"></a>
+
+	
+	
+		
+		
+	<div class="item" data-title="Install Tools">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Install and Set Up kubectl" href="/docs/tasks/tools/install-kubectl/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Install Minikube" href="/docs/tasks/tools/install-minikube/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Installing kubeadm" href="/docs/tasks/tools/install-kubeadm/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Administer a Cluster">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+	<div class="item" data-title="Administration with kubeadm">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Upgrading kubeadm HA clusters from 1.9.x to 1.9.y" href="/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-ha/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Upgrading kubeadm clusters from 1.7 to 1.8" href="/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-1-8/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Upgrading kubeadm clusters from v1.10 to v1.11" href="/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-1-11/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Upgrading/downgrading kubeadm clusters between v1.8 to v1.9" href="/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-1-9/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Manage Memory, CPU, and API Resources">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Configure Default Memory Requests and Limits for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/memory-default-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Default CPU Requests and Limits for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/cpu-default-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Minimum and Maximum Memory Constraints for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/memory-constraint-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Minimum and Maximum CPU Constraints for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/cpu-constraint-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Memory and CPU Quotas for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/quota-memory-cpu-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod Quota for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/quota-pod-namespace/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Install a Network Policy Provider">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Use Calico for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/calico-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use Cilium for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/cilium-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use Kube-router for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/kube-router-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Romana for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/romana-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Weave Net for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/weave-network-policy/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Access Clusters Using the Kubernetes API" href="/docs/tasks/administer-cluster/access-cluster-api/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Access Services Running on Clusters" href="/docs/tasks/administer-cluster/access-cluster-services/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Advertise Extended Resources for a Node" href="/docs/tasks/administer-cluster/extended-resource-node/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Autoscale the DNS Service in a Cluster" href="/docs/tasks/administer-cluster/dns-horizontal-autoscaling/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Change the Reclaim Policy of a PersistentVolume" href="/docs/tasks/administer-cluster/change-pv-reclaim-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Change the default StorageClass" href="/docs/tasks/administer-cluster/change-default-storage-class/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Cluster Management" href="/docs/tasks/administer-cluster/cluster-management/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Multiple Schedulers" href="/docs/tasks/administer-cluster/configure-multiple-schedulers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Out Of Resource Handling" href="/docs/tasks/administer-cluster/out-of-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Quotas for API Objects" href="/docs/tasks/administer-cluster/quota-api-object/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Control CPU Management Policies on the Node" href="/docs/tasks/administer-cluster/cpu-management-policies/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Customizing DNS Service" href="/docs/tasks/administer-cluster/dns-custom-nameservers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debugging DNS Resolution" href="/docs/tasks/administer-cluster/dns-debugging-resolution/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Declare Network Policy" href="/docs/tasks/administer-cluster/declare-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Developing Cloud Controller Manager" href="/docs/tasks/administer-cluster/developing-cloud-controller-manager/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Encrypting Secret Data at Rest" href="/docs/tasks/administer-cluster/encrypt-data/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Guaranteed Scheduling For Critical Add-On Pods" href="/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="IP Masquerade Agent User Guide" href="/docs/tasks/administer-cluster/ip-masq-agent/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes Cloud Controller Manager" href="/docs/tasks/administer-cluster/running-cloud-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Limit Storage Consumption" href="/docs/tasks/administer-cluster/limit-storage-consumption/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Namespaces Walkthrough" href="/docs/tasks/administer-cluster/namespaces-walkthrough/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Operating etcd clusters for Kubernetes" href="/docs/tasks/administer-cluster/configure-upgrade-etcd/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Reconfigure a Node&#39;s Kubelet in a Live Cluster" href="/docs/tasks/administer-cluster/reconfigure-kubelet/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Reserve Compute Resources for System Daemons" href="/docs/tasks/administer-cluster/reserve-compute-resources/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Safely Drain a Node while Respecting Application SLOs" href="/docs/tasks/administer-cluster/safely-drain-node/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Securing a Cluster" href="/docs/tasks/administer-cluster/securing-a-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set Kubelet parameters via a config file" href="/docs/tasks/administer-cluster/kubelet-config-file/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up High-Availability Kubernetes Masters" href="/docs/tasks/administer-cluster/highly-available-master/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up a Highly Availabile etcd Cluster With kubeadm" href="/docs/tasks/administer-cluster/setup-ha-etcd-with-kubeadm/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Share a Cluster with Namespaces" href="/docs/tasks/administer-cluster/namespaces/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Static Pods" href="/docs/tasks/administer-cluster/static-pod/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Storage Object in Use Protection" href="/docs/tasks/administer-cluster/storage-object-in-use-protection/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using CoreDNS for Service Discovery" href="/docs/tasks/administer-cluster/coredns/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using a KMS provider for data encryption" href="/docs/tasks/administer-cluster/kms-provider/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using sysctls in a Kubernetes Cluster" href="/docs/tasks/administer-cluster/sysctl-cluster/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Configure Pods and Containers">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Assign Memory Resources to Containers and Pods" href="/docs/tasks/configure-pod-container/assign-memory-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Assign CPU Resources to Containers and Pods" href="/docs/tasks/configure-pod-container/assign-cpu-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Quality of Service for Pods" href="/docs/tasks/configure-pod-container/quality-service-pod/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Assign Extended Resources to a Container" href="/docs/tasks/configure-pod-container/extended-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod to Use a Volume for Storage" href="/docs/tasks/configure-pod-container/configure-volume-storage/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod to Use a PersistentVolume for Storage" href="/docs/tasks/configure-pod-container/configure-persistent-volume-storage/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod to Use a Projected Volume for Storage" href="/docs/tasks/configure-pod-container/configure-projected-volume-storage/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Security Context for a Pod or Container" href="/docs/tasks/configure-pod-container/security-context/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Service Accounts for Pods" href="/docs/tasks/configure-pod-container/configure-service-account/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pull an Image from a Private Registry" href="/docs/tasks/configure-pod-container/pull-image-private-registry/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Liveness and Readiness Probes" href="/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Assign Pods to Nodes" href="/docs/tasks/configure-pod-container/assign-pods-nodes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Pod Initialization" href="/docs/tasks/configure-pod-container/configure-pod-initialization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Attach Handlers to Container Lifecycle Events" href="/docs/tasks/configure-pod-container/attach-handler-lifecycle-event/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod to Use a ConfigMap" href="/docs/tasks/configure-pod-container/configure-pod-configmap/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Share Process Namespace between Containers in a Pod" href="/docs/tasks/configure-pod-container/share-process-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Translate a Docker Compose File to Kubernetes Resources" href="/docs/tasks/configure-pod-container/translate-compose-kubernetes/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Inject Data Into Applications">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Define a Command and Arguments for a Container" href="/docs/tasks/inject-data-application/define-command-argument-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Define Environment Variables for a Container" href="/docs/tasks/inject-data-application/define-environment-variable-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Expose Pod Information to Containers Through Environment Variables" href="/docs/tasks/inject-data-application/environment-variable-expose-pod-information/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Expose Pod Information to Containers Through Files" href="/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Distribute Credentials Securely Using Secrets" href="/docs/tasks/inject-data-application/distribute-credentials-secure/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Inject Information into Pods Using a PodPreset" href="/docs/tasks/inject-data-application/podpreset/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Run Applications">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Run a Stateless Application Using a Deployment" href="/docs/tasks/run-application/run-stateless-application-deployment/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Run a Single-Instance Stateful Application" href="/docs/tasks/run-application/run-single-instance-stateful-application/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Run a Replicated Stateful Application" href="/docs/tasks/run-application/run-replicated-stateful-application/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Update API Objects in Place Using kubectl patch" href="/docs/tasks/run-application/update-api-object-kubectl-patch/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Scale a StatefulSet" href="/docs/tasks/run-application/scale-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Delete a StatefulSet" href="/docs/tasks/run-application/delete-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Force Delete StatefulSet Pods" href="/docs/tasks/run-application/force-delete-stateful-set-pod/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Perform Rolling Update Using a Replication Controller" href="/docs/tasks/run-application/rolling-update-replication-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Horizontal Pod Autoscaler" href="/docs/tasks/run-application/horizontal-pod-autoscale/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Horizontal Pod Autoscaler Walkthrough" href="/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Specifying a Disruption Budget for your Application" href="/docs/tasks/run-application/configure-pdb/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Run Jobs">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Running automated tasks with cron jobs" href="/docs/tasks/job/automated-tasks-with-cron-jobs/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Parallel Processing using Expansions" href="/docs/tasks/job/parallel-processing-expansion/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Coarse Parallel Processing Using a Work Queue" href="/docs/tasks/job/coarse-parallel-processing-work-queue/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Fine Parallel Processing Using a Work Queue" href="/docs/tasks/job/fine-parallel-processing-work-queue/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Access Applications in a Cluster">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Web UI (Dashboard)" href="/docs/tasks/access-application-cluster/web-ui-dashboard/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Accessing Clusters" href="/docs/tasks/access-application-cluster/access-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Access to Multiple Clusters" href="/docs/tasks/access-application-cluster/configure-access-multiple-clusters/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use Port Forwarding to Access Applications in a Cluster" href="/docs/tasks/access-application-cluster/port-forward-access-application-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Provide Load-Balanced Access to an Application in a Cluster" href="/docs/tasks/access-application-cluster/load-balance-access-application-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use a Service to Access an Application in a Cluster" href="/docs/tasks/access-application-cluster/service-access-application-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Connect a Front End to a Back End Using a Service" href="/docs/tasks/access-application-cluster/connecting-frontend-backend/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Create an External Load Balancer" href="/docs/tasks/access-application-cluster/create-external-load-balancer/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Your Cloud Provider&#39;s Firewalls" href="/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="List All Container Images Running in a Cluster" href="/docs/tasks/access-application-cluster/list-all-running-container-images/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Communicate Between Containers in the Same Pod Using a Shared Volume" href="/docs/tasks/access-application-cluster/communicate-containers-same-pod-shared-volume/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure DNS for a Cluster" href="/docs/tasks/access-application-cluster/configure-dns-cluster/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Monitor, Log, and Debug">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Application Introspection and Debugging" href="/docs/tasks/debug-application-cluster/debug-application-introspection/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Auditing" href="/docs/tasks/debug-application-cluster/audit/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Core metrics pipeline" href="/docs/tasks/debug-application-cluster/core-metrics-pipeline/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debug Init Containers" href="/docs/tasks/debug-application-cluster/debug-init-containers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debug Pods and Replication Controllers" href="/docs/tasks/debug-application-cluster/debug-pod-replication-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debug Services" href="/docs/tasks/debug-application-cluster/debug-service/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debug a StatefulSet" href="/docs/tasks/debug-application-cluster/debug-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debugging Kubernetes nodes with crictl" href="/docs/tasks/debug-application-cluster/crictl/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Determine the Reason for Pod Failure" href="/docs/tasks/debug-application-cluster/determine-reason-pod-failure/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Developing and debugging services locally" href="/docs/tasks/debug-application-cluster/local-debugging/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Events in Stackdriver" href="/docs/tasks/debug-application-cluster/events-stackdriver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Get a Shell to a Running Container" href="/docs/tasks/debug-application-cluster/get-shell-running-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Logging Using Elasticsearch and Kibana" href="/docs/tasks/debug-application-cluster/logging-elasticsearch-kibana/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Logging Using Stackdriver" href="/docs/tasks/debug-application-cluster/logging-stackdriver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Monitor Node Health" href="/docs/tasks/debug-application-cluster/monitor-node-health/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Tools for Monitoring Compute, Storage, and Network Resources" href="/docs/tasks/debug-application-cluster/resource-usage-monitoring/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Troubleshoot Applications" href="/docs/tasks/debug-application-cluster/debug-application/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Troubleshoot Clusters" href="/docs/tasks/debug-application-cluster/debug-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Troubleshooting" href="/docs/tasks/debug-application-cluster/troubleshooting/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Extend Kubernetes">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Configure the aggregation layer" href="/docs/tasks/access-kubernetes-api/configure-aggregation-layer/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Use Custom Resources">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Extend the Kubernetes API with CustomResourceDefinitions" href="/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Versions of CustomResourceDefinitions" href="/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definition-versioning/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Migrate a ThirdPartyResource to CustomResourceDefinition" href="/docs/tasks/access-kubernetes-api/custom-resources/migrate-third-party-resource/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Setup an extension API server" href="/docs/tasks/access-kubernetes-api/setup-extension-api-server/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use an HTTP Proxy to Access the Kubernetes API" href="/docs/tasks/access-kubernetes-api/http-proxy-access-api/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="TLS">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Certificate Rotation" href="/docs/tasks/tls/certificate-rotation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Manage TLS Certificates in a Cluster" href="/docs/tasks/tls/managing-tls-in-a-cluster/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Federation - Run an App on Multiple Clusters">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Cross-cluster Service Discovery using Federated Services" href="/docs/tasks/federation/federation-service-discovery/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up Cluster Federation with Kubefed" href="/docs/tasks/federation/set-up-cluster-federation-kubefed/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up CoreDNS as DNS provider for Cluster Federation" href="/docs/tasks/federation/set-up-coredns-provider-federation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up placement policies in Federation" href="/docs/tasks/federation/set-up-placement-policies-federation/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Manage Cluster Daemons">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Perform a Rolling Update on a DaemonSet" href="/docs/tasks/manage-daemon/update-daemon-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Performing a Rollback on a DaemonSet" href="/docs/tasks/manage-daemon/rollback-daemon-set/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Install Service Catalog">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Install Service Catalog using Helm" href="/docs/tasks/service-catalog/install-service-catalog-using-helm/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Install Service Catalog using SC" href="/docs/tasks/service-catalog/install-service-catalog-using-sc/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Federation - Run an App on Multiple Clusters">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Federated Cluster" href="/docs/tasks/administer-federation/cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated ConfigMap" href="/docs/tasks/administer-federation/configmap/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated DaemonSet" href="/docs/tasks/administer-federation/daemonset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Deployment" href="/docs/tasks/administer-federation/deployment/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Events" href="/docs/tasks/administer-federation/events/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Horizontal Pod Autoscalers (HPA)" href="/docs/tasks/administer-federation/hpa/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Ingress" href="/docs/tasks/administer-federation/ingress/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Jobs" href="/docs/tasks/administer-federation/job/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Namespaces" href="/docs/tasks/administer-federation/namespaces/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated ReplicaSets" href="/docs/tasks/administer-federation/replicaset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Secrets" href="/docs/tasks/administer-federation/secret/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Extend kubectl with plugins" href="/docs/tasks/extend-kubectl/kubectl-plugins/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Manage HugePages" href="/docs/tasks/manage-hugepages/scheduling-hugepages/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Schedule GPUs" href="/docs/tasks/manage-gpus/scheduling-gpus/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/tasks/debug-application-cluster/logging-stackdriver.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>Logging Using Stackdriver</h1>
+
+
+
+<p>Before reading this page, it&rsquo;s highly recommended to familiarize yourself
+with the <a href="/docs/concepts/cluster-administration/logging">overview of logging in Kubernetes</a>.</p>
+
+<blockquote class="note">
+  <div><strong>Note:</strong> By default, Stackdriver logging collects only your container&rsquo;s standard output and
+standard error streams. To collect any logs your application writes to a file (for example),
+see the <a href="/docs/concepts/cluster-administration/logging#sidecar-container-with-a-logging-agent">sidecar approach</a>
+in the Kubernetes logging overview.</div>
+</blockquote>
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+<li><a href="#deploying">Deploying</a></li>
+
+
+
+
+<li><a href="#verifying-your-logging-agent-deployment">Verifying your Logging Agent Deployment</a></li>
+
+
+
+
+<li><a href="#viewing-logs">Viewing logs</a></li>
+
+
+
+
+<li><a href="#configuring-stackdriver-logging-agents">Configuring Stackdriver Logging Agents</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</ul>
+
+
+<h2 id="deploying">Deploying</h2>
+
+<p>To ingest logs, you must deploy the Stackdriver Logging agent to each node in your cluster.
+The agent is a configured <code>fluentd</code> instance, where the configuration is stored in a <code>ConfigMap</code>
+and the instances are managed using a Kubernetes <code>DaemonSet</code>. The actual deployment of the
+<code>ConfigMap</code> and <code>DaemonSet</code> for your cluster depends on your individual cluster setup.</p>
+
+<h3 id="deploying-to-a-new-cluster">Deploying to a new cluster</h3>
+
+<h4 id="google-kubernetes-engine">Google Kubernetes Engine</h4>
+
+<p>Stackdriver is the default logging solution for clusters deployed on Google Kubernetes Engine.
+Stackdriver Logging is deployed to a new cluster by default unless you explicitly opt-out.</p>
+
+<h4 id="other-platforms">Other platforms</h4>
+
+<p>To deploy Stackdriver Logging on a <em>new</em> cluster that you&rsquo;re
+creating using <code>kube-up.sh</code>, do the following:</p>
+
+<ol>
+<li>Set the <code>KUBE_LOGGING_DESTINATION</code> environment variable to <code>gcp</code>.</li>
+<li><strong>If not running on GCE</strong>, include the <code>beta.kubernetes.io/fluentd-ds-ready=true</code>
+in the <code>KUBE_NODE_LABELS</code> variable.</li>
+</ol>
+
+<p>Once your cluster has started, each node should be running the Stackdriver Logging agent.
+The <code>DaemonSet</code> and <code>ConfigMap</code> are configured as addons. If you&rsquo;re not using <code>kube-up.sh</code>,
+consider starting a cluster without a pre-configured logging solution and then deploying
+Stackdriver Logging agents to the running cluster.</p>
+
+<blockquote class="warning">
+  <div><strong>Warning:</strong> The Stackdriver logging daemon has known issues on platforms other
+than Google Kubernetes Engine. Proceed at your own risk.</div>
+</blockquote>
+
+<h3 id="deploying-to-an-existing-cluster">Deploying to an existing cluster</h3>
+
+<ol>
+<li><p>Apply a label on each node, if not already present.</p>
+
+<p>The Stackdriver Logging agent deployment uses node labels to determine to which nodes
+it should be allocated. These labels were introduced to distinguish nodes with the
+Kubernetes version 1.6 or higher. If the cluster was created with Stackdriver Logging
+configured and node has version 1.5.X or lower, it will have fluentd as static pod. Node
+cannot have more than one instance of fluentd, therefore only apply labels to the nodes
+that don&rsquo;t have fluentd pod allocated already. You can ensure that your node is labelled
+properly by running <code>kubectl describe</code> as follows:</p>
+
+<pre><code>kubectl describe node $NODE_NAME
+</code></pre>
+
+<p>The output should be similar to this:</p>
+
+<pre><code>Name:           NODE_NAME
+Role:
+Labels:         beta.kubernetes.io/fluentd-ds-ready=true
+...
+</code></pre>
+
+<p>Ensure that the output contains the label <code>beta.kubernetes.io/fluentd-ds-ready=true</code>. If it
+is not present, you can add it using the <code>kubectl label</code> command as follows:</p>
+
+<pre><code>kubectl label node $NODE_NAME beta.kubernetes.io/fluentd-ds-ready=true
+</code></pre>
+
+<p><strong>Note:</strong> If a node fails and has to be recreated, you must re-apply the label to
+the recreated node. To make this easier, you can use Kubelet&rsquo;s command-line parameter
+for applying node labels in your node startup script.</p></li>
+
+<li><p>Deploy a <code>ConfigMap</code> with the logging agent configuration by running the following command:</p>
+
+<pre><code>kubectl create -f https://k8s.io/docs/tasks/debug-application-cluster/fluentd-gcp-configmap.yaml
+</code></pre>
+
+<p>The command creates the <code>ConfigMap</code> in the <code>default</code> namespace. You can download the file
+manually and change it before creating the <code>ConfigMap</code> object.</p></li>
+
+<li><p>Deploy the logging agent <code>DaemonSet</code> by running the following command:</p>
+
+<pre><code>kubectl create -f https://k8s.io/docs/tasks/debug-application-cluster/fluentd-gcp-ds.yaml
+</code></pre>
+
+<p>You can download and edit this file before using it as well.</p></li>
+</ol>
+
+<h2 id="verifying-your-logging-agent-deployment">Verifying your Logging Agent Deployment</h2>
+
+<p>After Stackdriver <code>DaemonSet</code> is deployed, you can discover logging agent deployment status
+by running the following command:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl get ds --all-namespaces</code></pre></div>
+<p>If you have 3 nodes in the cluster, the output should looks similar to this:</p>
+
+<pre><code>NAMESPACE     NAME               DESIRED   CURRENT   READY     NODE-SELECTOR                              AGE
+...
+default       fluentd-gcp-v2.0   3         3         3         beta.kubernetes.io/fluentd-ds-ready=true   5m
+...
+</code></pre>
+
+<p>To understand how logging with Stackdriver works, consider the following
+synthetic log generator pod specification <a href="/docs/tasks/debug-application-cluster/counter-pod.yaml">counter-pod.yaml</a>:</p>
+
+<table class="includecode" id="counter-pod-yaml">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://github.com/kubernetes/website/blob/master/content/en/docs/tasks/debug-application-cluster/counter-pod.yaml" download="counter-pod.yaml">
+                    <code>counter-pod.yaml docs/tasks/debug-application-cluster</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('counter-pod-yaml')" title="Copy counter-pod.yaml to clipboard">
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Pod<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>counter<span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>containers:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>count<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>image:<span style="color:#bbb"> </span>busybox<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>args:<span style="color:#bbb"> </span>[/bin/sh,<span style="color:#bbb"> </span>-c,<span style="color:#bbb">
+</span><span style="color:#bbb">            </span><span style="color:#b44">&#39;i=0; while true; do echo &#34;$i: $(date)&#34;; i=$((i+1)); sleep 1; done&#39;</span>]<span style="color:#bbb">
+</span><span style="color:#bbb"></span></code></pre></div>  </td>
+        </tr>
+    </tbody>
+</table>
+
+<p>This pod specification has one container that runs a bash script
+that writes out the value of a counter and the date once per
+second, and runs indefinitely. Let&rsquo;s create this pod in the default namespace.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl create -f https://k8s.io/docs/tasks/debug-application-cluster/counter-pod.yaml</code></pre></div>
+<p>You can observe the running pod:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl get pods
+NAME                                           READY     STATUS    RESTARTS   AGE
+counter                                        <span style="color:#666">1</span>/1       Running   <span style="color:#666">0</span>          5m</code></pre></div>
+<p>For a short period of time you can observe the &lsquo;Pending&rsquo; pod status, because the kubelet
+has to download the container image first. When the pod status changes to <code>Running</code>
+you can use the <code>kubectl logs</code> command to view the output of this counter pod.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl logs counter
+<span style="color:#666">0</span>: Mon Jan  <span style="color:#666">1</span> <span style="color:#666">00</span>:00:00 UTC <span style="color:#666">2001</span>
+<span style="color:#666">1</span>: Mon Jan  <span style="color:#666">1</span> <span style="color:#666">00</span>:00:01 UTC <span style="color:#666">2001</span>
+<span style="color:#666">2</span>: Mon Jan  <span style="color:#666">1</span> <span style="color:#666">00</span>:00:02 UTC <span style="color:#666">2001</span>
+...</code></pre></div>
+<p>As described in the logging overview, this command fetches log entries
+from the container log file. If the container is killed and then restarted by
+Kubernetes, you can still access logs from the previous container. However,
+if the pod is evicted from the node, log files are lost. Let&rsquo;s demonstrate this
+by deleting the currently running counter container:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl delete pod counter
+pod <span style="color:#b44">&#34;counter&#34;</span> deleted</code></pre></div>
+<p>and then recreating it:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl create -f https://k8s.io/docs/tasks/debug-application-cluster/counter-pod.yaml
+pod <span style="color:#b44">&#34;counter&#34;</span> created</code></pre></div>
+<p>After some time, you can access logs from the counter pod again:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl logs counter
+<span style="color:#666">0</span>: Mon Jan  <span style="color:#666">1</span> <span style="color:#666">00</span>:01:00 UTC <span style="color:#666">2001</span>
+<span style="color:#666">1</span>: Mon Jan  <span style="color:#666">1</span> <span style="color:#666">00</span>:01:01 UTC <span style="color:#666">2001</span>
+<span style="color:#666">2</span>: Mon Jan  <span style="color:#666">1</span> <span style="color:#666">00</span>:01:02 UTC <span style="color:#666">2001</span>
+...</code></pre></div>
+<p>As expected, only recent log lines are present. However, for a real-world
+application you will likely want to be able to access logs from all containers,
+especially for the debug purposes. This is exactly when the previously enabled
+Stackdriver Logging can help.</p>
+
+<h2 id="viewing-logs">Viewing logs</h2>
+
+<p>Stackdriver Logging agent attaches metadata to each log entry, for you to use later
+in queries to select only the messages you&rsquo;re interested in: for example,
+the messages from a particular pod.</p>
+
+<p>The most important pieces of metadata are the resource type and log name.
+The resource type of a container log is <code>container</code>, which is named
+<code>GKE Containers</code> in the UI (even if the Kubernetes cluster is not on Google Kubernetes Engine).
+The log name is the name of the container, so that if you have a pod with
+two containers, named <code>container_1</code> and <code>container_2</code> in the spec, their logs
+will have log names <code>container_1</code> and <code>container_2</code> respectively.</p>
+
+<p>System components have resource type <code>compute</code>, which is named
+<code>GCE VM Instance</code> in the interface. Log names for system components are fixed.
+For a Google Kubernetes Engine node, every log entry from a system component has one of the following
+log names:</p>
+
+<ul>
+<li>docker</li>
+<li>kubelet</li>
+<li>kube-proxy</li>
+</ul>
+
+<p>You can learn more about viewing logs on <a href="https://cloud.google.com/logging/docs/view/logs_viewer" target="_blank">the dedicated Stackdriver page</a>.</p>
+
+<p>One of the possible ways to view logs is using the
+<a href="https://cloud.google.com/logging/docs/api/gcloud-logging" target="_blank"><code>gcloud logging</code></a>
+command line interface from the <a href="https://cloud.google.com/sdk/" target="_blank">Google Cloud SDK</a>.
+It uses Stackdriver Logging <a href="https://cloud.google.com/logging/docs/view/advanced_filters" target="_blank">filtering syntax</a>
+to query specific logs. For example, you can run the following command:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-none" data-lang="none">$ gcloud beta logging read &#39;logName=&#34;projects/$YOUR_PROJECT_ID/logs/count&#34;&#39; --format json | jq &#39;.[].textPayload&#39;
+...
+&#34;2: Mon Jan  1 00:01:02 UTC 2001\n&#34;
+&#34;1: Mon Jan  1 00:01:01 UTC 2001\n&#34;
+&#34;0: Mon Jan  1 00:01:00 UTC 2001\n&#34;
+...
+&#34;2: Mon Jan  1 00:00:02 UTC 2001\n&#34;
+&#34;1: Mon Jan  1 00:00:01 UTC 2001\n&#34;
+&#34;0: Mon Jan  1 00:00:00 UTC 2001\n&#34;</code></pre></div>
+<p>As you can see, it outputs messages for the count container from both
+the first and second runs, despite the fact that the kubelet already deleted
+the logs for the first container.</p>
+
+<h3 id="exporting-logs">Exporting logs</h3>
+
+<p>You can export logs to <a href="https://cloud.google.com/storage/" target="_blank">Google Cloud Storage</a>
+or to <a href="https://cloud.google.com/bigquery/" target="_blank">BigQuery</a> to run further
+analysis. Stackdriver Logging offers the concept of sinks, where you can
+specify the destination of log entries. More information is available on
+the Stackdriver <a href="https://cloud.google.com/logging/docs/export/configure_export_v2" target="_blank">Exporting Logs page</a>.</p>
+
+<h2 id="configuring-stackdriver-logging-agents">Configuring Stackdriver Logging Agents</h2>
+
+<p>Sometimes the default installation of Stackdriver Logging may not suit your needs, for example:</p>
+
+<ul>
+<li>You may want to add more resources because default performance doesn&rsquo;t suit your needs.</li>
+<li>You may want to introduce additional parsing to extract more metadata from your log messages,
+like severity or source code reference.</li>
+<li>You may want to send logs not only to Stackdriver or send it to Stackdriver only partially.</li>
+</ul>
+
+<p>In this case you need to be able to change the parameters of <code>DaemonSet</code> and <code>ConfigMap</code>.</p>
+
+<h3 id="prerequisites">Prerequisites</h3>
+
+<p>If you&rsquo;re using GKE and Stackdriver Logging is enabled in your cluster, you
+cannot change its configuration, because it&rsquo;s managed and supported by GKE.
+However, you can disable the default integration and deploy your own. Note,
+that you will have to support and maintain a newly deployed configuration
+yourself: update the image and configuration, adjust the resources and so on.
+To disable the default logging integration, use the following command:</p>
+
+<pre><code>gcloud beta container clusters update --logging-service=none CLUSTER
+</code></pre>
+
+<p>You can find notes on how to then install Stackdriver Logging agents into
+a running cluster in the <a href="#deploying">Deploying section</a>.</p>
+
+<h3 id="changing-daemonset-parameters">Changing <code>DaemonSet</code> parameters</h3>
+
+<p>When you have the Stackdriver Logging <code>DaemonSet</code> in your cluster, you can just modify the
+<code>template</code> field in its spec, daemonset controller will update the pods for you. For example,
+let&rsquo;s assume you&rsquo;ve just installed the Stackdriver Logging as described above. Now you want to
+change the memory limit to give fluentd more memory to safely process more logs.</p>
+
+<p>Get the spec of <code>DaemonSet</code> running in your cluster:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl get ds fluentd-gcp-v2.0 --namespace kube-system -o yaml &gt; fluentd-gcp-ds.yaml</code></pre></div>
+<p>Then edit resource requirements in the spec file and update the <code>DaemonSet</code> object
+in the apiserver using the following command:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl replace -f fluentd-gcp-ds.yaml</code></pre></div>
+<p>After some time, Stackdriver Logging agent pods will be restarted with the new configuration.</p>
+
+<h3 id="changing-fluentd-parameters">Changing fluentd parameters</h3>
+
+<p>Fluentd configuration is stored in the <code>ConfigMap</code> object. It is effectively a set of configuration
+files that are merged together. You can learn about fluentd configuration on the <a href="http://docs.fluentd.org" target="_blank">official
+site</a>.</p>
+
+<p>Imagine you want to add a new parsing logic to the configuration, so that fluentd can understand
+default Python logging format. An appropriate fluentd filter looks similar to this:</p>
+
+<pre><code>&lt;filter reform.**&gt;
+  type parser
+  format /^(?&lt;severity&gt;\w):(?&lt;logger_name&gt;\w):(?&lt;log&gt;.*)/
+  reserve_data true
+  suppress_parse_error_log true
+  key_name log
+&lt;/filter&gt;
+</code></pre>
+
+<p>Now you have to put it in the configuration and make Stackdriver Logging agents pick it up.
+Get the current version of the Stackdriver Logging <code>ConfigMap</code> in your cluster
+by running the following command:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl get cm fluentd-gcp-config --namespace kube-system -o yaml &gt; fluentd-gcp-configmap.yaml</code></pre></div>
+<p>Then in the value for the key <code>containers.input.conf</code> insert a new filter right after
+the <code>source</code> section. <strong>Note:</strong> Order is important.</p>
+
+<p>Updating <code>ConfigMap</code> in the apiserver is more complicated than updating <code>DaemonSet</code>. It&rsquo;s better
+to consider <code>ConfigMap</code> to be immutable. Then, in order to update the configuration, you should
+create <code>ConfigMap</code> with a new name and then change <code>DaemonSet</code> to point to it
+using <a href="#changing-daemonset-parameters">guide above</a>.</p>
+
+<h3 id="adding-fluentd-plugins">Adding fluentd plugins</h3>
+
+<p>Fluentd is written in Ruby and allows to extend its capabilities using
+<a href="http://www.fluentd.org/plugins" target="_blank">plugins</a>. If you want to use a plugin, which is not included
+in the default Stackdriver Logging container image, you have to build a custom image. Imagine
+you want to add Kafka sink for messages from a particular container for additional processing.
+You can re-use the default <a href="https://git.k8s.io/contrib/fluentd/fluentd-gcp-image" target="_blank">container image sources</a>
+with minor changes:</p>
+
+<ul>
+<li>Change Makefile to point to your container repository, e.g. <code>PREFIX=gcr.io/&lt;your-project-id&gt;</code>.</li>
+<li>Add your dependency to the Gemfile, for example <code>gem 'fluent-plugin-kafka'</code>.</li>
+</ul>
+
+<p>Then run <code>make build push</code> from this directory. After updating <code>DaemonSet</code> to pick up the
+new image, you can use the plugin you installed in the fluentd configuration.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/tasks/debug-application-cluster/logging-stackdriver.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/tasks\/debug-application-cluster\/logging-stackdriver\/",
+					"title" : "Logging Using Stackdriver",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/tasks\/debug-application-cluster\/logging-stackdriver\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/tasks/debug-application-cluster/logging-stackdriver.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

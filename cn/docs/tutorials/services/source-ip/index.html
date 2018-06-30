@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>使用 Source IP - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="使用 Source IP" />
+<meta property="og:description" content="使用 Source IP" />
+
+<meta property="og:url" content="https://kubernetes.io/cn/docs/tutorials/services/source-ip/" />
+<meta property="og:title" content="使用 Source IP - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+             <li>
+                <a href="#">
+                    Chinese <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/">English</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+         
+        
+        <a class="item" data-title="Tutorials" href="/cn/docs/tutorials/"></a>
+
+	
+	
+		
+		
+<a class="item" data-title="Kubernetes 对象管理" href="/cn/docs/tutorials/object-management-kubectl/object-management/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="StatefulSet基本使用" href="/cn/docs/tutorials/stateful-application/basic-stateful-set/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Try Our Interactive Tutorials">
+		<div class="container">
+		
+		
+		<a class="item" data-title="Try Our Interactive Tutorials" href="/cn/docs/tutorials/kubernetes-basics/"></a>
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="互动教程 - 创建集群" href="/cn/docs/tutorials/kubernetes-basics/cluster-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 应用外部可见" href="/cn/docs/tutorials/kubernetes-basics/expose-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 应用程序探索" href="/cn/docs/tutorials/kubernetes-basics/explore-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 扩展您的应用程序" href="/cn/docs/tutorials/kubernetes-basics/scale-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 更新您的应用程序" href="/cn/docs/tutorials/kubernetes-basics/update-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 部署应用程序" href="/cn/docs/tutorials/kubernetes-basics/deploy-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Minikube 创建一个集群" href="/cn/docs/tutorials/kubernetes-basics/cluster-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 kubectl 创建部署" href="/cn/docs/tutorials/kubernetes-basics/deploy-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用服务发布您的应用程序" href="/cn/docs/tutorials/kubernetes-basics/expose-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="执行滚动更新" href="/cn/docs/tutorials/kubernetes-basics/update-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="查看 Pods 和节点" href="/cn/docs/tutorials/kubernetes-basics/explore-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="运行应用程序的多个实例" href="/cn/docs/tutorials/kubernetes-basics/scale-intro/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="“示例：使用 Stateful Sets 部署 Cassandra”" href="/cn/docs/tutorials/stateful-application/cassandra/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Source IP" href="/cn/docs/tutorials/services/source-ip/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用ConfigMap来配置Redis" href="/cn/docs/tutorials/configuration/configure-redis-using-configmap/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用命令式的方式管理 Kubernetes 对象" href="/cn/docs/tutorials/object-management-kubectl/imperative-object-management-command/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="基于 Persistent Volumes 搭建 WordPress 和 MySQL 应用" href="/cn/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="运行 ZooKeeper， 一个 CP 分布式系统" href="/cn/docs/tutorials/stateful-application/zookeeper/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/tutorials/services/source-ip.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>使用 Source IP</h1>
+
+
+
+<p>Kubernetes 集群中运行的应用通过抽象的 Service 查找彼此，相互通信和连接外部世界。本文揭示了发送到不同类型 Services 的数据包源 IP 的内幕，你可以根据需求改变这个行为。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+<li><a href="#objectives">Objectives</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#before-you-begin">Before you begin</a></li>
+
+
+
+
+<li><a href="#%e6%9c%af%e8%af%ad%e8%a1%a8">术语表</a></li>
+
+
+
+
+<li><a href="#%e5%87%86%e5%a4%87%e5%b7%a5%e4%bd%9c">准备工作</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#type-clusterip-%e7%b1%bb%e5%9e%8b-services-%e7%9a%84-source-ip">Type=ClusterIP 类型 Services 的 Source IP</a></li>
+
+
+
+
+<li><a href="#type-nodeport-%e7%b1%bb%e5%9e%8b-services-%e7%9a%84-source-ip">Type=NodePort 类型 Services 的 Source IP</a></li>
+
+
+
+
+<li><a href="#type-loadbalancer-%e7%b1%bb%e5%9e%8b-services-%e7%9a%84-source-ip">Type=LoadBalancer 类型 Services 的 Source IP</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#cleaning-up">Cleaning up</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#what-s-next">What's next</a></li>
+
+
+
+</ul>
+
+
+
+<h2 id="objectives">Objectives</h2>
+<ul>
+<li>通过多种类型的 Services 暴露一个简单应用</li>
+<li>理解每种 Service 类型如何处理源 IP NAT</li>
+<li>理解保留源 IP 的折中</li>
+</ul>
+
+
+
+
+
+<h2 id="before-you-begin">Before you begin</h2>
+<p>You need to have a Kubernetes cluster, and the kubectl command-line tool must
+be configured to communicate with your cluster. If you do not already have a
+cluster, you can create one by using
+<a href="/docs/getting-started-guides/minikube">Minikube</a>,
+or you can use one of these Kubernetes playgrounds:</p>
+
+<ul>
+<li><a href="https://www.katacoda.com/courses/kubernetes/playground" target="_blank">Katacoda</a></li>
+<li><a href="http://labs.play-with-k8s.com/" target="_blank">Play with Kubernetes</a></li>
+</ul>
+ 
+
+<p>To check the version, enter <code>kubectl version</code>.</p>
+
+<h2 id="术语表">术语表</h2>
+
+<p>本文使用了下列术语：</p>
+
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Network_address_translation" target="_blank">NAT</a>: 网络地址转换</li>
+<li><a href="https://en.wikipedia.org/wiki/Network_address_translation#SNAT" target="_blank">Source NAT</a>: 替换数据包的源 IP, 通常为节点的 IP</li>
+<li><a href="https://en.wikipedia.org/wiki/Network_address_translation#DNAT" target="_blank">Destination NAT</a>: 替换数据包的目的 IP, 通常为 Pod 的 IP</li>
+<li><a href="/docs/concepts/services-networking/service/#virtual-ips-and-service-proxies">VIP</a>: 一个虚拟 IP, 例如分配给每个 Kubernetes Service 的 IP</li>
+<li><a href="/docs/concepts/services-networking/service/#virtual-ips-and-service-proxies">Kube-proxy</a>: 一个网络守护程序，在每个节点上协调 Service VIP 管理</li>
+</ul>
+
+<h2 id="准备工作">准备工作</h2>
+
+<p>你必须拥有一个正常工作的 Kubernetes 1.5 集群，用来运行本文中的示例。该示例使用一个简单的 nginx webserver 回送它接收到的请求的 HTTP 头中的源 IP 地址。你可以像下面这样创建它：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ kubectl run source-ip-app --image=k8s.gcr.io/echoserver:1.4
+deployment &#34;source-ip-app&#34; created</code></pre></div>
+
+
+
+<h2 id="type-clusterip-类型-services-的-source-ip">Type=ClusterIP 类型 Services 的 Source IP</h2>
+
+<p>如果你的 kube-proxy 运行在 <a href="/docs/user-guide/services/#proxy-mode-iptables">iptables 模式</a>下，从集群内部发送到 ClusterIP 的包永远不会进行源地址 NAT，这从 Kubernetes 1.2 开始是默认选项。Kube-proxy 通过一个 <code>proxyMode</code> endpoint 暴露它的模式。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ kubectl get nodes
+NAME                           STATUS     AGE     VERSION
+kubernetes-minion-group-6jst   Ready      2h      v1.6.0+fff5156
+kubernetes-minion-group-cx31   Ready      2h      v1.6.0+fff5156
+kubernetes-minion-group-jj1t   Ready      2h      v1.6.0+fff5156
+
+kubernetes-minion-group-6jst $ curl localhost:10249/proxyMode
+iptables</code></pre></div>
+<p>你可以通过在 source IP 应用上创建一个服务来测试源 IP 保留。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ kubectl expose deployment source-ip-app --name=clusterip --port=80 --target-port=8080
+service &#34;clusterip&#34; exposed
+
+$ kubectl get svc clusterip
+NAME         CLUSTER-IP    EXTERNAL-IP   PORT(S)   AGE
+clusterip    10.0.170.92   &lt;none&gt;        80/TCP    51s</code></pre></div>
+<p>从相同集群中的一个 pod 访问这个 <code>ClusterIP</code>：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ kubectl run busybox -it --image=busybox --restart=Never --rm
+Waiting for pod default/busybox to be running, status is Pending, pod ready: false
+If you don&#39;t see a command prompt, try pressing enter.
+
+# ip addr
+1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host
+       valid_lft forever preferred_lft forever
+3: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1460 qdisc noqueue
+    link/ether 0a:58:0a:f4:03:08 brd ff:ff:ff:ff:ff:ff
+    inet 10.244.3.8/24 scope global eth0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::188a:84ff:feb0:26a5/64 scope link
+       valid_lft forever preferred_lft forever
+
+# wget -qO - 10.0.170.92
+CLIENT VALUES:
+client_address=10.244.3.8
+command=GET
+...</code></pre></div>
+<p>如果客户端 pod 和 服务端 pod 在相同的节点上，client_address 就是客户端 pod 的 IP 地址。但是，如果它们在不同的节点上， client_address 将会是客户端 pod 所在节点的 flannel IP 地址。</p>
+
+<h2 id="type-nodeport-类型-services-的-source-ip">Type=NodePort 类型 Services 的 Source IP</h2>
+
+<p>对于 Kubernetes 1.5，发送给类型为 <a href="/docs/user-guide/services/#type-nodeport">Type=NodePort</a> Services 的数据包默认进行源地址 NAT。你可以创建一个 <code>NodePort</code> Service 来进行测试：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ kubectl expose deployment source-ip-app --name=nodeport --port=80 --target-port=8080 --type=NodePort
+service &#34;nodeport&#34; exposed
+
+$ NODEPORT=$(kubectl get -o jsonpath=&#34;{.spec.ports[0].nodePort}&#34; services nodeport)
+$ NODES=$(kubectl get nodes -o jsonpath=&#39;{ $.items[*].status.addresses[?(@.type==&#34;ExternalIP&#34;)].address }&#39;)</code></pre></div>
+<p>如果你的集群运行在一个云服务上，你可能需要为上面报告的 <code>nodes:nodeport</code> 开启一条防火墙规则。
+现在，你可以通过上面分配的节点端口从外部访问这个 Service。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ for node in $NODES; do curl -s $node:$NODEPORT | grep -i client_address; done
+client_address=10.180.1.1
+client_address=10.240.0.5
+client_address=10.240.0.3</code></pre></div>
+<p>请注意，这些并不是正确的客户端 IP，它们是集群的内部 IP。这是所发生的事情：</p>
+
+<ul>
+<li>客户端发送数据包到 <code>node2:nodePort</code></li>
+<li><code>node2</code> 使用它自己的 IP 地址替换数据包的源 IP 地址（SNAT）</li>
+<li><code>node2</code> 使用 pod IP 地址替换数据包的目的 IP 地址</li>
+<li>数据包被路由到 node 1，然后交给 endpoint</li>
+<li>Pod 的回复被路由回 node2</li>
+<li>Pod 的回复被发送回给客户端</li>
+</ul>
+
+<p>形象的：</p>
+
+<pre><code>          client
+             \ ^
+              \ \
+               v \
+   node 1 &lt;--- node 2
+    | ^   SNAT
+    | |   ---&gt;
+    v |
+ endpoint
+</code></pre>
+
+<p>为了防止这种情况发生，Kubernetes 提供了一个特性来保留客户端的源 IP 地址<a href="/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip">(点击此处查看可用特性)</a>。设置 <code>service.spec.externalTrafficPolicy</code> 的值为 <code>Local</code>，请求就只会被代理到本地 endpoints 而不会被转发到其它节点。这样就保留了最初的源 IP 地址。如果没有本地 endpoints，发送到这个节点的数据包将会被丢弃。这样在应用到数据包的任何包处理规则下，你都能依赖这个正确的 source-ip 使数据包通过并到达 endpoint。</p>
+
+<p>设置 <code>service.spec.externalTrafficPolicy</code> 字段如下：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ kubectl patch svc nodeport -p &#39;{&#34;spec&#34;:{&#34;externalTrafficPolicy&#34;:&#34;Local&#34;}}&#39;
+service &#34;nodeport&#34; patched</code></pre></div>
+<p>现在，重新运行测试：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ for node in $NODES; do curl --connect-timeout 1 -s $node:$NODEPORT | grep -i client_address; done
+client_address=104.132.1.79</code></pre></div>
+<p>请注意，你只从 endpoint pod 运行的那个节点得到了一个回复，这个回复有*正确的*客户端 IP。</p>
+
+<p>这是发生的事情：</p>
+
+<ul>
+<li>客户端发送数据包到 <code>node2:nodePort</code>，它没有任何 endpoints</li>
+<li>数据包被丢弃</li>
+<li>客户端发送数据包到 <code>node1:nodePort</code>，它*有*endpoints</li>
+<li>node1 使用正确的源 IP 地址将数据包路由到 endpoint</li>
+</ul>
+
+<p>形象的：</p>
+
+<pre><code>        client
+       ^ /   \
+      / /     \
+     / v       X
+   node 1     node 2
+    ^ |
+    | |
+    | v
+ endpoint
+</code></pre>
+
+<h2 id="type-loadbalancer-类型-services-的-source-ip">Type=LoadBalancer 类型 Services 的 Source IP</h2>
+
+<p>对于 Kubernetes 1.5，发送给类型为 <a href="/docs/user-guide/services/#type-nodeport">Type=LoadBalancer</a> Services 的数据包默认进行源地址 NAT，这是由于所有处于 <code>Ready</code> 状态的 Kubernetes 节点对于负载均衡的流量都是符合条件的。所以如果数据包到达一个没有 endpoint 的节点，系统将把这个包代理到<em>有</em> endpoint 的节点，并替换数据包的源 IP 为节点的 IP（如前面章节所述）。</p>
+
+<p>你可以通过在一个 loadbalancer 上暴露这个 source-ip-app 来进行测试。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ kubectl expose deployment source-ip-app --name=loadbalancer --port=80 --target-port=8080 --type=LoadBalancer
+service &#34;loadbalancer&#34; exposed
+
+$ kubectl get svc loadbalancer
+NAME           CLUSTER-IP    EXTERNAL-IP       PORT(S)   AGE
+loadbalancer   10.0.65.118   104.198.149.140   80/TCP    5m
+
+$ curl 104.198.149.140
+CLIENT VALUES:
+client_address=10.240.0.5
+...</code></pre></div>
+<p>然而，如果你的集群运行在 Google Kubernetes Engine/GCE 上，设置 <code>service.spec.externalTrafficPolicy</code> 字段值为 <code>Local</code> 可以强制使<em>没有</em> endpoints 的节点把他们自己从负载均衡流量的可选节点名单中删除。这是通过故意使它们健康检查失败达到的。</p>
+
+<p>形象的：</p>
+
+<pre><code>                      client
+                        |
+                      lb VIP
+                     / ^
+                    v /
+health check ---&gt;   node 1   node 2 &lt;--- health check
+        200  &lt;---   ^ |             ---&gt; 500
+                    | V
+                 endpoint
+</code></pre>
+
+<p>你可以设置 annotation 来进行测试：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ kubectl patch svc loadbalancer -p &#39;{&#34;spec&#34;:{&#34;externalTrafficPolicy&#34;:&#34;Local&#34;}}&#39;</code></pre></div>
+<p>你应该能够立即看到 Kubernetes 分配的 <code>service.spec.healthCheckNodePort</code> 字段：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ kubectl get svc loadbalancer -o yaml | grep -i healthCheckNodePort
+  healthCheckNodePort: 32122</code></pre></div>
+<p><code>service.spec.healthCheckNodePort</code> 字段指向每个节点在 <code>/healthz</code> 路径上提供的用于健康检查的端口。你可以这样测试：</p>
+
+<pre><code>$ kubectl get pod -o wide -l run=source-ip-app
+NAME                            READY     STATUS    RESTARTS   AGE       IP             NODE
+source-ip-app-826191075-qehz4   1/1       Running   0          20h       10.180.1.136   kubernetes-minion-group-6jst
+
+kubernetes-minion-group-6jst $ curl localhost:32122/healthz
+1 Service Endpoints found
+
+kubernetes-minion-group-jj1t $ curl localhost:32122/healthz
+No Service Endpoints Found
+</code></pre>
+
+<p>主节点运行的 service 控制器负责分配 cloud loadbalancer。在这样做的同时，它也会分配指向每个节点的 HTTP 健康检查的 port/path。等待大约 10 秒钟之后，没有 endpoints 的两个节点的健康检查会失败，然后 curl 负载均衡器的 ip：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ curl 104.198.149.140
+CLIENT VALUES:
+client_address=104.132.1.79
+...</code></pre></div>
+<p><strong>跨平台支持</strong></p>
+
+<p>由于 Kubernetes 1.5 在类型为 Type=LoadBalancer 的 Services 中支持源 IP 保存的特性仅在 cloudproviders 的子集中实现（GCP and Azure）。你的集群运行的 cloudprovider 可能以某些不同的方式满足 loadbalancer 的要求：</p>
+
+<ol>
+<li><p>使用一个代理终止客户端连接并打开一个到你的 nodes/endpoints 的新连接。在这种情况下，源 IP 地址将永远是云负载均衡器的地址而不是客户端的。</p></li>
+
+<li><p>使用一个包转发器，因此从客户端发送到负载均衡器 VIP 的请求在拥有客户端源 IP 地址的节点终止，而不被中间代理。</p></li>
+</ol>
+
+<p>第一类负载均衡器必须使用一种它和后端之间约定的协议来和真实的客户端 IP 通信，例如 HTTP <a href="https://en.wikipedia.org/wiki/X-Forwarded-For" target="_blank">X-FORWARDED-FOR</a> 头，或者 <a href="http://www.haproxy.org/download/1.5/doc/proxy-protocol.txt" target="_blank">proxy 协议</a>。
+第二类负载均衡器可以通过简单的在保存于 Service 的 <code>service.spec.healthCheckNodePort</code> 字段上创建一个 HTTP 健康检查点来使用上面描述的特性。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="cleaning-up">Cleaning up</h2>
+<p>删除服务：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ kubectl delete svc -l run=source-ip-app</code></pre></div>
+<p>删除 Deployment、ReplicaSet 和 Pod：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ kubectl delete deployment source-ip-app</code></pre></div>
+
+
+
+
+<h2 id="what-s-next">What&#39;s next</h2>
+<ul>
+<li>学习更多关于 <a href="/docs/concepts/services-networking/connect-applications-service/">通过 services 连接应用</a></li>
+<li>学习更多关于 <a href="/docs/user-guide/load-balancer">负载均衡</a></li>
+</ul>
+
+
+
+
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/tutorials/services/source-ip.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/cn\/docs\/tutorials\/services\/source-ip\/",
+					"title" : "使用 Source IP",
+					"permalink" : "https:\/\/kubernetes.io\/cn\/docs\/tutorials\/services\/source-ip\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/tutorials/services/source-ip.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

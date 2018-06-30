@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Example: Deploying PHP Guestbook application with Redis - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="Example: Deploying PHP Guestbook application with Redis" />
+<meta property="og:description" content="Example: Deploying PHP Guestbook application with Redis" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/tutorials/stateless-application/guestbook/" />
+<meta property="og:title" content="Example: Deploying PHP Guestbook application with Redis - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h1>Tutorials</h1>
+<h5></h5>
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/" class="YAH">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Tutorials" href="/docs/tutorials/"></a>
+
+	
+	
+		
+		
+<a class="item" data-title="Hello Minikube" href="/docs/tutorials/hello-minikube/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Kubernetes Basics">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Overview" href="/docs/tutorials/kubernetes-basics/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Create a Cluster">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Using Minikube to Create a Cluster" href="/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Interactive Tutorial - Creating a Cluster" href="/docs/tutorials/kubernetes-basics/create-cluster/cluster-interactive/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Deploy an App">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Using kubectl to Create a Deployment" href="/docs/tutorials/kubernetes-basics/deploy-app/deploy-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Interactive Tutorial - Deploying an App" href="/docs/tutorials/kubernetes-basics/deploy-app/deploy-interactive/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Explore Your App">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Viewing Pods and Nodes" href="/docs/tutorials/kubernetes-basics/explore/explore-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Interactive Tutorial - Exploring Your App" href="/docs/tutorials/kubernetes-basics/explore/explore-interactive/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Expose Your App Publicly">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Using a Service to Expose Your App" href="/docs/tutorials/kubernetes-basics/expose/expose-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Interactive Tutorial - Exposing Your App" href="/docs/tutorials/kubernetes-basics/expose/expose-interactive/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Scale Your App">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Running Multiple Instances of Your App" href="/docs/tutorials/kubernetes-basics/scale/scale-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Interactive Tutorial - Scaling Your App" href="/docs/tutorials/kubernetes-basics/scale/scale-interactive/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Update Your App">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Performing a Rolling Update" href="/docs/tutorials/kubernetes-basics/update/update-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Interactive Tutorial - Updating Your App" href="/docs/tutorials/kubernetes-basics/update/update-interactive/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Online Training Courses">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Overview of Kubernetes Online Training" href="/docs/tutorials/online-training/overview/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Configuration">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Configuring Redis using a ConfigMap" href="/docs/tutorials/configuration/configure-redis-using-configmap/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Stateless Applications">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Exposing an External IP Address to Access an Application in a Cluster" href="/docs/tutorials/stateless-application/expose-external-ip-address/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Example: Deploying PHP Guestbook application with Redis" href="/docs/tutorials/stateless-application/guestbook/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Stateful Applications">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="StatefulSet Basics" href="/docs/tutorials/stateful-application/basic-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Example: Deploying WordPress and MySQL with Persistent Volumes" href="/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Example: Deploying Cassandra with Stateful Sets" href="/docs/tutorials/stateful-application/cassandra/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Running ZooKeeper, A Distributed System Coordinator" href="/docs/tutorials/stateful-application/zookeeper/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Clusters">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="AppArmor" href="/docs/tutorials/clusters/apparmor/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Services">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Using Source IP" href="/docs/tutorials/services/source-ip/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes 101" href="/docs/tutorials/k8s101/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes 201" href="/docs/tutorials/k8s201/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/tutorials/stateless-application/guestbook.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>Example: Deploying PHP Guestbook application with Redis</h1>
+
+
+
+<p>This tutorial shows you how to build and deploy a simple, multi-tier web application using Kubernetes and <a href="https://www.docker.com/" target="_blank">Docker</a>. This example consists of the following components:</p>
+
+<ul>
+<li>A single-instance <a href="https://redis.io/" target="_blank">Redis</a> master to store guestbook entries</li>
+<li>Multiple replicated Redis instances to serve reads</li>
+<li>Multiple web frontend instances</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+<li><a href="#objectives">Objectives</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#before-you-begin">Before you begin</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#start-up-the-redis-master">Start up the Redis Master</a></li>
+
+
+
+
+<li><a href="#start-up-the-redis-slaves">Start up the Redis Slaves</a></li>
+
+
+
+
+<li><a href="#set-up-and-expose-the-guestbook-frontend">Set up and Expose the Guestbook Frontend</a></li>
+
+
+
+
+<li><a href="#scale-the-web-frontend">Scale the Web Frontend</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#cleaning-up">Cleaning up</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#what-s-next">What's next</a></li>
+
+
+
+</ul>
+
+
+
+<h2 id="objectives">Objectives</h2>
+<ul>
+<li>Start up a Redis master.</li>
+<li>Start up Redis slaves.</li>
+<li>Start up the guestbook frontend.</li>
+<li>Expose and view the Frontend Service.</li>
+<li>Clean up.</li>
+</ul>
+
+
+
+
+
+<h2 id="before-you-begin">Before you begin</h2>
+<p>You need to have a Kubernetes cluster, and the kubectl command-line tool must
+be configured to communicate with your cluster. If you do not already have a
+cluster, you can create one by using
+<a href="/docs/getting-started-guides/minikube">Minikube</a>,
+or you can use one of these Kubernetes playgrounds:</p>
+
+<ul>
+<li><a href="https://www.katacoda.com/courses/kubernetes/playground" target="_blank">Katacoda</a></li>
+<li><a href="http://labs.play-with-k8s.com/" target="_blank">Play with Kubernetes</a></li>
+</ul>
+ 
+
+<p>To check the version, enter <code>kubectl version</code>.</p>
+
+<p>Download the following configuration files:</p>
+
+<ol>
+<li><a href="/docs/tutorials/stateless-application/guestbook/redis-master-deployment.yaml">redis-master-deployment.yaml</a></li>
+<li><a href="/docs/tutorials/stateless-application/guestbook/redis-master-service.yaml">redis-master-service.yaml</a></li>
+<li><a href="/docs/tutorials/stateless-application/guestbook/redis-slave-deployment.yaml">redis-slave-deployment.yaml</a></li>
+<li><a href="/docs/tutorials/stateless-application/guestbook/redis-slave-service.yaml">redis-slave-service.yaml</a></li>
+<li><a href="/docs/tutorials/stateless-application/guestbook/frontend-deployment.yaml">frontend-deployment.yaml</a></li>
+<li><a href="/docs/tutorials/stateless-application/guestbook/frontend-service.yaml">frontend-service.yaml</a></li>
+</ol>
+
+
+
+
+<h2 id="start-up-the-redis-master">Start up the Redis Master</h2>
+
+<p>The guestbook application uses Redis to store its data. It writes its data to a Redis master instance and reads data from multiple Redis slave instances.</p>
+
+<h3 id="creating-the-redis-master-deployment">Creating the Redis Master Deployment</h3>
+
+<p>The manifest file, included below, specifies a Deployment controller that runs a single replica Redis master Pod.</p>
+
+<ol>
+<li>Launch a terminal window in the directory you downloaded the manifest files.</li>
+<li>Apply the Redis Master Deployment from the <code>redis-master-deployment.yaml</code> file:
+<code>
+kubectl apply -f redis-master-deployment.yaml
+</code><br />
+<br /></li>
+</ol>
+
+<table class="includecode" id="guestbook-redis-master-deployment-yaml">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://github.com/kubernetes/website/blob/master/content/en/docs/tutorials/stateless-application/guestbook/redis-master-deployment.yaml" download="guestbook/redis-master-deployment.yaml">
+                    <code>guestbook/redis-master-deployment.yaml docs/tutorials/stateless-application/guestbook</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('guestbook-redis-master-deployment-yaml')" title="Copy guestbook/redis-master-deployment.yaml to clipboard">
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>apps/v1<span style="color:#bbb"> </span><span style="color:#080;font-style:italic"># for versions before 1.9.0 use apps/v1beta2</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Deployment<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>redis-master<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>labels:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>app:<span style="color:#bbb"> </span>redis<span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>selector:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>matchLabels:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>app:<span style="color:#bbb"> </span>redis<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>role:<span style="color:#bbb"> </span>master<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>tier:<span style="color:#bbb"> </span>backend<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>replicas:<span style="color:#bbb"> </span><span style="color:#666">1</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>template:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>labels:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>app:<span style="color:#bbb"> </span>redis<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>role:<span style="color:#bbb"> </span>master<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>tier:<span style="color:#bbb"> </span>backend<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>containers:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>master<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>image:<span style="color:#bbb"> </span>k8s.gcr.io/redis:e2e<span style="color:#bbb">  </span><span style="color:#080;font-style:italic"># or just image: redis</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span>resources:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>requests:<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>cpu:<span style="color:#bbb"> </span>100m<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>memory:<span style="color:#bbb"> </span>100Mi<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>ports:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span>containerPort:<span style="color:#bbb"> </span><span style="color:#666">6379</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span></code></pre></div>  </td>
+        </tr>
+    </tbody>
+</table>
+
+<ol>
+<li><p>Query the list of Pods to verify that the Redis Master Pod is running:</p>
+
+<pre><code>kubectl get pods
+</code></pre>
+
+<p>The response should be similar to this:</p>
+
+<pre><code>NAME                            READY     STATUS    RESTARTS   AGE
+redis-master-1068406935-3lswp   1/1       Running   0          28s
+</code></pre></li>
+
+<li><p>Run the following command to view the logs from the Redis Master Pod:</p>
+
+<pre><code>kubectl logs -f POD-NAME
+</code></pre>
+
+<blockquote class="note">
+<div><strong>Note:</strong> Replace POD-NAME with the name of your Pod.</div>
+</blockquote></li>
+</ol>
+
+<h3 id="creating-the-redis-master-service">Creating the Redis Master Service</h3>
+
+<p>The guestbook applications needs to communicate to the Redis master to write its data. You need to apply a <a href="/docs/concepts/services-networking/service/">Service</a> to proxy the traffic to the Redis master Pod. A Service defines a policy to access the Pods.</p>
+
+<ol>
+<li>Apply the Redis Master Service from the following <code>redis-master-service.yaml</code> file:
+<code>
+kubectl apply -f redis-master-service.yaml
+</code>
+<br /></li>
+</ol>
+
+<table class="includecode" id="guestbook-redis-master-service-yaml">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://github.com/kubernetes/website/blob/master/content/en/docs/tutorials/stateless-application/guestbook/redis-master-service.yaml" download="guestbook/redis-master-service.yaml">
+                    <code>guestbook/redis-master-service.yaml docs/tutorials/stateless-application/guestbook</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('guestbook-redis-master-service-yaml')" title="Copy guestbook/redis-master-service.yaml to clipboard">
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Service<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>redis-master<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>labels:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>app:<span style="color:#bbb"> </span>redis<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>role:<span style="color:#bbb"> </span>master<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>tier:<span style="color:#bbb"> </span>backend<span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>ports:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>port:<span style="color:#bbb"> </span><span style="color:#666">6379</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>targetPort:<span style="color:#bbb"> </span><span style="color:#666">6379</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>selector:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>app:<span style="color:#bbb"> </span>redis<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>role:<span style="color:#bbb"> </span>master<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>tier:<span style="color:#bbb"> </span>backend<span style="color:#bbb">
+</span><span style="color:#bbb"></span></code></pre></div>  </td>
+        </tr>
+    </tbody>
+</table>
+
+<blockquote class="note">
+  <div><strong>Note:</strong> This manifest file creates a Service named <code>redis-master</code> with a set of labels that match the labels previously defined, so the Service routes network traffic to the Redis master Pod.</div>
+</blockquote>
+
+<ol>
+<li>Query the list of Services to verify that the Redis Master Service is running:</li>
+</ol>
+
+<pre><code>   kubectl get service
+</code></pre>
+
+<p>The response should be similar to this:</p>
+
+<pre><code>   NAME           CLUSTER-IP   EXTERNAL-IP   PORT(S)    AGE
+   kubernetes     10.0.0.1     &lt;none&gt;        443/TCP    1m
+   redis-master   10.0.0.151   &lt;none&gt;        6379/TCP   8s
+</code></pre>
+
+<h2 id="start-up-the-redis-slaves">Start up the Redis Slaves</h2>
+
+<p>Although the Redis master is a single pod, you can make it highly available to meet traffic demands by adding replica Redis slaves.</p>
+
+<h3 id="creating-the-redis-slave-deployment">Creating the Redis Slave Deployment</h3>
+
+<p>Deployments scale based off of the configurations set in the manifest file. In this case, the Deployment object specifies two replicas.</p>
+
+<p>If there are not any replicas running, this Deployment would start the two replicas on your container cluster. Conversely, if there are more than two replicas are running, it would scale down until two replicas are running.</p>
+
+<ol>
+<li>Apply the Redis Slave Deployment from the <code>redis-slave-deployment.yaml</code> file:</li>
+</ol>
+
+<pre><code>   kubectl apply -f redis-slave-deployment.yaml
+</code></pre>
+
+<table class="includecode" id="guestbook-redis-slave-deployment-yaml">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://github.com/kubernetes/website/blob/master/content/en/docs/tutorials/stateless-application/guestbook/redis-slave-deployment.yaml" download="guestbook/redis-slave-deployment.yaml">
+                    <code>guestbook/redis-slave-deployment.yaml docs/tutorials/stateless-application/guestbook</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('guestbook-redis-slave-deployment-yaml')" title="Copy guestbook/redis-slave-deployment.yaml to clipboard">
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>apps/v1<span style="color:#bbb"> </span><span style="color:#080;font-style:italic"># for versions before 1.9.0 use apps/v1beta2</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Deployment<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>redis-slave<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>labels:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>app:<span style="color:#bbb"> </span>redis<span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>selector:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>matchLabels:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>app:<span style="color:#bbb"> </span>redis<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>role:<span style="color:#bbb"> </span>slave<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>tier:<span style="color:#bbb"> </span>backend<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>replicas:<span style="color:#bbb"> </span><span style="color:#666">2</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>template:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>labels:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>app:<span style="color:#bbb"> </span>redis<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>role:<span style="color:#bbb"> </span>slave<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>tier:<span style="color:#bbb"> </span>backend<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>containers:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>slave<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>image:<span style="color:#bbb"> </span>gcr.io/google_samples/gb-redisslave:v1<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>resources:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>requests:<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>cpu:<span style="color:#bbb"> </span>100m<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>memory:<span style="color:#bbb"> </span>100Mi<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>env:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>GET_HOSTS_FROM<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>value:<span style="color:#bbb"> </span>dns<span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#080;font-style:italic"># Using `GET_HOSTS_FROM=dns` requires your cluster to</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#080;font-style:italic"># provide a dns service. As of Kubernetes 1.3, DNS is a built-in</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#080;font-style:italic"># service launched automatically. However, if the cluster you are using</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#080;font-style:italic"># does not have a built-in DNS service, you can instead</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#080;font-style:italic"># access an environment variable to find the master</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#080;font-style:italic"># service&#39;s host. To do so, comment out the &#39;value: dns&#39; line above, and</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#080;font-style:italic"># uncomment the line below:</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#080;font-style:italic"># value: env</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span>ports:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span>containerPort:<span style="color:#bbb"> </span><span style="color:#666">6379</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span></code></pre></div>  </td>
+        </tr>
+    </tbody>
+</table>
+
+<ol>
+<li>Query the list of Pods to verify that the Redis Slave Pods are running:</li>
+</ol>
+
+<pre><code>   kubectl get pods
+</code></pre>
+
+<p>The response should be similar to this:</p>
+
+<pre><code>   NAME                            READY     STATUS              RESTARTS   AGE
+   redis-master-1068406935-3lswp   1/1       Running             0          1m
+   redis-slave-2005841000-fpvqc    0/1       ContainerCreating   0          6s
+   redis-slave-2005841000-phfv9    0/1       ContainerCreating   0          6s
+</code></pre>
+
+<h3 id="creating-the-redis-slave-service">Creating the Redis Slave Service</h3>
+
+<p>The guestbook application needs to communicate to Redis slaves to read data. To make the Redis slaves discoverable, you need to set up a Service. A Service provides transparent load balancing to a set of Pods.</p>
+
+<ol>
+<li>Apply the Redis Slave Service from the following <code>redis-slave-service.yaml</code> file:</li>
+</ol>
+
+<pre><code>   kubectl apply -f redis-slave-service.yaml
+</code></pre>
+
+<table class="includecode" id="guestbook-redis-slave-service-yaml">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://github.com/kubernetes/website/blob/master/content/en/docs/tutorials/stateless-application/guestbook/redis-slave-service.yaml" download="guestbook/redis-slave-service.yaml">
+                    <code>guestbook/redis-slave-service.yaml docs/tutorials/stateless-application/guestbook</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('guestbook-redis-slave-service-yaml')" title="Copy guestbook/redis-slave-service.yaml to clipboard">
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Service<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>redis-slave<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>labels:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>app:<span style="color:#bbb"> </span>redis<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>role:<span style="color:#bbb"> </span>slave<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>tier:<span style="color:#bbb"> </span>backend<span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>ports:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>port:<span style="color:#bbb"> </span><span style="color:#666">6379</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>selector:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>app:<span style="color:#bbb"> </span>redis<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>role:<span style="color:#bbb"> </span>slave<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>tier:<span style="color:#bbb"> </span>backend<span style="color:#bbb">
+</span><span style="color:#bbb"></span></code></pre></div>  </td>
+        </tr>
+    </tbody>
+</table>
+
+<ol>
+<li>Query the list of Services to verify that the Redis Slave Service is running:</li>
+</ol>
+
+<pre><code>   kubectl get services
+</code></pre>
+
+<p>The response should be similar to this:</p>
+
+<pre><code>   NAME           CLUSTER-IP   EXTERNAL-IP   PORT(S)    AGE
+   kubernetes     10.0.0.1     &lt;none&gt;        443/TCP    2m
+   redis-master   10.0.0.151   &lt;none&gt;        6379/TCP   1m
+   redis-slave    10.0.0.223   &lt;none&gt;        6379/TCP   6s
+</code></pre>
+
+<h2 id="set-up-and-expose-the-guestbook-frontend">Set up and Expose the Guestbook Frontend</h2>
+
+<p>The guestbook application has a web frontend serving the HTTP requests written in PHP. It is configured to connect to the <code>redis-master</code> Service for write requests and the <code>redis-slave</code> service for Read requests.</p>
+
+<h3 id="creating-the-guestbook-frontend-deployment">Creating the Guestbook Frontend Deployment</h3>
+
+<ol>
+<li>Apply the frontend Deployment from the following <code>frontend-deployment.yaml</code> file:</li>
+</ol>
+
+<pre><code>   kubectl apply -f frontend-deployment.yaml
+</code></pre>
+
+<table class="includecode" id="guestbook-frontend-deployment-yaml">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://github.com/kubernetes/website/blob/master/content/en/docs/tutorials/stateless-application/guestbook/frontend-deployment.yaml" download="guestbook/frontend-deployment.yaml">
+                    <code>guestbook/frontend-deployment.yaml docs/tutorials/stateless-application/guestbook</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('guestbook-frontend-deployment-yaml')" title="Copy guestbook/frontend-deployment.yaml to clipboard">
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>apps/v1<span style="color:#bbb"> </span><span style="color:#080;font-style:italic"># for versions before 1.9.0 use apps/v1beta2</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Deployment<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>frontend<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>labels:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>app:<span style="color:#bbb"> </span>guestbook<span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>selector:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>matchLabels:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>app:<span style="color:#bbb"> </span>guestbook<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>tier:<span style="color:#bbb"> </span>frontend<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>replicas:<span style="color:#bbb"> </span><span style="color:#666">3</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>template:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>labels:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>app:<span style="color:#bbb"> </span>guestbook<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>tier:<span style="color:#bbb"> </span>frontend<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>containers:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>php-redis<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>image:<span style="color:#bbb"> </span>gcr.io/google-samples/gb-frontend:v4<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>resources:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>requests:<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>cpu:<span style="color:#bbb"> </span>100m<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>memory:<span style="color:#bbb"> </span>100Mi<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>env:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>GET_HOSTS_FROM<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>value:<span style="color:#bbb"> </span>dns<span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#080;font-style:italic"># Using `GET_HOSTS_FROM=dns` requires your cluster to</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#080;font-style:italic"># provide a dns service. As of Kubernetes 1.3, DNS is a built-in</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#080;font-style:italic"># service launched automatically. However, if the cluster you are using</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#080;font-style:italic"># does not have a built-in DNS service, you can instead</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#080;font-style:italic"># access an environment variable to find the master</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#080;font-style:italic"># service&#39;s host. To do so, comment out the &#39;value: dns&#39; line above, and</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#080;font-style:italic"># uncomment the line below:</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span><span style="color:#080;font-style:italic"># value: env</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span>ports:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span>containerPort:<span style="color:#bbb"> </span><span style="color:#666">80</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span></code></pre></div>  </td>
+        </tr>
+    </tbody>
+</table>
+
+<ol>
+<li>Query the list of Pods to verify that the three frontend replicas are running:</li>
+</ol>
+
+<pre><code>   kubectl get pods -l app=guestbook -l tier=frontend
+</code></pre>
+
+<p>The response should be similar to this:</p>
+
+<pre><code>   NAME                        READY     STATUS    RESTARTS   AGE
+   frontend-3823415956-dsvc5   1/1       Running   0          54s
+   frontend-3823415956-k22zn   1/1       Running   0          54s
+   frontend-3823415956-w9gbt   1/1       Running   0          54s
+</code></pre>
+
+<h3 id="creating-the-frontend-service">Creating the Frontend Service</h3>
+
+<p>The <code>redis-slave</code> and <code>redis-master</code> Services you applied are only accessible within the container cluster because the default type for a Service is <a href="/docs/concepts/services-networking/service/#publishing-services---service-types">ClusterIP</a>. <code>ClusterIP</code> provides a single IP address for the set of Pods the Service is pointing to. This IP address is accessible only within the cluster.</p>
+
+<p>If you want guests to be able to access your guestbook, you must configure the frontend Service to be externally visible, so a client can request the Service from outside the container cluster. Minikube can only expose Services through <code>NodePort</code>.</p>
+
+<blockquote class="note">
+  <div><strong>Note:</strong> Some cloud providers, like Google Compute Engine or Google Kubernetes Engine, support external load balancers. If your cloud provider supports load balancers and you want to use it, simply delete or comment out <code>type: NodePort</code>, and uncomment <code>type: LoadBalancer</code>.</div>
+</blockquote>
+
+<ol>
+<li>Apply the frontend Service from the following <code>frontend-service.yaml</code> file:</li>
+</ol>
+
+<pre><code>   kubectl apply -f frontend-service.yaml
+</code></pre>
+
+<table class="includecode" id="guestbook-frontend-service-yaml">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://github.com/kubernetes/website/blob/master/content/en/docs/tutorials/stateless-application/guestbook/frontend-service.yaml" download="guestbook/frontend-service.yaml">
+                    <code>guestbook/frontend-service.yaml docs/tutorials/stateless-application/guestbook</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('guestbook-frontend-service-yaml')" title="Copy guestbook/frontend-service.yaml to clipboard">
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Service<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>frontend<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>labels:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>app:<span style="color:#bbb"> </span>guestbook<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>tier:<span style="color:#bbb"> </span>frontend<span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#080;font-style:italic"># comment or delete the following line if you want to use a LoadBalancer</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>type:<span style="color:#bbb"> </span>NodePort<span style="color:#bbb"> 
+</span><span style="color:#bbb">  </span><span style="color:#080;font-style:italic"># if your cluster supports it, uncomment the following to automatically create</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#080;font-style:italic"># an external load-balanced IP for the frontend service.</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#080;font-style:italic"># type: LoadBalancer</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>ports:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>port:<span style="color:#bbb"> </span><span style="color:#666">80</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>selector:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>app:<span style="color:#bbb"> </span>guestbook<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>tier:<span style="color:#bbb"> </span>frontend<span style="color:#bbb">
+</span><span style="color:#bbb"></span></code></pre></div>  </td>
+        </tr>
+    </tbody>
+</table>
+
+<ol>
+<li>Query the list of Services to verify that the frontend Service is running:</li>
+</ol>
+
+<pre><code>   kubectl get services 
+</code></pre>
+
+<p>The response should be similar to this:</p>
+
+<pre><code>   NAME           CLUSTER-IP   EXTERNAL-IP   PORT(S)        AGE
+   frontend       10.0.0.112   &lt;none&gt;       80:31323/TCP   6s
+   kubernetes     10.0.0.1     &lt;none&gt;        443/TCP        4m
+   redis-master   10.0.0.151   &lt;none&gt;        6379/TCP       2m
+   redis-slave    10.0.0.223   &lt;none&gt;        6379/TCP       1m
+</code></pre>
+
+<h3 id="viewing-the-frontend-service-via-nodeport">Viewing the Frontend Service via <code>NodePort</code></h3>
+
+<p>If you deployed this application to Minikube or a local cluster, you need to find the IP address to view your Guestbook.</p>
+
+<ol>
+<li>Run the following command to get the IP address for the frontend Service.</li>
+</ol>
+
+<pre><code>   minikube service frontend --url
+</code></pre>
+
+<p>The response should be similar to this:</p>
+
+<pre><code>   http://192.168.99.100:31323
+</code></pre>
+
+<ol>
+<li>Copy the IP address, and load the page in your browser to view your guestbook.</li>
+</ol>
+
+<h3 id="viewing-the-frontend-service-via-loadbalancer">Viewing the Frontend Service via <code>LoadBalancer</code></h3>
+
+<p>If you deployed the <code>frontend-service.yaml</code> manifest with type: <code>LoadBalancer</code> you need to find the IP address to view your Guestbook.</p>
+
+<ol>
+<li>Run the following command to get the IP address for the frontend Service.</li>
+</ol>
+
+<pre><code>   kubectl get service frontend
+</code></pre>
+
+<p>The response should be similar to this:</p>
+
+<pre><code>   NAME       CLUSTER-IP      EXTERNAL-IP        PORT(S)        AGE
+   frontend   10.51.242.136   109.197.92.229     80:32372/TCP   1m
+</code></pre>
+
+<ol>
+<li>Copy the External IP address, and load the page in your browser to view your guestbook.</li>
+</ol>
+
+<h2 id="scale-the-web-frontend">Scale the Web Frontend</h2>
+
+<p>Scaling up or down is easy because your servers are defined as a Service that uses a Deployment controller.</p>
+
+<ol>
+<li>Run the following command to scale up the number of frontend Pods:</li>
+</ol>
+
+<pre><code>   kubectl scale deployment frontend --replicas=5
+</code></pre>
+
+<ol>
+<li>Query the list of Pods to verify the number of frontend Pods running:</li>
+</ol>
+
+<pre><code>   kubectl get pods
+</code></pre>
+
+<p>The response should look similar to this:</p>
+
+<pre><code>   NAME                            READY     STATUS    RESTARTS   AGE
+   frontend-3823415956-70qj5       1/1       Running   0          5s
+   frontend-3823415956-dsvc5       1/1       Running   0          54m
+   frontend-3823415956-k22zn       1/1       Running   0          54m
+   frontend-3823415956-w9gbt       1/1       Running   0          54m
+   frontend-3823415956-x2pld       1/1       Running   0          5s
+   redis-master-1068406935-3lswp   1/1       Running   0          56m
+   redis-slave-2005841000-fpvqc    1/1       Running   0          55m
+   redis-slave-2005841000-phfv9    1/1       Running   0          55m
+</code></pre>
+
+<ol>
+<li>Run the following command to scale down the number of frontend Pods:</li>
+</ol>
+
+<pre><code>   kubectl scale deployment frontend --replicas=2
+</code></pre>
+
+<ol>
+<li>Query the list of Pods to verify the number of frontend Pods running:</li>
+</ol>
+
+<pre><code>   kubectl get pods
+</code></pre>
+
+<p>The response should look similar to this:</p>
+
+<pre><code>   NAME                            READY     STATUS    RESTARTS   AGE
+   frontend-3823415956-k22zn       1/1       Running   0          1h
+   frontend-3823415956-w9gbt       1/1       Running   0          1h
+   redis-master-1068406935-3lswp   1/1       Running   0          1h
+   redis-slave-2005841000-fpvqc    1/1       Running   0          1h
+   redis-slave-2005841000-phfv9    1/1       Running   0          1h
+</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="cleaning-up">Cleaning up</h2>
+<p>Deleting the Deployments and Services also deletes any running Pods. Use labels to delete multiple resources with one command.</p>
+
+<ol>
+<li>Run the following commands to delete all Pods, Deployments, and Services.</li>
+</ol>
+
+<pre><code>   kubectl delete deployment -l app=redis
+   kubectl delete service -l app=redis
+   kubectl delete deployment -l app=guestbook
+   kubectl delete service -l app=guestbook
+</code></pre>
+
+<p>The responses should be:</p>
+
+<pre><code>   deployment &quot;redis-master&quot; deleted
+   deployment &quot;redis-slave&quot; deleted
+   service &quot;redis-master&quot; deleted
+   service &quot;redis-slave&quot; deleted
+   deployment &quot;frontend&quot; deleted    
+   service &quot;frontend&quot; deleted
+</code></pre>
+
+<ol>
+<li>Query the list of Pods to verify that no Pods are running:</li>
+</ol>
+
+<pre><code>   kubectl get pods
+</code></pre>
+
+<p>The response should be this:</p>
+
+<pre><code>   No resources found.
+</code></pre>
+
+
+
+
+
+<h2 id="what-s-next">What&#39;s next</h2>
+<ul>
+<li>Complete the <a href="/docs/tutorials/kubernetes-basics/">Kubernetes Basics</a> Interactive Tutorials</li>
+<li>Use Kubernetes to create a blog using <a href="/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/#visit-your-new-wordpress-blog">Persistent Volumes for MySQL and Wordpress</a></li>
+<li>Read more about <a href="/docs/concepts/services-networking/connect-applications-service/">connecting applications</a></li>
+<li>Read more about <a href="/docs/concepts/cluster-administration/manage-deployment/#using-labels-effectively">Managing Resources</a></li>
+</ul>
+
+
+
+
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/tutorials/stateless-application/guestbook.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/tutorials\/stateless-application\/guestbook\/",
+					"title" : "Example: Deploying PHP Guestbook application with Redis",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/tutorials\/stateless-application\/guestbook\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/tutorials/stateless-application/guestbook.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

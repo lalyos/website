@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Writing a Blog Post - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="Writing a Blog Post" />
+<meta property="og:description" content="Writing a Blog Post" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/home/contribute/blog-post/" />
+<meta property="og:title" content="Writing a Blog Post - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+<h1></h1>
+<h5></h5>
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/" class="YAH">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Documentation" href="/docs/home/"></a>
+
+	
+	
+		
+		
+	<div class="item" data-title="Contributing to the Kubernetes Docs">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Content Organization" href="/docs/home/contribute/content-organization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Creating a Documentation Pull Request" href="/docs/home/contribute/create-pull-request/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Custom Hugo Shortcodes" href="/docs/home/contribute/includes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Documentation Style Guide" href="/docs/home/contribute/style-guide/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Generating Reference Documentation for Kubernetes Federation API" href="/docs/home/contribute/generated-reference/federation-api/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Generating Reference Documentation for kubectl Commands" href="/docs/home/contribute/generated-reference/kubectl/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Generating Reference Documentation for the Kubernetes API" href="/docs/home/contribute/generated-reference/kubernetes-api/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Generating Reference Pages for Kubernetes Components and Tools" href="/docs/home/contribute/generated-reference/kubernetes-components/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Localizing Kubernetes Documentation" href="/docs/home/contribute/localization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Participating in SIG-DOCS" href="/docs/home/contribute/participating/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Reviewing Documentation Issues" href="/docs/home/contribute/review-issues/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using Page Templates" href="/docs/home/contribute/page-templates/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Writing a Blog Post" href="/docs/home/contribute/blog-post/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Writing a New Topic" href="/docs/home/contribute/write-new-topic/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Supported Versions of the Kubernetes Documentation" href="/docs/home/supported-doc-versions/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/home/contribute/blog-post.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>Writing a Blog Post</h1>
+
+
+
+
+<p>This page shows you how to submit a post for the <a href="https://kubernetes.io/blog" target="_blank">Kubernetes Blog</a>.</p>
+
+<p>You’ll receive a response within 5 business days on whether your submission is approved and information about next steps, if any.</p>
+
+
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+<li><a href="#before-you-begin">Before you begin</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#kubernetes-blog-guidelines">Kubernetes Blog guidelines</a></li>
+
+
+
+
+<li><a href="#create-a-blog-post-with-a-form">Create a blog post with a form</a></li>
+
+
+
+
+<li><a href="#create-a-post-by-opening-a-pull-request">Create a post by opening a pull request</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</ul>
+
+
+
+<h2 id="before-you-begin">Before you begin</h2>
+<p>To create a new blog post, you can either:</p>
+
+<ul>
+<li>Fill out the <a href="https://docs.google.com/forms/d/e/1FAIpQLSch_phFYMTYlrTDuYziURP6nLMijoXx_f7sLABEU5gWBtxJHQ/viewform" target="_blank">Kubernetes Blog Submission</a> form.</li>
+</ul>
+
+<p>or:</p>
+
+<ul>
+<li>Open a pull request against this repository as described in
+<a href="/docs/home/contribute/create-pull-request/">Creating a Documentation Pull Request</a></li>
+</ul>
+
+
+
+
+<h2 id="kubernetes-blog-guidelines">Kubernetes Blog guidelines</h2>
+
+<p>All content must be original. The Kubernetes Blog does not post material previously published elsewhere.</p>
+
+<p>Suitable Content (with examples):</p>
+
+<ul>
+<li>User case studies (Yahoo Japan, Bitmovin)</li>
+<li>New Kubernetes capabilities (5-days-of-k8s)</li>
+<li>Kubernetes projects updates (kompose)</li>
+<li>Updates from Special Interest Groups (SIG-OpenStack)</li>
+<li>Tutorials and walkthroughs (PostgreSQL w/ StatefulSets)</li>
+<li>Thought leadership around Kubernetes (CaaS, the foundation for next generation PaaS)</li>
+<li>Kubernetes Partner OSS integration (Fission)</li>
+</ul>
+
+<p>Unsuitable Content:</p>
+
+<ul>
+<li>Vendor product pitches</li>
+<li>Partner updates without an integration and customer story</li>
+<li>Syndicated posts (language translations are permitted)</li>
+</ul>
+
+<h2 id="create-a-blog-post-with-a-form">Create a blog post with a form</h2>
+
+<p>Open the <a href="https://docs.google.com/forms/d/e/1FAIpQLSch_phFYMTYlrTDuYziURP6nLMijoXx_f7sLABEU5gWBtxJHQ/viewform" target="_blank">Kubernetes Blog Submission</a> form, fill it out, and click Submit.</p>
+
+<h2 id="create-a-post-by-opening-a-pull-request">Create a post by opening a pull request</h2>
+
+<h3 id="add-a-new-markdown-file">Add a new Markdown file</h3>
+
+<p>Add a new Markdown (<code>*.md</code>) to <code>/blog/_posts/</code>.</p>
+
+<p>Name the file using the following format:</p>
+
+<pre><code>YYYY-MM-DD-Title.md
+</code></pre>
+
+<p>For example:</p>
+
+<pre><code>2015-03-20-Welcome-to-the-Kubernetes-Blog.md
+</code></pre>
+
+<h3 id="add-front-matter-to-the-file">Add front matter to the file</h3>
+
+<p>Add the following block to the top of the new file:</p>
+
+<pre><code>---
+layout: blog
+title: &lt;title&gt;
+date:  &lt;date&gt;
+---
+</code></pre>
+
+<p>For example:</p>
+
+<pre><code>---
+layout: blog
+title: Welcome to the Kubernetes Blog!
+date:  Saturday, March 20, 2015
+---
+</code></pre>
+
+<h3 id="create-a-new-pull-request-pr">Create a new pull request (PR)</h3>
+
+<p>When you <a href="/docs/home/contribute/create-pull-request/">create a new pull request</a>, include the following in the PR description:</p>
+
+<blockquote class="note">
+  <div><ul>
+<li>Desired publishing date
+<strong>Note:</strong> PRs must include complete drafts no later than 15 days prior to the desired publication date.</li>
+</ul>
+</div>
+</blockquote>
+
+<ul>
+<li>Author information:
+
+<ul>
+<li>Name</li>
+<li>Title</li>
+<li>Company</li>
+<li>Contact email</li>
+</ul></li>
+</ul>
+
+<h3 id="add-content-to-the-file">Add content to the file</h3>
+
+<p>Write your post using the following guidelines.</p>
+
+<h3 id="add-images">Add images</h3>
+
+<p>Add any image files the post contains to <code>/static/images/blog/</code>.</p>
+
+<p>The preferred image format is SVG.</p>
+
+<p>Add the proposed date of your blog post to the title of any image files the post contains:</p>
+
+<pre><code>YYYY-MM-DD-image.svg
+</code></pre>
+
+<p>For example:</p>
+
+<pre><code>2018-03-01-cncf-color.svg
+</code></pre>
+
+<p>Please use [reference-style image links][ref-style] to keep posts readable.</p>
+
+<p>Here&rsquo;s an example of how to include an image in a blog post:</p>
+
+<pre><code>Check out the ![CNCF logo][cncf-logo].
+
+[cncf-logo]: /images/blog/2018-03-01-cncf-color.svg
+</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/home/contribute/blog-post.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/home\/contribute\/blog-post\/",
+					"title" : "Writing a Blog Post",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/home\/contribute\/blog-post\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/home/contribute/blog-post.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

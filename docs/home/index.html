@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Kubernetes Documentation - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style_user_journeys.css">
+
+
+<meta name="description" content="Kubernetes Documentation" />
+<meta property="og:description" content="Kubernetes Documentation" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/home/" />
+<meta property="og:title" content="Kubernetes Documentation - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+<script src="/js/user-journeys/home.js"></script>
+<script src="https://use.fontawesome.com/4bcc658a89.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+<h1></h1>
+<h5></h5>
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/" class="YAH">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			<div id="docsToc" style="display:none;"></div>
+			<div id="content">
+				
+    
+	 <h1>Kubernetes Documentation</h1>
+    
+    
+
+<div id="user-persona-data" class="hide">
+  
+  {"contributors":{"code-contributor":{"advanced":[{"icon":"fa-code-fork","label":"Learn about the release process","url":"https://github.com/kubernetes/release/blob/master/README.md"}],"foundational":[{"icon":"fa-book","label":"Read the Developer Guide","url":"/docs/imported/community/devel/"}],"glossary_id":"code-contributor","id":"code-contributor","index":0,"intermediate":[{"icon":"fa-upload","label":"Learn about the Kubernetes Enhancement Proposal (KEP) process","url":"/docs/imported/community/keps/"},{"icon":"fa-map-o","label":"Understand the API conventions","url":"https://github.com/kubernetes/community/blob/master/contributors/devel/api-conventions.md"}],"name":"Code Contributor"},"community-contributor":{"advanced":[{"icon":"fa-gavel","label":"Learn about Kubernetes community governance","url":"https://github.com/kubernetes/community/blob/master/governance.md"}],"foundational":[{"icon":"fa-users","label":"Contribute to the Kubernetes OSS project","url":"/docs/imported/community/guide/"},{"icon":"fa-graduation-cap","label":"Find out about mentoring initiatives","url":"/docs/imported/community/mentoring/"}],"id":"community-contributor","index":1,"intermediate":[{"icon":"fa-user-plus","label":"Apply for community membership as a member, reviewer, approver, owner, or maintainer","url":"https://github.com/kubernetes/community/blob/master/community-membership.md"}],"name":"Community Contributor","short_desc":"A person who works to build the Kubernetes community (e.g. by organizing meetups)."},"docs-contributor":{"advanced":[{"icon":"fa-tag","label":"Add feature state tags","url":"/docs/home/contribute/includes/#feature-state"},{"icon":"fa-folder-o","label":"Add tabs to display multiple flavors of content","url":"/docs/home/contribute/includes/#tabs"}],"foundational":[{"icon":"fa-users","label":"Contribute to the Kubernetes documentation","url":"/editdocs/"},{"icon":"fa-book","label":"Learn about documentation style","url":"/docs/home/contribute/style-guide/"},{"icon":"fa-bug","label":"Review documentation issues","url":"/docs/home/contribute/review-issues/"},{"icon":"fa-pencil-square-o","label":"Create a documentation pull request (PR)","url":"/docs/home/contribute/create-pull-request/"},{"icon":"fa-eye","label":"Stage documentation changes","url":"/docs/home/contribute/stage-documentation-changes/#staging-a-pull-request"}],"id":"docs-contributor","index":2,"intermediate":[{"icon":"fa-plus-circle","label":"Write a new topic","url":"/docs/home/contribute/write-new-topic/"},{"icon":"fa-cloud-download","label":"Stage documentation changes locally","url":"/docs/home/contribute/stage-documentation-changes/#staging-locally-using-docker"},{"icon":"fa-clone","label":"Apply page templates","url":"/docs/home/contribute/page-templates/"},{"icon":"fa-exclamation-circle","label":"Add callout formatting","url":"/docs/home/contribute/style-guide/#callout-formatting"}],"name":"Docs Contributor","short_desc":"A person who writes documentation for the Kubernetes project (e.g. this site)."}},"migrators":{"docker-compose-swarm":{"advanced":[{"label":"b1: advanced stuff","url":"#"},{"label":"b2: advanced stuff","url":"#"},{"label":"b3: advanced stuff","url":"#"}],"foundational":[{"label":"b1: foundational stuff","url":"#"},{"label":"b2: foundational stuff","url":"#"},{"label":"b3: foundational stuff","url":"#"}],"id":"docker-compose-swarm","index":1,"intermediate":[{"label":"b1: intermediate stuff","url":"#"},{"label":"b2: intermediate stuff","url":"#"},{"label":"b3: intermediate stuff","url":"#"}],"name":"Migrating from Docker Compose and Swarm"},"heroku":{"advanced":[{"label":"c1: advanced stuff","url":"#"},{"label":"c2: advanced stuff","url":"#"},{"label":"c3: advanced stuff","url":"#"}],"foundational":[{"label":"c1: foundational stuff","url":"#"},{"label":"c2: foundational stuff","url":"#"},{"label":"c3: foundational stuff","url":"#"}],"id":"heroku","index":2,"intermediate":[{"label":"c1: intermediate stuff","url":"#"},{"label":"c2: intermediate stuff","url":"#"},{"label":"c3: intermediate stuff","url":"#"}],"name":"Migrating from Heroku (PaaS)"},"mesos":{"advanced":[{"label":"d1: advanced stuff","url":"#"},{"label":"d2: advanced stuff","url":"#"},{"label":"d3: advanced stuff","url":"#"}],"foundational":[{"label":"d1: foundational stuff","url":"#"},{"label":"d2: foundational stuff","url":"#"},{"label":"d3: foundational stuff","url":"#"}],"id":"mesos","index":3,"intermediate":[{"label":"d1: intermediate stuff","url":"#"},{"label":"d2: intermediate stuff","url":"#"},{"label":"d3: intermediate stuff","url":"#"}],"name":"Migrating from Apache Mesos"},"vmware-openstack":{"advanced":[{"label":"a1: advanced stuff","url":"#"},{"label":"a2: advanced stuff","url":"#"},{"label":"a3: advanced stuff","url":"#"}],"foundational":[{"label":"a1: foundational stuff","url":"#"},{"label":"a2: foundational stuff","url":"#"},{"label":"a3: foundational stuff","url":"#"}],"id":"vmware-openstack","index":0,"intermediate":[{"label":"a1: intermediate stuff","url":"#"},{"label":"a2: intermediate stuff","url":"#"},{"label":"a3: intermediate stuff","url":"#"}],"name":"Migrating from VMware and/or OpenStack"}},"users":{"app-developer":{"advanced":[{"icon":"fa-sliders","label":"Deploy an application with advanced features","url":"/docs/user-journeys/users/application-developer/advanced"},{"icon":"fa-arrows","label":"Extend the Kubernetes API","url":"/docs/user-journeys/users/application-developer/advanced#section-2"},{"icon":"fa-book","label":"Explore additional resources","url":"/docs/user-journeys/users/application-developer/advanced#section-3"}],"foundational":[{"icon":"fa-television","label":"Get started with a cluster","url":"/docs/user-journeys/users/application-developer/foundational"},{"icon":"fa-retweet","label":"Deploy an application","url":"/docs/user-journeys/users/application-developer/foundational#section-2"},{"icon":"fa-cog","label":"Understand basic Kubernetes architecture","url":"/docs/user-journeys/users/application-developer/foundational#section-3"},{"icon":"fa-book","label":"Explore additional resources","url":"/docs/user-journeys/users/application-developer/foundational#section-4"}],"glossary_id":"application-developer","id":"app-developer","index":0,"intermediate":[{"icon":"fa-cogs","label":"Learn additional workload patterns","url":"/docs/user-journeys/users/application-developer/intermediate"},{"icon":"fa-retweet","label":"Deploy a production-ready workload","url":"/docs/user-journeys/users/application-developer/intermediate#section-2"},{"icon":"fa-scissors","label":"Improve your dev workflow with tooling","url":"/docs/user-journeys/users/application-developer/intermediate#section-3"},{"icon":"fa-book","label":"Explore additional resources","url":"/docs/user-journeys/users/application-developer/intermediate#section-4"}],"name":"Application Developer"},"cluster-operator":{"advanced":[{"icon":"fa-puzzle-piece","label":"Connect to managed services using Service Catalog","url":"/docs/concepts/service-catalog/"},{"icon":"fa-arrows","label":"Extend a Kubernetes cluster","url":"/docs/concepts/overview/extending/"},{"icon":"fa-lock","label":"Create a Pod Security Policy","url":"/docs/concepts/policy/pod-security-policy/"},{"icon":"fa-tachometer","label":"Define a Resource Quota","url":"/docs/concepts/policy/resource-quotas/"}],"foundational":[{"icon":"fa-globe","label":"Get an overview of Kubernetes","url":"/docs/user-journeys/users/cluster-operator/foundational"},{"icon":"fa-cog","label":"Learn about Kubernetes basics","url":"/docs/user-journeys/users/cluster-operator/foundational#section-2"},{"icon":"fa-info-circle","label":"Get information about my cluster","url":"/docs/user-journeys/users/cluster-operator/foundational#section-3"},{"icon":"fa-compass","label":"Explore additional resources","url":"/docs/user-journeys/users/cluster-operator/foundational#section-4"}],"glossary_id":"cluster-operator","id":"cluster-operator","index":1,"intermediate":[{"icon":"fa-sliders","label":"Work with Ingress, Networking, Storage, Workloads","url":"/docs/user-journeys/users/cluster-operator/intermediate"},{"icon":"fa-shield","label":"Implement security best practices","url":"/docs/user-journeys/users/cluster-operator/intermediate#section-2"},{"icon":"fa-heartbeat","label":"Implement custom logging and monitoring","url":"/docs/user-journeys/users/cluster-operator/intermediate#section-3"},{"icon":"fa-book","label":"Additional Resources","url":"/docs/user-journeys/users/cluster-operator/intermediate#section-4"}],"name":"Cluster Operator"}}}
+</div>
+
+<div class="hide">
+
+
+
+
+  
+    <div class="persona-def-data" data-name="code-contributor">
+    
+    
+    
+    A person who develops and contributes code to the Kubernetes open source codebase.
+
+    
+    
+    </div>
+    
+    <div class="persona-def-data" data-name="community-contributor">
+    
+    
+    A person who works to build the Kubernetes community (e.g. by organizing meetups).
+    
+    </div>
+    
+    <div class="persona-def-data" data-name="docs-contributor">
+    
+    
+    A person who writes documentation for the Kubernetes project (e.g. this site).
+    
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+  
+    <div class="persona-def-data" data-name="app-developer">
+    
+    
+    
+    A person who writes an application that runs in a Kubernetes cluster.
+
+    
+    
+    </div>
+    
+    <div class="persona-def-data" data-name="cluster-operator">
+    
+    
+    
+    A person who configures, controls, and monitors clusters.
+
+    
+    
+    </div>
+    
+
+
+
+</div>
+
+<div id='aboutWrapper'>
+  <div class="aboutsection" markdown="1">
+    <p>
+      Kubernetes is an open source system for managing <a href="https://kubernetes.io/docs/concepts/overview/what-is-kubernetes/">containerized applications</a> across multiple hosts, providing basic mechanisms for deployment, maintenance, and scaling of applications.
+      The open source project is hosted by the Cloud Native Computing Foundation (<a href="https://www.cncf.io/about">CNCF</a>).
+    </p>
+    <div class="aboutcolumn" markdown="1">
+      <a href="/docs/imported/release/notes/">Download Current Release</a>
+    </div>
+    <div class="aboutcolumn" markdown="1">
+      <a href="/docs/home/supported-doc-versions/">Supported Doc Versions</a>
+    </div>
+  </div>
+</div>
+
+<div class="paths">
+    <div class="navButton users">Users</div>
+    <div class="navButton contributors">Contributors</div>
+    <a> <div class="navButton browse">Browse Docs</div></a>
+</div>
+
+<div id="cardWrapper">
+  <div class="display-bar">I AM...</div>
+  <div class='cards' markdown="1">
+  <div class='docsection1' id='persona-definition'>.</div>
+  </div>
+</div>
+
+<div style='text-align: center;' class="applicationDeveloperContainer">
+	<div class="display-bar" id="subTitle">LEVEL</div>
+	<div class="levels">
+		<div class="level" data-name="foundational">
+			<i class="fa fa-sign-in" aria-hidden="true" style="font-size:50pt !important;padding-top:7% !important;padding-bottom:15% !important"></i>
+			<br>
+			<div class="tabbottom" style="padding-top:5%;padding-bottom:5%">
+				Foundational
+			</div>
+		</div>
+		<div class="level" data-name="intermediate">
+			<i class="fa fa-university" aria-hidden="true" style="font-size:50pt !important;padding-top:7% !important;padding-bottom:15% !important"></i>
+			<br>
+			<div class="tabbottom" style="padding-top:5%;padding-bottom:5%">
+				Intermediate
+			</div>
+		</div>
+		<div class="level" data-name="advanced">
+			<i class="fa fa-magic" aria-hidden="true" style="font-size:50pt !important;padding-top:7% !important;padding-bottom:15% !important"></i>
+			<br>
+			<div class="tabbottom" style="padding-top:5%;padding-bottom:5%">
+				Advanced Topics
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class='infobarWrapper'>
+    <div class="infobar">
+        <span style="padding-bottom: 3% ">I want to...</span>
+        <div id="infobarLinks"></div>
+    </div>
+</div>
+
+    
+<div id='browsedocsWrapper'>
+<div class="browseheader" id="browsedocs">
+    <a name="browsedocs">Browse Docs</a>
+  </div>
+<div class="browsedocs">
+
+
+<div class="browsesection">
+  <div class="docstitle">
+    <h3><a href="/docs/home/">Kubernetes Documentation</a></h3>
+  </div>
+  
+  
+  
+  <div class="pages">
+  
+  
+  
+  
+    
+    
+      <div class="browsecolumn">
+    
+    <a href="/docs/home/contribute/">01 - Contributing to the Kubernetes Docs</a><br>
+    
+      </div>
+    
+  
+    
+    
+      <div class="browsecolumn">
+    
+    <a href="/docs/home/supported-doc-versions/">02 - Supported Versions of the Kubernetes Documentation</a><br>
+    
+      </div>
+    
+  
+  
+  </div>
+  
+</div>
+
+
+
+<div class="browsesection">
+  <div class="docstitle">
+    <h3><a href="/docs/setup/">Setup</a></h3>
+  </div>
+  
+  
+  
+  <div class="pages">
+  
+  
+  
+  
+    
+    
+      <div class="browsecolumn">
+    
+    <a href="/docs/setup/independent/">01 - Bootstrapping Clusters with kubeadm</a><br>
+    
+  
+    
+    
+    <a href="/docs/setup/cluster-large/">02 - Building Large Clusters</a><br>
+    
+  
+    
+    
+    <a href="/docs/setup/building-from-source/">03 - Building from Source</a><br>
+    
+  
+    
+    
+    <a href="/docs/setup/salt/">04 - Configuring Kubernetes with Salt</a><br>
+    
+      </div>
+    
+  
+    
+    
+      <div class="browsecolumn">
+    
+    <a href="/docs/setup/scratch/">05 - Creating a Custom Cluster from Scratch</a><br>
+    
+  
+    
+    
+    <a href="/docs/setup/custom-cloud/">06 - Custom Cloud Solutions</a><br>
+    
+  
+    
+    
+    <a href="/docs/setup/on-premises-vm/">07 - On-Premises VMs</a><br>
+    
+  
+    
+    
+    <a href="/docs/setup/pick-right-solution/">08 - Picking the Right Solution</a><br>
+    
+      </div>
+    
+  
+    
+    
+      <div class="browsecolumn">
+    
+    <a href="/docs/setup/minikube/">09 - Running Kubernetes Locally via Minikube</a><br>
+    
+  
+    
+    
+    <a href="/docs/setup/multiple-zones/">10 - Running in Multiple Zones</a><br>
+    
+  
+    
+    
+    <a href="/docs/setup/turnkey/">11 - Turnkey Cloud Solutions</a><br>
+    
+  
+    
+    
+    <a href="/docs/setup/node-conformance/">12 - Validate Node Setup</a><br>
+    
+      </div>
+    
+  
+  
+  </div>
+  
+</div>
+
+
+
+<div class="browsesection">
+  <div class="docstitle">
+    <h3><a href="/docs/concepts/">Concepts</a></h3>
+  </div>
+  
+  
+  
+  <div class="pages">
+  
+  
+  
+  
+    
+    
+      <div class="browsecolumn">
+    
+    <a href="/docs/concepts/overview/">01 - Overview</a><br>
+    
+  
+    
+    
+    <a href="/docs/concepts/cluster-administration/">02 - Compute, Storage, and Networking Extensions</a><br>
+    
+  
+    
+    
+    <a href="/docs/concepts/architecture/">03 - Kubernetes Architecture</a><br>
+    
+  
+    
+    
+    <a href="/docs/concepts/extend-kubernetes/">04 - Extending Kubernetes</a><br>
+    
+      </div>
+    
+  
+    
+    
+      <div class="browsecolumn">
+    
+    <a href="/docs/concepts/containers/">05 - Containers</a><br>
+    
+  
+    
+    
+    <a href="/docs/concepts/workloads/">06 - Workloads</a><br>
+    
+  
+    
+    
+    <a href="/docs/concepts/configuration/">07 - Configuration</a><br>
+    
+  
+    
+    
+    <a href="/docs/concepts/services-networking/">08 - Services, Load Balancing, and Networking</a><br>
+    
+      </div>
+    
+  
+    
+    
+      <div class="browsecolumn">
+    
+    <a href="/docs/concepts/storage/">09 - Storage</a><br>
+    
+  
+    
+    
+    <a href="/docs/concepts/policy/">10 - Policies</a><br>
+    
+      </div>
+    
+  
+  
+  </div>
+  
+</div>
+
+
+
+<div class="browsesection">
+  <div class="docstitle">
+    <h3><a href="/docs/getting-started-guides/">Independent Solutions</a></h3>
+  </div>
+  
+  
+  
+  <div class="pages">
+  
+  
+  
+  
+    
+    
+      <div class="browsecolumn">
+    
+    <a href="/docs/getting-started-guides/fedora/">01 - Bare Metal</a><br>
+    
+      </div>
+    
+  
+    
+    
+      <div class="browsecolumn">
+    
+    <a href="/docs/getting-started-guides/alternatives/">02 - Deprecated Alternatives</a><br>
+    
+      </div>
+    
+  
+    
+    
+      <div class="browsecolumn">
+    
+    <a href="/docs/getting-started-guides/ubuntu/">03 - Kubernetes on Ubuntu</a><br>
+    
+      </div>
+    
+  
+  
+  </div>
+  
+</div>
+
+
+
+<div class="browsesection">
+  <div class="docstitle">
+    <h3><a href="/docs/tasks/">Tasks</a></h3>
+  </div>
+  
+  
+  
+  <div class="pages">
+  
+  
+  
+  
+    
+    
+      <div class="browsecolumn">
+    
+    <a href="/docs/tasks/tools/">01 - Install Tools</a><br>
+    
+  
+    
+    
+    <a href="/docs/tasks/administer-cluster/">02 - Administer a Cluster</a><br>
+    
+  
+    
+    
+    <a href="/docs/tasks/configure-pod-container/">03 - Configure Pods and Containers</a><br>
+    
+  
+    
+    
+    <a href="/docs/tasks/inject-data-application/">04 - Inject Data Into Applications</a><br>
+    
+  
+    
+    
+    <a href="/docs/tasks/run-application/">05 - Run Applications</a><br>
+    
+  
+    
+    
+    <a href="/docs/tasks/job/">06 - Run Jobs</a><br>
+    
+      </div>
+    
+  
+    
+    
+      <div class="browsecolumn">
+    
+    <a href="/docs/tasks/access-application-cluster/">07 - Access Applications in a Cluster</a><br>
+    
+  
+    
+    
+    <a href="/docs/tasks/debug-application-cluster/">08 - Monitor, Log, and Debug</a><br>
+    
+  
+    
+    
+    <a href="/docs/tasks/access-kubernetes-api/">09 - Extend Kubernetes</a><br>
+    
+  
+    
+    
+    <a href="/docs/tasks/tls/">10 - TLS</a><br>
+    
+  
+    
+    
+    <a href="/docs/tasks/federation/">11 - Federation - Run an App on Multiple Clusters</a><br>
+    
+  
+    
+    
+    <a href="/docs/tasks/manage-daemon/">12 - Manage Cluster Daemons</a><br>
+    
+      </div>
+    
+  
+    
+    
+      <div class="browsecolumn">
+    
+    <a href="/docs/tasks/service-catalog/">13 - Install Service Catalog</a><br>
+    
+  
+    
+    
+    <a href="/docs/tasks/administer-federation/">14 - Federation - Run an App on Multiple Clusters</a><br>
+    
+  
+    
+    
+    <a href="/docs/tasks/extend-kubectl/kubectl-plugins/">15 - Extend kubectl with plugins</a><br>
+    
+  
+    
+    
+    <a href="/docs/tasks/manage-hugepages/scheduling-hugepages/">16 - Manage HugePages</a><br>
+    
+  
+    
+    
+    <a href="/docs/tasks/manage-gpus/scheduling-gpus/">17 - Schedule GPUs</a><br>
+    
+      </div>
+    
+  
+  
+  </div>
+  
+</div>
+
+
+
+<div class="browsesection">
+  <div class="docstitle">
+    <h3><a href="/docs/tutorials/">Tutorials</a></h3>
+  </div>
+  
+  
+  
+  <div class="pages">
+  
+  
+  
+  
+    
+    
+      <div class="browsecolumn">
+    
+    <a href="/docs/tutorials/hello-minikube/">01 - Hello Minikube</a><br>
+    
+  
+    
+    
+    <a href="/docs/tutorials/kubernetes-basics/">02 - Kubernetes Basics</a><br>
+    
+  
+    
+    
+    <a href="/docs/tutorials/online-training/">03 - Online Training Courses</a><br>
+    
+  
+    
+    
+    <a href="/docs/tutorials/configuration/">04 - Configuration</a><br>
+    
+      </div>
+    
+  
+    
+    
+      <div class="browsecolumn">
+    
+    <a href="/docs/tutorials/stateless-application/">05 - Stateless Applications</a><br>
+    
+  
+    
+    
+    <a href="/docs/tutorials/stateful-application/">06 - Stateful Applications</a><br>
+    
+  
+    
+    
+    <a href="/docs/tutorials/clusters/">07 - Clusters</a><br>
+    
+  
+    
+    
+    <a href="/docs/tutorials/services/">08 - Services</a><br>
+    
+      </div>
+    
+  
+    
+    
+      <div class="browsecolumn">
+    
+    <a href="/docs/tutorials/k8s101/">09 - Kubernetes 101</a><br>
+    
+  
+    
+    
+    <a href="/docs/tutorials/k8s201/">10 - Kubernetes 201</a><br>
+    
+      </div>
+    
+  
+  
+  </div>
+  
+</div>
+
+
+
+<div class="browsesection">
+  <div class="docstitle">
+    <h3><a href="/docs/reference/">Reference Documentation</a></h3>
+  </div>
+  
+  
+  
+  <div class="pages">
+  
+  
+  
+  
+    
+    
+      <div class="browsecolumn">
+    
+    <a href="/docs/reference/glossary/">01 - Standardized Glossary</a><br>
+    
+  
+    
+    
+    <a href="/docs/reference/issues-security/">02 - Kubernetes Issues and Security</a><br>
+    
+  
+    
+    
+    <a href="/docs/reference/using-api/">03 - Using the Kubernetes API</a><br>
+    
+  
+    
+    
+    <a href="/docs/reference/access-authn-authz/">04 - Accessing the API</a><br>
+    
+      </div>
+    
+  
+    
+    
+      <div class="browsecolumn">
+    
+    <a href="/docs/reference/kubernetes-api/">05 - API Reference</a><br>
+    
+  
+    
+    
+    <a href="/docs/reference/federation/">06 - Federation API</a><br>
+    
+  
+    
+    
+    <a href="/docs/reference/setup-tools/">07 - Setup tools reference</a><br>
+    
+  
+    
+    
+    <a href="/docs/reference/command-line-tools-reference/">08 - Command line tools reference</a><br>
+    
+      </div>
+    
+  
+    
+    
+      <div class="browsecolumn">
+    
+    <a href="/docs/reference/kubectl/">09 - kubectl CLI</a><br>
+    
+  
+    
+    
+    <a href="/docs/reference/tools/">10 - Tools</a><br>
+    
+      </div>
+    
+  
+  
+  </div>
+  
+</div>
+
+
+
+<div class="browsesection">
+  <div class="docstitle">
+    <h3><a href="/docs/imported/">Imported Docs</a></h3>
+  </div>
+  
+  
+  
+  <div class="pages">
+  
+  
+  
+  
+    
+    
+      <div class="browsecolumn">
+    
+    <a href="/docs/imported/community/">01 - Community</a><br>
+    
+      </div>
+    
+  
+    
+    
+      <div class="browsecolumn">
+    
+    <a href="/docs/imported/release/">02 - Downloading Kubernetes</a><br>
+    
+      </div>
+    
+  
+  
+  </div>
+  
+</div>
+
+
+</div>
+
+
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/home/_index.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/home\/",
+					"title" : "Kubernetes Documentation",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/home\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

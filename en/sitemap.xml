@@ -1,0 +1,4113 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/access-authn-authz/controlling-access/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/home/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tutorials/hello-minikube/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tutorials/kubernetes-basics/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/glossary/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/configure-pod-container/assign-memory-resource/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/access-authn-authz/authentication/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/cluster-administration/cluster-administration-overview/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/cluster-administration/cluster-administration-overview/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/cluster-administration/cluster-administration-overview/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/configuration/overview/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/memory-default-namespace/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/access-kubernetes-api/configure-aggregation-layer/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tutorials/kubernetes-basics/create-cluster/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/inject-data-application/define-command-argument-container/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tutorials/stateless-application/expose-external-ip-address/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/apiserver-aggregation/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/extend-kubernetes/extend-cluster/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/command-line-tools-reference/feature-gates/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/containers/images/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/containers/images/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/containers/images/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/tools/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/tools/install-kubectl/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/using-api/api-overview/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tutorials/kubernetes-basics/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tutorials/kubernetes-basics/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tutorials/kubernetes-basics/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/issues-security/issues/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/issues-security/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/overview/object-management-kubectl/overview/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/network-plugins/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/architecture/nodes/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/architecture/nodes/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/architecture/nodes/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tutorials/kubernetes-basics/update/update-intro/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/workloads/pods/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/policy/resource-quotas/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/policy/resource-quotas/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/policy/resource-quotas/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/run-application/run-stateless-application-deployment/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/run-application/run-stateless-application-deployment/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/run-application/run-stateless-application-deployment/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tutorials/kubernetes-basics/scale/scale-intro/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/job/automated-tasks-with-cron-jobs/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/services-networking/service/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/services-networking/service/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/services-networking/service/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tutorials/stateful-application/basic-stateful-set/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/overview/working-with-objects/kubernetes-objects/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/overview/working-with-objects/kubernetes-objects/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/overview/working-with-objects/kubernetes-objects/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/network-policy-provider/calico-network-policy/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tutorials/kubernetes-basics/expose/expose-intro/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tutorials/kubernetes-basics/deploy-app/deploy-intro/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/using-api/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tutorials/kubernetes-basics/explore/explore-intro/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/storage/volumes/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/overview/what-is-kubernetes/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/overview/what-is-kubernetes/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/overview/what-is-kubernetes/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubefed/kubefed/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/access-kubernetes-api/setup-extension-api-server/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/access-application-cluster/access-cluster/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/access-authn-authz/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/configure-pod-container/assign-cpu-resource/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/access-authn-authz/bootstrap-tokens/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/setup/independent/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/cluster-administration/certificates/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/cluster-administration/certificates/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/cluster-administration/certificates/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/imported/community/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/cpu-default-namespace/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/configure-pod-container/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/containers/container-environment-variables/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/containers/container-environment-variables/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/containers/container-environment-variables/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/workloads/controllers/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/services-networking/dns-pod-service/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/inject-data-application/define-environment-variable-container/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/inject-data-application/define-environment-variable-container/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/inject-data-application/define-environment-variable-container/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tutorials/kubernetes-basics/deploy-app/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tutorials/stateless-application/guestbook/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/tools/install-minikube/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tutorials/kubernetes-basics/create-cluster/cluster-interactive/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tutorials/kubernetes-basics/deploy-app/deploy-interactive/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tutorials/kubernetes-basics/explore/explore-interactive/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tutorials/kubernetes-basics/expose/expose-interactive/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tutorials/kubernetes-basics/scale/scale-interactive/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tutorials/kubernetes-basics/update/update-interactive/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/using-api/api-concepts/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/overview/components/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/overview/components/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/overview/components/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/issues-security/security/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/configuration/manage-compute-resources-container/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/overview/object-management-kubectl/imperative-command/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/architecture/master-node-communication/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/architecture/master-node-communication/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/architecture/master-node-communication/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/overview/working-with-objects/names/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tutorials/online-training/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/overview/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/job/parallel-processing-expansion/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/storage/persistent-volumes/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/policy/pod-security-policy/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/policy/pod-security-policy/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/policy/pod-security-policy/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/workloads/pods/pod/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/run-application/run-single-instance-stateful-application/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/run-application/run-single-instance-stateful-application/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/run-application/run-single-instance-stateful-application/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/network-policy-provider/cilium-network-policy/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-init/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubefed/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubefed/kubefed-options/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/kubernetes-api/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/configuration/assign-pod-node/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/using-api/client-libraries/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/cluster-administration/cloud-providers/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/cluster-administration/cloud-providers/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/cluster-administration/cloud-providers/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/job/coarse-parallel-processing-work-queue/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/cluster-administration/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/architecture/cloud-controller/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/architecture/cloud-controller/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/architecture/cloud-controller/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tutorials/configuration/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/access-application-cluster/configure-access-multiple-clusters/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/memory-constraint-namespace/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/services-networking/connect-applications-service/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/services-networking/connect-applications-service/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/services-networking/connect-applications-service/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/workloads/controllers/deployment/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/workloads/controllers/deployment/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/imported/release/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tutorials/stateful-application/cassandra/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tutorials/stateful-application/cassandra/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tutorials/stateful-application/cassandra/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tutorials/kubernetes-basics/explore/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/inject-data-application/environment-variable-expose-pod-information/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/inject-data-application/environment-variable-expose-pod-information/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/inject-data-application/environment-variable-expose-pod-information/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/overview/object-management-kubectl/imperative-config/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/inject-data-application/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/network-policy-provider/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/tools/install-kubeadm/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/architecture/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/workloads/pods/pod-lifecycle/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/run-application/run-replicated-stateful-application/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/setup/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/storage/storage-classes/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/overview/kubernetes-api/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/overview/kubernetes-api/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/overview/kubernetes-api/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/network-policy-provider/kube-router-network-policy/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definition-versioning/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-join/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubefed/kubefed-init/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/configure-pod-container/extended-resource/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/cpu-constraint-namespace/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/home/contribute/</loc>
+    <lastmod>2018-04-30T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/overview/object-management-kubectl/declarative-config/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/storage/dynamic-provisioning/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tutorials/kubernetes-basics/expose/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/extend-kubernetes/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/federation/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/job/fine-parallel-processing-work-queue/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/services-networking/ingress/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/workloads/pods/init-containers/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/workloads/pods/init-containers/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/workloads/pods/init-containers/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/using-api/deprecation-policy/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/cluster-administration/manage-deployment/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/network-policy-provider/romana-network-policy/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/run-application/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tutorials/stateful-application/zookeeper/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tutorials/stateful-application/zookeeper/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tutorials/stateful-application/zookeeper/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/extend-kubernetes/service-catalog/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tutorials/stateless-application/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/run-application/update-api-object-kubectl-patch/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/access-kubernetes-api/http-proxy-access-api/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/overview/working-with-objects/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-upgrade/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubefed/kubefed-join/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/home/contribute/content-organization/</loc>
+    <lastmod>2018-04-30T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/cluster-administration/networking/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/quota-memory-cpu-namespace/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/configure-pod-container/configure-volume-storage/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/containers/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/setup/independent/control-plane-flags/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/workloads/controllers/daemonset/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/inject-data-application/distribute-credentials-secure/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/inject-data-application/distribute-credentials-secure/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/inject-data-application/distribute-credentials-secure/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/getting-started-guides/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/access-authn-authz/service-accounts-admin/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/migrate-third-party-resource/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/services-networking/network-policies/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/services-networking/network-policies/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/services-networking/network-policies/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/overview/object-management-kubectl/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/workloads/pods/podpreset/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/workloads/pods/podpreset/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/workloads/pods/podpreset/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/access-application-cluster/load-balance-access-application-cluster/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/job/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tutorials/kubernetes-basics/scale/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/run-application/scale-stateful-set/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/run-application/scale-stateful-set/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/run-application/scale-stateful-set/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/configuration/secret/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/configuration/secret/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/configuration/secret/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tutorials/stateful-application/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/network-policy-provider/weave-network-policy/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-config/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubefed/kubefed-unjoin/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/access-application-cluster/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/access-authn-authz/authorization/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/getting-started-guides/fedora/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tutorials/clusters/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/command-line-tools-reference/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/quota-pod-namespace/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/configure-pod-container/configure-persistent-volume-storage/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/run-application/delete-stateful-set/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/workloads/pods/disruptions/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/workloads/controllers/garbage-collection/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/workloads/controllers/garbage-collection/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/workloads/controllers/garbage-collection/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/inject-data-application/podpreset/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/inject-data-application/podpreset/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/inject-data-application/podpreset/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/cluster-administration/logging/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tutorials/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tutorials/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tutorials/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tutorials/kubernetes-basics/update/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/access-application-cluster/service-access-application-cluster/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/workloads/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-reset/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/kubectl/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubefed/kubefed-version/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/configuration/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/configure-pod-container/configure-projected-volume-storage/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/cluster-administration/kubelet-garbage-collection/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/access-application-cluster/connecting-frontend-backend/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/access-application-cluster/connecting-frontend-backend/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/access-application-cluster/connecting-frontend-backend/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/run-application/force-delete-stateful-set-pod/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tutorials/services/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/access-authn-authz/rbac/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-token/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/configure-pod-container/security-context/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/workloads/controllers/cron-jobs/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/cluster-administration/federation/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/cluster-administration/federation/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/cluster-administration/federation/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/debug-application-cluster/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/run-application/rolling-update-replication-controller/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/run-application/rolling-update-replication-controller/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/run-application/rolling-update-replication-controller/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/services-networking/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/access-authn-authz/abac/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-version/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/access-kubernetes-api/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/cluster-administration/proxies/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/cluster-administration/proxies/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/cluster-administration/proxies/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/storage/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/access-authn-authz/node/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-alpha/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/access-authn-authz/webhook/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/cluster-administration/controller-metrics/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/implementation-details/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/access-application-cluster/list-all-running-container-images/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/tls/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/command-line-tools-reference/federation-apiserver/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/access-application-cluster/communicate-containers-same-pod-shared-volume/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/access-application-cluster/communicate-containers-same-pod-shared-volume/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/access-application-cluster/communicate-containers-same-pod-shared-volume/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/run-application/configure-pdb/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/command-line-tools-reference/federation-controller-manager/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/access-application-cluster/configure-dns-cluster/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/federation/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-initialization/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/manage-daemon/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/configure-pod-container/attach-handler-lifecycle-event/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/service-catalog/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-federation/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/policy/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/configure-pod-container/share-process-namespace/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/configure-pod-container/translate-compose-kubernetes/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2018/06/28/airflow-on-kubernetes-part-1-a-different-kind-of-operator/</loc>
+    <lastmod>2018-06-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2018/06/27/kubernetes-1.11-release-announcement/</loc>
+    <lastmod>2018-06-27T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2018/06/07/dynamic-ingress-in-kubernetes/</loc>
+    <lastmod>2018-06-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2018/06/06/4-years-of-k8s/</loc>
+    <lastmod>2018-06-06T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2018/05/30/say-hello-to-discuss-kubernetes/</loc>
+    <lastmod>2018-05-30T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2018/05/29/introducing-kustomize-template-free-configuration-customization-for-kubernetes/</loc>
+    <lastmod>2018-05-29T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2018/05/24/kubernetes-containerd-integration-goes-ga/</loc>
+    <lastmod>2018-05-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2018/05/22/getting-to-know-kubevirt/</loc>
+    <lastmod>2018-05-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2018/05/17/gardener/</loc>
+    <lastmod>2018-05-17T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2018/05/05/hugo-migration/</loc>
+    <lastmod>2018-05-05T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2018/05/04/announcing-kubeflow-0.1/</loc>
+    <lastmod>2018-05-04T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2018/05/02/policy-in-kubernetes/</loc>
+    <lastmod>2018-05-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2018/05/01/developing-on-kubernetes/</loc>
+    <lastmod>2018-05-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2018/04/30/zero-downtime-deployment-kubernetes-jenkins/</loc>
+    <lastmod>2018-04-30T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2018/04/25/open-source-charts-2017/</loc>
+    <lastmod>2018-04-25T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2018/04/24/kubernetes-application-survey-results-2018/</loc>
+    <lastmod>2018-04-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2018/04/13/local-persistent-volumes-beta/</loc>
+    <lastmod>2018-04-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2018/04/11/migrating-the-kubernetes-blog/</loc>
+    <lastmod>2018-04-11T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2018/04/10/container-storage-interface-beta/</loc>
+    <lastmod>2018-04-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2018/04/04/fixing-subpath-volume-vulnerability/</loc>
+    <lastmod>2018-04-04T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2018/03/26/kubernetes-1.10-stabilizing-storage-security-networking/</loc>
+    <lastmod>2018-03-26T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2018/03/principles-of-container-app-design/</loc>
+    <lastmod>2018-03-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2018/03/expanding-user-support-with-office-hours/</loc>
+    <lastmod>2018-03-14T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2018/03/how-to-integrate-rollingupdate-strategy/</loc>
+    <lastmod>2018-03-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2018/03/apache-spark-23-with-native-kubernetes/</loc>
+    <lastmod>2018-03-06T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2018/03/first-beta-version-of-kubernetes-1-10/</loc>
+    <lastmod>2018-03-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2018/01/reporting-errors-using-kubernetes-events/</loc>
+    <lastmod>2018-01-25T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2018/01/core-workloads-api-ga/</loc>
+    <lastmod>2018-01-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2018/01/introducing-client-go-version-6/</loc>
+    <lastmod>2018-01-12T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2018/01/extensible-admission-is-beta/</loc>
+    <lastmod>2018-01-11T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2018/01/introducing-container-storage-interface/</loc>
+    <lastmod>2018-01-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2018/01/kubernetes-v19-beta-windows-support/</loc>
+    <lastmod>2018-01-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2018/01/five-days-of-kubernetes-19/</loc>
+    <lastmod>2018-01-08T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/12/introducing-kubeflow-composable/</loc>
+    <lastmod>2017-12-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/12/kubernetes-19-workloads-expanded-ecosystem/</loc>
+    <lastmod>2017-12-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/12/using-ebpf-in-kubernetes/</loc>
+    <lastmod>2017-12-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/12/paddle-paddle-fluid-elastic-learning/</loc>
+    <lastmod>2017-12-06T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/11/autoscaling-in-kubernetes/</loc>
+    <lastmod>2017-11-17T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/11/certified-kubernetes-conformance/</loc>
+    <lastmod>2017-11-16T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/11/kubernetes-is-still-hard-for-developers/</loc>
+    <lastmod>2017-11-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/11/securing-software-supply-chain-grafeas/</loc>
+    <lastmod>2017-11-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/11/containerd-container-runtime-options-kubernetes/</loc>
+    <lastmod>2017-11-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/11/kubernetes-easy-way/</loc>
+    <lastmod>2017-11-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/10/enforcing-network-policies-in-kubernetes/</loc>
+    <lastmod>2017-10-30T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/10/using-rbac-generally-available-18/</loc>
+    <lastmod>2017-10-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/10/it-takes-village-to-raise-kubernetes/</loc>
+    <lastmod>2017-10-26T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/10/kubeadm-v18-released/</loc>
+    <lastmod>2017-10-25T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/10/five-days-of-kubernetes-18/</loc>
+    <lastmod>2017-10-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/10/software-conformance-certification/</loc>
+    <lastmod>2017-10-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/10/request-routing-and-policy-management/</loc>
+    <lastmod>2017-10-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/10/kubernetes-community-steering-committee-election-results/</loc>
+    <lastmod>2017-10-05T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/09/kubernetes-18-security-workloads-and/</loc>
+    <lastmod>2017-09-29T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/09/kubernetes-statefulsets-daemonsets/</loc>
+    <lastmod>2017-09-27T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/09/introducing-resource-management-working/</loc>
+    <lastmod>2017-09-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/09/windows-networking-at-parity-with-linux/</loc>
+    <lastmod>2017-09-08T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/08/kubernetes-meets-high-performance/</loc>
+    <lastmod>2017-08-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/08/high-performance-networking-with-ec2/</loc>
+    <lastmod>2017-08-11T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/08/kompose-helps-developers-move-docker/</loc>
+    <lastmod>2017-08-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/07/happy-second-birthday-kubernetes/</loc>
+    <lastmod>2017-07-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/07/how-watson-health-cloud-deploys/</loc>
+    <lastmod>2017-07-14T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/06/kubernetes-1.7-security-hardening-stateful-application-extensibility-updates</loc>
+    <lastmod>2017-06-30T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/05/managing-microservices-with-istio-service-mesh/</loc>
+    <lastmod>2017-05-31T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/05/draft-kubernetes-container-development/</loc>
+    <lastmod>2017-05-31T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/05/kubernetes-monitoring-guide/</loc>
+    <lastmod>2017-05-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/05/kubespray-ansible-collaborative-kubernetes-ops/</loc>
+    <lastmod>2017-05-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/05/kubernetes-security-process-explained/</loc>
+    <lastmod>2017-05-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/04/multi-stage-canary-deployments-with-kubernetes-in-the-cloud-onprem/</loc>
+    <lastmod>2017-04-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/04/rbac-support-in-kubernetes/</loc>
+    <lastmod>2017-04-06T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/04/configuring-private-dns-zones-upstream-nameservers-kubernetes/</loc>
+    <lastmod>2017-04-04T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/03/advanced-scheduling-in-kubernetes/</loc>
+    <lastmod>2017-03-31T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/03/scalability-updates-in-kubernetes-1.6</loc>
+    <lastmod>2017-03-30T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/03/dynamic-provisioning-and-storage-classes-kubernetes/</loc>
+    <lastmod>2017-03-29T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/03/five-days-of-kubernetes-1.6</loc>
+    <lastmod>2017-03-29T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/03/kubernetes-1.6-multi-user-multi-workloads-at-scale</loc>
+    <lastmod>2017-03-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/03/k8sport-engaging-the-kubernetes-community/</loc>
+    <lastmod>2017-03-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/02/postgresql-clusters-kubernetes-statefulsets/</loc>
+    <lastmod>2017-02-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/02/caas-the-foundation-for-next-gen-paas/</loc>
+    <lastmod>2017-02-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/02/inside-jd-com-shift-to-kubernetes-from-openstack/</loc>
+    <lastmod>2017-02-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/02/run-deep-learning-with-paddlepaddle-on-kubernetes/</loc>
+    <lastmod>2017-02-08T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/02/highly-available-kubernetes-clusters/</loc>
+    <lastmod>2017-02-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/01/fission-serverless-functions-as-service-for-kubernetes/</loc>
+    <lastmod>2017-01-30T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/01/running-mongodb-on-kubernetes-with-statefulsets/</loc>
+    <lastmod>2017-01-30T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/01/how-we-run-kubernetes-in-kubernetes-kubeception/</loc>
+    <lastmod>2017-01-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/01/scaling-kubernetes-deployments-with-policy-base-networking/</loc>
+    <lastmod>2017-01-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/01/stronger-foundation-for-creating-and-managing-kubernetes-clusters/</loc>
+    <lastmod>2017-01-12T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2017/01/kubernetes-ux-survey-infographic/</loc>
+    <lastmod>2017-01-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/12/kubernetes-supports-openapi/</loc>
+    <lastmod>2016-12-23T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/12/cluster-federation-in-kubernetes-1.5</loc>
+    <lastmod>2016-12-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/12/windows-server-support-kubernetes/</loc>
+    <lastmod>2016-12-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/12/statefulset-run-scale-stateful-applications-in-kubernetes/</loc>
+    <lastmod>2016-12-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/12/five-days-of-kubernetes-1.5</loc>
+    <lastmod>2016-12-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/12/container-runtime-interface-cri-in-kubernetes/</loc>
+    <lastmod>2016-12-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/12/kubernetes-1.5-supporting-production-workloads</loc>
+    <lastmod>2016-12-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/12/from-network-policies-to-security-policies/</loc>
+    <lastmod>2016-12-08T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/11/kompose-tool-go-from-docker-compose-to-kubernetes/</loc>
+    <lastmod>2016-11-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/11/kubernetes-containers-logging-monitoring-with-sematext/</loc>
+    <lastmod>2016-11-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/11/visualize-kubelet-performance-with-node-dashboard/</loc>
+    <lastmod>2016-11-17T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/11/kubernetes-certification-training-and-managed-service-provider-program/</loc>
+    <lastmod>2016-11-08T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/11/bringing-kubernetes-support-to-azure/</loc>
+    <lastmod>2016-11-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/11/skytap-modernizing-microservice-architecture-with-kubernetes/</loc>
+    <lastmod>2016-11-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/10/kubernetes-service-technology-partners-program/</loc>
+    <lastmod>2016-10-31T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/10/tail-kubernetes-with-stern/</loc>
+    <lastmod>2016-10-31T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/10/kubernetes-and-openstack-at-yahoo-japan/</loc>
+    <lastmod>2016-10-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/10/globally-distributed-services-kubernetes-cluster-federation/</loc>
+    <lastmod>2016-10-14T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/10/helm-charts-making-it-simple-to-package-and-deploy-apps-on-kubernetes/</loc>
+    <lastmod>2016-10-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/10/dynamic-provisioning-and-storage-in-kubernetes/</loc>
+    <lastmod>2016-10-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/10/production-kubernetes-dashboard-ui-1.4-improvements_3</loc>
+    <lastmod>2016-10-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/09/how-we-made-kubernetes-easy-to-install/</loc>
+    <lastmod>2016-09-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/09/how-qbox-saved-50-percent-on-aws-bills/</loc>
+    <lastmod>2016-09-27T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/09/kubernetes-1.4-making-it-easy-to-run-on-kuberentes-anywhere</loc>
+    <lastmod>2016-09-26T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/09/high-performance-network-policies-kubernetes/</loc>
+    <lastmod>2016-09-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/09/creating-postgresql-cluster-using-helm/</loc>
+    <lastmod>2016-09-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/09/deploying-to-multiple-kubernetes-with-kit/</loc>
+    <lastmod>2016-09-06T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/09/cloud-native-application-interfaces/</loc>
+    <lastmod>2016-09-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/08/security-best-practices-kubernetes-deployment/</loc>
+    <lastmod>2016-08-31T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/08/stateful-applications-using-kubernetes-datera/</loc>
+    <lastmod>2016-08-29T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/08/kubernetes-namespaces-use-cases-insights/</loc>
+    <lastmod>2016-08-16T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/08/sig-apps-running-apps-in-kubernetes/</loc>
+    <lastmod>2016-08-16T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/08/create-couchbase-cluster-using-kubernetes/</loc>
+    <lastmod>2016-08-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/08/challenges-remotely-managed-onpremise-kubernetes-cluster/</loc>
+    <lastmod>2016-08-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/07/openstack-kubernetes-communities/</loc>
+    <lastmod>2016-07-26T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/07/happy-k8sbday-1/</loc>
+    <lastmod>2016-07-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/07/oh-the-places-you-will-go/</loc>
+    <lastmod>2016-07-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/07/the-bet-on-kubernetes/</loc>
+    <lastmod>2016-07-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/07/bringing-end-to-end-kubernetes-testing-to-azure-2/</loc>
+    <lastmod>2016-07-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/07/dashboard-web-interface-for-kubernetes/</loc>
+    <lastmod>2016-07-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/07/automation-platform-at-wercker-with-kubernetes/</loc>
+    <lastmod>2016-07-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/07/citrix-netscaler-and-kubernetes/</loc>
+    <lastmod>2016-07-14T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/07/cross-cluster-services/</loc>
+    <lastmod>2016-07-14T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/07/stateful-applications-in-containers-kubernetes/</loc>
+    <lastmod>2016-07-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/07/thousand-instances-of-cassandra-using-kubernetes-pet-set/</loc>
+    <lastmod>2016-07-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/07/autoscaling-in-kubernetes/</loc>
+    <lastmod>2016-07-12T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/07/kubernetes-in-rancher-further-evolution/</loc>
+    <lastmod>2016-07-12T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/07/five-days-of-kubernetes-1.3</loc>
+    <lastmod>2016-07-11T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/07/minikube-easily-run-kubernetes-locally/</loc>
+    <lastmod>2016-07-11T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/07/rktnetes-brings-rkt-container-engine-to-kubernetes/</loc>
+    <lastmod>2016-07-11T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/07/update-on-kubernetes-for-windows-server-containers/</loc>
+    <lastmod>2016-07-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/07/kubernetes-1.3-bridging-cloud-native-and-enterprise-workloads</loc>
+    <lastmod>2016-07-06T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/06/container-design-patterns/</loc>
+    <lastmod>2016-06-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/06/illustrated-childrens-guide-to-kubernetes/</loc>
+    <lastmod>2016-06-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/06/bringing-end-to-end-testing-to-azure/</loc>
+    <lastmod>2016-06-06T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/05/hypernetes-security-and-multi-tenancy-in-kubernetes/</loc>
+    <lastmod>2016-05-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/05/coreosfest2016-kubernetes-community/</loc>
+    <lastmod>2016-05-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/04/introducing-kubernetes-openstack-sig/</loc>
+    <lastmod>2016-04-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/04/building-awesome-user-interfaces-for-kubernetes/</loc>
+    <lastmod>2016-04-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/04/sig-clusterops-promote-operability-and-interoperability-of-k8s-clusters/</loc>
+    <lastmod>2016-04-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/04/kubernetes-network-policy-apis/</loc>
+    <lastmod>2016-04-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/04/kubernetes-on-aws_15/</loc>
+    <lastmod>2016-04-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/04/adding-support-for-kubernetes-in-rancher/</loc>
+    <lastmod>2016-04-08T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/04/container-survey-results-march-2016/</loc>
+    <lastmod>2016-04-08T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/04/configuration-management-with-containers/</loc>
+    <lastmod>2016-04-04T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/04/using-deployment-objects-with/</loc>
+    <lastmod>2016-04-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/03/kubernetes-1.2-and-simplifying-advanced-networking-with-ingress</loc>
+    <lastmod>2016-03-31T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/03/using-spark-and-zeppelin-to-process-big-data-on-kubernetes/</loc>
+    <lastmod>2016-03-30T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/03/appformix-helping-enterprises/</loc>
+    <lastmod>2016-03-29T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/03/building-highly-available-applications-using-kubernetes-new-multi-zone-clusters-a.k.a-ubernetes-lite</loc>
+    <lastmod>2016-03-29T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/03/1000-nodes-and-beyond-updates-to-kubernetes-performance-and-scalability-in-12/</loc>
+    <lastmod>2016-03-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/03/five-days-of-kubernetes-12/</loc>
+    <lastmod>2016-03-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/03/how-container-metadata-changes-your-point-of-view/</loc>
+    <lastmod>2016-03-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/03/scaling-neural-network-image-classification-using-kubernetes-with-tensorflow-serving/</loc>
+    <lastmod>2016-03-23T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/03/kubernetes-1.2-even-more-performance-upgrades-plus-easier-application-deployment-and-management</loc>
+    <lastmod>2016-03-17T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/03/elasticbox-introduces-elastickube-to/</loc>
+    <lastmod>2016-03-11T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/03/kubernetes-in-enterprise-with-fujitsus/</loc>
+    <lastmod>2016-03-11T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/03/kubernetes-community-meeting-notes/</loc>
+    <lastmod>2016-03-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/03/state-of-container-world-february-2016/</loc>
+    <lastmod>2016-03-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/02/kubecon-eu-2016-kubernetes-community-in/</loc>
+    <lastmod>2016-02-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/02/kubernetes-community-meeting-notes_23/</loc>
+    <lastmod>2016-02-23T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/02/kubernetes-community-meeting-notes-20160211/</loc>
+    <lastmod>2016-02-16T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/02/sharethis-kubernetes-in-production/</loc>
+    <lastmod>2016-02-11T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/02/kubernetes-community-meeting-notes/</loc>
+    <lastmod>2016-02-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/02/kubernetes-community-meeting-notes-20160128/</loc>
+    <lastmod>2016-02-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/02/state-of-container-world-january-2016/</loc>
+    <lastmod>2016-02-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/01/kubernetes-community-meeting-notes/</loc>
+    <lastmod>2016-01-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/01/kubernetes-community-meeting-notes_28/</loc>
+    <lastmod>2016-01-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/01/why-kubernetes-doesnt-use-libnetwork/</loc>
+    <lastmod>2016-01-14T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2016/01/simple-leader-election-with-kubernetes/</loc>
+    <lastmod>2016-01-11T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2015/12/creating-raspberry-pi-cluster-running/</loc>
+    <lastmod>2015-12-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2015/12/managing-kubernetes-pods-services-and-replication-controllers-with-puppet/</loc>
+    <lastmod>2015-12-17T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2015/12/how-weave-built-a-multi-deployment-solution-for-scope-using-kubernetes/</loc>
+    <lastmod>2015-12-12T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2015/11/creating-a-raspberry-pi-cluster-running-kubernetes-the-shopping-list-part-1/</loc>
+    <lastmod>2015-11-25T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2015/11/monitoring-kubernetes-with-sysdig/</loc>
+    <lastmod>2015-11-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2015/11/one-million-requests-per-second-dependable-and-dynamic-distributed-systems-at-scale/</loc>
+    <lastmod>2015-11-11T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2015/11/kubernetes-1-1-performance-upgrades-improved-tooling-and-a-growing-community/</loc>
+    <lastmod>2015-11-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2015/11/kubernetes-as-foundation-for-cloud-native-paas/</loc>
+    <lastmod>2015-11-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2015/10/some-things-you-didnt-know-about-kubectl_28/</loc>
+    <lastmod>2015-10-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2015/09/kubernetes-performance-measurements-and/</loc>
+    <lastmod>2015-09-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2015/08/using-kubernetes-namespaces-to-manage/</loc>
+    <lastmod>2015-08-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2015/08/weekly-kubernetes-community-hangout/</loc>
+    <lastmod>2015-08-04T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2015/07/the-growing-kubernetes-ecosystem/</loc>
+    <lastmod>2015-07-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2015/07/weekly-kubernetes-community-hangout_23/</loc>
+    <lastmod>2015-07-23T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2015/07/strong-simple-ssl-for-kubernetes/</loc>
+    <lastmod>2015-07-14T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2015/07/weekly-kubernetes-community-hangout/</loc>
+    <lastmod>2015-07-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2015/07/announcing-first-kubernetes-enterprise/</loc>
+    <lastmod>2015-07-08T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2015/07/how-did-quake-demo-from-dockercon-work/</loc>
+    <lastmod>2015-07-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2015/07/kubernetes-10-launch-party-at-oscon/</loc>
+    <lastmod>2015-07-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2015/06/the-distributed-system-toolkit-patterns/</loc>
+    <lastmod>2015-06-29T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2015/06/slides-cluster-management-with/</loc>
+    <lastmod>2015-06-26T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2015/06/cluster-level-logging-with-kubernetes/</loc>
+    <lastmod>2015-06-11T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2015/06/weekly-kubernetes-community-hangout/</loc>
+    <lastmod>2015-06-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2015/05/kubernetes-on-openstack/</loc>
+    <lastmod>2015-05-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2015/05/docker-and-kubernetes-and-appc/</loc>
+    <lastmod>2015-05-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2015/05/weekly-kubernetes-community-hangout_18/</loc>
+    <lastmod>2015-05-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2015/05/kubernetes-release-0170/</loc>
+    <lastmod>2015-05-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2015/05/resource-usage-monitoring-kubernetes/</loc>
+    <lastmod>2015-05-12T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2015/05/kubernetes-release-0160/</loc>
+    <lastmod>2015-05-11T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2015/05/weekly-kubernetes-community-hangout/</loc>
+    <lastmod>2015-05-11T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2015/05/appc-support-for-kubernetes-through-rkt/</loc>
+    <lastmod>2015-05-04T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2015/04/weekly-kubernetes-community-hangout_29/</loc>
+    <lastmod>2015-04-30T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2015/04/borg-predecessor-to-kubernetes/</loc>
+    <lastmod>2015-04-23T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2015/04/kubernetes-and-mesosphere-dcos/</loc>
+    <lastmod>2015-04-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2015/04/weekly-kubernetes-community-hangout_17/</loc>
+    <lastmod>2015-04-17T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2015/04/introducing-kubernetes-v1beta3/</loc>
+    <lastmod>2015-04-16T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2015/04/kubernetes-release-0150/</loc>
+    <lastmod>2015-04-16T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2015/04/weekly-kubernetes-community-hangout_11/</loc>
+    <lastmod>2015-04-11T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2015/04/faster-than-speeding-latte/</loc>
+    <lastmod>2015-04-06T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2015/04/weekly-kubernetes-community-hangout/</loc>
+    <lastmod>2015-04-04T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2015/03/paricipate-in-kubernetes-user/</loc>
+    <lastmod>2015-03-31T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2015/03/weekly-kubernetes-community-hangout/</loc>
+    <lastmod>2015-03-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2015/03/kubernetes-gathering-videos/</loc>
+    <lastmod>2015-03-23T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/2015/03/welcome-to-kubernetes-blog/</loc>
+    <lastmod>2015-03-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/code-of-conduct/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_addon/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_addon_all/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_addon_coredns/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_addon_kube-dns/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_addon_kube-proxy/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_bootstrap-token/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_bootstrap-token_all/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_bootstrap-token_cluster-info/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_bootstrap-token_create/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_bootstrap-token_node/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_bootstrap-token_node_allow-auto-approve/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_bootstrap-token_node_allow-post-csrs/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_certs/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_certs_all/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_certs_apiserver-etcd-client/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_certs_apiserver-kubelet-client/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_certs_apiserver/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_certs_ca/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_certs_etcd-ca/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_certs_etcd-healthcheck-client/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_certs_etcd-peer/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_certs_etcd-server/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_certs_front-proxy-ca/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_certs_front-proxy-client/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_certs_sa/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_controlplane/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_controlplane_all/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_controlplane_apiserver/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_controlplane_controller-manager/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_controlplane_scheduler/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_etcd/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_etcd_local/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_kubeconfig/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_kubeconfig_admin/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_kubeconfig_all/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_kubeconfig_controller-manager/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_kubeconfig_kubelet/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_kubeconfig_scheduler/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_kubeconfig_user/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_kubelet/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_kubelet_config/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_kubelet_config_download/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_kubelet_config_enable-dynamic/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_kubelet_config_upload/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_kubelet_config_write-to-disk/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_kubelet_write-env-file/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_mark-master/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_preflight/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_preflight_master/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_preflight_node/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_selfhosting/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_selfhosting_convert-from-staticpods/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_alpha_phase_upload-config/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_completion/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_config/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_config_images/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_config_images_list/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_config_images_pull/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_config_migrate/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_config_print-default/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_config_upload/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_config_upload_from-file/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_config_upload_from-flags/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_config_view/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_init/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_join/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_reset/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_token/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_token_create/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_token_delete/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_token_generate/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_token_list/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_upgrade/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_upgrade_apply/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_upgrade_diff/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_upgrade_node/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_upgrade_node_config/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_upgrade_plan/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/setup-tools/kubeadm/generated/kubeadm_version/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/sitemap/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/access-cluster-api/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/access-cluster-services/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/administer-cluster/access-cluster-services/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/administer-cluster/access-cluster-services/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/user-journeys/users/application-developer/advanced/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/user-journeys/users/cluster-operator/_advanced/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/extended-resource-node/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/case-studies/amadeus/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/case-studies/ancestry/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tutorials/clusters/apparmor/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/debug-application-cluster/debug-application-introspection/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/debug-application-cluster/audit/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/dns-horizontal-autoscaling/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/getting-started-guides/ubuntu/backups/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/case-studies/blablacar/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/case-studies/blackrock/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/blog/</loc>
+    <lastmod>2018-06-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/case-studies/box/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/case-studies/buffer/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/setup/cluster-large/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/setup/building-from-source/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/case-studies/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/tls/certificate-rotation/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/tls/certificate-rotation/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/tls/certificate-rotation/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/change-pv-reclaim-policy/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/administer-cluster/change-pv-reclaim-policy/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/administer-cluster/change-pv-reclaim-policy/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/change-default-storage-class/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/administer-cluster/change-default-storage-class/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/administer-cluster/change-default-storage-class/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/setup/on-premises-vm/cloudstack/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/cluster-management/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/administer-cluster/cluster-management/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/administer-cluster/cluster-management/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/community/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/configure-multiple-schedulers/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/out-of-resource/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/quota-api-object/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/setup/salt/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tutorials/configuration/configure-redis-using-configmap/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tutorials/configuration/configure-redis-using-configmap/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tutorials/configuration/configure-redis-using-configmap/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/editdocs/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/administer-cluster/cpu-management-policies/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/debug-application-cluster/core-metrics-pipeline/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/setup/custom-cloud/coreos/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/setup/independent/high-availability/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/setup/scratch/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/home/contribute/create-pull-request/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/federation/federation-service-discovery/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/case-studies/crowdfire/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/setup/custom-cloud/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/home/contribute/includes/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/administer-cluster/dns-custom-nameservers/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/debug-application-cluster/debug-init-containers/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/debug-application-cluster/debug-pod-replication-controller/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/debug-application-cluster/debug-pod-replication-controller/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/debug-application-cluster/debug-pod-replication-controller/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/debug-application-cluster/debug-service/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/debug-application-cluster/debug-stateful-set/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/debug-application-cluster/debug-stateful-set/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/debug-application-cluster/debug-stateful-set/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/dns-debugging-resolution/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/debug-application-cluster/crictl/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/declare-network-policy/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/administer-cluster/declare-network-policy/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/administer-cluster/declare-network-policy/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/getting-started-guides/ubuntu/decommissioning/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/getting-started-guides/alternatives/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/debug-application-cluster/determine-reason-pod-failure/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/developing-cloud-controller-manager/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/debug-application-cluster/local-debugging/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/test/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/home/contribute/style-guide/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/debug-application-cluster/events-stackdriver/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/example-concept-template/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/example-concept-template/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/example-concept-template/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/example-task-template/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/extend-kubectl/kubectl-plugins/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-federation/cluster/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-federation/configmap/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-federation/daemonset/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-federation/deployment/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-federation/events/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-federation/hpa/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-federation/ingress/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-federation/job/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-federation/namespaces/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-federation/replicaset/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-federation/secret/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/getting-started-guides/fedora/flannel_multi_node_cluster/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/getting-started-guides/fedora/fedora_manual_config/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/user-journeys/users/application-developer/foundational/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/user-journeys/users/cluster-operator/foundational/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/home/contribute/generated-reference/federation-api/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/home/contribute/generated-reference/kubectl/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/home/contribute/generated-reference/kubernetes-api/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/home/contribute/generated-reference/kubernetes-components/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/debug-application-cluster/get-shell-running-container/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/getting-started-guides/ubuntu/glossary/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/case-studies/golfnow/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/case-studies/haufegroup/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/case-studies/huawei/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/ip-masq-agent/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/imported/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/service-catalog/install-service-catalog-using-helm/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/service-catalog/install-service-catalog-using-sc/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/cluster-administration/addons/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/cluster-administration/addons/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/cluster-administration/addons/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/setup/custom-cloud/kubespray/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/setup/custom-cloud/kops/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/user-journeys/users/application-developer/intermediate/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/user-journeys/users/cluster-operator/intermediate/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/kubectl/jsonpath/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet-authentication-authorization/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tutorials/k8s101/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tutorials/k8s201/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/running-cloud-controller/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/imported/community/guide/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/imported/community/devel/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/imported/community/keps/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/imported/community/mentoring/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/setup/on-premises-vm/dcos/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/getting-started-guides/ubuntu/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/limit-storage-consumption/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/getting-started-guides/ubuntu/local/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/home/contribute/localization/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/getting-started-guides/ubuntu/logging/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/debug-application-cluster/logging-elasticsearch-kibana/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/debug-application-cluster/logging-stackdriver/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/manage-hugepages/scheduling-hugepages/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/manage-hugepages/scheduling-hugepages/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/manage-hugepages/scheduling-hugepages/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/tls/managing-tls-in-a-cluster/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/debug-application-cluster/monitor-node-health/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/getting-started-guides/ubuntu/monitoring/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/namespaces-walkthrough/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/getting-started-guides/ubuntu/networking/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/case-studies/newyorktimes/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/concepts/storage/storage-limits/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/case-studies/nordstrom/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/case-studies/northwestern-mutual/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/setup/on-premises-vm/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/case-studies/openai/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/getting-started-guides/ubuntu/operational-considerations/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tutorials/online-training/overview/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/kubectl/overview/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/home/contribute/participating/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/partners/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/case-studies/peardeck/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/case-studies/pearson/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/manage-daemon/update-daemon-set/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/manage-daemon/rollback-daemon-set/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/manage-daemon/rollback-daemon-set/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/manage-daemon/rollback-daemon-set/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/setup/pick-right-solution/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/</loc>
+    <lastmod>2018-04-30T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/getting-started-guides/ubuntu/rancher/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/reconfigure-kubelet/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/reserve-compute-resources/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/home/contribute/review-issues/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/setup/minikube/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/setup/turnkey/aws/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/setup/turnkey/alibaba-cloud/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/setup/turnkey/azure/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/setup/turnkey/clc/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/setup/turnkey/gce/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/setup/turnkey/stackpoint/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/setup/multiple-zones/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/getting-started-guides/ubuntu/scaling/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/manage-gpus/scheduling-gpus/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/manage-gpus/scheduling-gpus/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/manage-gpus/scheduling-gpus/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/search/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/securing-a-cluster/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/getting-started-guides/ubuntu/security/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/administer-cluster/kubelet-config-file/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/federation/set-up-cluster-federation-kubefed/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/federation/set-up-coredns-provider-federation/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/highly-available-master/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/setup-ha-etcd-with-kubeadm/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/federation/set-up-placement-policies-federation/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/getting-started-guides/ubuntu/installation/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/namespaces/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/case-studies/squarespace/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/static-pod/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/administer-cluster/static-pod/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/administer-cluster/static-pod/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/getting-started-guides/ubuntu/storage/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/storage-object-in-use-protection/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/home/supported-doc-versions/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet-tls-bootstrapping/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/tools/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/debug-application-cluster/resource-usage-monitoring/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/debug-application-cluster/debug-application/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/debug-application-cluster/debug-application/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/debug-application-cluster/debug-application/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/debug-application-cluster/debug-cluster/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/debug-application-cluster/debug-cluster/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/debug-application-cluster/debug-cluster/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/getting-started-guides/ubuntu/troubleshooting/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/debug-application-cluster/troubleshooting/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/setup/independent/troubleshooting-kubeadm/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/setup/turnkey/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/getting-started-guides/ubuntu/upgrades/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-ha/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-1-8/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-1-11/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-1-9/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/coredns/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/home/contribute/page-templates/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tutorials/services/source-ip/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tutorials/services/source-ip/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tutorials/services/source-ip/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/getting-started-guides/windows/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/kms-provider/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/tasks/administer-cluster/sysctl-cluster/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/setup/node-conformance/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/getting-started-guides/ubuntu/validation/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/kubernetes-api/labels-annotations-taints/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/case-studies/wikimedia/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/case-studies/wink/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/home/contribute/blog-post/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/home/contribute/write-new-topic/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/case-studies/zalando/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/command-line-tools-reference/cloud-controller-manager/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/federation/extensions/v1beta1/definitions/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/federation/extensions/v1beta1/operations/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/command-line-tools-reference/kube-apiserver/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/command-line-tools-reference/kube-controller-manager/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/command-line-tools-reference/kube-proxy/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/command-line-tools-reference/kube-scheduler/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/kubectl/kubectl/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/kubectl/cheatsheet/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/kubectl/kubectl-cmds/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/kubectl/conventions/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/kubectl/docker-cli-to-kubectl/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/setup/on-premises-vm/ovirt/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/federation/v1/definitions/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/federation/v1/operations/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/reference/kubernetes-api/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/docs/imported/release/notes/</loc>
+  </url>
+  
+</urlset>

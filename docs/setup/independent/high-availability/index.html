@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Creating Highly Available Clusters with kubeadm - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="Creating Highly Available Clusters with kubeadm" />
+<meta property="og:description" content="Creating Highly Available Clusters with kubeadm" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/setup/independent/high-availability/" />
+<meta property="og:title" content="Creating Highly Available Clusters with kubeadm - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+<h1>Setup</h1>
+<h5></h5>
+
+
+
+
+
+
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/" class="YAH">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Setup" href="/docs/setup/"></a>
+
+	
+	
+		
+		
+	<div class="item" data-title="Bootstrapping Clusters with kubeadm">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Customizing control plane configuration with kubeadm" href="/docs/setup/independent/control-plane-flags/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Creating Highly Available Clusters with kubeadm" href="/docs/setup/independent/high-availability/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Creating a single master cluster with kubeadm" href="/docs/setup/independent/create-cluster-kubeadm/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Troubleshooting kubeadm" href="/docs/setup/independent/troubleshooting-kubeadm/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Building Large Clusters" href="/docs/setup/cluster-large/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Building from Source" href="/docs/setup/building-from-source/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configuring Kubernetes with Salt" href="/docs/setup/salt/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Creating a Custom Cluster from Scratch" href="/docs/setup/scratch/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Custom Cloud Solutions">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="CoreOS on AWS or GCE" href="/docs/setup/custom-cloud/coreos/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Installing Kubernetes On-premises/Cloud Providers with Kubespray" href="/docs/setup/custom-cloud/kubespray/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Installing Kubernetes on AWS with kops" href="/docs/setup/custom-cloud/kops/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="On-Premises VMs">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Cloudstack" href="/docs/setup/on-premises-vm/cloudstack/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes on DCOS" href="/docs/setup/on-premises-vm/dcos/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="oVirt" href="/docs/setup/on-premises-vm/ovirt/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Picking the Right Solution" href="/docs/setup/pick-right-solution/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Running Kubernetes Locally via Minikube" href="/docs/setup/minikube/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Running in Multiple Zones" href="/docs/setup/multiple-zones/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Turnkey Cloud Solutions">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Running Kubernetes on AWS EC2" href="/docs/setup/turnkey/aws/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Running Kubernetes on Alibaba Cloud" href="/docs/setup/turnkey/alibaba-cloud/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Running Kubernetes on Azure" href="/docs/setup/turnkey/azure/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Running Kubernetes on CenturyLink Cloud" href="/docs/setup/turnkey/clc/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Running Kubernetes on Google Compute Engine" href="/docs/setup/turnkey/gce/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Running Kubernetes on Multiple Clouds with Stackpoint.io" href="/docs/setup/turnkey/stackpoint/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Validate Node Setup" href="/docs/setup/node-conformance/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/setup/independent/high-availability.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>Creating Highly Available Clusters with kubeadm</h1>
+
+
+
+
+<p>This page explains two different approaches to setting up a highly available Kubernetes
+cluster using kubeadm:</p>
+
+<ul>
+<li>With stacked masters. This approach requires less infrastructure. etcd members
+and control plane nodes are co-located.</li>
+<li>With an external etcd cluster. This approach requires more infrastructure. The
+control plane nodes and etcd members are separated.</li>
+</ul>
+
+<p>Your clusters must run Kubernetes version 1.11 or later. You should also be aware that
+setting up HA clusters with kubeadm is still experimental. You might encounter issues
+with upgrading your clusters, for example. We encourage you to try either approach,
+and provide feedback.</p>
+
+<blockquote class="caution">
+  <div><strong>Caution</strong>: This page does not address running your cluster on a cloud provider.
+In a cloud environment, neither approach documented here works with Service objects
+of type LoadBalancer, or with dynamic PersistentVolumes.</div>
+</blockquote>
+
+
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+<li><a href="#before-you-begin">Before you begin</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#first-steps-for-both-methods">First steps for both methods</a></li>
+
+
+
+
+<li><a href="#stacked-control-plane-nodes">Stacked control plane nodes</a></li>
+
+
+
+
+<li><a href="#external-etcd">External etcd</a></li>
+
+
+
+
+<li><a href="#common-tasks-after-bootstrapping-control-plane">Common tasks after bootstrapping control plane</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</ul>
+
+
+
+<h2 id="before-you-begin">Before you begin</h2>
+<p>For both methods you need this infrastructure:</p>
+
+<ul>
+<li>Three machines that meet <a href="/docs/setup/independent/install-kubeadm/#before-you-begin">kubeadm&rsquo;s minimum
+requirements</a> for
+the masters</li>
+<li>Three machines that meet <a href="/docs/setup/independent/install-kubeadm/#before-you-begin">kubeadm&rsquo;s minimum
+requirements</a> for
+the workers</li>
+<li>Full network connectivity between all machines in the cluster (public or
+private network is fine)</li>
+<li>SSH access from one device to all nodes in the system</li>
+<li>sudo privileges on all machines</li>
+</ul>
+
+<p>For the external etcd cluster only, you also need:</p>
+
+<ul>
+<li>Three additional machines for etcd members</li>
+</ul>
+
+<blockquote class="note">
+  <div><strong>Note</strong>: The following examples run Calico as the Pod networking provider. If
+you run another networking provider, make sure to replace any default values as
+needed.</div>
+</blockquote>
+
+
+
+
+<h2 id="first-steps-for-both-methods">First steps for both methods</h2>
+
+<blockquote class="note">
+  <div><strong>Note</strong>: All commands in this guide on any control plane or etcd node should be
+run as root.</div>
+</blockquote>
+
+<ul>
+<li>Find your pod CIDR. For details, see <a href="/docs/setup/independent/create-cluster-kubeadm/#pod-network">the CNI network
+documentation</a>.
+The example uses Calico, so the pod CIDR is <code>192.168.0.0/16</code>.</li>
+</ul>
+
+<h3 id="configure-ssh">Configure SSH</h3>
+
+<ol>
+<li><p>Enable ssh-agent on your main device that has access to all other nodes in
+the system:</p>
+
+<pre><code> eval $(ssh-agent)
+</code></pre></li>
+
+<li><p>Add your SSH identity to the session:</p>
+
+<pre><code> ssh-add ~/.ssh/path_to_private_key
+</code></pre></li>
+
+<li><p>SSH between nodes to check that the connection is working correctly.</p>
+
+<ul>
+<li>When you SSH to any node, make sure to add the <code>-A</code> flag:</li>
+</ul>
+
+<pre><code>  ssh -A 10.0.0.7
+</code></pre>
+
+<ul>
+<li>When using sudo on any node, make sure to preserve the environment so SSH
+forwarding works:</li>
+</ul>
+
+<pre><code>  sudo -E -s
+</code></pre></li>
+</ol>
+
+<h3 id="create-load-balancer-for-kube-apiserver">Create load balancer for kube-apiserver</h3>
+
+<blockquote class="note">
+  <div><strong>Note</strong>: There are many configurations for load balancers. The following
+example is only one option. Your cluster requirements may need a
+different configuration.</div>
+</blockquote>
+
+<ol>
+<li><p>Create a kube-apiserver load balancer with a name that resolves to DNS.</p>
+
+<ul>
+<li><p>In a cloud environment you should place your control plane nodes behind a TCP
+forwarding load balancer. This load balancer distributes traffic to all
+healthy control plane nodes in its target list. The health check for
+an apiserver is a TCP check on the port the kube-apiserver listens on
+(default value <code>:6443</code>).</p></li>
+
+<li><p>It is not recommended to use an IP address directly in a cloud environment.</p></li>
+
+<li><p>The load balancer must be able to communicate with all control plane nodes
+on the apiserver port. It must also allow incoming traffic on its
+listening port.</p></li>
+</ul></li>
+
+<li><p>Add the first control plane nodes to the load balancer and test the
+connection:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">nc -v LOAD_BALANCER_IP PORT</code></pre></div>
+<ul>
+<li>A connection refused error is expected because the apiserver is not yet
+running. A timeout, however, means the load balancer cannot communicate
+with the control plane node. If a timeout occurs, reconfigure the load
+balancer to communicate with the control plane node.</li>
+</ul></li>
+
+<li><p>Add the remaining control plane nodes to the load balancer target group.</p></li>
+</ol>
+
+<h2 id="stacked-control-plane-nodes">Stacked control plane nodes</h2>
+
+<h3 id="bootstrap-the-first-stacked-control-plane-node">Bootstrap the first stacked control plane node</h3>
+
+<ol>
+<li><p>Create a <code>kubeadm-config.yaml</code> template file:</p>
+
+<pre><code>apiVersion: kubeadm.k8s.io/v1alpha2
+kind: MasterConfiguration
+kubernetesVersion: v1.11.0
+apiServerCertSANs:
+- &quot;LOAD_BALANCER_DNS&quot;
+api:
+    controlPlaneEndpoint: &quot;LOAD_BALANCER_DNS:LOAD_BALANCER_PORT&quot;
+etcd:
+  local:
+    extraArgs:
+      listen-client-urls: &quot;https://127.0.0.1:2379,https://CP0_IP:2379&quot;
+      advertise-client-urls: &quot;https://CP0_IP:2379&quot;
+      listen-peer-urls: &quot;https://CP0_IP:2380&quot;
+      initial-advertise-peer-urls: &quot;https://CP0_IP:2380&quot;
+      initial-cluster: &quot;CP0_HOSTNAME=https://CP0_IP:2380&quot;
+    serverCertSANs:
+      - CP0_HOSTNAME
+      - CP0_IP
+    peerCertSANs:
+      - CP0_HOSTNAME
+      - CP0_IP
+networking:
+    # This CIDR is a Calico default. Substitute or remove for your CNI provider.
+    podSubnet: &quot;192.168.0.0/16&quot;
+</code></pre></li>
+
+<li><p>Replace the following variables in the template with the appropriate
+values for your cluster:</p>
+
+<ul>
+<li><code>LOAD_BALANCER_DNS</code></li>
+<li><code>LOAD_BALANCER_PORT</code></li>
+<li><code>CP0_HOSTNAME</code></li>
+<li><code>CP0_IP</code></li>
+</ul></li>
+
+<li><p>Run <code>kubeadm init --config kubeadm-config.yaml</code></p></li>
+</ol>
+
+<h3 id="copy-required-files-to-other-control-plane-nodes">Copy required files to other control plane nodes</h3>
+
+<p>The following certificates and other required files were created when you ran <code>kubeadm init</code>.
+Copy these files to your other control plane nodes:</p>
+
+<ul>
+<li><code>/etc/kubernetes/pki/ca.crt</code></li>
+<li><code>/etc/kubernetes/pki/ca.key</code></li>
+<li><code>/etc/kubernetes/pki/sa.key</code></li>
+<li><code>/etc/kubernetes/pki/sa.pub</code></li>
+<li><code>/etc/kubernetes/pki/front-proxy-ca.crt</code></li>
+<li><code>/etc/kubernetes/pki/front-proxy-ca.key</code></li>
+<li><code>/etc/kubernetes/pki/etcd/ca.crt</code></li>
+<li><code>/etc/kubernetes/pki/etcd/ca.key</code></li>
+</ul>
+
+<p>Copy the admin kubeconfig to the other control plane nodes:</p>
+
+<ul>
+<li><code>/etc/kubernetes/admin.conf</code></li>
+</ul>
+
+<p>In the following example, replace
+<code>CONTROL_PLANE_IPS</code> with the IP addresses of the other control plane nodes.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#b8860b">USER</span><span style="color:#666">=</span>ubuntu <span style="color:#080;font-style:italic"># customizable
+</span><span style="color:#080;font-style:italic"></span><span style="color:#b8860b">CONTROL_PLANE_IPS</span><span style="color:#666">=</span><span style="color:#b44">&#34;10.0.0.7 10.0.0.8&#34;</span>
+<span style="color:#a2f;font-weight:bold">for</span> host in <span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">CONTROL_PLANE_IPS</span><span style="color:#b68;font-weight:bold">}</span>; <span style="color:#a2f;font-weight:bold">do</span>
+    scp /etc/kubernetes/pki/ca.crt <span style="color:#b44">&#34;</span><span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">USER</span><span style="color:#b68;font-weight:bold">}</span><span style="color:#b44">&#34;</span>@<span style="color:#b8860b">$host</span>:
+    scp /etc/kubernetes/pki/ca.key <span style="color:#b44">&#34;</span><span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">USER</span><span style="color:#b68;font-weight:bold">}</span><span style="color:#b44">&#34;</span>@<span style="color:#b8860b">$host</span>:
+    scp /etc/kubernetes/pki/sa.key <span style="color:#b44">&#34;</span><span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">USER</span><span style="color:#b68;font-weight:bold">}</span><span style="color:#b44">&#34;</span>@<span style="color:#b8860b">$host</span>:
+    scp /etc/kubernetes/pki/sa.pub <span style="color:#b44">&#34;</span><span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">USER</span><span style="color:#b68;font-weight:bold">}</span><span style="color:#b44">&#34;</span>@<span style="color:#b8860b">$host</span>:
+    scp /etc/kubernetes/pki/front-proxy-ca.crt <span style="color:#b44">&#34;</span><span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">USER</span><span style="color:#b68;font-weight:bold">}</span><span style="color:#b44">&#34;</span>@<span style="color:#b8860b">$host</span>:
+    scp /etc/kubernetes/pki/front-proxy-ca.key <span style="color:#b44">&#34;</span><span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">USER</span><span style="color:#b68;font-weight:bold">}</span><span style="color:#b44">&#34;</span>@<span style="color:#b8860b">$host</span>:
+    scp /etc/kubernetes/pki/etcd/ca.crt <span style="color:#b44">&#34;</span><span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">USER</span><span style="color:#b68;font-weight:bold">}</span><span style="color:#b44">&#34;</span>@<span style="color:#b8860b">$host</span>:etcd-ca.crt
+    scp /etc/kubernetes/pki/etcd/ca.key <span style="color:#b44">&#34;</span><span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">USER</span><span style="color:#b68;font-weight:bold">}</span><span style="color:#b44">&#34;</span>@<span style="color:#b8860b">$host</span>:etcd-ca.key
+    scp /etc/kubernetes/admin.conf <span style="color:#b44">&#34;</span><span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">USER</span><span style="color:#b68;font-weight:bold">}</span><span style="color:#b44">&#34;</span>@<span style="color:#b8860b">$host</span>:
+<span style="color:#a2f;font-weight:bold">done</span></code></pre></div>
+<blockquote class="note">
+  <div><strong>Note</strong>: Remember that your config may differ from this example.</div>
+</blockquote>
+
+<h3 id="add-the-second-stacked-control-plane-node">Add the second stacked control plane node</h3>
+
+<ol>
+<li><p>Create a second, different <code>kubeadm-config.yaml</code> template file:</p>
+
+<pre><code>apiVersion: kubeadm.k8s.io/v1alpha2
+kind: MasterConfiguration
+kubernetesVersion: v1.11.0
+apiServerCertSANs:
+- &quot;LOAD_BALANCER_DNS&quot;
+api:
+    controlPlaneEndpoint: &quot;LOAD_BALANCER_DNS:LOAD_BALANCER_PORT&quot;
+etcd:
+  local:
+    extraArgs:
+      listen-client-urls: &quot;https://127.0.0.1:2379,https://CP1_IP:2379&quot;
+      advertise-client-urls: &quot;https://CP1_IP:2379&quot;
+      listen-peer-urls: &quot;https://CP1_IP:2380&quot;
+      initial-advertise-peer-urls: &quot;https://CP1_IP:2380&quot;
+      initial-cluster: &quot;CP0_HOSTNAME=https://CP0_IP:2380,CP1_HOSTNAME=https://CP1_IP:2380&quot;
+      initial-cluster-state: existing
+    serverCertSANs:
+      - CP1_HOSTNAME
+      - CP1_IP
+    peerCertSANs:
+      - CP1_HOSTNAME
+      - CP1_IP
+networking:
+    # This CIDR is a calico default. Substitute or remove for your CNI provider.
+    podSubnet: &quot;192.168.0.0/16&quot;
+</code></pre></li>
+
+<li><p>Replace the following variables in the template with the appropriate values for your cluster:</p>
+
+<ul>
+<li><code>LOAD_BALANCER_DNS</code></li>
+<li><code>LOAD_BALANCER_PORT</code></li>
+<li><code>CP0_HOSTNAME</code></li>
+<li><code>CP0_IP</code></li>
+<li><code>CP1_HOSTNAME</code></li>
+<li><code>CP1_IP</code></li>
+</ul></li>
+
+<li><p>Move the copied files to the correct locations:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">  <span style="color:#b8860b">USER</span><span style="color:#666">=</span>ubuntu <span style="color:#080;font-style:italic"># customizable
+</span><span style="color:#080;font-style:italic"></span>  mkdir -p /etc/kubernetes/pki/etcd
+  mv /home/<span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">USER</span><span style="color:#b68;font-weight:bold">}</span>/ca.crt /etc/kubernetes/pki/
+  mv /home/<span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">USER</span><span style="color:#b68;font-weight:bold">}</span>/ca.key /etc/kubernetes/pki/
+  mv /home/<span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">USER</span><span style="color:#b68;font-weight:bold">}</span>/sa.pub /etc/kubernetes/pki/
+  mv /home/<span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">USER</span><span style="color:#b68;font-weight:bold">}</span>/sa.key /etc/kubernetes/pki/
+  mv /home/<span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">USER</span><span style="color:#b68;font-weight:bold">}</span>/front-proxy-ca.crt /etc/kubernetes/pki/
+  mv /home/<span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">USER</span><span style="color:#b68;font-weight:bold">}</span>/front-proxy-ca.key /etc/kubernetes/pki/
+  mv /home/<span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">USER</span><span style="color:#b68;font-weight:bold">}</span>/etcd-ca.crt /etc/kubernetes/pki/etcd/ca.crt
+  mv /home/<span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">USER</span><span style="color:#b68;font-weight:bold">}</span>/etcd-ca.key /etc/kubernetes/pki/etcd/ca.key
+  mv /home/<span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">USER</span><span style="color:#b68;font-weight:bold">}</span>/admin.conf /etc/kubernetes/admin.conf</code></pre></div></li>
+
+<li><p>Run the kubeadm phase commands to bootstrap the kubelet:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">  kubeadm alpha phase certs all --config kubeadm-config.yaml
+  kubeadm alpha phase kubelet config write-to-disk --config kubeadm-config.yaml
+  kubeadm alpha phase kubelet write-env-file --config kubeadm-config.yaml
+  kubeadm alpha phase kubeconfig kubelet --config kubeadm-config.yaml
+  systemctl start kubelet</code></pre></div></li>
+
+<li><p>Run the commands to add the node to the etcd cluster:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">  <span style="color:#b8860b">CP0_IP</span><span style="color:#666">=</span><span style="color:#666">10</span>.0.0.7
+  <span style="color:#b8860b">CP0_HOSTNAME</span><span style="color:#666">=</span>cp0
+  <span style="color:#b8860b">CP1_IP</span><span style="color:#666">=</span><span style="color:#666">10</span>.0.0.8
+  <span style="color:#b8860b">CP1_HOSTNAME</span><span style="color:#666">=</span>cp1
+
+  <span style="color:#b8860b">KUBECONFIG</span><span style="color:#666">=</span>/etc/kubernetes/admin.conf kubectl <span style="color:#a2f">exec</span> -n kube-system etcd-<span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">CP0_HOSTNAME</span><span style="color:#b68;font-weight:bold">}</span> -- etcdctl --ca-file /etc/kubernetes/pki/etcd/ca.crt --cert-file /etc/kubernetes/pki/etcd/peer.crt --key-file /etc/kubernetes/pki/etcd/peer.key --endpoints<span style="color:#666">=</span>https://<span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">CP0_IP</span><span style="color:#b68;font-weight:bold">}</span>:2379 member add <span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">CP1_HOSTNAME</span><span style="color:#b68;font-weight:bold">}</span> https://<span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">CP1_IP</span><span style="color:#b68;font-weight:bold">}</span>:2380
+  kubeadm alpha phase etcd <span style="color:#a2f">local</span> --config kubeadm-config.yaml</code></pre></div>
+<ul>
+<li>This command causes the etcd cluster to become unavailable for a
+brief period, after the node is added to the running cluster, and before the
+new node is joined to the etcd cluster.</li>
+</ul></li>
+
+<li><p>Deploy the control plane components and mark the node as a master:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">  kubeadm alpha phase kubeconfig all --config kubeadm-config.yaml
+  kubeadm alpha phase controlplane all --config kubeadm-config.yaml
+  kubeadm alpha phase mark-master --config kubeadm-config.yaml</code></pre></div></li>
+</ol>
+
+<h3 id="add-the-third-stacked-control-plane-node">Add the third stacked control plane node</h3>
+
+<ol>
+<li><p>Create a third, different <code>kubeadm-config.yaml</code> template file:</p>
+
+<pre><code>apiVersion: kubeadm.k8s.io/v1alpha2
+kind: MasterConfiguration
+kubernetesVersion: v1.11.0
+apiServerCertSANs:
+- &quot;LOAD_BALANCER_DNS&quot;
+api:
+    controlPlaneEndpoint: &quot;LOAD_BALANCER_DNS:LOAD_BALANCER_PORT&quot;
+etcd:
+  local:
+    extraArgs:
+      listen-client-urls: &quot;https://127.0.0.1:2379,https://CP2_IP:2379&quot;
+      advertise-client-urls: &quot;https://CP2_IP:2379&quot;
+      listen-peer-urls: &quot;https://CP2_IP:2380&quot;
+      initial-advertise-peer-urls: &quot;https://CP2_IP:2380&quot;
+      initial-cluster: &quot;CP0_HOSTNAME=https://CP0_IP:2380,CP1_HOSTNAME=https://CP1_IP:2380,CP2_HOSTNAME=https://CP2_IP:2380&quot;
+      initial-cluster-state: existing
+    serverCertSANs:
+      - CP2_HOSTNAME
+      - CP2_IP
+    peerCertSANs:
+      - CP2_HOSTNAME
+      - CP2_IP
+networking:
+    # This CIDR is a calico default. Substitute or remove for your CNI provider.
+    podSubnet: &quot;192.168.0.0/16&quot;
+</code></pre></li>
+
+<li><p>Replace the following variables in the template with the appropriate values for your cluster:</p>
+
+<ul>
+<li><code>LOAD_BALANCER_DNS</code></li>
+<li><code>LOAD_BALANCER_PORT</code></li>
+<li><code>CP0_HOSTNAME</code></li>
+<li><code>CP0_IP</code></li>
+<li><code>CP1_HOSTNAME</code></li>
+<li><code>CP1_IP</code></li>
+<li><code>CP2_HOSTNAME</code></li>
+<li><code>CP2_IP</code></li>
+</ul></li>
+
+<li><p>Move the copied files to the correct locations:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">  <span style="color:#b8860b">USER</span><span style="color:#666">=</span>ubuntu <span style="color:#080;font-style:italic"># customizable
+</span><span style="color:#080;font-style:italic"></span>  mkdir -p /etc/kubernetes/pki/etcd
+  mv /home/<span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">USER</span><span style="color:#b68;font-weight:bold">}</span>/ca.crt /etc/kubernetes/pki/
+  mv /home/<span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">USER</span><span style="color:#b68;font-weight:bold">}</span>/ca.key /etc/kubernetes/pki/
+  mv /home/<span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">USER</span><span style="color:#b68;font-weight:bold">}</span>/sa.pub /etc/kubernetes/pki/
+  mv /home/<span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">USER</span><span style="color:#b68;font-weight:bold">}</span>/sa.key /etc/kubernetes/pki/
+  mv /home/<span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">USER</span><span style="color:#b68;font-weight:bold">}</span>/front-proxy-ca.crt /etc/kubernetes/pki/
+  mv /home/<span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">USER</span><span style="color:#b68;font-weight:bold">}</span>/front-proxy-ca.key /etc/kubernetes/pki/
+  mv /home/<span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">USER</span><span style="color:#b68;font-weight:bold">}</span>/etcd-ca.crt /etc/kubernetes/pki/etcd/ca.crt
+  mv /home/<span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">USER</span><span style="color:#b68;font-weight:bold">}</span>/etcd-ca.key /etc/kubernetes/pki/etcd/ca.key
+  mv /home/<span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">USER</span><span style="color:#b68;font-weight:bold">}</span>/admin.conf /etc/kubernetes/admin.conf</code></pre></div></li>
+
+<li><p>Run the kubeadm phase commands to bootstrap the kubelet:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">  kubeadm alpha phase certs all --config kubeadm-config.yaml
+  kubeadm alpha phase kubelet config write-to-disk --config kubeadm-config.yaml
+  kubeadm alpha phase kubelet write-env-file --config kubeadm-config.yaml
+  kubeadm alpha phase kubeconfig kubelet --config kubeadm-config.yaml
+  systemctl start kubelet</code></pre></div></li>
+
+<li><p>Run the commands to add the node to the etcd cluster:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">  <span style="color:#b8860b">CP0_IP</span><span style="color:#666">=</span><span style="color:#666">10</span>.0.0.7
+  <span style="color:#b8860b">CP0_HOSTNAME</span><span style="color:#666">=</span>cp0
+  <span style="color:#b8860b">CP2_IP</span><span style="color:#666">=</span><span style="color:#666">10</span>.0.0.9
+  <span style="color:#b8860b">CP2_HOSTNAME</span><span style="color:#666">=</span>cp2
+
+  <span style="color:#b8860b">KUBECONFIG</span><span style="color:#666">=</span>/etc/kubernetes/admin.conf kubectl <span style="color:#a2f">exec</span> -n kube-system etcd-<span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">CP0_HOSTNAME</span><span style="color:#b68;font-weight:bold">}</span> -- etcdctl --ca-file /etc/kubernetes/pki/etcd/ca.crt --cert-file /etc/kubernetes/pki/etcd/peer.crt --key-file /etc/kubernetes/pki/etcd/peer.key --endpoints<span style="color:#666">=</span>https://<span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">CP0_IP</span><span style="color:#b68;font-weight:bold">}</span>:2379 member add <span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">CP2_HOSTNAME</span><span style="color:#b68;font-weight:bold">}</span> https://<span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">CP2_IP</span><span style="color:#b68;font-weight:bold">}</span>:2380
+  kubeadm alpha phase etcd <span style="color:#a2f">local</span> --config kubeadm-config.yaml</code></pre></div></li>
+
+<li><p>Deploy the control plane components and mark the node as a master:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">  kubeadm alpha phase kubeconfig all --config kubeadm-config.yaml
+  kubeadm alpha phase controlplane all --config kubeadm-config.yaml
+  kubeadm alpha phase mark-master --config kubeadm-config.yaml</code></pre></div></li>
+</ol>
+
+<h2 id="external-etcd">External etcd</h2>
+
+<h3 id="set-up-the-cluster">Set up the cluster</h3>
+
+<ul>
+<li>Follow <a href="/docs/tasks/administer-cluster/setup-ha-etcd-with-kubeadm/">these instructions</a>
+to set up the etcd cluster.</li>
+</ul>
+
+<h3 id="copy-required-files-to-other-control-plane-nodes-1">Copy required files to other control plane nodes</h3>
+
+<p>The following certificates were created when you created the cluster. Copy them
+to your other control plane nodes:</p>
+
+<ul>
+<li><code>/etc/kubernetes/pki/etcd/ca.crt</code></li>
+<li><code>/etc/kubernetes/pki/apiserver-etcd-client.crt</code></li>
+<li><code>/etc/kubernetes/pki/apiserver-etcd-client.key</code></li>
+</ul>
+
+<p>In the following example, replace <code>USER</code> and <code>CONTROL_PLANE_HOSTS</code> values with values
+for your environment.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#b8860b">USER</span><span style="color:#666">=</span>ubuntu
+<span style="color:#b8860b">CONTROL_PLANE_HOSTS</span><span style="color:#666">=</span><span style="color:#b44">&#34;10.0.0.7 10.0.0.8 10.0.0.9&#34;</span>
+<span style="color:#a2f;font-weight:bold">for</span> host in <span style="color:#b8860b">$CONTROL_PLANE_HOSTS</span>; <span style="color:#a2f;font-weight:bold">do</span>
+    scp /etc/kubernetes/pki/etcd/ca.crt <span style="color:#b44">&#34;</span><span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">USER</span><span style="color:#b68;font-weight:bold">}</span><span style="color:#b44">&#34;</span>@<span style="color:#b8860b">$host</span>:
+    scp /etc/kubernetes/pki/apiserver-etcd-client.crt <span style="color:#b44">&#34;</span><span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">USER</span><span style="color:#b68;font-weight:bold">}</span><span style="color:#b44">&#34;</span>@<span style="color:#b8860b">$host</span>:
+    scp /etc/kubernetes/pki/apiserver-etcd-client.key <span style="color:#b44">&#34;</span><span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">USER</span><span style="color:#b68;font-weight:bold">}</span><span style="color:#b44">&#34;</span>@<span style="color:#b8860b">$host</span>:
+<span style="color:#a2f;font-weight:bold">done</span></code></pre></div>
+<h3 id="set-up-the-first-control-plane-node">Set up the first control plane node</h3>
+
+<ol>
+<li><p>Create a <code>kubeadm-config.yaml</code> template file:</p>
+
+<pre><code>apiVersion: kubeadm.k8s.io/v1alpha2
+kind: MasterConfiguration
+kubernetesVersion: v1.11.0
+apiServerCertSANs:
+- &quot;LOAD_BALANCER_DNS&quot;
+api:
+    controlPlaneEndpoint: &quot;LOAD_BALANCER_DNS:LOAD_BALANCER_PORT&quot;
+etcd:
+    external:
+        endpoints:
+        - https://ETCD_0_IP:2379
+        - https://ETCD_1_IP:2379
+        - https://ETCD_2_IP:2379
+        caFile: /etc/kubernetes/pki/etcd/ca.crt
+        certFile: /etc/kubernetes/pki/apiserver-etcd-client.crt
+        keyFile: /etc/kubernetes/pki/apiserver-etcd-client.key
+networking:
+    # This CIDR is a calico default. Substitute or remove for your CNI provider.
+    podSubnet: &quot;192.168.0.0/16&quot;
+</code></pre></li>
+
+<li><p>Replace the following variables in the template with the appropriate values for your cluster:</p>
+
+<ul>
+<li><code>LOAD_BALANCER_DNS</code></li>
+<li><code>LOAD_BALANCER_PORT</code></li>
+<li><code>ETCD_0_IP</code></li>
+<li><code>ETCD_1_IP</code></li>
+<li><code>ETCD_2_IP</code></li>
+</ul></li>
+
+<li><p>Run <code>kubeadm init --config kubeadm-config.yaml</code></p></li>
+</ol>
+
+<h3 id="copy-required-files-to-the-correct-locations">Copy required files to the correct locations</h3>
+
+<p>The following certificates and other required files were created when you ran <code>kubeadm init</code>.
+Copy these files to your other control plane nodes:</p>
+
+<ul>
+<li><code>/etc/kubernetes/pki/ca.crt</code></li>
+<li><code>/etc/kubernetes/pki/ca.key</code></li>
+<li><code>/etc/kubernetes/pki/sa.key</code></li>
+<li><code>/etc/kubernetes/pki/sa.pub</code></li>
+<li><code>/etc/kubernetes/pki/front-proxy-ca.crt</code></li>
+<li><code>/etc/kubernetes/pki/front-proxy-ca.key</code></li>
+</ul>
+
+<p>In the following example, replace the list of
+<code>CONTROL_PLANE_IPS</code> values with the IP addresses of the other control plane nodes.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#b8860b">USER</span><span style="color:#666">=</span>ubuntu <span style="color:#080;font-style:italic"># customizable
+</span><span style="color:#080;font-style:italic"></span><span style="color:#b8860b">CONTROL_PLANE_IPS</span><span style="color:#666">=</span><span style="color:#b44">&#34;10.0.0.7 10.0.0.8&#34;</span>
+<span style="color:#a2f;font-weight:bold">for</span> host in <span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">CONTROL_PLANE_IPS</span><span style="color:#b68;font-weight:bold">}</span>; <span style="color:#a2f;font-weight:bold">do</span>
+    scp /etc/kubernetes/pki/ca.crt <span style="color:#b44">&#34;</span><span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">USER</span><span style="color:#b68;font-weight:bold">}</span><span style="color:#b44">&#34;</span>@CONTROL_PLANE_IP:
+    scp /etc/kubernetes/pki/ca.key <span style="color:#b44">&#34;</span><span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">USER</span><span style="color:#b68;font-weight:bold">}</span><span style="color:#b44">&#34;</span>@CONTROL_PLANE_IP:
+    scp /etc/kubernetes/pki/sa.key <span style="color:#b44">&#34;</span><span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">USER</span><span style="color:#b68;font-weight:bold">}</span><span style="color:#b44">&#34;</span>@CONTROL_PLANE_IP:
+    scp /etc/kubernetes/pki/sa.pub <span style="color:#b44">&#34;</span><span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">USER</span><span style="color:#b68;font-weight:bold">}</span><span style="color:#b44">&#34;</span>@CONTROL_PLANE_IP:
+    scp /etc/kubernetes/pki/front-proxy-ca.crt <span style="color:#b44">&#34;</span><span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">USER</span><span style="color:#b68;font-weight:bold">}</span><span style="color:#b44">&#34;</span>@CONTROL_PLANE_IP:
+    scp /etc/kubernetes/pki/front-proxy-ca.key <span style="color:#b44">&#34;</span><span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">USER</span><span style="color:#b68;font-weight:bold">}</span><span style="color:#b44">&#34;</span>@CONTROL_PLANE_IP:
+<span style="color:#a2f;font-weight:bold">done</span></code></pre></div>
+<blockquote class="note">
+  <div><strong>Note</strong>: Remember that your config may differ from this example.</div>
+</blockquote>
+
+<h3 id="set-up-the-other-control-plane-nodes">Set up the other control plane nodes</h3>
+
+<ol>
+<li><p>Verify the location of the copied files.
+Your <code>/etc/kubernetes</code> directory should look like this:</p>
+
+<ul>
+<li><code>/etc/kubernetes/pki/apiserver-etcd-client.crt</code></li>
+<li><code>/etc/kubernetes/pki/apiserver-etcd-client.key</code></li>
+<li><code>/etc/kubernetes/pki/ca.crt</code></li>
+<li><code>/etc/kubernetes/pki/ca.key</code></li>
+<li><code>/etc/kubernetes/pki/front-proxy-ca.crt</code></li>
+<li><code>/etc/kubernetes/pki/front-proxy-ca.key</code></li>
+<li><code>/etc/kubernetes/pki/sa.key</code></li>
+<li><code>/etc/kubernetes/pki/sa.pub</code></li>
+<li><code>/etc/kubernetes/pki/etcd/ca.crt</code></li>
+</ul></li>
+
+<li><p>Run <code>kubeadm init --config kubeadm-config.yaml</code> on each control plane node, where
+<code>kubeadm-config.yaml</code> is the file you already created.</p></li>
+</ol>
+
+<h2 id="common-tasks-after-bootstrapping-control-plane">Common tasks after bootstrapping control plane</h2>
+
+<h3 id="install-a-pod-network">Install a pod network</h3>
+
+<p><a href="/docs/setup/independent/create-cluster-kubeadm/#pod-network">Follow these instructions</a> to install
+the pod network. Make sure this corresponds to whichever pod CIDR you provided
+in the master configuration file.</p>
+
+<h3 id="install-workers">Install workers</h3>
+
+<p>Each worker node can now be joined to the cluster with the command returned from any of the
+<code>kubeadm init</code> commands.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/setup/independent/high-availability.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/setup\/independent\/high-availability\/",
+					"title" : "Creating Highly Available Clusters with kubeadm",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/setup\/independent\/high-availability\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/setup/independent/high-availability.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

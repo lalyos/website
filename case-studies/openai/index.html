@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html id="caseStudies" lang="en" class="">
+	<head>
+		<meta charset="utf-8">
+<title>OpenAI Case Study - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/case_study_styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style_case_studies.css">
+
+
+<meta name="description" content="OpenAI Case Study" />
+<meta property="og:description" content="OpenAI Case Study" />
+
+<meta property="og:url" content="https://kubernetes.io/case-studies/openai/" />
+<meta property="og:title" content="OpenAI Case Study - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+	<div class="banner1 desktop" style="background-image: url('/images/CaseStudy_openAI_banner1.jpg')">
+  <h1> CASE STUDY:<img src="/images/openAI_logo.png" style="margin-bottom:-1%" class="header_logo"><br> <div class="subhead">Launching and Scaling Up Experiments, Made Simple
+
+</div></h1>
+
+</div>
+
+<div class="details">
+    Company &nbsp;<b>OpenAI</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Location &nbsp;<b>San Francisco, California</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Industry &nbsp;<b>Artificial Intelligence Research</b>
+</div>
+
+<hr>
+<section class="section1">
+<div class="cols">
+  <div class="col1">
+    <h2>Challenge</h2>
+    An artificial intelligence research lab, OpenAI needed infrastructure for deep learning that would allow experiments to be run either in the cloud or in its own data center, and to easily scale. Portability, speed, and cost were the main drivers.
+<br>
+    <h2>Solution</h2>
+    OpenAI began running Kubernetes on top of AWS in 2016, and in early 2017 migrated to Azure. OpenAI runs key experiments in fields including robotics and gaming both in Azure and in its own data centers, depending on which cluster has free capacity. "We use Kubernetes mainly as a batch scheduling system and rely on our <a href="https://github.com/openai/kubernetes-ec2-autoscaler">autoscaler</a> to dynamically scale up and down our cluster," says Christopher Berner, Head of Infrastructure. "This lets us significantly reduce costs for idle nodes, while still providing low latency and rapid iteration."
+</div>
+
+<div class="col2">
+
+<h2>Impact</h2>
+  The company has benefited from greater portability: "Because Kubernetes provides a consistent API, we can move our research experiments very easily between clusters," says Berner. Being able to use its own data centers when appropriate is "lowering costs and providing us access to hardware that we wouldn’t necessarily have access to in the cloud," he adds. "As long as the utilization is high, the costs are much lower there." Launching experiments also takes far less time: "One of our researchers who is working on a new distributed training system has been able to get his experiment running in two or three days. In a week or two he scaled it out to hundreds of GPUs. Previously, that would have easily been a couple of months of work."
+
+
+</div>
+
+</div>
+</section>
+<div class="banner2">
+  <div class="banner2text">
+
+<div class="video">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/v4N3Krzb8Eg" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe><br>
+<span style="font-size:21px;line-height:0.5em !important;width:60%;">Check out "Building the Infrastructure that Powers the Future of AI" presented by  Vicki Cheung, Member of Technical Staff & Jonas Schneider, Member of Technical Staff at OpenAI from KubeCon/CloudNativeCon Europe 2017.</span>
+</div>
+  </div>
+</div>
+<section class="section2">
+<div class="fullcol">
+  <h2>From experiments in robotics to old-school video game play research, OpenAI’s work in artificial intelligence technology is meant to be shared.</h2>
+  With a mission to ensure powerful AI systems are safe, OpenAI cares deeply about open source—both benefiting from it and contributing safety technology into it. "The research that we do, we want to spread it as widely as possible so everyone can benefit," says OpenAI’s Head of Infrastructure Christopher Berner. The lab’s philosophy—as well as its particular needs—lent itself to embracing an open source, cloud native strategy for its deep learning infrastructure.<br><br>
+  OpenAI started running Kubernetes on top of AWS in 2016, and a year later, migrated the Kubernetes clusters to Azure. "We probably use Kubernetes differently from a lot of people," says Berner. "We use it for batch scheduling and as a workload manager for the cluster. It’s a way of coordinating a large number of containers that are all connected together. We rely on our <a href="https://github.com/openai/kubernetes-ec2-autoscaler">autoscaler</a> to dynamically scale up and down our cluster. This lets us significantly reduce costs for idle nodes, while still providing low latency and rapid iteration." <br><br>
+  In the past year, Berner has overseen the launch of several Kubernetes clusters in OpenAI’s own data centers. "We run them in a hybrid model where the control planes—the Kubernetes API servers, <a href="https://github.com/coreos/etcd">etcd</a> and everything—are all in Azure, and then all of the Kubernetes nodes are in our own data center," says Berner. "The cloud is really convenient for managing etcd and all of the masters, and having backups and spinning up new nodes if anything breaks. This model allows us to take advantage of lower costs and have the availability of more specialized hardware in our own data center."
+
+
+</div>
+</section>
+<div class="banner3" style="background-image: url('/images/CaseStudy_openAI_banner3.jpg')">
+  <div class="banner3text">
+    OpenAI’s experiments take advantage of Kubernetes’ benefits, including portability. "Because Kubernetes provides a consistent API, we can move our research experiments very easily between clusters..."
+
+  </div>
+</div>
+<section class="section3">
+<div class="fullcol">
+  Different teams at OpenAI currently run a couple dozen projects. While the largest-scale workloads manage bare cloud VMs directly, most of OpenAI’s experiments take advantage of Kubernetes’ benefits, including portability. "Because Kubernetes provides a consistent API, we can move our research experiments very easily between clusters," says Berner. The on-prem clusters are generally "used for workloads where you need lots of GPUs, something like training an ImageNet model. Anything that’s CPU heavy, that’s run in the cloud. But we also have a number of teams that run their experiments both in Azure and in our own data centers, just depending on which cluster has free capacity, and that’s hugely valuable."<br><br>
+  Berner has made the Kubernetes clusters available to all OpenAI teams to use if it’s a good fit. "I’ve worked a lot with our games team, which at the moment is doing research on classic console games," he says. "They had been running a bunch of their experiments on our dev servers, and they had been trying out Google cloud, managing their own VMs. We got them to try out our first on-prem Kubernetes cluster, and that was really successful. They’ve now moved over completely to it, and it has allowed them to scale up their experiments by 10x, and do that without needing to invest significant engineering time to figure out how to manage more machines. A lot of people are now following the same path."
+
+</div>
+</section>
+<div class="banner4" style="background-image: url('/images/CaseStudy_openAI_banner4.jpg')">
+  <div class="banner4text">
+"One of our researchers who is working on a new distributed training system has been able to get his experiment running in two or three days," says Berner. "In a week or two he scaled it out to hundreds of GPUs. Previously, that would have easily been a couple of months of work."
+  </div>
+</div>
+
+<section class="section5" style="padding:0px !important;">
+<div class="fullcol">
+  That path has been simplified by frameworks and tools that two of OpenAI’s teams have developed to handle interaction with Kubernetes. "You can just write some Python code, fill out a bit of configuration with exactly how many machines you need and which types, and then it will prepare all of those specifications and send it to the Kube cluster so that it gets launched there," says Berner. "And it also provides a bit of extra monitoring and better tooling that’s designed specifically for these machine learning projects."<br><br>
+  The impact that Kubernetes has had at OpenAI is impressive. With Kubernetes, the frameworks and tooling, including the autoscaler, in place, launching experiments takes far less time. "One of our researchers who is working on a new distributed training system has been able to get his experiment running in two or three days," says Berner. "In a week or two he scaled it out to hundreds of GPUs. Previously, that would have easily been a couple of months of work."  <br><br>
+  Plus, the flexibility they now have to use their on-prem Kubernetes cluster when appropriate is "lowering costs and providing us access to hardware that we wouldn’t necessarily have access to in the cloud," he says. "As long as the utilization is high, the costs are much lower in our data center. To an extent, you can also customize your hardware to exactly what you need."
+
+
+</div>
+
+<div class="banner5">
+  <div class="banner5text">
+    "Research teams can now take advantage of the frameworks we’ve built on top of Kubernetes, which make it easy to launch experiments, scale them by 10x or 50x, and take little effort to manage." <br><span style="font-size:14px;letter-spacing:0.12em;padding-top:20px">— CHRISTOPHER BERNER, HEAD OF INFRASTRUCTURE FOR OPENAI</span>
+  </div>
+</div>
+
+<div class="fullcol">
+
+  OpenAI is also benefiting from other technologies in the CNCF cloud-native ecosystem. <a href="https://grpc.io/">gRPC</a> is used by many of its systems for communications between different services, and <a href="https://prometheus.io/">Prometheus</a> is in place "as a debugging tool if things go wrong," says Berner. "We actually haven’t had any real problems in our Kubernetes clusters recently, so I don’t think anyone has looked at our Prometheus monitoring in a while. If something breaks, it will be there."<br><br>
+  One of the things Berner continues to focus on is Kubernetes’ ability to scale, which is essential to deep learning experiments. OpenAI has been able to push one of its Kubernetes clusters on Azure up to more than <a href="https://blog.openai.com/scaling-kubernetes-to-2500-nodes/">2,500 nodes</a>. "I think we’ll probably hit the 5,000-machine number that Kubernetes has been tested at before too long," says Berner, adding, "We’re definitely <a href="https://jobs.lever.co/openai/f163bf64-278e-417b-ad2e-5e508a29eb71">hiring</a> if you’re excited about working on these things!"
+</div>
+
+</section>
+
+
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

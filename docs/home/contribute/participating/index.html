@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Participating in SIG-DOCS - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="Participating in SIG-DOCS" />
+<meta property="og:description" content="Participating in SIG-DOCS" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/home/contribute/participating/" />
+<meta property="og:title" content="Participating in SIG-DOCS - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+<h1></h1>
+<h5></h5>
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/" class="YAH">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Documentation" href="/docs/home/"></a>
+
+	
+	
+		
+		
+	<div class="item" data-title="Contributing to the Kubernetes Docs">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Content Organization" href="/docs/home/contribute/content-organization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Creating a Documentation Pull Request" href="/docs/home/contribute/create-pull-request/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Custom Hugo Shortcodes" href="/docs/home/contribute/includes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Documentation Style Guide" href="/docs/home/contribute/style-guide/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Generating Reference Documentation for Kubernetes Federation API" href="/docs/home/contribute/generated-reference/federation-api/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Generating Reference Documentation for kubectl Commands" href="/docs/home/contribute/generated-reference/kubectl/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Generating Reference Documentation for the Kubernetes API" href="/docs/home/contribute/generated-reference/kubernetes-api/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Generating Reference Pages for Kubernetes Components and Tools" href="/docs/home/contribute/generated-reference/kubernetes-components/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Localizing Kubernetes Documentation" href="/docs/home/contribute/localization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Participating in SIG-DOCS" href="/docs/home/contribute/participating/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Reviewing Documentation Issues" href="/docs/home/contribute/review-issues/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using Page Templates" href="/docs/home/contribute/page-templates/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Writing a Blog Post" href="/docs/home/contribute/blog-post/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Writing a New Topic" href="/docs/home/contribute/write-new-topic/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Supported Versions of the Kubernetes Documentation" href="/docs/home/supported-doc-versions/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/home/contribute/participating.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>Participating in SIG-DOCS</h1>
+
+
+
+<p>SIG-DOCS is one of the <a href="https://github.com/kubernetes/community/blob/master/sig-list.md" target="_blank">special interest groups</a> within the Kubernetes project, focused on writing, updating, and maintaining the documentation for Kubernetes as a whole.</p>
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+<li><a href="#roles-and-responsibilities">Roles and Responsibilities</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#what-s-next">What's next</a></li>
+
+
+
+</ul>
+
+
+<p>SIG Docs welcomes content and reviews from all contributors. Anyone can open a pull request (PR), and anyone is welcome to comment on content or pull requests in progress.</p>
+
+<p>Within the Kubernetes project, you may also become a member, reviewer, or approver.
+These roles confer additional privileges and responsibilities when it comes to approving and committing changes.
+See <a href="https://github.com/kubernetes/community/blob/master/community-membership.md" target="_blank">community-membership</a> for more information on how membership works within the Kubernetes community.</p>
+
+<h2 id="roles-and-responsibilities">Roles and Responsibilities</h2>
+
+<p>The automation reads <code>/hold</code>, <code>/lgtm</code>, and <code>/approve</code> comments and sets labels on the pull request.
+When a pull request has the <code>lgtm</code> and <code>approve</code> labels without any <code>hold</code> labels, the pull request merges automatically.
+Kubernetes org members, and reviewers and approvers for SIG Docs can add comments to control the merge automation.</p>
+
+<ul>
+<li><p>Members</p>
+
+<p>Any member of the <a href="https://github.com/kubernetes" target="_blank">Kubernetes organization</a> can review a pull request, and SIG Docs team members frequently request reviews from members of other SIGs for technical accuracy.
+SIG Docs also welcomes reviews and feedback regardless of Kubernetes org membership.
+You can indicate your approval by adding a comment of <code>/lgtm</code> to a pull request.</p></li>
+
+<li><p>Reviewers</p>
+
+<p>Reviewers are individuals who review documentation pull requests.</p>
+
+<p>Automation assigns reviewers to pull requests, and contributors can request a review with a comment on the pull request: <code>/assign [@_github_handle]</code>.
+To indicate that a pull request requires no further changes, a reviewer should add comment to the pull request <code>/lgtm</code>.
+A reviewer indicates technical accuracy with a <code>/lgtm</code> comment.</p>
+
+<p>Reviewers can add a <code>/hold</code> comment to prevent the pull request from being merged.
+Another reviewer or approver can remove a hold with the comment: <code>/hold cancel</code>.</p>
+
+<p>When a reviewer is assigned a pull request to review it is not a sole responsibility, and any other reviewer may also offer their opinions on the pull request.
+If a reviewer is requested, it is generally expected that the PR will be left to that reviewer to do their editorial pass on the content.
+If a PR author or SIG Docs maintainer requests a review, refrain from merging or closing the PR until the requested reviewer completes their review.</p></li>
+
+<li><p>Approvers</p>
+
+<p>Approvers have the ability to merge a PR.</p>
+
+<p>Approvers can indicate their approval with a comment to the pull request: <code>/approve</code>.
+An approver is indicating editorial approval with the an <code>/approve</code> comment.</p>
+
+<p>Approvers can add a <code>/hold</code> comment to prevent the pull request from being merged.
+Another reviewer or approver can remove a hold with the comment: <code>/hold cancel</code>.</p>
+
+<p>Approvers may skip further reviews for small pull requests if the proposed changes appear trivial and/or well-understood.
+An approver can indicate <code>/lgtm</code> or <code>/approve</code> in a PR comment to have a pull request merged, and all pull requests require at least one approver to provide their vote in order for the PR to be merged.</p>
+
+<blockquote class="note">
+<div><strong>Note:</strong> There is a special case when an approver uses the comment: <code>/lgtm</code>. In these cases, the automation will add both <code>lgtm</code> and <code>approve</code> tags, skipping any further review.</div>
+</blockquote>
+
+<p>For PRs that require no review (typos or otherwise trivial changes), approvers can enter an <code>lgtm</code> comment, indicating no need for further review and flagging the PR with approval to merge.</p></li>
+</ul>
+
+<h3 id="teams-and-groups-within-sig-docs">Teams and groups within SIG Docs</h3>
+
+<p>You can get an overview of <a href="https://github.com/kubernetes/community/tree/master/sig-docs" target="_blank">SIG Docs from the community github repo</a>.
+The SIG Docs group defines two teams on Github:</p>
+
+<ul>
+<li><a href="https://github.com/orgs/kubernetes/teams/sig-docs-maintainers" target="_blank">@kubernetes/sig-docs-maintainers</a></li>
+<li><a href="https://github.com/orgs/kubernetes/teams/sig-docs-pr-reviews" target="_blank">@kubernetes/sig-docs-pr-reviews</a></li>
+</ul>
+
+<p>These groups maintain the <a href="https://github.com/kubernetes/website" target="_blank">Kubernetes website repository</a>, which houses the content hosted at this site.
+Both can be referenced with their <code>@name</code> in github comments to communicate with everyone in that group.</p>
+
+<p>These teams overlap, but do not exactly match, the groups used by the automation tooling.
+For assignment of issues, pull requests, and to support PR approvals, the automation uses information from the OWNERS file.</p>
+
+<p>To volunteer as a reviewer or approver, make a pull request and add your Github handle to the relevant section in the <a href="https://github.com/kubernetes/community/blob/master/contributors/guide/owners.md" target="_blank">OWNERS file</a>.</p>
+
+<blockquote class="note">
+  <div><strong>Note:</strong> Reviewers and approvers must meet requirements for participation.
+For more information, see the <a href="https://github.com/kubernetes/community/blob/master/community-membership.md#membership" target="_blank">Kubernetes community</a> repository.</div>
+</blockquote>
+
+<p>Documentation for the <a href="https://github.com/kubernetes/community/blob/master/contributors/guide/owners.md" target="_blank">OWNERS</a>
+explains how to maintain OWNERS for each repository that enables it.</p>
+
+<p>The <a href="https://github.com/kubernetes/website" target="_blank">Kubernetes website repository</a> has two automation (prow) <a href="https://github.com/kubernetes/test-infra/blob/master/prow/plugins.yaml#L210" target="_blank">plugins enabled</a>:</p>
+
+<ul>
+<li>blunderbuss</li>
+<li>approve</li>
+</ul>
+
+<p>These two plugins use the <a href="https://github.com/kubernetes/website/blob/master/OWNERS" target="_blank">OWNERS</a> and <a href="https://github.com/kubernetes/website/blob/master/OWNERS_ALIASES" target="_blank">OWNERS_ALIASES</a> files in our repo for configuration.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="what-s-next">What&#39;s next</h2>
+<p>For more information about contributing to the Kubernetes documentation, see:</p>
+
+<ul>
+<li>Review the SIG Docs <a href="/docs/home/contribute/style-guide/">Style Guide</a>.</li>
+<li>Learn how to <a href="/docs/home/contribute/stage-documentation-changes/">stage your documentation changes</a>.</li>
+<li>Learn about <a href="/docs/home/contribute/write-new-topic/">writing a new topic</a>.</li>
+<li>Learn about <a href="/docs/home/contribute/page-templates/">using page templates</a>.</li>
+<li>Learn about <a href="/docs/home/contribute/stage-documentation-changes/">staging your changes</a>.</li>
+<li>Learn about <a href="/docs/home/contribute/create-pull-request/">creating a pull request</a>.</li>
+<li>How to generate documentation:
+
+<ul>
+<li>Learn how to <a href="/docs/home/contribute/generated-reference/federation-api/">generate Reference Documentation for Kubernetes Federation API</a></li>
+<li>Learn how to <a href="/docs/home/contribute/generated-reference/kubectl/">generate Reference Documentation for kubectl Commands</a></li>
+<li>Learn how to <a href="/docs/home/contribute/generated-reference/kubernetes-api/">generate Reference Documentation for the Kubernetes API</a></li>
+<li>Learn how to <a href="/docs/home/contribute/generated-reference/kubernetes-components/">generate Reference Pages for Kubernetes Components and Tools</a></li>
+</ul></li>
+</ul>
+
+
+
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/home/contribute/participating.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/home\/contribute\/participating\/",
+					"title" : "Participating in SIG-DOCS",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/home\/contribute\/participating\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/home/contribute/participating.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

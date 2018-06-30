@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Foundational - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style_user_journeys.css">
+
+
+<meta name="description" content="Foundational" />
+<meta property="og:description" content="Foundational" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/user-journeys/users/cluster-operator/foundational/" />
+<meta property="og:title" content="Foundational - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+<script src="https://use.fontawesome.com/4bcc658a89.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			<div id="docsToc" style="display:none;"></div>
+			<div id="content">
+				
+	
+	  <h1>Foundational</h1>
+	
+	
+
+<!-- Foundational
+Nodes, Pods, Networks, Deployments, Services, ConfigMaps, Secrets
+Labels, Selectors, Annotations
+Metrics
+-->
+
+
+
+	
+	<div class="track">USERS › CLUSTER OPERATOR › FOUNDATIONAL</div>
+<div class="topheader">
+   Introduction
+</div>
+<div class="sections">sections in this doc</div>
+<div id="user-journeys-toc" class="tablebar">
+
+</div>
+
+<div class="docsection1">
+
+<p>If you want to learn how to get started managing and operating a Kubernetes cluster, this page and the linked topics introduce you to the foundational concepts and tasks.
+This page introduces you to a Kubernetes cluster and key concepts to understand and manage it. The content focuses primarily on the cluster itself rather than the software running within the cluster.</p>
+
+</div><h2 id="get-an-overview-of-kubernetes">Get an overview of Kubernetes</h2><div class="docsection1">
+
+<p>If you have not already done so, start your understanding by reading through <a href="/docs/concepts/overview/what-is-kubernetes/">What is Kubernetes?</a>, which introduces a number of basic concepts and terms.</p>
+
+<p>Kubernetes is quite flexible, and a cluster can be run in a wide variety of places. You can interact with Kubernetes entirely on your own laptop or local development machine with it running within a virtual machine. Kubernetes can also run on virtual machines hosted either locally or in a cloud provider, and you can run a Kubernetes cluster on bare metal.</p>
+
+<p>A cluster is made up of one or more <a href="/docs/concepts/architecture/nodes/">Nodes</a>; where a node is a physical or virtual machine.
+If there is more than one node in your cluster then the nodes are connected with a <a href="/docs/concepts/cluster-administration/networking/">cluster network</a>.
+Regardless of how many nodes, all Kubernetes clusters generally have the same components, which are described in <a href="/docs/concepts/overview/components">Kubernetes Components</a>.</p>
+
+</div><h2 id="learn-about-kubernetes-basics">Learn about Kubernetes basics</h2><div class="docsection1">
+
+<p>A good way to become familiar with how to manage and operate a Kubernetes cluster is by setting one up.
+One of the most compact ways to experiment with a cluster is <a href="/docs/tasks/tools/install-minikube/">Installing and using Minikube</a>.
+Minikube is a command line tool for setting up and running a single-node cluster within a virtual machine on your local laptop or development computer. Minikube is even available through your browser at the <a href="https://www.katacoda.com/courses/kubernetes/playground" target="_blank">Katacoda Kubernetes Playground</a>.
+Katacoda provides a browser-based connection to a single-node cluster, using minikube behind the scenes, to support a number of tutorials to explore Kubernetes. You can also leverage the web-based <a href="http://labs.play-with-k8s.com/" target="_blank">Play with Kubernetes</a> to the same ends - a temporary cluster to play with on the web.</p>
+
+<p>You interact with Kubernetes either through a dashboard, an API, or using a command-line tool (such as <code>kubectl</code>) that interacts with the Kubernetes API.
+Be familiar with <a href="/docs/concepts/configuration/organize-cluster-access-kubeconfig/">Organizing Cluster Access</a> by using configuration files.
+The Kubernetes API exposes a number of resources that provide the building blocks and abstractions that are used to run software on Kubernetes.
+Learn more about these resources at <a href="/docs/concepts/overview/working-with-objects/kubernetes-objects">Understanding Kubernetes Objects</a>.
+These resources are covered in a number of articles within the Kubernetes documentation.</p>
+
+<ul>
+<li><a href="/docs/concepts/workloads/pods/pod-overview/">Pod Overview</a>
+
+<ul>
+<li><a href="/docs/concepts/workloads/pods/pod/">Pods</a></li>
+<li><a href="/docs/concepts/workloads/controllers/replicaset/">ReplicaSets</a></li>
+<li><a href="/docs/concepts/workloads/controllers/deployment/">Deployments</a></li>
+<li><a href="/docs/concepts/workloads/controllers/garbage-collection/">Garbage Collection</a></li>
+<li><a href="/docs/concepts/containers/images/">Container Images</a></li>
+<li><a href="/docs/concepts/containers/container-environment-variables/">Container Environment Variables</a></li>
+</ul></li>
+<li><a href="/docs/concepts/overview/working-with-objects/labels/">Labels and Selectors</a></li>
+<li><a href="/docs/concepts/overview/working-with-objects/namespaces/">Namespaces</a>
+
+<ul>
+<li><a href="/docs/tasks/administer-cluster/namespaces-walkthrough/">Namespaces Walkthrough</a></li>
+</ul></li>
+<li><a href="/docs/concepts/services-networking/service/">Services</a></li>
+<li><a href="/docs/concepts/overview/working-with-objects/annotations/">Annotations</a></li>
+<li><a href="/docs/tasks/configure-pod-container/configure-pod-configmap/">ConfigMaps</a></li>
+<li><a href="/docs/concepts/configuration/secret/">Secrets</a></li>
+</ul>
+
+<p>As a cluster operator you may not need to use all these resources, although you should be familiar with them to understand how the cluster is being used.
+There are a number of additional resources that you should be aware of, some listed under <a href="/docs/user-journeys/users/cluster-operator/intermediate#section-1">Intermediate Resources</a>.
+You should also be familiar with <a href="/docs/concepts/cluster-administration/manage-deployment/">how to manage kubernetes resources</a>.</p>
+
+</div><h2 id="get-information-about-your-cluster">Get information about your cluster</h2><div class="docsection1">
+
+<p>You can <a href="/docs/tasks/administer-cluster/access-cluster-api/">access clusters using the Kubernetes API</a>.
+If you are not already familiar with how to do this, you can review the <a href="/docs/tutorials/kubernetes-basics/explore-intro/">introductory tutorial</a>.
+Using <code>kubectl</code>, you can retrieve information about your Kubernetes cluster very quickly.
+To get basic information about the nodes in your cluster run the command <code>kubectl get nodes</code>.
+You can get more detailed information for the same nodes with the command <code>kubectl describe nodes</code>.
+You can see the status of the core of kubernetes with the command <code>kubectl get componentstatuses</code>.</p>
+
+<p>Some additional resources for getting information about your cluster and how it is operating include:</p>
+
+<ul>
+<li><a href="/docs/tasks/debug-application-cluster/resource-usage-monitoring/">Tools for Monitoring Compute, Storage, and Network Resources</a></li>
+<li><a href="/docs/tasks/debug-application-cluster/core-metrics-pipeline/">Core metrics pipeline</a>
+
+<ul>
+<li><a href="/docs/concepts/cluster-administration/controller-metrics/">Metrics</a></li>
+</ul></li>
+</ul>
+
+</div><h2 id="explore-additional-resources">Explore additional resources</h2><div class="docsection1">
+
+<h3 id="tutorials">Tutorials</h3>
+
+<ul>
+<li><a href="/docs/tutorials/kubernetes-basics/">Kubernetes Basics</a></li>
+<li><a href="/docs/user-guide/walkthrough/">Kubernetes 101</a> - kubectl command line interface and Pods</li>
+<li><a href="/docs/user-guide/walkthrough/k8s201/">Kubernetes 201</a> - labels, deployments, services, and health checking</li>
+<li><a href="/docs/tutorials/configuration/configure-redis-using-configmap/">Configuring Redis with a ConfigMap</a></li>
+<li>Stateless Applications
+
+<ul>
+<li><a href="/docs/tutorials/stateless-application/guestbook/">Deploying PHP Guestbook with Redis</a></li>
+<li><a href="/docs/tutorials/stateless-application/expose-external-ip-address/">Expose an External IP address to access an application</a></li>
+</ul></li>
+</ul>
+</div>
+
+<script src="/js/user-journeys/toc.js"></script>
+
+	
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/user-journeys/users/cluster-operator/foundational.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/user-journeys\/users\/cluster-operator\/foundational\/",
+					"title" : "Foundational",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/user-journeys\/users\/cluster-operator\/foundational\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/user-journeys/users/cluster-operator/foundational.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

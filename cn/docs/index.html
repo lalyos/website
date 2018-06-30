@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Home - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="Home" />
+<meta property="og:description" content="Home" />
+
+<meta property="og:url" content="https://kubernetes.io/cn/docs/" />
+<meta property="og:title" content="Home - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+             <li>
+                <a href="#">
+                    Chinese <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/">English</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+        
+        <a class="item" data-title="Home" href="/cn/docs/"></a>
+
+	
+	
+		
+		
+<a class="item" data-title="" href="/cn/docs/concepts/architecture/cloud-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="" href="/cn/docs/concepts/overview/kubernetes-api/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Admins">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Kubelet authentication/authorization" href="/cn/docs/admin/kubelet-authentication-authorization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes API访问控制" href="/cn/docs/admin/accessing-the-api/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes OpenVSwitch GRE/VxLAN 网络" href="/cn/docs/admin/ovs-networking/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="TLS bootstrapping" href="/cn/docs/admin/kubelet-tls-bootstrapping/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kube-apiserver" href="/cn/docs/admin/kube-apiserver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用启动引导令牌（Bootstrap Tokens）认证" href="/cn/docs/admin/bootstrap-tokens/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="创建大规模集群" href="/cn/docs/admin/cluster-large/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="多区域运行" href="/cn/docs/admin/multiple-zones/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="构建高可用集群">
+		<div class="container">
+		
+		
+		<a class="item" data-title="构建高可用集群" href="/cn/docs/admin/high-availability/"></a>
+		
+		
+	
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="概述">
+		<div class="container">
+		
+		
+		<a class="item" data-title="概述" href="/cn/docs/admin/authorization/"></a>
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="ABAC 模式" href="/cn/docs/admin/authorization/abac/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Webhook Mode" href="/cn/docs/admin/authorization/webhook/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="管理Service Accounts" href="/cn/docs/admin/service-accounts-admin/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="节点设置校验" href="/cn/docs/admin/node-conformance/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Cron Job" href="/cn/docs/concepts/workloads/controllers/cron-jobs/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="DNS Pod 与 Service" href="/cn/docs/concepts/services-networking/dns-pod-service/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="DaemonSet" href="/cn/docs/concepts/workloads/controllers/daemonset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Deployments" href="/cn/docs/concepts/workloads/controllers/deployment/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Docker 用户使用 kubectl 命令指南" href="/cn/docs/user-guide/docker-cli-to-kubectl/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Init 容器" href="/cn/docs/concepts/workloads/pods/init-containers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="JSONPath 支持" href="/cn/docs/user-guide/jsonpath/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes 中的代理" href="/cn/docs/concepts/cluster-administration/proxies/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes 组件" href="/cn/docs/concepts/overview/components/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes集群中使用Sysctls" href="/cn/docs/concepts/cluster-administration/sysctl-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Managing Compute Resources for Containers" href="/cn/docs/concepts/configuration/manage-compute-resources-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Master 节点通信" href="/cn/docs/concepts/architecture/master-node-communication/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Nodes" href="/cn/docs/concepts/architecture/nodes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pod Preset" href="/cn/docs/concepts/workloads/pods/podpreset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pod 安全策略" href="/cn/docs/concepts/policy/pod-security-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pod 的生命周期" href="/cn/docs/concepts/workloads/pods/pod-lifecycle/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Secret" href="/cn/docs/concepts/configuration/secret/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Service" href="/cn/docs/concepts/services-networking/service/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Tutorials">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Kubernetes 对象管理" href="/cn/docs/tutorials/object-management-kubectl/object-management/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="StatefulSet基本使用" href="/cn/docs/tutorials/stateful-application/basic-stateful-set/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Try Our Interactive Tutorials">
+		<div class="container">
+		
+		
+		<a class="item" data-title="Try Our Interactive Tutorials" href="/cn/docs/tutorials/kubernetes-basics/"></a>
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="互动教程 - 创建集群" href="/cn/docs/tutorials/kubernetes-basics/cluster-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 应用外部可见" href="/cn/docs/tutorials/kubernetes-basics/expose-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 应用程序探索" href="/cn/docs/tutorials/kubernetes-basics/explore-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 扩展您的应用程序" href="/cn/docs/tutorials/kubernetes-basics/scale-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 更新您的应用程序" href="/cn/docs/tutorials/kubernetes-basics/update-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 部署应用程序" href="/cn/docs/tutorials/kubernetes-basics/deploy-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Minikube 创建一个集群" href="/cn/docs/tutorials/kubernetes-basics/cluster-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 kubectl 创建部署" href="/cn/docs/tutorials/kubernetes-basics/deploy-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用服务发布您的应用程序" href="/cn/docs/tutorials/kubernetes-basics/expose-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="执行滚动更新" href="/cn/docs/tutorials/kubernetes-basics/update-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="查看 Pods 和节点" href="/cn/docs/tutorials/kubernetes-basics/explore-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="运行应用程序的多个实例" href="/cn/docs/tutorials/kubernetes-basics/scale-intro/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="“示例：使用 Stateful Sets 部署 Cassandra”" href="/cn/docs/tutorials/stateful-application/cassandra/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Source IP" href="/cn/docs/tutorials/services/source-ip/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用ConfigMap来配置Redis" href="/cn/docs/tutorials/configuration/configure-redis-using-configmap/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用命令式的方式管理 Kubernetes 对象" href="/cn/docs/tutorials/object-management-kubectl/imperative-object-management-command/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="基于 Persistent Volumes 搭建 WordPress 和 MySQL 应用" href="/cn/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="运行 ZooKeeper， 一个 CP 分布式系统" href="/cn/docs/tutorials/stateful-application/zookeeper/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="kubectl概述" href="/cn/docs/user-guide/kubectl-overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="为容器设置启动时要执行的命令及其入参" href="/cn/docs/tasks/inject-data-application/define-command-argument-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="为容器设置环境变量" href="/cn/docs/tasks/inject-data-application/define-environment-variable-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="云供应商" href="/cn/docs/concepts/cluster-administration/cloud-providers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Calico 来提供 NetworkPolicy" href="/cn/docs/tasks/administer-cluster/calico-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 HostAliases 向 Pod /etc/hosts 文件添加条目" href="/cn/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 PodPreset 将信息注入 Pods" href="/cn/docs/tasks/inject-data-application/podpreset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Romana 来提供 NetworkPolicy" href="/cn/docs/tasks/administer-cluster/romana-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Secret 安全地分发凭证" href="/cn/docs/tasks/inject-data-application/distribute-credentials-secure/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Service 把前端连接到后端" href="/cn/docs/tasks/access-application-cluster/connecting-frontend-backend/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Weave 网络来提供 NetworkPolicy" href="/cn/docs/tasks/administer-cluster/weave-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用Deployment运行一个无状态应用" href="/cn/docs/tasks/run-application/run-stateless-application-deployment/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="关键插件 Pod 的调度保证" href="/cn/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="同 Pod 内的容器使用共享卷通信" href="/cn/docs/tasks/access-application-cluster/communicate-containers-same-pod-shared-volume/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="在 Kubernetes 中配置私有 DNS 和上游域名服务器" href="/cn/docs/tasks/administer-cluster/dns-custom-nameservers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="垃圾收集" href="/cn/docs/concepts/workloads/controllers/garbage-collection/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="基于Replication Controller执行滚动升级" href="/cn/docs/tasks/run-application/rolling-update-replication-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="声明网络策略" href="/cn/docs/tasks/administer-cluster/declare-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="安装扩展（Addons）" href="/cn/docs/concepts/cluster-administration/addons/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="容器环境变量" href="/cn/docs/concepts/containers/container-environment-variables/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="对 DaemonSet 执行回滚" href="/cn/docs/tasks/manage-daemon/rollback-daemon-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="应用故障排查" href="/cn/docs/tasks/debug-application-cluster/debug-application/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="应用资源配额和限额" href="/cn/docs/tasks/administer-cluster/apply-resource-quota-limit/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="应用连接到 Service" href="/cn/docs/concepts/services-networking/connect-applications-service/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="弹缩StatefulSet" href="/cn/docs/tasks/run-application/scale-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="控制节点上的CPU管理策略" href="/cn/docs/tasks/administer-cluster/cpu-management-policies/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="改变默认 StorageClass" href="/cn/docs/tasks/administer-cluster/change-default-storage-class/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="更改 PersistentVolume 的回收策略" href="/cn/docs/tasks/administer-cluster/change-pv-reclaim-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="概念模板示例" href="/cn/docs/concepts/example-concept-template/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="理解 Kubernetes 对象" href="/cn/docs/concepts/overview/working-with-objects/kubernetes-objects/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="知名标签（Label）、注解（Annotation）和 Taints" href="/cn/docs/reference/labels-annotations-taints/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="管理巨页（HugePages）" href="/cn/docs/tasks/manage-hugepages/scheduling-hugepages/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="给容器分配非透明整型资源" href="/cn/docs/tasks/configure-pod-container/opaque-integer-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="网络策略" href="/cn/docs/concepts/services-networking/network-policies/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="联邦" href="/cn/docs/concepts/cluster-administration/federation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="认识 Kubernetes?" href="/cn/docs/concepts/overview/what-is-kubernetes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="认识 Kubernetes?" href="/cn/docs/whatisk8s/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="设备插件" href="/cn/docs/concepts/cluster-administration/device-plugins/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="设置 Pod CPU 和内存限制" href="/cn/docs/tasks/administer-cluster/cpu-memory-limit/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="访问集群上运行的服务" href="/cn/docs/tasks/administer-cluster/access-cluster-services/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="证书" href="/cn/docs/concepts/cluster-administration/certificates/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="证书轮换" href="/cn/docs/tasks/tls/certificate-rotation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="调度 GPU" href="/cn/docs/tasks/manage-gpus/scheduling-gpus/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="调试Pods和Replication Controllers" href="/cn/docs/tasks/debug-application-cluster/debug-pod-replication-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="调试StatefulSet" href="/cn/docs/tasks/debug-application-cluster/debug-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="资源配额" href="/cn/docs/concepts/policy/resource-quotas/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="运行一个单实例有状态应用" href="/cn/docs/tasks/run-application/run-single-instance-stateful-application/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="通过文件将Pod信息呈现给容器" href="/cn/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="通过环境变量将Pod信息呈现给容器" href="/cn/docs/tasks/inject-data-application/environment-variable-expose-pod-information/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="通过配置文件设置 Kubelet 参数" href="/cn/docs/tasks/administer-cluster/kubelet-config-file/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="配置你的云平台防火墙" href="/cn/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="配置命名空间下pod总数" href="/cn/docs/tasks/administer-cluster/quota-pod-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="配置对多集群的访问" href="/cn/docs/tasks/access-application-cluster/configure-access-multiple-clusters/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="镜像" href="/cn/docs/concepts/containers/images/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="集群故障排查" href="/cn/docs/tasks/debug-application-cluster/debug-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="集群管理" href="/cn/docs/tasks/administer-cluster/cluster-management/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="集群管理概述" href="/cn/docs/concepts/cluster-administration/cluster-administration-overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="静态Pods" href="/cn/docs/tasks/administer-cluster/static-pod/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+	 
+    
+    
+    <p><a href="/docs/editdocs#docs/concepts/architecture/cloud-controller.md" id="editPageButton">Edit This Page</a></p>
+
+<h1></h1>
+
+
+
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#云控制器管理器">云控制器管理器</a></li>
+<li><a href="#设计">设计</a></li>
+<li><a href="#ccm的组件">CCM的组件</a></li>
+<li><a href="#ccm功能">CCM功能</a>
+<ul>
+<li><a href="#1-kubernetes-控制器管理器">1. Kubernetes 控制器管理器</a>
+<ul>
+<li><a href="#节点控制器">节点控制器</a></li>
+<li><a href="#路由控制器">路由控制器</a></li>
+<li><a href="#服务控制器">服务控制器</a></li>
+<li><a href="#persistentvolumelabels-控制器">PersistentVolumeLabels 控制器</a></li>
+</ul></li>
+<li><a href="#2-kubelet">2. Kubelet</a></li>
+<li><a href="#3-kubernetes-api服务器">3. Kubernetes API服务器</a></li>
+</ul></li>
+<li><a href="#插件机制">插件机制</a></li>
+<li><a href="#授权">授权</a>
+<ul>
+<li><a href="#节点控制器-1">节点控制器</a></li>
+<li><a href="#路由控制器-1">路由控制器</a></li>
+<li><a href="#服务控制器-1">服务控制器</a></li>
+<li><a href="#persistentvolumelabels-控制器-1">PersistentVolumeLabels 控制器</a></li>
+<li><a href="#其它">其它</a></li>
+</ul></li>
+<li><a href="#供应商实施">供应商实施</a></li>
+<li><a href="#群集管理">群集管理</a></li>
+</ul></li>
+</ul>
+</nav>
+
+
+
+<p>title: 云控制器管理器的基本概念</p>
+
+<h2 id="云控制器管理器">云控制器管理器</h2>
+
+<p>云控制器管理器（CCM）这个概念创建的初衷是为了让特定的云服务供应商代码和Kubernetes核心相互独立演化。云控制器管理器与其他主要组件如Kubernetes控制器管理器，API服务器和调度程序同时运行。云控制器管理器也可以作为Kubernetes的插件启动，这种情况下，CCM运行在Kubernetes系统之上。</p>
+
+<p>云控制器管理器基于插件机制设计，允许新的云服务供应商通过插件轻松地与Kubernetes集成。目前已经有在Kubernetes上加入新的云服务供应商计划，并为云服务供应商提供从原先的旧模式迁移到新CCM模式的方案。</p>
+
+<p>本文讨论了云控制器管理器背后的概念，并提供了相关功能的详细信息。</p>
+
+<p>下面这张图描述了没有云控制器管理器的Kubernetes集群架构：</p>
+
+<p><img src="/images/docs/pre-ccm-arch.png" alt="无云控制器管理器的 K8s 集群架构" /></p>
+
+<h2 id="设计">设计</h2>
+
+<p>在上图中，Kubernetes和云服务供应商通过几个不同的组件进行了集成，分别是：</p>
+
+<ul>
+<li>Kubelet</li>
+<li>Kubernetes 控制管理器</li>
+<li>Kubernetes API服务器</li>
+</ul>
+
+<p>而CCM整合了前三个组件中的所有依赖于云的逻辑，用来创建与云的单点集成。新架构如下图所示：</p>
+
+<p><img src="/images/docs/post-ccm-arch.png" alt="有云控制器管理器的 K8s 集群架构" /></p>
+
+<h2 id="ccm的组件">CCM的组件</h2>
+
+<p>CCM突破了Kubernetes控制器管理器（KCM）的一些功能，并将其作为一个独立的进程运行。具体而言，它打破了KCM中与云相关的控制器。KCM具有以下依赖于云的控制器引擎：</p>
+
+<ul>
+<li>节点控制器</li>
+<li>卷控制器</li>
+<li>路由控制器</li>
+<li>服务控制器</li>
+</ul>
+
+<p>在1.8版本中，当前运行中的CCM从上面的列表中运行以下控制器：</p>
+
+<ul>
+<li>节点控制器</li>
+<li>路由控制器</li>
+<li>服务控制器</li>
+</ul>
+
+<p>另外，它运行另一个名为 PersistentVolumeLabels Controller 的控制器。这个控制器负责对在GCP和AWS云里创建的PersistentVolumes的域（Zone）和区（Region）标签进行设置。</p>
+
+<p><strong>注意</strong>：卷控制器被特意设计为CCM之外的一部分。由于其中涉及到的复杂性和对现有供应商特定卷的逻辑抽象，因此决定了卷控制器不会被移动到CCM之中。</p>
+
+<p>原本计划使用CCM来支持卷的目的是为了引入FlexVolume卷来支持可插拔卷。然而，官方正在计划使用更具备竞争力的CSI来取代FlexVolume卷。</p>
+
+<p>考虑到这些正在进行中的变化，我们决定暂时停止当前工作直至CSI准备就绪。</p>
+
+<p>云服务供应商工作组（wg-cloud-provider）正在开展相关工作，以实现通过CCM支持PersistentVolume的功能。详细信息请参见<a href="https://github.com/kubernetes/kubernetes/pull/52371" target="_blank">kubernetes/kubernetes＃52371</a>。</p>
+
+<h2 id="ccm功能">CCM功能</h2>
+
+<p>CCM从Kubernetes组件中继承了与云服务供应商相关的功能。本节基于被CCM继承其功能的组件展开描述。</p>
+
+<h3 id="1-kubernetes-控制器管理器">1. Kubernetes 控制器管理器</h3>
+
+<p>CCM的大部分功能都来自KCM。 如上一节所述，CCM运行以下控制引擎：</p>
+
+<ul>
+<li>节点控制器</li>
+<li>路由控制器</li>
+<li>服务控制器</li>
+<li>PersistentVolumeLabels控制器</li>
+</ul>
+
+<h4 id="节点控制器">节点控制器</h4>
+
+<p>节点控制器负责通过从云服务供应商获得有关在集群中运行的节点的信息来初始化节点。节点控制器执行以下功能：</p>
+
+<p>1.使用云特定域（Zone）/区（Region）标签初始化节点。</p>
+
+<p>1.使用特定于云的实例详细信息初始化节点，例如类型和大小。</p>
+
+<p>1.获取节点的网络地址和主机名。</p>
+
+<p>1.如果节点无响应，检查该节点是否已从云中删除。如果该节点已从云中删除，则删除Kubernetes节点对象。</p>
+
+<h4 id="路由控制器">路由控制器</h4>
+
+<p>路由控制器负责为云配置正确的路由，以便Kubernetes集群中不同节点上的容器可以相互通信。路由控制器仅适用于Google Compute Engine平台。</p>
+
+<h4 id="服务控制器">服务控制器</h4>
+
+<p>服务控制器负责监听服务的创建、更新和删除事件。根据Kubernetes中各个服务的当前状态，它将配置云负载平衡器（如ELB或Google LB）以反映Kubernetes中的服务状态。此外，它还确保云负载均衡器的服务后端保持最新。</p>
+
+<h4 id="persistentvolumelabels-控制器">PersistentVolumeLabels 控制器</h4>
+
+<p>PersistentVolumeLabels控制器在AWS的EBS卷、GCE的PD卷创建时申请标签，这使得用户不再需要手动设置这些卷标签。</p>
+
+<p>这些标签对于pod的调度工作是非常重要的，因为这些卷只能在它们所在的域（Zone）/区（Region）内工作，因此所有使用这些卷的pod都必须要在同一个域/区中才能保证进行调度正常进行。</p>
+
+<p>PersistentVolumeLabels控制器是专门为CCM创建的; 也就是说，在CCM创建之前它是不存在的。这样做是为了将Kubernetes API服务器（它是一个许可控制器）中的PV标签逻辑移动到CCM。 它不在KCM上运行。</p>
+
+<h3 id="2-kubelet">2. Kubelet</h3>
+
+<p>Node控制器包含kubelet中依赖于云的功能。在系统引入CCM组件之前，是由kubelet采用包含云特定信息的方式对节点进行初始化，如IP地址、区（Region）/域（Zone）标签和实例类型信息；引入CCM之后，这部分的初始化操作就从kubelet转移到了CCM中。</p>
+
+<p>在引入CCM后的新的模型中，kubelet采用不包含云特定信息的方式初始化一个节点。但是，它会为新创建的节点添加一个污点，使得该节点不可被立即调度，直到CCM使用包含云的特定信息初始化节点后，才会删除该污点，使得该节点可被调度。</p>
+
+<h3 id="3-kubernetes-api服务器">3. Kubernetes API服务器</h3>
+
+<p>PersistentVolumeLabels控制器将Kubernetes API服务器的依赖于云的功能移至CCM，如前面部分所述。</p>
+
+<h2 id="插件机制">插件机制</h2>
+
+<p>云控制器管理器使用Go接口与外部对接从而实现功能扩展。具体来说，它使用了<a href="https://github.com/kubernetes/kubernetes/blob/master/pkg/cloudprovider/cloud.go" target="_blank">这里</a>定义的CloudProvider接口。</p>
+
+<p>上面强调的四个共享控制器的实现，以及一些辅助设施（scaffolding）和共享的云服务供应商接口，将被保留在Kubernetes核心当中。但云服务供应商特有的实现将会建立在核心之外，并实现核心中定义的接口。</p>
+
+<p>有关开发插件的更多信息，请参阅
+<a href="/docs/tasks/administrators-cluster/developing-cloud-controller-manager/">开发云控制器管理器</a>。</p>
+
+<h2 id="授权">授权</h2>
+
+<p>本节分解了CCM对各种API对象的访问，以执行其操作。</p>
+
+<h3 id="节点控制器-1">节点控制器</h3>
+
+<p>节点控制器仅适用于节点对象。它需要完全访问权限来获取、列出、创建、更新、修补、监视和删除节点对象。</p>
+
+<p>v1/Node:
+- Get
+- List
+- Create
+- Update
+- Patch
+- Watch</p>
+
+<h3 id="路由控制器-1">路由控制器</h3>
+
+<p>路由控制器监听节点对象的创建并配置合适的路由。它需要对节点对象的访问权限。</p>
+
+<p>v1/Node:
+- Get</p>
+
+<h3 id="服务控制器-1">服务控制器</h3>
+
+<p>服务控制器侦听服务对象创建、更新和删除事件，然后对这些服务的端点进行恰当的配置。</p>
+
+<p>要访问服务，它需要罗列和监控权限。要更新服务，它需要修补和更新权限。</p>
+
+<p>要为服务设置端点，需要访问创建、列表、获取、监视和更新。</p>
+
+<p>v1/Service:
+- List
+- Get
+- Watch
+- Patch
+- Update</p>
+
+<h3 id="persistentvolumelabels-控制器-1">PersistentVolumeLabels 控制器</h3>
+
+<p>PersistentVolumeLabels控制器监听PersistentVolume（PV）创建事件并更新它们。该控制器需要访问列表、查看、获取和更新PV的权限。</p>
+
+<p>v1/PersistentVolume:
+- Get
+- List
+- Watch
+- Update</p>
+
+<h3 id="其它">其它</h3>
+
+<p>CCM核心的实现需要创建事件的权限，为了确保安全操作，需要创建ServiceAccounts的权限。</p>
+
+<p>v1/Event:
+- Create
+- Patch
+- Update</p>
+
+<p>v1/ServiceAccount:
+- Create</p>
+
+<p>针对CCM的RBAC ClusterRole如下所示：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>rbac.authorization.k8s.io/v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>ClusterRole<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>cloud-controller-manager<span style="color:#bbb">
+</span><span style="color:#bbb"></span>rules:<span style="color:#bbb">
+</span><span style="color:#bbb"></span>-<span style="color:#bbb"> </span>apiGroups:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span><span style="color:#b44">&#34;&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>resources:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>events<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>verbs:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>create<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>patch<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>update<span style="color:#bbb">
+</span><span style="color:#bbb"></span>-<span style="color:#bbb"> </span>apiGroups:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span><span style="color:#b44">&#34;&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>resources:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>nodes<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>verbs:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span><span style="color:#b44">&#39;*&#39;</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>-<span style="color:#bbb"> </span>apiGroups:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span><span style="color:#b44">&#34;&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>resources:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>nodes/status<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>verbs:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>patch<span style="color:#bbb">
+</span><span style="color:#bbb"></span>-<span style="color:#bbb"> </span>apiGroups:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span><span style="color:#b44">&#34;&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>resources:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>services<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>verbs:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>list<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>patch<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>update<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>watch<span style="color:#bbb">
+</span><span style="color:#bbb"></span>-<span style="color:#bbb"> </span>apiGroups:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span><span style="color:#b44">&#34;&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>resources:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>serviceaccounts<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>verbs:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>create<span style="color:#bbb">
+</span><span style="color:#bbb"></span>-<span style="color:#bbb"> </span>apiGroups:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span><span style="color:#b44">&#34;&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>resources:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>persistentvolumes<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>verbs:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>get<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>list<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>update<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>watch<span style="color:#bbb">
+</span><span style="color:#bbb"></span>-<span style="color:#bbb"> </span>apiGroups:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span><span style="color:#b44">&#34;&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>resources:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>endpoints<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>verbs:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>create<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>get<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>list<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>watch<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>update</code></pre></div>
+<h2 id="供应商实施">供应商实施</h2>
+
+<p>以下云服务供应商为自己的云部署了CCM。</p>
+
+<ul>
+<li>[Digital Ocean]()</li>
+<li>[Oracle]()</li>
+<li>[Azure]()</li>
+<li>[GCE]()</li>
+<li>[AWS]()</li>
+</ul>
+
+<h2 id="群集管理">群集管理</h2>
+
+<p><a href="/docs/tasks/administer-cluster/running-cloud-controller/#cloud-controller-manager">这里</a>提供了配置和运行CCM的完整说明。</p>
+
+
+    
+    
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/_index.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/cn\/docs\/",
+					"title" : "Home",
+					"permalink" : "https:\/\/kubernetes.io\/cn\/docs\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/_index.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

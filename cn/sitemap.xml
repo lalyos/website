@@ -1,0 +1,1215 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/concepts/architecture/cloud-controller/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/architecture/cloud-controller/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/architecture/cloud-controller/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/concepts/overview/kubernetes-api/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/overview/kubernetes-api/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/overview/kubernetes-api/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/admin/authorization/abac/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/admin/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/concepts/workloads/controllers/cron-jobs/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/workloads/controllers/cron-jobs/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/concepts/services-networking/dns-pod-service/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/services-networking/dns-pod-service/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/concepts/workloads/controllers/daemonset/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/workloads/controllers/daemonset/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/concepts/workloads/controllers/deployment/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/workloads/controllers/deployment/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/user-guide/docker-cli-to-kubectl/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/concepts/workloads/pods/init-containers/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/workloads/pods/init-containers/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/workloads/pods/init-containers/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/user-guide/jsonpath/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/admin/kubelet-authentication-authorization/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/admin/accessing-the-api/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/admin/ovs-networking/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/concepts/cluster-administration/proxies/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/cluster-administration/proxies/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/cluster-administration/proxies/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tutorials/object-management-kubectl/object-management/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/concepts/overview/components/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/overview/components/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/overview/components/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/concepts/cluster-administration/sysctl-cluster/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/concepts/configuration/manage-compute-resources-container/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/configuration/manage-compute-resources-container/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/concepts/architecture/master-node-communication/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/architecture/master-node-communication/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/architecture/master-node-communication/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/concepts/architecture/nodes/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/architecture/nodes/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/architecture/nodes/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/concepts/workloads/pods/podpreset/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/workloads/pods/podpreset/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/workloads/pods/podpreset/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/concepts/policy/pod-security-policy/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/policy/pod-security-policy/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/policy/pod-security-policy/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/concepts/workloads/pods/pod-lifecycle/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/workloads/pods/pod-lifecycle/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/concepts/configuration/secret/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/configuration/secret/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/configuration/secret/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/concepts/services-networking/service/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/services-networking/service/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/services-networking/service/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tutorials/stateful-application/basic-stateful-set/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tutorials/stateful-application/basic-stateful-set/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/admin/kubelet-tls-bootstrapping/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tutorials/kubernetes-basics/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tutorials/kubernetes-basics/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tutorials/kubernetes-basics/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tutorials/</loc>
+    <priority>0</priority>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tutorials/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tutorials/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/admin/authorization/webhook/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/admin/kube-apiserver/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/user-guide/kubectl-overview/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tutorials/stateful-application/cassandra/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tutorials/stateful-application/cassandra/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tutorials/stateful-application/cassandra/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tasks/inject-data-application/define-command-argument-container/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/inject-data-application/define-command-argument-container/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tasks/inject-data-application/define-environment-variable-container/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/inject-data-application/define-environment-variable-container/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/inject-data-application/define-environment-variable-container/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/concepts/cluster-administration/cloud-providers/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/cluster-administration/cloud-providers/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/cluster-administration/cloud-providers/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tutorials/kubernetes-basics/cluster-interactive/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tutorials/kubernetes-basics/expose-interactive/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tutorials/kubernetes-basics/explore-interactive/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tutorials/kubernetes-basics/scale-interactive/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tutorials/kubernetes-basics/update-interactive/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tutorials/kubernetes-basics/deploy-interactive/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tasks/administer-cluster/calico-network-policy/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tutorials/kubernetes-basics/cluster-intro/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tasks/inject-data-application/podpreset/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/inject-data-application/podpreset/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/inject-data-application/podpreset/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tasks/administer-cluster/romana-network-policy/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tasks/inject-data-application/distribute-credentials-secure/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/inject-data-application/distribute-credentials-secure/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/inject-data-application/distribute-credentials-secure/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tasks/access-application-cluster/connecting-frontend-backend/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/access-application-cluster/connecting-frontend-backend/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/access-application-cluster/connecting-frontend-backend/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tutorials/services/source-ip/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tutorials/services/source-ip/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tutorials/services/source-ip/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tasks/administer-cluster/weave-network-policy/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tutorials/kubernetes-basics/deploy-intro/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tutorials/configuration/configure-redis-using-configmap/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tutorials/configuration/configure-redis-using-configmap/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tutorials/configuration/configure-redis-using-configmap/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tasks/run-application/run-stateless-application-deployment/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/run-application/run-stateless-application-deployment/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/run-application/run-stateless-application-deployment/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/admin/bootstrap-tokens/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tutorials/object-management-kubectl/imperative-object-management-command/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tutorials/kubernetes-basics/expose-intro/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/admin/cluster-large/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tasks/access-application-cluster/communicate-containers-same-pod-shared-volume/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/access-application-cluster/communicate-containers-same-pod-shared-volume/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/access-application-cluster/communicate-containers-same-pod-shared-volume/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tasks/administer-cluster/dns-custom-nameservers/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/administer-cluster/dns-custom-nameservers/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/concepts/workloads/controllers/garbage-collection/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/workloads/controllers/garbage-collection/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/workloads/controllers/garbage-collection/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tasks/run-application/rolling-update-replication-controller/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/run-application/rolling-update-replication-controller/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/run-application/rolling-update-replication-controller/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tasks/administer-cluster/declare-network-policy/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/administer-cluster/declare-network-policy/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/administer-cluster/declare-network-policy/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/admin/multiple-zones/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/concepts/cluster-administration/addons/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/cluster-administration/addons/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/cluster-administration/addons/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/concepts/containers/container-environment-variables/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/containers/container-environment-variables/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/containers/container-environment-variables/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tasks/manage-daemon/rollback-daemon-set/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/manage-daemon/rollback-daemon-set/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/manage-daemon/rollback-daemon-set/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tasks/debug-application-cluster/debug-application/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/debug-application-cluster/debug-application/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/debug-application-cluster/debug-application/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tasks/administer-cluster/apply-resource-quota-limit/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/concepts/services-networking/connect-applications-service/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/services-networking/connect-applications-service/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/services-networking/connect-applications-service/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tasks/run-application/scale-stateful-set/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/run-application/scale-stateful-set/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/run-application/scale-stateful-set/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tutorials/kubernetes-basics/update-intro/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tasks/administer-cluster/cpu-management-policies/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/administer-cluster/cpu-management-policies/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tasks/administer-cluster/change-default-storage-class/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/administer-cluster/change-default-storage-class/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/administer-cluster/change-default-storage-class/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tasks/administer-cluster/change-pv-reclaim-policy/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/administer-cluster/change-pv-reclaim-policy/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/administer-cluster/change-pv-reclaim-policy/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/admin/high-availability/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tutorials/kubernetes-basics/explore-intro/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/concepts/example-concept-template/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/example-concept-template/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/example-concept-template/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/admin/authorization/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/concepts/overview/working-with-objects/kubernetes-objects/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/overview/working-with-objects/kubernetes-objects/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/overview/working-with-objects/kubernetes-objects/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/reference/labels-annotations-taints/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/admin/service-accounts-admin/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tasks/manage-hugepages/scheduling-hugepages/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/manage-hugepages/scheduling-hugepages/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/manage-hugepages/scheduling-hugepages/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tasks/configure-pod-container/opaque-integer-resource/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/concepts/services-networking/network-policies/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/services-networking/network-policies/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/services-networking/network-policies/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/concepts/cluster-administration/federation/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/cluster-administration/federation/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/cluster-administration/federation/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/admin/node-conformance/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/concepts/overview/what-is-kubernetes/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/overview/what-is-kubernetes/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/overview/what-is-kubernetes/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/whatisk8s/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/concepts/cluster-administration/device-plugins/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tasks/administer-cluster/cpu-memory-limit/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tasks/administer-cluster/access-cluster-services/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/administer-cluster/access-cluster-services/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/administer-cluster/access-cluster-services/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/concepts/cluster-administration/certificates/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/cluster-administration/certificates/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/cluster-administration/certificates/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tasks/tls/certificate-rotation/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/tls/certificate-rotation/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/tls/certificate-rotation/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tasks/manage-gpus/scheduling-gpus/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/manage-gpus/scheduling-gpus/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/manage-gpus/scheduling-gpus/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tasks/debug-application-cluster/debug-pod-replication-controller/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/debug-application-cluster/debug-pod-replication-controller/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/debug-application-cluster/debug-pod-replication-controller/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tasks/debug-application-cluster/debug-stateful-set/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/debug-application-cluster/debug-stateful-set/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/debug-application-cluster/debug-stateful-set/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/concepts/policy/resource-quotas/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/policy/resource-quotas/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/policy/resource-quotas/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tutorials/stateful-application/zookeeper/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tutorials/stateful-application/zookeeper/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tutorials/stateful-application/zookeeper/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tasks/run-application/run-single-instance-stateful-application/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/run-application/run-single-instance-stateful-application/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/run-application/run-single-instance-stateful-application/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tutorials/kubernetes-basics/scale-intro/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tasks/inject-data-application/environment-variable-expose-pod-information/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/inject-data-application/environment-variable-expose-pod-information/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/inject-data-application/environment-variable-expose-pod-information/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tasks/administer-cluster/kubelet-config-file/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/administer-cluster/kubelet-config-file/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tasks/administer-cluster/quota-pod-namespace/</loc>
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tasks/access-application-cluster/configure-access-multiple-clusters/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/access-application-cluster/configure-access-multiple-clusters/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/concepts/containers/images/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/containers/images/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/containers/images/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tasks/debug-application-cluster/debug-cluster/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/debug-application-cluster/debug-cluster/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/debug-application-cluster/debug-cluster/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tasks/administer-cluster/cluster-management/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/administer-cluster/cluster-management/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/administer-cluster/cluster-management/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/concepts/cluster-administration/cluster-administration-overview/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/concepts/cluster-administration/cluster-administration-overview/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/concepts/cluster-administration/cluster-administration-overview/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://kubernetes.io/cn/docs/tasks/administer-cluster/static-pod/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://kubernetes.io/docs/tasks/administer-cluster/static-pod/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://kubernetes.io/cn/docs/tasks/administer-cluster/static-pod/"
+                />
+  </url>
+  
+</urlset>

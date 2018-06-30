@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Cloudstack - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="Cloudstack" />
+<meta property="og:description" content="Cloudstack" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/setup/on-premises-vm/cloudstack/" />
+<meta property="og:title" content="Cloudstack - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+<h1>Setup</h1>
+<h5></h5>
+
+
+
+
+
+
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/" class="YAH">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Setup" href="/docs/setup/"></a>
+
+	
+	
+		
+		
+	<div class="item" data-title="Bootstrapping Clusters with kubeadm">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Customizing control plane configuration with kubeadm" href="/docs/setup/independent/control-plane-flags/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Creating Highly Available Clusters with kubeadm" href="/docs/setup/independent/high-availability/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Creating a single master cluster with kubeadm" href="/docs/setup/independent/create-cluster-kubeadm/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Troubleshooting kubeadm" href="/docs/setup/independent/troubleshooting-kubeadm/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Building Large Clusters" href="/docs/setup/cluster-large/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Building from Source" href="/docs/setup/building-from-source/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configuring Kubernetes with Salt" href="/docs/setup/salt/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Creating a Custom Cluster from Scratch" href="/docs/setup/scratch/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Custom Cloud Solutions">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="CoreOS on AWS or GCE" href="/docs/setup/custom-cloud/coreos/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Installing Kubernetes On-premises/Cloud Providers with Kubespray" href="/docs/setup/custom-cloud/kubespray/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Installing Kubernetes on AWS with kops" href="/docs/setup/custom-cloud/kops/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="On-Premises VMs">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Cloudstack" href="/docs/setup/on-premises-vm/cloudstack/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes on DCOS" href="/docs/setup/on-premises-vm/dcos/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="oVirt" href="/docs/setup/on-premises-vm/ovirt/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Picking the Right Solution" href="/docs/setup/pick-right-solution/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Running Kubernetes Locally via Minikube" href="/docs/setup/minikube/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Running in Multiple Zones" href="/docs/setup/multiple-zones/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Turnkey Cloud Solutions">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Running Kubernetes on AWS EC2" href="/docs/setup/turnkey/aws/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Running Kubernetes on Alibaba Cloud" href="/docs/setup/turnkey/alibaba-cloud/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Running Kubernetes on Azure" href="/docs/setup/turnkey/azure/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Running Kubernetes on CenturyLink Cloud" href="/docs/setup/turnkey/clc/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Running Kubernetes on Google Compute Engine" href="/docs/setup/turnkey/gce/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Running Kubernetes on Multiple Clouds with Stackpoint.io" href="/docs/setup/turnkey/stackpoint/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Validate Node Setup" href="/docs/setup/node-conformance/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/setup/on-premises-vm/cloudstack.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>Cloudstack</h1>
+
+
+
+
+
+<p><a href="https://cloudstack.apache.org/" target="_blank">CloudStack</a> is a software to build public and private clouds based on hardware virtualization principles (traditional IaaS). To deploy Kubernetes on CloudStack there are several possibilities depending on the Cloud being used and what images are made available. CloudStack also has a vagrant plugin available, hence Vagrant could be used to deploy Kubernetes either using the existing shell provisioner or using new Salt based recipes.</p>
+
+<p><a href="http://coreos.com" target="_blank">CoreOS</a> templates for CloudStack are built <a href="http://stable.release.core-os.net/amd64-usr/current/" target="_blank">nightly</a>. CloudStack operators need to <a href="http://docs.cloudstack.apache.org/projects/cloudstack-administration/en/latest/templates.html" target="_blank">register</a> this template in their cloud before proceeding with these Kubernetes deployment instructions.</p>
+
+<p>This guide uses a single <a href="https://github.com/apachecloudstack/k8s" target="_blank">Ansible playbook</a>, which is completely automated and can deploy Kubernetes on a CloudStack based Cloud using CoreOS images. The playbook, creates an ssh key pair, creates a security group and associated rules and finally starts coreOS instances configured via cloud-init.</p>
+
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#prerequisites">Prerequisites</a>
+<ul>
+<li><a href="#clone-the-playbook">Clone the playbook</a></li>
+<li><a href="#create-a-kubernetes-cluster">Create a Kubernetes cluster</a></li>
+</ul></li>
+<li><a href="#support-level">Support Level</a></li>
+</ul></li>
+</ul>
+</nav>
+
+<h2 id="prerequisites">Prerequisites</h2>
+
+<pre><code>$ sudo apt-get install -y python-pip libssl-dev
+$ sudo pip install cs
+$ sudo pip install sshpubkeys
+$ sudo apt-get install software-properties-common
+$ sudo apt-add-repository ppa:ansible/ansible
+$ sudo apt-get update
+$ sudo apt-get install ansible
+</code></pre>
+
+<p>On CloudStack server you also have to install libselinux-python :</p>
+
+<pre><code>yum install libselinux-python
+</code></pre>
+
+<p><a href="https://github.com/exoscale/cs" target="_blank"><em>cs</em></a> is a python module for the CloudStack API.</p>
+
+<p>Set your CloudStack endpoint, API keys and HTTP method used.</p>
+
+<p>You can define them as environment variables: <code>CLOUDSTACK_ENDPOINT</code>, <code>CLOUDSTACK_KEY</code>, <code>CLOUDSTACK_SECRET</code> and <code>CLOUDSTACK_METHOD</code>.</p>
+
+<p>Or create a <code>~/.cloudstack.ini</code> file:</p>
+
+<pre><code>[cloudstack]
+endpoint = &lt;your cloudstack api endpoint&gt;
+key = &lt;your api access key&gt;
+secret = &lt;your api secret key&gt;
+method = post
+</code></pre>
+
+<p>We need to use the http POST method to pass the <em>large</em> userdata to the coreOS instances.</p>
+
+<h3 id="clone-the-playbook">Clone the playbook</h3>
+
+<pre><code>$ git clone https://github.com/apachecloudstack/k8s
+$ cd kubernetes-cloudstack
+</code></pre>
+
+<h3 id="create-a-kubernetes-cluster">Create a Kubernetes cluster</h3>
+
+<p>You simply need to run the playbook.</p>
+
+<pre><code>$ ansible-playbook k8s.yml
+</code></pre>
+
+<p>Some variables can be edited in the <code>k8s.yml</code> file.</p>
+
+<pre><code>vars:
+  ssh_key: k8s
+  k8s_num_nodes: 2
+  k8s_security_group_name: k8s
+  k8s_node_prefix: k8s2
+  k8s_template: &lt;templatename&gt;
+  k8s_instance_type: &lt;serviceofferingname&gt;
+</code></pre>
+
+<p>This will start a Kubernetes master node and a number of compute nodes (by default 2).
+The <code>instance_type</code> and <code>template</code> are specific, edit them to specify your CloudStack cloud specific template and instance type (i.e. service offering).</p>
+
+<p>Check the tasks and templates in <code>roles/k8s</code> if you want to modify anything.</p>
+
+<p>Once the playbook as finished, it will print out the IP of the Kubernetes master:</p>
+
+<pre><code>TASK: [k8s | debug msg='k8s master IP is {{ k8s_master.default_ip }}'] ********
+</code></pre>
+
+<p>SSH to it using the key that was created and using the <em>core</em> user and you can list the machines in your cluster:</p>
+
+<pre><code>$ ssh -i ~/.ssh/id_rsa_k8s core@&lt;master IP&gt;
+$ fleetctl list-machines
+MACHINE        IP               METADATA
+a017c422...    &lt;node #1 IP&gt;   role=node
+ad13bf84...    &lt;master IP&gt;       role=master
+e9af8293...    &lt;node #2 IP&gt;   role=node
+</code></pre>
+
+<h2 id="support-level">Support Level</h2>
+
+<table>
+<thead>
+<tr>
+<th>IaaS Provider</th>
+<th>Config. Mgmt</th>
+<th>OS</th>
+<th>Networking</th>
+<th>Docs</th>
+<th>Conforms</th>
+<th>Support Level</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>CloudStack</td>
+<td>Ansible</td>
+<td>CoreOS</td>
+<td>flannel</td>
+<td><a href="/docs/getting-started-guides/cloudstack/">docs</a></td>
+<td></td>
+<td>Community (<a href="https://github.com/ltupin/" target="_blank">@Guiques</a>)</td>
+</tr>
+</tbody>
+</table>
+
+<p>For support level information on all solutions, see the <a href="/docs/getting-started-guides/#table-of-solutions">Table of solutions</a> chart.</p>
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/setup/on-premises-vm/cloudstack.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/setup\/on-premises-vm\/cloudstack\/",
+					"title" : "Cloudstack",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/setup\/on-premises-vm\/cloudstack\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/setup/on-premises-vm/cloudstack.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

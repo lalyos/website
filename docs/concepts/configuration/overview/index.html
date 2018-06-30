@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Configuration Best Practices - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="Configuration Best Practices" />
+<meta property="og:description" content="Configuration Best Practices" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/concepts/configuration/overview/" />
+<meta property="og:title" content="Configuration Best Practices - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+
+
+<h1>Concepts</h1>
+<h5></h5>
+
+
+
+
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/" class="YAH">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Concepts" href="/docs/concepts/"></a>
+
+	
+	
+		
+		
+	<div class="item" data-title="Overview">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="What is Kubernetes?" href="/docs/concepts/overview/what-is-kubernetes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes Components" href="/docs/concepts/overview/components/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="The Kubernetes API" href="/docs/concepts/overview/kubernetes-api/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Working with Kubernetes Objects">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Understanding Kubernetes Objects" href="/docs/concepts/overview/working-with-objects/kubernetes-objects/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Names" href="/docs/concepts/overview/working-with-objects/names/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Namespaces" href="/docs/concepts/overview/working-with-objects/namespaces/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Labels and Selectors" href="/docs/concepts/overview/working-with-objects/labels/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Annotations" href="/docs/concepts/overview/working-with-objects/annotations/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Object Management Using kubectl">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Kubernetes Object Management" href="/docs/concepts/overview/object-management-kubectl/overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Managing Kubernetes Objects Using Imperative Commands" href="/docs/concepts/overview/object-management-kubectl/imperative-command/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Imperative Management of Kubernetes Objects Using Configuration Files" href="/docs/concepts/overview/object-management-kubectl/imperative-config/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Declarative Management of Kubernetes Objects Using Configuration Files" href="/docs/concepts/overview/object-management-kubectl/declarative-config/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Compute, Storage, and Networking Extensions">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Cluster Administration Overview" href="/docs/concepts/cluster-administration/cluster-administration-overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Certificates" href="/docs/concepts/cluster-administration/certificates/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Cloud Providers" href="/docs/concepts/cluster-administration/cloud-providers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Managing Resources" href="/docs/concepts/cluster-administration/manage-deployment/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Cluster Networking" href="/docs/concepts/cluster-administration/networking/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Logging Architecture" href="/docs/concepts/cluster-administration/logging/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configuring kubelet Garbage Collection" href="/docs/concepts/cluster-administration/kubelet-garbage-collection/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federation" href="/docs/concepts/cluster-administration/federation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Proxies in Kubernetes" href="/docs/concepts/cluster-administration/proxies/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Controller manager metrics" href="/docs/concepts/cluster-administration/controller-metrics/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Installing Addons" href="/docs/concepts/cluster-administration/addons/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Kubernetes Architecture">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Nodes" href="/docs/concepts/architecture/nodes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Master-Node communication" href="/docs/concepts/architecture/master-node-communication/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Concepts Underlying the Cloud Controller Manager" href="/docs/concepts/architecture/cloud-controller/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Extending Kubernetes">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Extending your Kubernetes Cluster" href="/docs/concepts/extend-kubernetes/extend-cluster/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Extending the Kubernetes API">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Extending the Kubernetes API with the aggregation layer" href="/docs/concepts/extend-kubernetes/api-extension/apiserver-aggregation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Custom Resources" href="/docs/concepts/extend-kubernetes/api-extension/custom-resources/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Compute, Storage, and Networking Extensions">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Network Plugins" href="/docs/concepts/extend-kubernetes/compute-storage-net/network-plugins/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Device Plugins" href="/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Service Catalog" href="/docs/concepts/extend-kubernetes/service-catalog/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Containers">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Images" href="/docs/concepts/containers/images/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Container Environment Variables" href="/docs/concepts/containers/container-environment-variables/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Container Lifecycle Hooks" href="/docs/concepts/containers/container-lifecycle-hooks/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Workloads">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+	<div class="item" data-title="Pods">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Pod Overview" href="/docs/concepts/workloads/pods/pod-overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pods" href="/docs/concepts/workloads/pods/pod/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pod Lifecycle" href="/docs/concepts/workloads/pods/pod-lifecycle/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Init Containers" href="/docs/concepts/workloads/pods/init-containers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pod Preset" href="/docs/concepts/workloads/pods/podpreset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Disruptions" href="/docs/concepts/workloads/pods/disruptions/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Controllers">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="ReplicaSet" href="/docs/concepts/workloads/controllers/replicaset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="ReplicationController" href="/docs/concepts/workloads/controllers/replicationcontroller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Deployments" href="/docs/concepts/workloads/controllers/deployment/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="StatefulSets" href="/docs/concepts/workloads/controllers/statefulset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="DaemonSet" href="/docs/concepts/workloads/controllers/daemonset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Garbage Collection" href="/docs/concepts/workloads/controllers/garbage-collection/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Jobs - Run to Completion" href="/docs/concepts/workloads/controllers/jobs-run-to-completion/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="CronJob" href="/docs/concepts/workloads/controllers/cron-jobs/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Configuration">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Configuration Best Practices" href="/docs/concepts/configuration/overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Managing Compute Resources for Containers" href="/docs/concepts/configuration/manage-compute-resources-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Assigning Pods to Nodes" href="/docs/concepts/configuration/assign-pod-node/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Taints and Tolerations" href="/docs/concepts/configuration/taint-and-toleration/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Secrets" href="/docs/concepts/configuration/secret/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Organizing Cluster Access Using kubeconfig Files" href="/docs/concepts/configuration/organize-cluster-access-kubeconfig/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pod Priority and Preemption" href="/docs/concepts/configuration/pod-priority-preemption/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Services, Load Balancing, and Networking">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Services" href="/docs/concepts/services-networking/service/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="DNS for Services and Pods" href="/docs/concepts/services-networking/dns-pod-service/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Connecting Applications with Services" href="/docs/concepts/services-networking/connect-applications-service/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Ingress" href="/docs/concepts/services-networking/ingress/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Network Policies" href="/docs/concepts/services-networking/network-policies/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Adding entries to Pod /etc/hosts with HostAliases" href="/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Storage">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Volumes" href="/docs/concepts/storage/volumes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Persistent Volumes" href="/docs/concepts/storage/persistent-volumes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Storage Classes" href="/docs/concepts/storage/storage-classes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Dynamic Volume Provisioning" href="/docs/concepts/storage/dynamic-provisioning/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Node-specific Volume Limits" href="/docs/concepts/storage/storage-limits/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Policies">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Resource Quotas" href="/docs/concepts/policy/resource-quotas/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pod Security Policies" href="/docs/concepts/policy/pod-security-policy/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/concepts/configuration/overview.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>Configuration Best Practices</h1>
+
+
+
+<p>This document highlights and consolidates configuration best practices that are introduced throughout the user guide, Getting Started documentation, and examples.</p>
+
+<p>This is a living document. If you think of something that is not on this list but might be useful to others, please don&rsquo;t hesitate to file an issue or submit a PR.</p>
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+<li><a href="#general-configuration-tips">General Configuration Tips</a></li>
+
+
+
+
+<li><a href="#naked-pods-vs-replicasets-deployments-and-jobs">“Naked” Pods vs ReplicaSets, Deployments, and Jobs</a></li>
+
+
+
+
+<li><a href="#services">Services</a></li>
+
+
+
+
+<li><a href="#using-labels">Using Labels</a></li>
+
+
+
+
+<li><a href="#container-images">Container Images</a></li>
+
+
+
+
+<li><a href="#using-kubectl">Using kubectl</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</ul>
+
+
+<h2 id="general-configuration-tips">General Configuration Tips</h2>
+
+<ul>
+<li><p>When defining configurations, specify the latest stable API version.</p></li>
+
+<li><p>Configuration files should be stored in version control before being pushed to the cluster. This allows you to quickly roll back a configuration change if necessary. It also aids cluster re-creation and restoration.</p></li>
+
+<li><p>Write your configuration files using YAML rather than JSON. Though these formats can be used interchangeably in almost all scenarios, YAML tends to be more user-friendly.</p></li>
+
+<li><p>Group related objects into a single file whenever it makes sense. One file is often easier to manage than several. See the <a href="https://github.com/kubernetes/examples/tree/master/guestbook/all-in-one/guestbook-all-in-one.yaml" target="_blank">guestbook-all-in-one.yaml</a> file as an example of this syntax.</p></li>
+
+<li><p>Note also that many <code>kubectl</code> commands can be called on a directory. For example, you can call <code>kubectl create</code> on a directory of config files.</p></li>
+
+<li><p>Don&rsquo;t specify default values unnecessarily: simple, minimal configuration will make errors less likely.</p></li>
+
+<li><p>Put object descriptions in annotations, to allow better introspection.</p></li>
+</ul>
+
+<h2 id="naked-pods-vs-replicasets-deployments-and-jobs">&ldquo;Naked&rdquo; Pods vs ReplicaSets, Deployments, and Jobs</h2>
+
+<ul>
+<li>Don&rsquo;t use naked Pods (that is, Pods not bound to a <a href="/docs/concepts/workloads/controllers/replicaset/">ReplicaSet</a> or <a href="/docs/concepts/workloads/controllers/deployment/">Deployment</a>) if you can avoid it. Naked Pods will not be rescheduled in the event of a node failure.</li>
+</ul>
+
+<p>A Deployment, which both creates a ReplicaSet to ensure that the desired number of Pods is always available, and specifies a strategy to replace Pods (such as <a href="/docs/concepts/workloads/controllers/deployment/#rolling-update-deployment">RollingUpdate</a>), is almost always preferable to creating Pods directly, except for some explicit <a href="/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy"><code>restartPolicy: Never</code></a> scenarios. A <a href="/docs/concepts/workloads/controllers/jobs-run-to-completion/">Job</a> may also be appropriate.</p>
+
+<h2 id="services">Services</h2>
+
+<ul>
+<li>Create a <a href="/docs/concepts/services-networking/service/">Service</a> before its corresponding backend workloads (Deployments or ReplicaSets), and before any workloads that need to access it. When Kubernetes starts a container, it provides environment variables pointing to all the Services which were running when the container was started. For example, if a Service named <code>foo</code> exists, all containers will get the following variables in their initial environment:</li>
+</ul>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">  <span style="color:#b8860b">FOO_SERVICE_HOST</span><span style="color:#666">=</span>&lt;the host the Service is running on&gt;
+  <span style="color:#b8860b">FOO_SERVICE_PORT</span><span style="color:#666">=</span>&lt;the port the Service is running on&gt;</code></pre></div>
+<p>If you are writing code that talks to a Service, don&rsquo;t use these environment variables; use the <a href="/docs/concepts/services-networking/dns-pod-service/">DNS name of the Service</a> instead. Service environment variables are provided only for older software which can&rsquo;t be modified to use DNS lookups, and are a much less flexible way of accessing Services.</p>
+
+<ul>
+<li>Don&rsquo;t specify a <code>hostPort</code> for a Pod unless it is absolutely necessary. When you bind a Pod to a <code>hostPort</code>, it limits the number of places the Pod can be scheduled, because each &lt;<code>hostIP</code>, <code>hostPort</code>, <code>protocol</code>&gt; combination must be unique. If you don&rsquo;t specify the <code>hostIP</code> and <code>protocol</code> explicitly, Kubernetes will use <code>0.0.0.0</code> as the default <code>hostIP</code> and <code>TCP</code> as the default <code>protocol</code>.</li>
+</ul>
+
+<p>If you only need access to the port for debugging purposes, you can use the <a href="/docs/tasks/access-application-cluster/access-cluster/#manually-constructing-apiserver-proxy-urls">apiserver proxy</a> or <a href="/docs/tasks/access-application-cluster/port-forward-access-application-cluster/"><code>kubectl port-forward</code></a>.</p>
+
+<p>If you explicitly need to expose a Pod&rsquo;s port on the node, consider using a <a href="/docs/concepts/services-networking/service/#type-nodeport">NodePort</a> Service before resorting to <code>hostPort</code>.</p>
+
+<ul>
+<li><p>Avoid using <code>hostNetwork</code>, for the same reasons as <code>hostPort</code>.</p></li>
+
+<li><p>Use <a href="/docs/concepts/services-networking/service/#headless-
+services">headless Services</a> (which have a <code>ClusterIP</code> of <code>None</code>) for easy service discovery when you don&rsquo;t need <code>kube-proxy</code> load balancing.</p></li>
+</ul>
+
+<h2 id="using-labels">Using Labels</h2>
+
+<ul>
+<li>Define and use <a href="/docs/concepts/overview/working-with-objects/labels/">labels</a> that identify <strong>semantic attributes</strong> of your application or Deployment, such as <code>{ app: myapp, tier: frontend, phase: test, deployment: v3 }</code>. You can use these labels to select the appropriate Pods for other resources; for example, a Service that selects all <code>tier: frontend</code> Pods, or all <code>phase: test</code> components of <code>app: myapp</code>. See the <a href="https://github.com/kubernetes/examples/tree/master/guestbook/" target="_blank">guestbook</a> app for examples of this approach.</li>
+</ul>
+
+<p>A Service can be made to span multiple Deployments by omitting release-specific labels from its selector. <a href="/docs/concepts/workloads/controllers/deployment/">Deployments</a> make it easy to update a running service without downtime.</p>
+
+<p>A desired state of an object is described by a Deployment, and if changes to that spec are <em>applied</em>, the deployment controller changes the actual state to the desired state at a controlled rate.</p>
+
+<ul>
+<li>You can manipulate labels for debugging. Because Kubernetes controllers (such as ReplicaSet) and Services match to Pods using selector labels, removing the relevant labels from a Pod will stop it from being considered by a controller or from being served traffic by a Service. If you remove the labels of an existing Pod, its controller will create a new Pod to take its place. This is a useful way to debug a previously &ldquo;live&rdquo; Pod in a &ldquo;quarantine&rdquo; environment. To interactively remove or add labels, use <a href="/docs/reference/generated/kubectl/kubectl-commands#label"><code>kubectl label</code></a>.</li>
+</ul>
+
+<h2 id="container-images">Container Images</h2>
+
+<ul>
+<li>The default <a href="/docs/concepts/containers/images/#updating-images">imagePullPolicy</a> for a container is <code>IfNotPresent</code>, which causes the <a href="/docs/admin/kubelet/">kubelet</a> to pull an image only if it does not already exist locally. If you want the image to be pulled every time Kubernetes starts the container, specify <code>imagePullPolicy: Always</code>.</li>
+</ul>
+
+<p>An alternative, but deprecated way to have Kubernetes always pull the image is to use the <code>:latest</code> tag, which will implicitly set the <code>imagePullPolicy</code> to <code>Always</code>.</p>
+
+<blockquote class="note">
+  <div><strong>Note:</strong> You should avoid using the <code>:latest</code> tag when deploying containers in production, because this makes it hard to track which version of the image is running and hard to roll back.</div>
+</blockquote>
+
+<ul>
+<li>To make sure the container always uses the same version of the image, you can specify its <a href="https://docs.docker.com/engine/reference/commandline/pull/#pull-an-image-by-digest-immutable-identifier" target="_blank">digest</a> (for example <code>sha256:45b23dee08af5e43a7fea6c4cf9c25ccf269ee113168c19722f87876677c5cb2</code>). This uniquely identifies a specific version of the image, so it will never be updated by Kubernetes unless you change the digest value.</li>
+</ul>
+
+<h2 id="using-kubectl">Using kubectl</h2>
+
+<ul>
+<li><p>Use <code>kubectl apply -f &lt;directory&gt;</code> or <code>kubectl create -f &lt;directory&gt;</code>. This looks for Kubernetes configuration in all <code>.yaml</code>, <code>.yml</code>, and <code>.json</code> files in <code>&lt;directory&gt;</code> and passes it to <code>apply</code> or <code>create</code>.</p></li>
+
+<li><p>Use label selectors for <code>get</code> and <code>delete</code> operations instead of specific object names. See the sections on <a href="/docs/concepts/overview/working-with-objects/labels/#label-selectors">label selectors</a> and <a href="/docs/concepts/cluster-administration/manage-deployment/#using-labels-effectively">using labels effectively</a>.</p></li>
+
+<li><p>Use <code>kubectl run</code> and <code>kubectl expose</code> to quickly create single-container Deployments and Services. See <a href="/docs/tasks/access-application-cluster/service-access-application-cluster/">Use a Service to Access an Application in a Cluster</a> for an example.</p></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/concepts/configuration/overview.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/concepts\/configuration\/overview\/",
+					"title" : "Configuration Best Practices",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/concepts\/configuration\/overview\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/concepts/configuration/overview.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

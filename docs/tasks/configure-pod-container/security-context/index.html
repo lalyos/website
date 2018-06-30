@@ -1,0 +1,2001 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Configure a Security Context for a Pod or Container - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="Configure a Security Context for a Pod or Container" />
+<meta property="og:description" content="Configure a Security Context for a Pod or Container" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/tasks/configure-pod-container/security-context/" />
+<meta property="og:title" content="Configure a Security Context for a Pod or Container - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+
+
+
+
+<h1>Tasks</h1>
+<h5></h5>
+
+
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/" class="YAH">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Tasks" href="/docs/tasks/"></a>
+
+	
+	
+		
+		
+	<div class="item" data-title="Install Tools">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Install and Set Up kubectl" href="/docs/tasks/tools/install-kubectl/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Install Minikube" href="/docs/tasks/tools/install-minikube/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Installing kubeadm" href="/docs/tasks/tools/install-kubeadm/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Administer a Cluster">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+	<div class="item" data-title="Administration with kubeadm">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Upgrading kubeadm HA clusters from 1.9.x to 1.9.y" href="/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-ha/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Upgrading kubeadm clusters from 1.7 to 1.8" href="/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-1-8/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Upgrading kubeadm clusters from v1.10 to v1.11" href="/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-1-11/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Upgrading/downgrading kubeadm clusters between v1.8 to v1.9" href="/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-1-9/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Manage Memory, CPU, and API Resources">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Configure Default Memory Requests and Limits for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/memory-default-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Default CPU Requests and Limits for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/cpu-default-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Minimum and Maximum Memory Constraints for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/memory-constraint-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Minimum and Maximum CPU Constraints for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/cpu-constraint-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Memory and CPU Quotas for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/quota-memory-cpu-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod Quota for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/quota-pod-namespace/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Install a Network Policy Provider">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Use Calico for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/calico-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use Cilium for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/cilium-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use Kube-router for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/kube-router-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Romana for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/romana-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Weave Net for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/weave-network-policy/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Access Clusters Using the Kubernetes API" href="/docs/tasks/administer-cluster/access-cluster-api/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Access Services Running on Clusters" href="/docs/tasks/administer-cluster/access-cluster-services/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Advertise Extended Resources for a Node" href="/docs/tasks/administer-cluster/extended-resource-node/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Autoscale the DNS Service in a Cluster" href="/docs/tasks/administer-cluster/dns-horizontal-autoscaling/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Change the Reclaim Policy of a PersistentVolume" href="/docs/tasks/administer-cluster/change-pv-reclaim-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Change the default StorageClass" href="/docs/tasks/administer-cluster/change-default-storage-class/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Cluster Management" href="/docs/tasks/administer-cluster/cluster-management/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Multiple Schedulers" href="/docs/tasks/administer-cluster/configure-multiple-schedulers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Out Of Resource Handling" href="/docs/tasks/administer-cluster/out-of-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Quotas for API Objects" href="/docs/tasks/administer-cluster/quota-api-object/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Control CPU Management Policies on the Node" href="/docs/tasks/administer-cluster/cpu-management-policies/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Customizing DNS Service" href="/docs/tasks/administer-cluster/dns-custom-nameservers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debugging DNS Resolution" href="/docs/tasks/administer-cluster/dns-debugging-resolution/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Declare Network Policy" href="/docs/tasks/administer-cluster/declare-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Developing Cloud Controller Manager" href="/docs/tasks/administer-cluster/developing-cloud-controller-manager/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Encrypting Secret Data at Rest" href="/docs/tasks/administer-cluster/encrypt-data/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Guaranteed Scheduling For Critical Add-On Pods" href="/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="IP Masquerade Agent User Guide" href="/docs/tasks/administer-cluster/ip-masq-agent/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes Cloud Controller Manager" href="/docs/tasks/administer-cluster/running-cloud-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Limit Storage Consumption" href="/docs/tasks/administer-cluster/limit-storage-consumption/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Namespaces Walkthrough" href="/docs/tasks/administer-cluster/namespaces-walkthrough/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Operating etcd clusters for Kubernetes" href="/docs/tasks/administer-cluster/configure-upgrade-etcd/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Reconfigure a Node&#39;s Kubelet in a Live Cluster" href="/docs/tasks/administer-cluster/reconfigure-kubelet/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Reserve Compute Resources for System Daemons" href="/docs/tasks/administer-cluster/reserve-compute-resources/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Safely Drain a Node while Respecting Application SLOs" href="/docs/tasks/administer-cluster/safely-drain-node/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Securing a Cluster" href="/docs/tasks/administer-cluster/securing-a-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set Kubelet parameters via a config file" href="/docs/tasks/administer-cluster/kubelet-config-file/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up High-Availability Kubernetes Masters" href="/docs/tasks/administer-cluster/highly-available-master/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up a Highly Availabile etcd Cluster With kubeadm" href="/docs/tasks/administer-cluster/setup-ha-etcd-with-kubeadm/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Share a Cluster with Namespaces" href="/docs/tasks/administer-cluster/namespaces/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Static Pods" href="/docs/tasks/administer-cluster/static-pod/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Storage Object in Use Protection" href="/docs/tasks/administer-cluster/storage-object-in-use-protection/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using CoreDNS for Service Discovery" href="/docs/tasks/administer-cluster/coredns/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using a KMS provider for data encryption" href="/docs/tasks/administer-cluster/kms-provider/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using sysctls in a Kubernetes Cluster" href="/docs/tasks/administer-cluster/sysctl-cluster/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Configure Pods and Containers">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Assign Memory Resources to Containers and Pods" href="/docs/tasks/configure-pod-container/assign-memory-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Assign CPU Resources to Containers and Pods" href="/docs/tasks/configure-pod-container/assign-cpu-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Quality of Service for Pods" href="/docs/tasks/configure-pod-container/quality-service-pod/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Assign Extended Resources to a Container" href="/docs/tasks/configure-pod-container/extended-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod to Use a Volume for Storage" href="/docs/tasks/configure-pod-container/configure-volume-storage/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod to Use a PersistentVolume for Storage" href="/docs/tasks/configure-pod-container/configure-persistent-volume-storage/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod to Use a Projected Volume for Storage" href="/docs/tasks/configure-pod-container/configure-projected-volume-storage/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Security Context for a Pod or Container" href="/docs/tasks/configure-pod-container/security-context/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Service Accounts for Pods" href="/docs/tasks/configure-pod-container/configure-service-account/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pull an Image from a Private Registry" href="/docs/tasks/configure-pod-container/pull-image-private-registry/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Liveness and Readiness Probes" href="/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Assign Pods to Nodes" href="/docs/tasks/configure-pod-container/assign-pods-nodes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Pod Initialization" href="/docs/tasks/configure-pod-container/configure-pod-initialization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Attach Handlers to Container Lifecycle Events" href="/docs/tasks/configure-pod-container/attach-handler-lifecycle-event/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod to Use a ConfigMap" href="/docs/tasks/configure-pod-container/configure-pod-configmap/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Share Process Namespace between Containers in a Pod" href="/docs/tasks/configure-pod-container/share-process-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Translate a Docker Compose File to Kubernetes Resources" href="/docs/tasks/configure-pod-container/translate-compose-kubernetes/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Inject Data Into Applications">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Define a Command and Arguments for a Container" href="/docs/tasks/inject-data-application/define-command-argument-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Define Environment Variables for a Container" href="/docs/tasks/inject-data-application/define-environment-variable-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Expose Pod Information to Containers Through Environment Variables" href="/docs/tasks/inject-data-application/environment-variable-expose-pod-information/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Expose Pod Information to Containers Through Files" href="/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Distribute Credentials Securely Using Secrets" href="/docs/tasks/inject-data-application/distribute-credentials-secure/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Inject Information into Pods Using a PodPreset" href="/docs/tasks/inject-data-application/podpreset/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Run Applications">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Run a Stateless Application Using a Deployment" href="/docs/tasks/run-application/run-stateless-application-deployment/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Run a Single-Instance Stateful Application" href="/docs/tasks/run-application/run-single-instance-stateful-application/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Run a Replicated Stateful Application" href="/docs/tasks/run-application/run-replicated-stateful-application/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Update API Objects in Place Using kubectl patch" href="/docs/tasks/run-application/update-api-object-kubectl-patch/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Scale a StatefulSet" href="/docs/tasks/run-application/scale-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Delete a StatefulSet" href="/docs/tasks/run-application/delete-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Force Delete StatefulSet Pods" href="/docs/tasks/run-application/force-delete-stateful-set-pod/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Perform Rolling Update Using a Replication Controller" href="/docs/tasks/run-application/rolling-update-replication-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Horizontal Pod Autoscaler" href="/docs/tasks/run-application/horizontal-pod-autoscale/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Horizontal Pod Autoscaler Walkthrough" href="/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Specifying a Disruption Budget for your Application" href="/docs/tasks/run-application/configure-pdb/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Run Jobs">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Running automated tasks with cron jobs" href="/docs/tasks/job/automated-tasks-with-cron-jobs/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Parallel Processing using Expansions" href="/docs/tasks/job/parallel-processing-expansion/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Coarse Parallel Processing Using a Work Queue" href="/docs/tasks/job/coarse-parallel-processing-work-queue/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Fine Parallel Processing Using a Work Queue" href="/docs/tasks/job/fine-parallel-processing-work-queue/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Access Applications in a Cluster">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Web UI (Dashboard)" href="/docs/tasks/access-application-cluster/web-ui-dashboard/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Accessing Clusters" href="/docs/tasks/access-application-cluster/access-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Access to Multiple Clusters" href="/docs/tasks/access-application-cluster/configure-access-multiple-clusters/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use Port Forwarding to Access Applications in a Cluster" href="/docs/tasks/access-application-cluster/port-forward-access-application-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Provide Load-Balanced Access to an Application in a Cluster" href="/docs/tasks/access-application-cluster/load-balance-access-application-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use a Service to Access an Application in a Cluster" href="/docs/tasks/access-application-cluster/service-access-application-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Connect a Front End to a Back End Using a Service" href="/docs/tasks/access-application-cluster/connecting-frontend-backend/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Create an External Load Balancer" href="/docs/tasks/access-application-cluster/create-external-load-balancer/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Your Cloud Provider&#39;s Firewalls" href="/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="List All Container Images Running in a Cluster" href="/docs/tasks/access-application-cluster/list-all-running-container-images/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Communicate Between Containers in the Same Pod Using a Shared Volume" href="/docs/tasks/access-application-cluster/communicate-containers-same-pod-shared-volume/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure DNS for a Cluster" href="/docs/tasks/access-application-cluster/configure-dns-cluster/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Monitor, Log, and Debug">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Application Introspection and Debugging" href="/docs/tasks/debug-application-cluster/debug-application-introspection/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Auditing" href="/docs/tasks/debug-application-cluster/audit/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Core metrics pipeline" href="/docs/tasks/debug-application-cluster/core-metrics-pipeline/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debug Init Containers" href="/docs/tasks/debug-application-cluster/debug-init-containers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debug Pods and Replication Controllers" href="/docs/tasks/debug-application-cluster/debug-pod-replication-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debug Services" href="/docs/tasks/debug-application-cluster/debug-service/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debug a StatefulSet" href="/docs/tasks/debug-application-cluster/debug-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debugging Kubernetes nodes with crictl" href="/docs/tasks/debug-application-cluster/crictl/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Determine the Reason for Pod Failure" href="/docs/tasks/debug-application-cluster/determine-reason-pod-failure/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Developing and debugging services locally" href="/docs/tasks/debug-application-cluster/local-debugging/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Events in Stackdriver" href="/docs/tasks/debug-application-cluster/events-stackdriver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Get a Shell to a Running Container" href="/docs/tasks/debug-application-cluster/get-shell-running-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Logging Using Elasticsearch and Kibana" href="/docs/tasks/debug-application-cluster/logging-elasticsearch-kibana/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Logging Using Stackdriver" href="/docs/tasks/debug-application-cluster/logging-stackdriver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Monitor Node Health" href="/docs/tasks/debug-application-cluster/monitor-node-health/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Tools for Monitoring Compute, Storage, and Network Resources" href="/docs/tasks/debug-application-cluster/resource-usage-monitoring/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Troubleshoot Applications" href="/docs/tasks/debug-application-cluster/debug-application/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Troubleshoot Clusters" href="/docs/tasks/debug-application-cluster/debug-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Troubleshooting" href="/docs/tasks/debug-application-cluster/troubleshooting/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Extend Kubernetes">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Configure the aggregation layer" href="/docs/tasks/access-kubernetes-api/configure-aggregation-layer/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Use Custom Resources">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Extend the Kubernetes API with CustomResourceDefinitions" href="/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Versions of CustomResourceDefinitions" href="/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definition-versioning/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Migrate a ThirdPartyResource to CustomResourceDefinition" href="/docs/tasks/access-kubernetes-api/custom-resources/migrate-third-party-resource/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Setup an extension API server" href="/docs/tasks/access-kubernetes-api/setup-extension-api-server/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use an HTTP Proxy to Access the Kubernetes API" href="/docs/tasks/access-kubernetes-api/http-proxy-access-api/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="TLS">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Certificate Rotation" href="/docs/tasks/tls/certificate-rotation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Manage TLS Certificates in a Cluster" href="/docs/tasks/tls/managing-tls-in-a-cluster/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Federation - Run an App on Multiple Clusters">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Cross-cluster Service Discovery using Federated Services" href="/docs/tasks/federation/federation-service-discovery/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up Cluster Federation with Kubefed" href="/docs/tasks/federation/set-up-cluster-federation-kubefed/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up CoreDNS as DNS provider for Cluster Federation" href="/docs/tasks/federation/set-up-coredns-provider-federation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up placement policies in Federation" href="/docs/tasks/federation/set-up-placement-policies-federation/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Manage Cluster Daemons">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Perform a Rolling Update on a DaemonSet" href="/docs/tasks/manage-daemon/update-daemon-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Performing a Rollback on a DaemonSet" href="/docs/tasks/manage-daemon/rollback-daemon-set/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Install Service Catalog">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Install Service Catalog using Helm" href="/docs/tasks/service-catalog/install-service-catalog-using-helm/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Install Service Catalog using SC" href="/docs/tasks/service-catalog/install-service-catalog-using-sc/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Federation - Run an App on Multiple Clusters">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Federated Cluster" href="/docs/tasks/administer-federation/cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated ConfigMap" href="/docs/tasks/administer-federation/configmap/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated DaemonSet" href="/docs/tasks/administer-federation/daemonset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Deployment" href="/docs/tasks/administer-federation/deployment/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Events" href="/docs/tasks/administer-federation/events/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Horizontal Pod Autoscalers (HPA)" href="/docs/tasks/administer-federation/hpa/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Ingress" href="/docs/tasks/administer-federation/ingress/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Jobs" href="/docs/tasks/administer-federation/job/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Namespaces" href="/docs/tasks/administer-federation/namespaces/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated ReplicaSets" href="/docs/tasks/administer-federation/replicaset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Secrets" href="/docs/tasks/administer-federation/secret/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Extend kubectl with plugins" href="/docs/tasks/extend-kubectl/kubectl-plugins/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Manage HugePages" href="/docs/tasks/manage-hugepages/scheduling-hugepages/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Schedule GPUs" href="/docs/tasks/manage-gpus/scheduling-gpus/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/tasks/configure-pod-container/security-context.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>Configure a Security Context for a Pod or Container</h1>
+
+
+
+
+<p>A security context defines privilege and access control settings for
+a Pod or Container. Security context settings include:</p>
+
+<ul>
+<li><p>Discretionary Access Control: Permission to access an object, like a file, is based on
+<a href="https://wiki.archlinux.org/index.php/users_and_groups" target="_blank">user ID (UID) and group ID (GID)</a>.</p></li>
+
+<li><p><a href="https://en.wikipedia.org/wiki/Security-Enhanced_Linux" target="_blank">Security Enhanced Linux (SELinux)</a>: Objects are assigned security labels.</p></li>
+
+<li><p>Running as privileged or unprivileged.</p></li>
+
+<li><p><a href="https://linux-audit.com/linux-capabilities-hardening-linux-binaries-by-removing-setuid/" target="_blank">Linux Capabilities</a>: Give a process some privileges, but not all the privileges of the root user.</p></li>
+
+<li><p><a href="/docs/tutorials/clusters/apparmor/">AppArmor</a>: Use program profiles to restrict the capabilities of individual programs.</p></li>
+
+<li><p><a href="https://en.wikipedia.org/wiki/Seccomp" target="_blank">Seccomp</a>: Filter a process&rsquo;s system calls.</p></li>
+
+<li><p>AllowPrivilegeEscalation: Controls whether a process can gain more privileges than its parent process. This bool directly controls whether the <a href="https://www.kernel.org/doc/Documentation/prctl/no_new_privs.txt" target="_blank"><code>no_new_privs</code></a> flag gets set on the container process. AllowPrivilegeEscalation is true always when the container is: 1) run as Privileged OR 2) has <code>CAP_SYS_ADMIN</code>.</p></li>
+</ul>
+
+<p>For more information about security mechanisms in Linux, see
+<a href="https://www.linux.com/learn/overview-linux-kernel-security-features" target="_blank">Overview of Linux Kernel Security Features</a></p>
+
+
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+<li><a href="#before-you-begin">Before you begin</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#set-the-security-context-for-a-pod">Set the security context for a Pod</a></li>
+
+
+
+
+<li><a href="#set-the-security-context-for-a-container">Set the security context for a Container</a></li>
+
+
+
+
+<li><a href="#set-capabilities-for-a-container">Set capabilities for a Container</a></li>
+
+
+
+
+<li><a href="#assign-selinux-labels-to-a-container">Assign SELinux labels to a Container</a></li>
+
+
+
+
+<li><a href="#discussion">Discussion</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#what-s-next">What's next</a></li>
+
+
+
+</ul>
+
+
+
+<h2 id="before-you-begin">Before you begin</h2>
+<p>You need to have a Kubernetes cluster, and the kubectl command-line tool must
+be configured to communicate with your cluster. If you do not already have a
+cluster, you can create one by using
+<a href="/docs/getting-started-guides/minikube">Minikube</a>,
+or you can use one of these Kubernetes playgrounds:</p>
+
+<ul>
+<li><a href="https://www.katacoda.com/courses/kubernetes/playground" target="_blank">Katacoda</a></li>
+<li><a href="http://labs.play-with-k8s.com/" target="_blank">Play with Kubernetes</a></li>
+</ul>
+ 
+
+<p>To check the version, enter <code>kubectl version</code>.</p>
+
+
+
+
+<h2 id="set-the-security-context-for-a-pod">Set the security context for a Pod</h2>
+
+<p>To specify security settings for a Pod, include the <code>securityContext</code> field
+in the Pod specification. The <code>securityContext</code> field is a
+<a href="/docs/reference/generated/kubernetes-api/v1.11/#podsecuritycontext-v1-core">PodSecurityContext</a> object.
+The security settings that you specify for a Pod apply to all Containers in the Pod.
+Here is a configuration file for a Pod that has a <code>securityContext</code> and an <code>emptyDir</code> volume:</p>
+
+<table class="includecode" id="security-context-yaml">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://github.com/kubernetes/website/blob/master/content/en/docs/tasks/configure-pod-container/security-context.yaml" download="security-context.yaml">
+                    <code>security-context.yaml docs/tasks/configure-pod-container</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('security-context-yaml')" title="Copy security-context.yaml to clipboard">
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Pod<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>security-context-demo<span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>securityContext:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>runAsUser:<span style="color:#bbb"> </span><span style="color:#666">1000</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>fsGroup:<span style="color:#bbb"> </span><span style="color:#666">2000</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>volumes:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>sec-ctx-vol<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>emptyDir:<span style="color:#bbb"> </span>{}<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>containers:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>sec-ctx-demo<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>image:<span style="color:#bbb"> </span>gcr.io/google-samples/node-hello:<span style="color:#666">1.0</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>volumeMounts:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>sec-ctx-vol<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>mountPath:<span style="color:#bbb"> </span>/data/demo<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>securityContext:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>allowPrivilegeEscalation:<span style="color:#bbb"> </span><span style="color:#a2f;font-weight:bold">false</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span></code></pre></div>  </td>
+        </tr>
+    </tbody>
+</table>
+
+<p>In the configuration file, the <code>runAsUser</code> field specifies that for any Containers in
+the Pod, the first process runs with user ID 1000. The <code>fsGroup</code> field specifies that
+group ID 2000 is associated with all Containers in the Pod. Group ID 2000 is also
+associated with the volume mounted at <code>/data/demo</code> and with any files created in that
+volume.</p>
+
+<p>Create the Pod:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl create -f https://k8s.io/docs/tasks/configure-pod-container/security-context.yaml</code></pre></div>
+<p>Verify that the Pod&rsquo;s Container is running:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl get pod security-context-demo</code></pre></div>
+<p>Get a shell to the running Container:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl <span style="color:#a2f">exec</span> -it security-context-demo -- sh</code></pre></div>
+<p>In your shell, list the running processes:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">ps aux</code></pre></div>
+<p>The output shows that the processes are running as user 1000, which is the value of <code>runAsUser</code>:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">USER   PID %CPU %MEM    VSZ   RSS TTY   STAT START   TIME COMMAND
+<span style="color:#666">1000</span>     <span style="color:#666">1</span>  <span style="color:#666">0</span>.0  <span style="color:#666">0</span>.0   <span style="color:#666">4336</span>   <span style="color:#666">724</span> ?     Ss   <span style="color:#666">18</span>:16   <span style="color:#666">0</span>:00 /bin/sh -c node server.js
+<span style="color:#666">1000</span>     <span style="color:#666">5</span>  <span style="color:#666">0</span>.2  <span style="color:#666">0</span>.6 <span style="color:#666">772124</span> <span style="color:#666">22768</span> ?     Sl   <span style="color:#666">18</span>:16   <span style="color:#666">0</span>:00 node server.js
+...</code></pre></div>
+<p>In your shell, navigate to <code>/data</code>, and list the one directory:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#a2f">cd</span> /data
+ls -l</code></pre></div>
+<p>The output shows that the <code>/data/demo</code> directory has group ID 2000, which is
+the value of <code>fsGroup</code>.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">drwxrwsrwx <span style="color:#666">2</span> root <span style="color:#666">2000</span> <span style="color:#666">4096</span> Jun  <span style="color:#666">6</span> <span style="color:#666">20</span>:08 demo</code></pre></div>
+<p>In your shell, navigate to <code>/data/demo</code>, and create a file:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#a2f">cd</span> demo
+<span style="color:#a2f">echo</span> hello &gt; testfile</code></pre></div>
+<p>List the file in the <code>/data/demo</code> directory:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">ls -l</code></pre></div>
+<p>The output shows that <code>testfile</code> has group ID 2000, which is the value of <code>fsGroup</code>.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">-rw-r--r-- <span style="color:#666">1</span> <span style="color:#666">1000</span> <span style="color:#666">2000</span> <span style="color:#666">6</span> Jun  <span style="color:#666">6</span> <span style="color:#666">20</span>:08 testfile</code></pre></div>
+<p>Exit your shell:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">exit</code></pre></div>
+<h2 id="set-the-security-context-for-a-container">Set the security context for a Container</h2>
+
+<p>To specify security settings for a Container, include the <code>securityContext</code> field
+in the Container manifest. The <code>securityContext</code> field is a
+<a href="/docs/reference/generated/kubernetes-api/v1.11/#securitycontext-v1-core">SecurityContext</a> object.
+Security settings that you specify for a Container apply only to
+the individual Container, and they override settings made at the Pod level when
+there is overlap. Container settings do not affect the Pod&rsquo;s Volumes.</p>
+
+<p>Here is the configuration file for a Pod that has one Container. Both the Pod
+and the Container have a <code>securityContext</code> field:</p>
+
+<table class="includecode" id="security-context-2-yaml">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://github.com/kubernetes/website/blob/master/content/en/docs/tasks/configure-pod-container/security-context-2.yaml" download="security-context-2.yaml">
+                    <code>security-context-2.yaml docs/tasks/configure-pod-container</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('security-context-2-yaml')" title="Copy security-context-2.yaml to clipboard">
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Pod<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>security-context-demo-<span style="color:#666">2</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>securityContext:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>runAsUser:<span style="color:#bbb"> </span><span style="color:#666">1000</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>containers:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>sec-ctx-demo-<span style="color:#666">2</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>image:<span style="color:#bbb"> </span>gcr.io/google-samples/node-hello:<span style="color:#666">1.0</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>securityContext:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>runAsUser:<span style="color:#bbb"> </span><span style="color:#666">2000</span><span style="color:#bbb">
+</span><span style="color:#bbb">      </span>allowPrivilegeEscalation:<span style="color:#bbb"> </span><span style="color:#a2f;font-weight:bold">false</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span></code></pre></div>  </td>
+        </tr>
+    </tbody>
+</table>
+
+<p>Create the Pod:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl create -f https://k8s.io/docs/tasks/configure-pod-container/security-context-2.yaml</code></pre></div>
+<p>Verify that the Pod&rsquo;s Container is running:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl get pod security-context-demo-2</code></pre></div>
+<p>Get a shell into the running Container:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl <span style="color:#a2f">exec</span> -it security-context-demo-2 -- sh</code></pre></div>
+<p>In your shell, list the running processes:</p>
+
+<pre><code>ps aux
+</code></pre>
+
+<p>The output shows that the processes are running as user 2000. This is the value
+of <code>runAsUser</code> specified for the Container. It overrides the value 1000 that is
+specified for the Pod.</p>
+
+<pre><code>USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+2000         1  0.0  0.0   4336   764 ?        Ss   20:36   0:00 /bin/sh -c node server.js
+2000         8  0.1  0.5 772124 22604 ?        Sl   20:36   0:00 node server.js
+...
+</code></pre>
+
+<p>Exit your shell:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">exit</code></pre></div>
+<h2 id="set-capabilities-for-a-container">Set capabilities for a Container</h2>
+
+<p>With <a href="http://man7.org/linux/man-pages/man7/capabilities.7.html" target="_blank">Linux capabilities</a>,
+you can grant certain privileges to a process without granting all the privileges
+of the root user. To add or remove Linux capabilities for a Container, include the
+<code>capabilities</code> field in the <code>securityContext</code> section of the Container manifest.</p>
+
+<p>First, see what happens when you don&rsquo;t include a <code>capabilities</code> field.
+Here is configuration file that does not add or remove any Container capabilities:</p>
+
+<table class="includecode" id="security-context-3-yaml">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://github.com/kubernetes/website/blob/master/content/en/docs/tasks/configure-pod-container/security-context-3.yaml" download="security-context-3.yaml">
+                    <code>security-context-3.yaml docs/tasks/configure-pod-container</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('security-context-3-yaml')" title="Copy security-context-3.yaml to clipboard">
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Pod<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>security-context-demo-<span style="color:#666">3</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>containers:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>sec-ctx-<span style="color:#666">3</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>image:<span style="color:#bbb"> </span>gcr.io/google-samples/node-hello:<span style="color:#666">1.0</span><span style="color:#bbb">
+</span><span style="color:#bbb">
+</span><span style="color:#bbb">
+</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span></code></pre></div>  </td>
+        </tr>
+    </tbody>
+</table>
+
+<p>Create the Pod:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl create -f https://k8s.io/docs/tasks/configure-pod-container/security-context-3.yaml</code></pre></div>
+<p>Verify that the Pod&rsquo;s Container is running:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl get pod security-context-demo-3</code></pre></div>
+<p>Get a shell into the running Container:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl <span style="color:#a2f">exec</span> -it security-context-demo-3 -- sh</code></pre></div>
+<p>In your shell, list the running processes:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">ps aux</code></pre></div>
+<p>The output shows the process IDs (PIDs) for the Container:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">USER  PID %CPU %MEM    VSZ   RSS TTY   STAT START   TIME COMMAND
+root    <span style="color:#666">1</span>  <span style="color:#666">0</span>.0  <span style="color:#666">0</span>.0   <span style="color:#666">4336</span>   <span style="color:#666">796</span> ?     Ss   <span style="color:#666">18</span>:17   <span style="color:#666">0</span>:00 /bin/sh -c node server.js
+root    <span style="color:#666">5</span>  <span style="color:#666">0</span>.1  <span style="color:#666">0</span>.5 <span style="color:#666">772124</span> <span style="color:#666">22700</span> ?     Sl   <span style="color:#666">18</span>:17   <span style="color:#666">0</span>:00 node server.js</code></pre></div>
+<p>In your shell, view the status for process 1:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#a2f">cd</span> /proc/1
+cat status</code></pre></div>
+<p>The output shows the capabilities bitmap for the process:</p>
+
+<pre><code>...
+CapPrm:	00000000a80425fb
+CapEff:	00000000a80425fb
+...
+</code></pre>
+
+<p>Make a note of the capabilities bitmap, and then exit your shell:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">exit</code></pre></div>
+<p>Next, run a Container that is the same as the preceding container, except
+that it has additional capabilities set.</p>
+
+<p>Here is the configuration file for a Pod that runs one Container. The configuration
+adds the <code>CAP_NET_ADMIN</code> and <code>CAP_SYS_TIME</code> capabilities:</p>
+
+<table class="includecode" id="security-context-4-yaml">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://github.com/kubernetes/website/blob/master/content/en/docs/tasks/configure-pod-container/security-context-4.yaml" download="security-context-4.yaml">
+                    <code>security-context-4.yaml docs/tasks/configure-pod-container</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('security-context-4-yaml')" title="Copy security-context-4.yaml to clipboard">
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Pod<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>security-context-demo-<span style="color:#666">4</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>containers:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>sec-ctx-<span style="color:#666">4</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>image:<span style="color:#bbb"> </span>gcr.io/google-samples/node-hello:<span style="color:#666">1.0</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>securityContext:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>capabilities:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>add:<span style="color:#bbb"> </span>[<span style="color:#b44">&#34;NET_ADMIN&#34;</span>,<span style="color:#bbb"> </span><span style="color:#b44">&#34;SYS_TIME&#34;</span>]<span style="color:#bbb">
+</span><span style="color:#bbb"></span></code></pre></div>  </td>
+        </tr>
+    </tbody>
+</table>
+
+<p>Create the Pod:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl create -f https://k8s.io/docs/tasks/configure-pod-container/security-context-4.yaml</code></pre></div>
+<p>Get a shell into the running Container:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl <span style="color:#a2f">exec</span> -it security-context-demo-4 -- sh</code></pre></div>
+<p>In your shell, view the capabilities for process 1:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#a2f">cd</span> /proc/1
+cat status</code></pre></div>
+<p>The output shows capabilities bitmap for the process:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">...
+CapPrm:	00000000aa0435fb
+CapEff:	00000000aa0435fb
+...</code></pre></div>
+<p>Compare the capabilities of the two Containers:</p>
+
+<pre><code>00000000a80425fb
+00000000aa0435fb
+</code></pre>
+
+<p>In the capability bitmap of the first container, bits 12 and 25 are clear. In the second container,
+bits 12 and 25 are set. Bit 12 is <code>CAP_NET_ADMIN</code>, and bit 25 is <code>CAP_SYS_TIME</code>.
+See <a href="https://github.com/torvalds/linux/blob/master/include/uapi/linux/capability.h" target="_blank">capability.h</a>
+for definitions of the capability constants.</p>
+
+<blockquote class="note">
+  <div><strong>Note:</strong> Linux capability constants have the form <code>CAP_XXX</code>. But when you list capabilities in your Container manifest, you must omit the <code>CAP_</code> portion of the constant. For example, to add <code>CAP_SYS_TIME</code>, include <code>SYS_TIME</code> in your list of capabilities.</div>
+</blockquote>
+
+<h2 id="assign-selinux-labels-to-a-container">Assign SELinux labels to a Container</h2>
+
+<p>To assign SELinux labels to a Container, include the <code>seLinuxOptions</code> field in
+the <code>securityContext</code> section of your Pod or Container manifest. The
+<code>seLinuxOptions</code> field is an
+<a href="/docs/reference/generated/kubernetes-api/v1.11/#selinuxoptions-v1-core">SELinuxOptions</a>
+object. Here&rsquo;s an example that applies an SELinux level:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">...<span style="color:#bbb">
+</span><span style="color:#bbb"></span>securityContext:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>seLinuxOptions:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>level:<span style="color:#bbb"> </span><span style="color:#b44">&#34;s0:c123,c456&#34;</span></code></pre></div>
+<blockquote class="note">
+  <div><strong>Note:</strong> To assign SELinux labels, the SELinux security module must be loaded on the host operating system.</div>
+</blockquote>
+
+<h2 id="discussion">Discussion</h2>
+
+<p>The security context for a Pod applies to the Pod&rsquo;s Containers and also to
+the Pod&rsquo;s Volumes when applicable. Specifically <code>fsGroup</code> and <code>seLinuxOptions</code> are
+applied to Volumes as follows:</p>
+
+<ul>
+<li><p><code>fsGroup</code>: Volumes that support ownership management are modified to be owned
+and writable by the GID specified in <code>fsGroup</code>. See the
+<a href="https://git.k8s.io/community/contributors/design-proposals/storage/volume-ownership-management.md" target="_blank">Ownership Management design document</a>
+for more details.</p></li>
+
+<li><p><code>seLinuxOptions</code>: Volumes that support SELinux labeling are relabeled to be accessible
+by the label specified under <code>seLinuxOptions</code>. Usually you only
+need to set the <code>level</code> section. This sets the
+<a href="https://selinuxproject.org/page/NB_MLS" target="_blank">Multi-Category Security (MCS)</a>
+label given to all Containers in the Pod as well as the Volumes.</p></li>
+</ul>
+
+<blockquote class="warning">
+  <div><strong>Warning:</strong> After you specify an MCS label for a Pod, all Pods with the same label can access the Volume. If you need inter-Pod protection, you must assign a unique MCS label to each Pod.</div>
+</blockquote>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="what-s-next">What&#39;s next</h2>
+<ul>
+<li><a href="/docs/reference/generated/kubernetes-api/v1.11/#podsecuritycontext-v1-core">PodSecurityContext</a></li>
+<li><a href="/docs/reference/generated/kubernetes-api/v1.11/#securitycontext-v1-core">SecurityContext</a></li>
+<li><a href="https://opensource.com/business/15/3/docker-security-tuning" target="_blank">Tuning Docker with the newest security enhancements</a></li>
+<li><a href="https://git.k8s.io/community/contributors/design-proposals/auth/security_context.md" target="_blank">Security Contexts design document</a></li>
+<li><a href="https://git.k8s.io/community/contributors/design-proposals/storage/volume-ownership-management.md" target="_blank">Ownership Management design document</a></li>
+<li><a href="/docs/concepts/policy/pod-security-policy/">Pod Security Policies</a></li>
+<li><a href="https://git.k8s.io/community/contributors/design-proposals/auth/no-new-privs.md" target="_blank">AllowPrivilegeEscalation design
+document</a></li>
+</ul>
+
+
+
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/tasks/configure-pod-container/security-context.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/tasks\/configure-pod-container\/security-context\/",
+					"title" : "Configure a Security Context for a Pod or Container",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/tasks\/configure-pod-container\/security-context\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/tasks/configure-pod-container/security-context.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

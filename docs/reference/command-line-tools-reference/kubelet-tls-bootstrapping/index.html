@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>TLS bootstrapping - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="TLS bootstrapping" />
+<meta property="og:description" content="TLS bootstrapping" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet-tls-bootstrapping/" />
+<meta property="og:title" content="TLS bootstrapping - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h1>Reference Documentation</h1>
+<h5></h5>
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/" class="YAH">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Reference" href="/docs/reference/"></a>
+
+	
+	
+		
+		
+<a class="item" data-title="Standardized Glossary" href="/docs/reference/glossary/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Kubernetes Issues and Security">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Kubernetes Issue Tracker" href="/docs/reference/issues-security/issues/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes Security and Disclosure Information" href="/docs/reference/issues-security/security/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Using the Kubernetes API">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Kubernetes API Overview" href="/docs/reference/using-api/api-overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes API Concepts" href="/docs/reference/using-api/api-concepts/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Client Libraries" href="/docs/reference/using-api/client-libraries/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes Deprecation Policy" href="/docs/reference/using-api/deprecation-policy/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Accessing the API">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Controlling Access to the Kubernetes API" href="/docs/reference/access-authn-authz/controlling-access/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Authenticating" href="/docs/reference/access-authn-authz/authentication/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Authenticating with Bootstrap Tokens" href="/docs/reference/access-authn-authz/bootstrap-tokens/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using Admission Controllers" href="/docs/reference/access-authn-authz/admission-controllers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Dynamic Admission Control" href="/docs/reference/access-authn-authz/extensible-admission-controllers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Managing Service Accounts" href="/docs/reference/access-authn-authz/service-accounts-admin/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Authorization Overview" href="/docs/reference/access-authn-authz/authorization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using RBAC Authorization" href="/docs/reference/access-authn-authz/rbac/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using ABAC Authorization" href="/docs/reference/access-authn-authz/abac/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using Node Authorization" href="/docs/reference/access-authn-authz/node/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Webhook Mode" href="/docs/reference/access-authn-authz/webhook/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="API Reference">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Well-Known Labels, Annotations and Taints" href="/docs/reference/kubernetes-api/labels-annotations-taints/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="v1.11" href="/docs/reference/kubernetes-api/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Federation API">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="extensions/v1beta1 Model Definitions" href="/docs/reference/federation/extensions/v1beta1/definitions/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="extensions/v1beta1 Operations" href="/docs/reference/federation/extensions/v1beta1/operations/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="v1 Model Definitions" href="/docs/reference/federation/v1/definitions/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="v1 Operations" href="/docs/reference/federation/v1/operations/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Setup tools reference">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+	<div class="item" data-title="Kubeadm">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Overview of kubeadm" href="/docs/reference/setup-tools/kubeadm/kubeadm/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm init" href="/docs/reference/setup-tools/kubeadm/kubeadm-init/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm join" href="/docs/reference/setup-tools/kubeadm/kubeadm-join/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm upgrade" href="/docs/reference/setup-tools/kubeadm/kubeadm-upgrade/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm config" href="/docs/reference/setup-tools/kubeadm/kubeadm-config/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm reset" href="/docs/reference/setup-tools/kubeadm/kubeadm-reset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm token" href="/docs/reference/setup-tools/kubeadm/kubeadm-token/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm version" href="/docs/reference/setup-tools/kubeadm/kubeadm-version/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm alpha" href="/docs/reference/setup-tools/kubeadm/kubeadm-alpha/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Implementation details" href="/docs/reference/setup-tools/kubeadm/implementation-details/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="kubefed">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="kubefed" href="/docs/reference/setup-tools/kubefed/kubefed/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubefed options" href="/docs/reference/setup-tools/kubefed/kubefed-options/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubefed init" href="/docs/reference/setup-tools/kubefed/kubefed-init/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubefed join" href="/docs/reference/setup-tools/kubefed/kubefed-join/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubefed unjoin" href="/docs/reference/setup-tools/kubefed/kubefed-unjoin/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubefed version" href="/docs/reference/setup-tools/kubefed/kubefed-version/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Command line tools reference">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Feature Gates" href="/docs/reference/command-line-tools-reference/feature-gates/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="federation-apiserver" href="/docs/reference/command-line-tools-reference/federation-apiserver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="federation-controller-manager" href="/docs/reference/command-line-tools-reference/federation-controller-manager/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubelet authentication/authorization" href="/docs/reference/command-line-tools-reference/kubelet-authentication-authorization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="TLS bootstrapping" href="/docs/reference/command-line-tools-reference/kubelet-tls-bootstrapping/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="cloud-controller-manager" href="/docs/reference/command-line-tools-reference/cloud-controller-manager/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kube-apiserver" href="/docs/reference/command-line-tools-reference/kube-apiserver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kube-controller-manager" href="/docs/reference/command-line-tools-reference/kube-controller-manager/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kube-proxy" href="/docs/reference/command-line-tools-reference/kube-proxy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kube-scheduler" href="/docs/reference/command-line-tools-reference/kube-scheduler/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubelet" href="/docs/reference/command-line-tools-reference/kubelet/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="kubectl CLI">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="JSONPath Support" href="/docs/reference/kubectl/jsonpath/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Overview of kubectl" href="/docs/reference/kubectl/overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubectl" href="/docs/reference/kubectl/kubectl/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubectl Cheat Sheet" href="/docs/reference/kubectl/cheatsheet/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubectl Commands" href="/docs/reference/kubectl/kubectl-cmds/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubectl Usage Conventions" href="/docs/reference/kubectl/conventions/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubectl for Docker Users" href="/docs/reference/kubectl/docker-cli-to-kubectl/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Tools" href="/docs/reference/tools/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/reference/command-line-tools-reference/kubelet-tls-bootstrapping.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>TLS bootstrapping</h1>
+
+
+
+
+
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#kube-apiserver-configuration">kube-apiserver configuration</a>
+<ul>
+<li><a href="#token-authentication-file">Token authentication file</a></li>
+<li><a href="#client-certificate-ca-bundle">Client certificate CA bundle</a></li>
+</ul></li>
+<li><a href="#kube-controller-manager-configuration">kube-controller-manager configuration</a>
+<ul>
+<li><a href="#signing-assets">Signing assets</a></li>
+<li><a href="#approval-controller">Approval controller</a></li>
+</ul></li>
+<li><a href="#kubelet-configuration">kubelet configuration</a></li>
+<li><a href="#kubectl-approval">kubectl approval</a></li>
+</ul></li>
+</ul>
+</nav>
+
+<h2 id="overview">Overview</h2>
+
+<p>This document describes how to set up TLS client certificate bootstrapping for kubelets.
+Kubernetes 1.4 introduced an API for requesting certificates from a cluster-level Certificate Authority (CA). The original intent of this API is to enable provisioning of TLS client certificates for kubelets. The proposal can be found <a href="https://github.com/kubernetes/kubernetes/pull/20439" target="_blank">here</a>
+and progress on the feature is being tracked as <a href="https://github.com/kubernetes/features/issues/43" target="_blank">feature #43</a>.</p>
+
+<h2 id="kube-apiserver-configuration">kube-apiserver configuration</h2>
+
+<p>The API server should be configured with an <a href="/docs/admin/authentication/">authenticator</a> that can authenticate tokens as a user in the <code>system:bootstrappers</code> group.</p>
+
+<p>This group will later be used in the controller-manager configuration to scope approvals in the default approval
+controller. As this feature matures, you should ensure tokens are bound to a Role-Based Access Control (RBAC) policy which limits requests
+(using the bootstrap token) strictly to client requests related to certificate provisioning. With RBAC in place, scoping the tokens to a group allows for great flexibility (e.g. you could disable a particular bootstrap group&rsquo;s access when you are done provisioning the nodes).</p>
+
+<p>While any authentication strategy can be used for the kubelet&rsquo;s initial bootstrap credentials, the following two authenticators are recommended for ease of provisioning.</p>
+
+<ol>
+<li><a href="/docs/admin/bootstrap-tokens/">Bootstrap Tokens</a> - <strong>alpha</strong></li>
+<li><a href="#token-authentication-file">Token authentication file</a></li>
+</ol>
+
+<p>Using bootstrap tokens is currently <strong>alpha</strong> and will simplify the management of bootstrap token management especially in a HA scenario.</p>
+
+<h3 id="token-authentication-file">Token authentication file</h3>
+
+<p>Tokens are arbitrary but should represent at least 128 bits of entropy derived from a secure random number
+generator (such as /dev/urandom on most modern systems). There are multiple ways you can generate a token. For example:</p>
+
+<p><code>head -c 16 /dev/urandom | od -An -t x | tr -d ' '</code></p>
+
+<p>will generate tokens that look like <code>02b50b05283e98dd0fd71db496ef01e8</code></p>
+
+<p>The token file should look like the following example, where the first three values can be anything and the quoted group
+name should be as depicted:</p>
+
+<pre><code>02b50b05283e98dd0fd71db496ef01e8,kubelet-bootstrap,10001,&quot;system:bootstrappers&quot;
+</code></pre>
+
+<p>Add the <code>--token-auth-file=FILENAME</code> flag to the kube-apiserver command (in your systemd unit file perhaps) to enable the token file.
+See docs <a href="/docs/admin/authentication/#static-token-file">here</a> for further details.</p>
+
+<h3 id="client-certificate-ca-bundle">Client certificate CA bundle</h3>
+
+<p>Add the <code>--client-ca-file=FILENAME</code> flag to the kube-apiserver command to enable client certificate authentication,
+referencing a certificate authority bundle containing the signing certificate (e.g. <code>--client-ca-file=/var/lib/kubernetes/ca.pem</code>).</p>
+
+<h2 id="kube-controller-manager-configuration">kube-controller-manager configuration</h2>
+
+<p>The API for requesting certificates adds a certificate-issuing control loop to the Kubernetes Controller Manager. This takes the form of a
+<a href="https://blog.cloudflare.com/introducing-cfssl/" target="_blank">cfssl</a> local signer using assets on disk. Currently, all certificates issued have one year validity and a default set of key usages.</p>
+
+<h3 id="signing-assets">Signing assets</h3>
+
+<p>You must provide a Certificate Authority in order to provide the cryptographic materials necessary to issue certificates.
+This CA should be trusted by kube-apiserver for authentication with the <code>--client-ca-file=FILENAME</code> flag. The management
+of the CA is beyond the scope of this document but it is recommended that you generate a dedicated CA for Kubernetes.
+Both certificate and key are assumed to be PEM-encoded.</p>
+
+<p>The kube-controller-manager flags are:</p>
+
+<pre><code>--cluster-signing-cert-file=&quot;/etc/path/to/kubernetes/ca/ca.crt&quot; --cluster-signing-key-file=&quot;/etc/path/to/kubernetes/ca/ca.key&quot;
+</code></pre>
+
+<h3 id="approval-controller">Approval controller</h3>
+
+<p>In 1.7 the experimental &ldquo;group auto approver&rdquo; controller is dropped in favor of the new <code>csrapproving</code> controller
+that ships as part of <a href="/docs/admin/kube-controller-manager/">kube-controller-manager</a> and is enabled by default.
+The controller uses the <a href="/docs/admin/authorization/#checking-api-access"><code>SubjectAccessReview</code> API</a> to determine
+if a given user is authorized to request a CSR, then approves based on the authorization outcome. To prevent
+conflicts with other approvers, the builtin approver doesn&rsquo;t explicitly deny CSRs, only ignoring unauthorized requests.</p>
+
+<p>The controller categorizes CSRs into three subresources:</p>
+
+<ol>
+<li><code>nodeclient</code> - a request by a user for a client certificate with <code>O=system:nodes</code> and <code>CN=system:node:(node name)</code>.</li>
+<li><code>selfnodeclient</code> - a node renewing a client certificate with the same <code>O</code> and <code>CN</code>.</li>
+<li><code>selfnodeserver</code> - a node renewing a serving certificate. (ALPHA, requires feature gate)</li>
+</ol>
+
+<p>The checks to determine if a CSR is a <code>selfnodeserver</code> request is currently tied to the kubelet&rsquo;s credential rotation
+implementation, an <strong>alpha</strong> feature. As such, the definition of <code>selfnodeserver</code> will likely change in a future and
+requires the <code>RotateKubeletServerCertificate</code> feature gate on the controller manager. The feature progress can be
+tracked at <a href="https://github.com/kubernetes/features/issues/267" target="_blank">kubernetes/features#267</a>.</p>
+
+<pre><code>--feature-gates=RotateKubeletServerCertificate=true
+</code></pre>
+
+<p>The following RBAC <code>ClusterRoles</code> represent the <code>nodeclient</code>, <code>selfnodeclient</code>, and <code>selfnodeserver</code> capabilities. Similar roles
+may be automatically created in future releases.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#080;font-style:italic"># A ClusterRole which instructs the CSR approver to approve a user requesting</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#080;font-style:italic"># node client credentials.</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>ClusterRole<span style="color:#bbb">
+</span><span style="color:#bbb"></span>apiVersion:<span style="color:#bbb"> </span>rbac.authorization.k8s.io/v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>approve-node-client-csr<span style="color:#bbb">
+</span><span style="color:#bbb"></span>rules:<span style="color:#bbb">
+</span><span style="color:#bbb"></span>-<span style="color:#bbb"> </span>apiGroups:<span style="color:#bbb"> </span>[<span style="color:#b44">&#34;certificates.k8s.io&#34;</span>]<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>resources:<span style="color:#bbb"> </span>[<span style="color:#b44">&#34;certificatesigningrequests/nodeclient&#34;</span>]<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>verbs:<span style="color:#bbb"> </span>[<span style="color:#b44">&#34;create&#34;</span>]<span style="color:#bbb">
+</span><span style="color:#bbb"></span>---<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#080;font-style:italic"># A ClusterRole which instructs the CSR approver to approve a node renewing its</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#080;font-style:italic"># own client credentials.</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>ClusterRole<span style="color:#bbb">
+</span><span style="color:#bbb"></span>apiVersion:<span style="color:#bbb"> </span>rbac.authorization.k8s.io/v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>approve-node-client-renewal-csr<span style="color:#bbb">
+</span><span style="color:#bbb"></span>rules:<span style="color:#bbb">
+</span><span style="color:#bbb"></span>-<span style="color:#bbb"> </span>apiGroups:<span style="color:#bbb"> </span>[<span style="color:#b44">&#34;certificates.k8s.io&#34;</span>]<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>resources:<span style="color:#bbb"> </span>[<span style="color:#b44">&#34;certificatesigningrequests/selfnodeclient&#34;</span>]<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>verbs:<span style="color:#bbb"> </span>[<span style="color:#b44">&#34;create&#34;</span>]<span style="color:#bbb">
+</span><span style="color:#bbb"></span>---<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#080;font-style:italic"># A ClusterRole which instructs the CSR approver to approve a node requesting a</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#080;font-style:italic"># serving cert matching its client cert.</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>ClusterRole<span style="color:#bbb">
+</span><span style="color:#bbb"></span>apiVersion:<span style="color:#bbb"> </span>rbac.authorization.k8s.io/v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>approve-node-server-renewal-csr<span style="color:#bbb">
+</span><span style="color:#bbb"></span>rules:<span style="color:#bbb">
+</span><span style="color:#bbb"></span>-<span style="color:#bbb"> </span>apiGroups:<span style="color:#bbb"> </span>[<span style="color:#b44">&#34;certificates.k8s.io&#34;</span>]<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>resources:<span style="color:#bbb"> </span>[<span style="color:#b44">&#34;certificatesigningrequests/selfnodeserver&#34;</span>]<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>verbs:<span style="color:#bbb"> </span>[<span style="color:#b44">&#34;create&#34;</span>]</code></pre></div>
+<p>As of 1.8, equivalent roles to the ones listed above are automatically created as part of the default RBAC roles.
+For 1.8 clusters admins are recommended to bind tokens to the following roles instead of creating their own:</p>
+
+<ul>
+<li><code>system:certificates.k8s.io:certificatesigningrequests:nodeclient</code>
+
+<ul>
+<li>Automatically approve CSRs for client certs bound to this role.</li>
+</ul></li>
+<li><code>system:certificates.k8s.io:certificatesigningrequests:selfnodeclient</code>
+
+<ul>
+<li>Automatically approve CSRs when a client bound to its role renews its own certificate.</li>
+</ul></li>
+</ul>
+
+<p>These powers can be granted to credentials, such as bootstrapping tokens. For example, to replicate the behavior
+provided by the removed auto-approval flag, of approving all CSRs by a single group:</p>
+
+<pre><code># REMOVED: This flag no longer works as of 1.7.
+--insecure-experimental-approve-all-kubelet-csrs-for-group=&quot;system:bootstrappers&quot;
+</code></pre>
+
+<p>An admin would create a <code>ClusterRoleBinding</code> targeting that group.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#080;font-style:italic"># Approve all CSRs for the group &#34;system:bootstrappers&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>ClusterRoleBinding<span style="color:#bbb">
+</span><span style="color:#bbb"></span>apiVersion:<span style="color:#bbb"> </span>rbac.authorization.k8s.io/v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>auto-approve-csrs-for-group<span style="color:#bbb">
+</span><span style="color:#bbb"></span>subjects:<span style="color:#bbb">
+</span><span style="color:#bbb"></span>-<span style="color:#bbb"> </span>kind:<span style="color:#bbb"> </span>Group<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>system:bootstrappers<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>apiGroup:<span style="color:#bbb"> </span>rbac.authorization.k8s.io<span style="color:#bbb">
+</span><span style="color:#bbb"></span>roleRef:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>kind:<span style="color:#bbb"> </span>ClusterRole<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>approve-node-client-csr<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>apiGroup:<span style="color:#bbb"> </span>rbac.authorization.k8s.io</code></pre></div>
+<p>To let a node renew its own credentials, an admin can construct a <code>ClusterRoleBinding</code> targeting
+that node&rsquo;s credentials:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml">kind:<span style="color:#bbb"> </span>ClusterRoleBinding<span style="color:#bbb">
+</span><span style="color:#bbb"></span>apiVersion:<span style="color:#bbb"> </span>rbac.authorization.k8s.io/v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>node1-client-cert-renewal<span style="color:#bbb">
+</span><span style="color:#bbb"></span>subjects:<span style="color:#bbb">
+</span><span style="color:#bbb"></span>-<span style="color:#bbb"> </span>kind:<span style="color:#bbb"> </span>User<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>system:node:node-<span style="color:#666">1</span><span style="color:#bbb"> </span><span style="color:#080;font-style:italic"># Let &#34;node-1&#34; renew its client certificate.</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>apiGroup:<span style="color:#bbb"> </span>rbac.authorization.k8s.io<span style="color:#bbb">
+</span><span style="color:#bbb"></span>roleRef:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>kind:<span style="color:#bbb"> </span>ClusterRole<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>approve-node-client-renewal-csr<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>apiGroup:<span style="color:#bbb"> </span>rbac.authorization.k8s.io</code></pre></div>
+<p>Deleting the binding will prevent the node from renewing its client credentials, effectively
+removing it from the cluster once its certificate expires.</p>
+
+<h2 id="kubelet-configuration">kubelet configuration</h2>
+
+<p>To request a client certificate from kube-apiserver, the kubelet first needs a path to a kubeconfig file that contains the
+bootstrap authentication token. You can use <code>kubectl config set-cluster</code>, <code>set-credentials</code>, and <code>set-context</code> to build this kubeconfig. Provide the name <code>kubelet-bootstrap</code> to <code>kubectl config set-credentials</code> and include <code>--token=&lt;token-value&gt;</code> as follows:</p>
+
+<pre><code>kubectl config set-credentials kubelet-bootstrap --token=${BOOTSTRAP_TOKEN} --kubeconfig=bootstrap.kubeconfig
+</code></pre>
+
+<p>When starting the kubelet, if the file specified by <code>--kubeconfig</code> does not exist, the bootstrap kubeconfig is used to request a client certificate from the API server. On approval of the certificate request and receipt back by the kubelet, a kubeconfig file referencing the generated key and obtained certificate is written to the path specified by <code>--kubeconfig</code>. The certificate and key file will be placed in the directory specified by <code>--cert-dir</code>.</p>
+
+<p><strong>Note:</strong> The following flags are required to enable this bootstrapping when starting the kubelet:</p>
+
+<pre><code>--bootstrap-kubeconfig=&quot;/path/to/bootstrap/kubeconfig&quot;
+</code></pre>
+
+<p>Additionally, in 1.7 the kubelet implements <strong>alpha</strong> features for enabling rotation of both its client and/or serving certs.
+These can be enabled through the respective <code>RotateKubeletClientCertificate</code> and <code>RotateKubeletServerCertificate</code> feature
+flags on the kubelet, but may change in backward incompatible ways in future releases.</p>
+
+<pre><code>--feature-gates=RotateKubeletClientCertificate=true,RotateKubeletServerCertificate=true
+</code></pre>
+
+<p><code>RotateKubeletClientCertificate</code> causes the kubelet to rotate its client certificates by creating new CSRs as its existing
+credentials expire. <code>RotateKubeletServerCertificate</code> causes the kubelet to both request a serving certificate after
+bootstrapping its client credentials and rotate the certificate. The serving cert currently does not request DNS or IP
+SANs.</p>
+
+<h2 id="kubectl-approval">kubectl approval</h2>
+
+<p>The signing controller does not immediately sign all certificate requests. Instead, it waits until they have been flagged with an
+&ldquo;Approved&rdquo; status by an appropriately-privileged user. This is intended to eventually be an automated process handled by an external
+approval controller, but for the alpha version of the API it can be done manually by a cluster administrator using kubectl.
+An administrator can list CSRs with <code>kubectl get csr</code> and describe one in detail with <code>kubectl describe csr &lt;name&gt;</code>. Before the 1.6 release there were
+<a href="https://github.com/kubernetes/kubernetes/issues/30163" target="_blank">no direct approve/deny commands</a> so an approver had to update
+the Status field directly (<a href="https://github.com/gtank/csrctl" target="_blank">rough how-to</a>). Later versions of Kubernetes offer <code>kubectl certificate approve &lt;name&gt;</code> and <code>kubectl certificate deny &lt;name&gt;</code> commands.</p>
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/reference/command-line-tools-reference/kubelet-tls-bootstrapping.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/reference\/command-line-tools-reference\/kubelet-tls-bootstrapping\/",
+					"title" : "TLS bootstrapping",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/reference\/command-line-tools-reference\/kubelet-tls-bootstrapping\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/reference/command-line-tools-reference/kubelet-tls-bootstrapping.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

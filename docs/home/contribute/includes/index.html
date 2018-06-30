@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Custom Hugo Shortcodes - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="Custom Hugo Shortcodes" />
+<meta property="og:description" content="Custom Hugo Shortcodes" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/home/contribute/includes/" />
+<meta property="og:title" content="Custom Hugo Shortcodes - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+<h1></h1>
+<h5></h5>
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/" class="YAH">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Documentation" href="/docs/home/"></a>
+
+	
+	
+		
+		
+	<div class="item" data-title="Contributing to the Kubernetes Docs">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Content Organization" href="/docs/home/contribute/content-organization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Creating a Documentation Pull Request" href="/docs/home/contribute/create-pull-request/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Custom Hugo Shortcodes" href="/docs/home/contribute/includes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Documentation Style Guide" href="/docs/home/contribute/style-guide/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Generating Reference Documentation for Kubernetes Federation API" href="/docs/home/contribute/generated-reference/federation-api/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Generating Reference Documentation for kubectl Commands" href="/docs/home/contribute/generated-reference/kubectl/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Generating Reference Documentation for the Kubernetes API" href="/docs/home/contribute/generated-reference/kubernetes-api/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Generating Reference Pages for Kubernetes Components and Tools" href="/docs/home/contribute/generated-reference/kubernetes-components/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Localizing Kubernetes Documentation" href="/docs/home/contribute/localization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Participating in SIG-DOCS" href="/docs/home/contribute/participating/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Reviewing Documentation Issues" href="/docs/home/contribute/review-issues/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using Page Templates" href="/docs/home/contribute/page-templates/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Writing a Blog Post" href="/docs/home/contribute/blog-post/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Writing a New Topic" href="/docs/home/contribute/write-new-topic/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Supported Versions of the Kubernetes Documentation" href="/docs/home/supported-doc-versions/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/home/contribute/includes/index.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>Custom Hugo Shortcodes</h1>
+
+
+
+<p>This page explains the custom Hugo shortcodes that can be used in Kubernetes documentation markdown.</p>
+
+<p>Read more about shortcodes in the <a href="https://gohugo.io/content-management/shortcodes" target="_blank">Hugo documentation</a>.</p>
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+<li><a href="#feature-state">Feature state</a></li>
+
+
+
+
+<li><a href="#glossary">Glossary</a></li>
+
+
+
+
+<li><a href="#tabs">Tabs</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#what-s-next">What's next</a></li>
+
+
+
+</ul>
+
+
+<h2 id="feature-state">Feature state</h2>
+
+<p>In a markdown page (.md file) on this site, you can add a shortcode to display version and state of the documented feature.</p>
+
+<h3 id="feature-state-demo">Feature state demo</h3>
+
+<p>Below is a demo of the feature state snippet. Here it is used to display the feature as stable in Kubernetes version 1.10.</p>
+
+<pre><code>{{&lt; feature-state for_k8s_version=&quot;v1.10&quot; state=&quot;stable&quot; &gt;}}
+</code></pre>
+
+<p>Will render to:</p>
+
+<div style="margin-top: 10px; margin-bottom: 10px;">
+
+
+
+<b>FEATURE STATE:</b> <code>Kubernetes v1.10</code>
+
+
+
+
+    
+    
+    
+    
+    
+<a href="#" id="feature-state-dialog-link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-newwin"></span>stable</a>
+<div id="feature-state-dialog" class="ui-dialog-content" title="stable">
+This feature is <em>stable</em>, meaning:</p>
+
+<ul>
+<li>The version name is vX where X is an integer.</li>
+<li>Stable versions of features will appear in released software for many subsequent versions.</li>
+</ul>
+
+</div>
+<script>
+$(function(){
+    
+    $( "#feature-state-dialog" ).dialog({
+        autoOpen: false,
+        width: "600",
+        buttons: [
+            {
+                text: "Ok",
+                click: function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        ]
+    });
+
+    
+    $( "#feature-state-dialog-link" ).click(function( event ) {
+        $( "#feature-state-dialog" ).dialog( "open" );
+        event.preventDefault();
+    });
+
+});
+</script>
+
+    
+
+</div>
+
+<p>The valid values for <code>state</code> are:</p>
+
+<ul>
+<li>alpha</li>
+<li>beta</li>
+<li>deprecated</li>
+<li>stable</li>
+</ul>
+
+<h3 id="feature-state-code">Feature state code</h3>
+
+<p>Below is the template code for each available feature state.</p>
+
+<p>The displayed Kubernetes version defaults to that of the page or the site. This can be changed by passing the <code>for_k8s_version</code> shortcode parameter.</p>
+
+<pre><code>{{&lt; feature-state for_k8s_version=&quot;v1.10&quot; state=&quot;stable&quot; &gt;}}
+</code></pre>
+
+<p>Renders to:</p>
+
+<div style="margin-top: 10px; margin-bottom: 10px;">
+
+
+
+<b>FEATURE STATE:</b> <code>Kubernetes v1.10</code>
+
+
+
+
+    
+    
+    
+    
+    
+<a href="#" id="feature-state-dialog-link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-newwin"></span>stable</a>
+<div id="feature-state-dialog" class="ui-dialog-content" title="stable">
+This feature is <em>stable</em>, meaning:</p>
+
+<ul>
+<li>The version name is vX where X is an integer.</li>
+<li>Stable versions of features will appear in released software for many subsequent versions.</li>
+</ul>
+
+</div>
+<script>
+$(function(){
+    
+    $( "#feature-state-dialog" ).dialog({
+        autoOpen: false,
+        width: "600",
+        buttons: [
+            {
+                text: "Ok",
+                click: function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        ]
+    });
+
+    
+    $( "#feature-state-dialog-link" ).click(function( event ) {
+        $( "#feature-state-dialog" ).dialog( "open" );
+        event.preventDefault();
+    });
+
+});
+</script>
+
+    
+
+</div>
+
+<h4 id="alpha-feature">Alpha feature</h4>
+
+<pre><code>{{&lt; feature-state feature-state state=&quot;alpha&quot; &gt;}}
+</code></pre>
+
+<p>Renders to:</p>
+
+<div style="margin-top: 10px; margin-bottom: 10px;">
+
+
+
+<b>FEATURE STATE:</b> <code>Kubernetes v1.11</code>
+
+
+
+
+    
+    
+    
+    
+    
+<a href="#" id="feature-state-dialog-link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-newwin"></span>alpha</a>
+<div id="feature-state-dialog" class="ui-dialog-content" title="alpha">
+This feature is currently in a <em>alpha</em> state, meaning:</p>
+
+<ul>
+<li>The version names contain alpha (e.g. v1alpha1).</li>
+<li>Might be buggy. Enabling the feature may expose bugs. Disabled by default.</li>
+<li>Support for feature may be dropped at any time without notice.</li>
+<li>The API may change in incompatible ways in a later software release without notice.</li>
+<li>Recommended for use only in short-lived testing clusters, due to increased risk of bugs and lack of long-term support.</li>
+</ul>
+
+</div>
+<script>
+$(function(){
+    
+    $( "#feature-state-dialog" ).dialog({
+        autoOpen: false,
+        width: "600",
+        buttons: [
+            {
+                text: "Ok",
+                click: function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        ]
+    });
+
+    
+    $( "#feature-state-dialog-link" ).click(function( event ) {
+        $( "#feature-state-dialog" ).dialog( "open" );
+        event.preventDefault();
+    });
+
+});
+</script>
+
+    
+
+</div>
+
+<h4 id="beta-feature">Beta feature</h4>
+
+<pre><code>{{&lt; feature-state feature-state state=&quot;beta&quot; &gt;}}
+</code></pre>
+
+<p>Renders to:</p>
+
+<div style="margin-top: 10px; margin-bottom: 10px;">
+
+
+
+<b>FEATURE STATE:</b> <code>Kubernetes v1.11</code>
+
+
+
+
+    
+    
+    
+    
+    
+<a href="#" id="feature-state-dialog-link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-newwin"></span>beta</a>
+<div id="feature-state-dialog" class="ui-dialog-content" title="beta">
+This feature is currently in a <em>beta</em> state, meaning:</p>
+
+<ul>
+<li>The version names contain beta (e.g. v2beta3).</li>
+<li>Code is well tested. Enabling the feature is considered safe. Enabled by default.</li>
+<li>Support for the overall feature will not be dropped, though details may change.</li>
+<li>The schema and/or semantics of objects may change in incompatible ways in a subsequent beta or stable release. When this happens, we will provide instructions for migrating to the next version. This may require deleting, editing, and re-creating API objects. The editing process may require some thought. This may require downtime for applications that rely on the feature.</li>
+<li>Recommended for only non-business-critical uses because of potential for incompatible changes in subsequent releases. If you have multiple clusters that can be upgraded independently, you may be able to relax this restriction.</li>
+<li><strong>Please do try our beta features and give feedback on them! After they exit beta, it may not be practical for us to make more changes.</strong></li>
+</ul>
+
+</div>
+<script>
+$(function(){
+    
+    $( "#feature-state-dialog" ).dialog({
+        autoOpen: false,
+        width: "600",
+        buttons: [
+            {
+                text: "Ok",
+                click: function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        ]
+    });
+
+    
+    $( "#feature-state-dialog-link" ).click(function( event ) {
+        $( "#feature-state-dialog" ).dialog( "open" );
+        event.preventDefault();
+    });
+
+});
+</script>
+
+    
+
+</div>
+
+<h4 id="stable-feature">Stable feature</h4>
+
+<pre><code>{{&lt; feature-state feature-state state=&quot;stable&quot; &gt;}}
+</code></pre>
+
+<p>Renders to:</p>
+
+<div style="margin-top: 10px; margin-bottom: 10px;">
+
+
+
+<b>FEATURE STATE:</b> <code>Kubernetes v1.11</code>
+
+
+
+
+    
+    
+    
+    
+    
+<a href="#" id="feature-state-dialog-link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-newwin"></span>stable</a>
+<div id="feature-state-dialog" class="ui-dialog-content" title="stable">
+This feature is <em>stable</em>, meaning:</p>
+
+<ul>
+<li>The version name is vX where X is an integer.</li>
+<li>Stable versions of features will appear in released software for many subsequent versions.</li>
+</ul>
+
+</div>
+<script>
+$(function(){
+    
+    $( "#feature-state-dialog" ).dialog({
+        autoOpen: false,
+        width: "600",
+        buttons: [
+            {
+                text: "Ok",
+                click: function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        ]
+    });
+
+    
+    $( "#feature-state-dialog-link" ).click(function( event ) {
+        $( "#feature-state-dialog" ).dialog( "open" );
+        event.preventDefault();
+    });
+
+});
+</script>
+
+    
+
+</div>
+
+<h4 id="deprecated-feature">Deprecated feature</h4>
+
+<pre><code>{{&lt; feature-state feature-state state=&quot;deprecated&quot; &gt;}}
+</code></pre>
+
+<p>Renders to:</p>
+
+<div style="margin-top: 10px; margin-bottom: 10px;">
+
+
+
+<b>FEATURE STATE:</b> <code>Kubernetes v1.11</code>
+
+
+
+
+    
+    
+    
+    
+    
+<a href="#" id="feature-state-dialog-link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-newwin"></span>deprecated</a>
+<div id="feature-state-dialog" class="ui-dialog-content" title="deprecated">
+This feature is <em>deprecated</em>. For more information on this state, see the <a href="/docs/reference/deprecation-policy/">Kubernetes Deprecation Policy</a>.
+</div>
+<script>
+$(function(){
+    
+    $( "#feature-state-dialog" ).dialog({
+        autoOpen: false,
+        width: "600",
+        buttons: [
+            {
+                text: "Ok",
+                click: function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        ]
+    });
+
+    
+    $( "#feature-state-dialog-link" ).click(function( event ) {
+        $( "#feature-state-dialog" ).dialog( "open" );
+        event.preventDefault();
+    });
+
+});
+</script>
+
+    
+
+</div>
+
+<h2 id="glossary">Glossary</h2>
+
+<p>You can reference glossary terms with an inclusion that will automatically update and replace content with the relevant links from <a href="/docs/reference/glossary/">our glossary</a>. When the term is moused-over by someone
+using the online documentation, the glossary entry will display a tooltip.</p>
+
+<p>The raw data for glossary terms is stored at <a href="https://github.com/kubernetes/website/tree/master/content/en/docs/reference/glossary" target="_blank">https://github.com/kubernetes/website/tree/master/content/en/docs/reference/glossary</a>, with a content file for each glossary term.</p>
+
+<h3 id="glossary-demo">Glossary Demo</h3>
+
+<p>For example, the following include within the markdown will render to <a class='glossary-tooltip' href='/docs/reference/glossary/?all=true#term-cluster' target='_blank'>cluster<span class='tooltip-text'>A set of machines, called nodes, that run containerized applications managed by Kubernetes.</span>
+</a> with a tooltip:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-liquid" data-lang="liquid">{{&lt; glossary_tooltip text=&#34;cluster&#34; term_id=&#34;cluster&#34; &gt;}}</code></pre></div>
+<h2 id="tabs">Tabs</h2>
+
+<p>In a markdown page (<code>.md</code> file) on this site, you can add a tab set to display multiple flavors of a given solution.</p>
+
+<p>The <code>tabs</code> shortcode takes these parameters:</p>
+
+<ul>
+<li><code>name</code>: The name as shown on the tab.</li>
+<li><code>codelang</code>: If you provide inner content to the <code>tab</code> shortcode, you can tell Hugo what code language to use for highlighting.</li>
+
+<li><p><code>include</code>: The file to include in the tab. If the tab lives in a Hugo <a href="https://gohugo.io/content-management/page-bundles/#leaf-bundles" target="_blank">leaf bundle</a>, the file &ndash; which can be any MIME type supported by Hugo &ndash; will be looked up in the bundle itself. If not, the content page to include will be looked up relative to the current. Note that with the <code>include</code> you will not have any shortcode inner content and must use the self-closing syntax, e.g. {{&lt; tab name=&ldquo;Content File #1&rdquo; include=&ldquo;example1&rdquo; /&gt;}}. Non-content files will be code-highlighted. The language to use will be taken from the filename if not provided in <code>codelang</code>.</p></li>
+
+<li><p>If your inner content is markdown, you must use <code>%</code>-delimiter to surorund the tab, e.g. <code>{{% tab name=&quot;Tab 1&quot; %}}This is **markdown**{{% /tab %}}</code></p></li>
+
+<li><p>You can combine the variations mentioned above inside a tab set.</p></li>
+</ul>
+
+<p>Below is a demo of the tabs shortcode.</p>
+
+<blockquote class="note">
+  <div>The tab <strong>name</strong> in a <code>tabs</code> definition must be unique within a content page.</div>
+</blockquote>
+
+<h3 id="tabs-demo-code-highlighting">Tabs demo: Code highlighting</h3>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go-text-template" data-lang="go-text-template"><span style="color:#080">{{</span><span style="">&lt;</span><span style="color:#bbb"> </span>tabs<span style="color:#bbb"> </span>name<span style="">=</span><span style="color:#b44">&#34;tab_with_code&#34;</span><span style="color:#bbb"> </span><span style="">&gt;</span><span style="color:#080">}}</span>
+<span style="color:#080">{{</span><span style="">{&lt;</span><span style="color:#bbb"> </span>tab<span style="color:#bbb"> </span>name<span style="">=</span><span style="color:#b44">&#34;Tab 1&#34;</span><span style="color:#bbb"> </span>codelang<span style="">=</span><span style="color:#b44">&#34;bash&#34;</span><span style="color:#bbb"> </span><span style="">&gt;</span><span style="color:#080">}}</span>
+echo &#34;This is tab 1.&#34;
+<span style="color:#080">{{</span><span style="">&lt;</span><span style="color:#bbb"> </span><span style="">/</span>tab<span style="color:#bbb"> </span><span style="">&gt;</span><span style="color:#080">}}</span>
+<span style="color:#080">{{</span><span style="">&lt;</span><span style="color:#bbb"> </span>tab<span style="color:#bbb"> </span>name<span style="">=</span><span style="color:#b44">&#34;Tab 2&#34;</span><span style="color:#bbb"> </span>codelang<span style="">=</span><span style="color:#b44">&#34;go&#34;</span><span style="color:#bbb"> </span><span style="">&gt;</span><span style="color:#080">}}</span>
+println &#34;This is tab 2.&#34;
+<span style="color:#080">{{</span><span style="">&lt;</span><span style="color:#bbb"> </span><span style="">/</span>tab<span style="color:#bbb"> </span><span style="">&gt;</span><span style="color:#080">}}</span>}
+<span style="color:#080">{{</span><span style="">&lt;</span><span style="color:#bbb"> </span><span style="">/</span>tabs<span style="color:#bbb"> </span><span style="">&gt;</span><span style="color:#080">}}</span></code></pre></div>
+<p>Will be rendered as:</p>
+
+<div id="tab-with-code">
+<ul>
+    
+      
+  <li><a href="#tab-with-code-0">Tab 1</a></li>
+
+      
+  <li><a href="#tab-with-code-1">Tab 2</a></li>
+
+</ul>
+
+
+<div id="tab-with-code-0">
+    
+        <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">
+<span style="color:#a2f">echo</span> <span style="color:#b44">&#34;This is tab 1.&#34;</span>
+</code></pre></div>
+    
+
+<p></div></p>
+
+<div id="tab-with-code-1">
+    
+        <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">
+println <span style="color:#b44">&#34;This is tab 2.&#34;</span>
+</code></pre></div>
+    
+
+<p></div></p>
+
+<p></div></p>
+
+<script>$(function(){$("#tab-with-code").tabs();});</script>
+
+<h3 id="tabs-demo-inline-markdown-and-html">Tabs demo: Inline Markdown and HTML</h3>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go-html-template" data-lang="go-html-template"><span style="color:#080">{{</span><span style="">&lt;</span><span style="color:#bbb"> </span>tabs<span style="color:#bbb"> </span>name<span style="">=</span><span style="color:#b44">&#34;tab_with_md&#34;</span><span style="color:#bbb"> </span><span style="">&gt;</span><span style="color:#080">}}</span>
+<span style="color:#080">{{</span><span style="">%</span><span style="color:#bbb"> </span>tab<span style="color:#bbb"> </span>name<span style="">=</span><span style="color:#b44">&#34;Markdown&#34;</span><span style="color:#bbb"> </span><span style="">%</span><span style="color:#080">}}</span>
+This is **some markdown.**
+<span style="color:#080">{{</span><span style="">&lt;</span><span style="color:#bbb"> </span>note<span style="color:#bbb"> </span><span style="">&gt;</span><span style="color:#080">}}</span>**Note:** It can even contain shortcodes.<span style="color:#080">{{</span><span style="">&lt;</span><span style="color:#bbb"> </span><span style="">/</span>note<span style="color:#bbb"> </span><span style="">&gt;</span><span style="color:#080">}}</span>
+<span style="color:#080">{{</span><span style="">%</span><span style="color:#bbb"> </span><span style="">/</span>tab<span style="color:#bbb"> </span><span style="">%</span><span style="color:#080">}}</span>
+<span style="color:#080">{{</span><span style="">&lt;</span><span style="color:#bbb"> </span>tab<span style="color:#bbb"> </span>name<span style="">=</span><span style="color:#b44">&#34;HTML&#34;</span><span style="color:#bbb"> </span><span style="">&gt;</span><span style="color:#080">}}</span>
+&lt;<span style="color:#008000;font-weight:bold">div</span>&gt;
+	&lt;<span style="color:#008000;font-weight:bold">h3</span>&gt;Plain HTML&lt;/<span style="color:#008000;font-weight:bold">h3</span>&gt;
+	&lt;<span style="color:#008000;font-weight:bold">p</span>&gt;This is some &lt;<span style="color:#008000;font-weight:bold">i</span>&gt;plain&lt;/<span style="color:#008000;font-weight:bold">i</span>&gt; HTML.&lt;/<span style="color:#008000;font-weight:bold">p</span>&gt;
+&lt;/<span style="color:#008000;font-weight:bold">div</span>&gt;
+<span style="color:#080">{{</span><span style="">&lt;</span><span style="color:#bbb"> </span><span style="">/</span>tab<span style="color:#bbb"> </span><span style="">&gt;</span><span style="color:#080">}}</span>
+<span style="color:#080">{{</span><span style="">&lt;</span><span style="color:#bbb"> </span><span style="">/</span>tabs<span style="color:#bbb"> </span><span style="">&gt;</span><span style="color:#080">}}</span></code></pre></div>
+<p>Will be rendered as:</p>
+
+<div id="tab-with-md">
+<ul>
+    
+      
+  <li><a href="#tab-with-md-0">Markdown</a></li>
+
+      
+  <li><a href="#tab-with-md-1">HTML</a></li>
+
+</ul>
+
+
+<div id="tab-with-md-0">
+    
+        <p>This is <strong>some markdown.</strong>
+<blockquote class="note">
+  <div><strong>Note:</strong> It can even contain shortcodes.</div>
+</blockquote></p>
+
+    
+</div>
+
+<div id="tab-with-md-1">
+    
+        
+<div>
+    <h3>Plain HTML</h3>
+    <p>This is some <i>plain</i> HTML.</p>
+</div>
+
+<p></div></p>
+
+<p></div></p>
+
+<script>$(function(){$("#tab-with-md").tabs();});</script>
+
+<h3 id="tabs-demo-file-include">Tabs demo: File include</h3>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go-text-template" data-lang="go-text-template"><span style="color:#080">{{</span><span style="">&lt;</span><span style="color:#bbb"> </span>tabs<span style="color:#bbb"> </span>name<span style="">=</span><span style="color:#b44">&#34;tab_with_file_include&#34;</span><span style="color:#bbb"> </span><span style="">&gt;</span><span style="color:#080">}}</span>
+<span style="color:#080">{{</span><span style="">&lt;</span><span style="color:#bbb"> </span>tab<span style="color:#bbb"> </span>name<span style="">=</span><span style="color:#b44">&#34;Content File #1&#34;</span><span style="color:#bbb"> </span>include<span style="">=</span><span style="color:#b44">&#34;example1&#34;</span><span style="color:#bbb"> </span><span style="">/&gt;</span><span style="color:#080">}}</span>
+<span style="color:#080">{{</span><span style="">&lt;</span><span style="color:#bbb"> </span>tab<span style="color:#bbb"> </span>name<span style="">=</span><span style="color:#b44">&#34;Content File #2&#34;</span><span style="color:#bbb"> </span>include<span style="">=</span><span style="color:#b44">&#34;example2&#34;</span><span style="color:#bbb"> </span><span style="">/&gt;</span><span style="color:#080">}}</span>
+<span style="color:#080">{{</span><span style="">&lt;</span><span style="color:#bbb"> </span>tab<span style="color:#bbb"> </span>name<span style="">=</span><span style="color:#b44">&#34;JSON File&#34;</span><span style="color:#bbb"> </span>include<span style="">=</span><span style="color:#b44">&#34;podtemplate&#34;</span><span style="color:#bbb"> </span><span style="">/&gt;</span><span style="color:#080">}}</span>
+<span style="color:#080">{{</span><span style="">&lt;</span><span style="color:#bbb"> </span><span style="">/</span>tabs<span style="color:#bbb"> </span><span style="">&gt;</span><span style="color:#080">}}</span></code></pre></div>
+<p>Will be rendered as:</p>
+
+<div id="tab-with-file-include">
+<ul>
+    
+      
+  <li><a href="#tab-with-file-include-0">Content File #1</a></li>
+
+      
+  <li><a href="#tab-with-file-include-1">Content File #2</a></li>
+
+      
+  <li><a href="#tab-with-file-include-2">JSON File</a></li>
+
+</ul>
+
+
+<div id="tab-with-file-include-0">
+    
+        
+            
+            
+                
+                    <p>This is an <strong>example</strong> content file inside the <strong>includes</strong> leaf bundle.</p>
+
+<blockquote class="note">
+  <div><strong>Note:</strong> Included content files can also contain shortcodes.</div>
+</blockquote>
+
+
+                
+            
+        
+    
+</div>
+
+<div id="tab-with-file-include-1">
+    
+        
+            
+            
+                
+                    <p>This is another <strong>example</strong> content file inside the <strong>includes</strong> leaf bundle.</p>
+
+                
+            
+        
+    
+</div>
+
+<div id="tab-with-file-include-2">
+    
+        
+            
+            
+                
+                
+                 
+                <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">  {
+    <span style="color:#008000;font-weight:bold">&#34;apiVersion&#34;</span>: <span style="color:#b44">&#34;v1&#34;</span>,
+    <span style="color:#008000;font-weight:bold">&#34;kind&#34;</span>: <span style="color:#b44">&#34;PodTemplate&#34;</span>,
+    <span style="color:#008000;font-weight:bold">&#34;metadata&#34;</span>: {
+      <span style="color:#008000;font-weight:bold">&#34;name&#34;</span>: <span style="color:#b44">&#34;nginx&#34;</span>
+    },
+    <span style="color:#008000;font-weight:bold">&#34;template&#34;</span>: {
+      <span style="color:#008000;font-weight:bold">&#34;metadata&#34;</span>: {
+        <span style="color:#008000;font-weight:bold">&#34;labels&#34;</span>: {
+          <span style="color:#008000;font-weight:bold">&#34;name&#34;</span>: <span style="color:#b44">&#34;nginx&#34;</span>
+        },
+        <span style="color:#008000;font-weight:bold">&#34;generateName&#34;</span>: <span style="color:#b44">&#34;nginx-&#34;</span>
+      },
+      <span style="color:#008000;font-weight:bold">&#34;spec&#34;</span>: {
+         <span style="color:#008000;font-weight:bold">&#34;containers&#34;</span>: [{
+           <span style="color:#008000;font-weight:bold">&#34;name&#34;</span>: <span style="color:#b44">&#34;nginx&#34;</span>,
+           <span style="color:#008000;font-weight:bold">&#34;image&#34;</span>: <span style="color:#b44">&#34;dockerfile/nginx&#34;</span>,
+           <span style="color:#008000;font-weight:bold">&#34;ports&#34;</span>: [{<span style="color:#008000;font-weight:bold">&#34;containerPort&#34;</span>: <span style="color:#666">80</span>}]
+         }]
+      }
+    }
+  }
+</code></pre></div>
+                
+
+<p></div></p>
+
+<p></div></p>
+
+<script>$(function(){$("#tab-with-file-include").tabs();});</script>
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="what-s-next">What&#39;s next</h2>
+<ul>
+<li>Learn about <a href="https://gohugo.io/" target="_blank">Hugo</a>.</li>
+<li>Learn about <a href="/docs/home/contribute/write-new-topic/">writing a new topic</a>.</li>
+<li>Learn about <a href="/docs/home/contribute/page-templates/">using page templates</a>.</li>
+<li>Learn about <a href="/docs/home/contribute/stage-documentation-changes/">staging your changes</a></li>
+<li>Learn about <a href="/docs/home/contribute/create-pull-request/">creating a pull request</a>.</li>
+</ul>
+
+
+
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/home/contribute/includes/index.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/home\/contribute\/includes\/",
+					"title" : "Custom Hugo Shortcodes",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/home\/contribute\/includes\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/home/contribute/includes/index.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

@@ -1,0 +1,1687 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Creating a Custom Cluster from Scratch - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="Creating a Custom Cluster from Scratch" />
+<meta property="og:description" content="Creating a Custom Cluster from Scratch" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/setup/scratch/" />
+<meta property="og:title" content="Creating a Custom Cluster from Scratch - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+<h1>Setup</h1>
+<h5></h5>
+
+
+
+
+
+
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/" class="YAH">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Setup" href="/docs/setup/"></a>
+
+	
+	
+		
+		
+	<div class="item" data-title="Bootstrapping Clusters with kubeadm">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Customizing control plane configuration with kubeadm" href="/docs/setup/independent/control-plane-flags/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Creating Highly Available Clusters with kubeadm" href="/docs/setup/independent/high-availability/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Creating a single master cluster with kubeadm" href="/docs/setup/independent/create-cluster-kubeadm/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Troubleshooting kubeadm" href="/docs/setup/independent/troubleshooting-kubeadm/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Building Large Clusters" href="/docs/setup/cluster-large/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Building from Source" href="/docs/setup/building-from-source/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configuring Kubernetes with Salt" href="/docs/setup/salt/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Creating a Custom Cluster from Scratch" href="/docs/setup/scratch/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Custom Cloud Solutions">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="CoreOS on AWS or GCE" href="/docs/setup/custom-cloud/coreos/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Installing Kubernetes On-premises/Cloud Providers with Kubespray" href="/docs/setup/custom-cloud/kubespray/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Installing Kubernetes on AWS with kops" href="/docs/setup/custom-cloud/kops/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="On-Premises VMs">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Cloudstack" href="/docs/setup/on-premises-vm/cloudstack/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes on DCOS" href="/docs/setup/on-premises-vm/dcos/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="oVirt" href="/docs/setup/on-premises-vm/ovirt/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Picking the Right Solution" href="/docs/setup/pick-right-solution/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Running Kubernetes Locally via Minikube" href="/docs/setup/minikube/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Running in Multiple Zones" href="/docs/setup/multiple-zones/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Turnkey Cloud Solutions">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Running Kubernetes on AWS EC2" href="/docs/setup/turnkey/aws/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Running Kubernetes on Alibaba Cloud" href="/docs/setup/turnkey/alibaba-cloud/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Running Kubernetes on Azure" href="/docs/setup/turnkey/azure/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Running Kubernetes on CenturyLink Cloud" href="/docs/setup/turnkey/clc/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Running Kubernetes on Google Compute Engine" href="/docs/setup/turnkey/gce/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Running Kubernetes on Multiple Clouds with Stackpoint.io" href="/docs/setup/turnkey/stackpoint/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Validate Node Setup" href="/docs/setup/node-conformance/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/setup/scratch.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>Creating a Custom Cluster from Scratch</h1>
+
+
+
+
+
+<p>This guide is for people who want to craft a custom Kubernetes cluster.  If you
+can find an existing Getting Started Guide that meets your needs on <a href="/docs/setup/">this
+list</a>, then we recommend using it, as you will be able to benefit
+from the experience of others.  However, if you have specific IaaS, networking,
+configuration management, or operating system requirements not met by any of
+those guides, then this guide will provide an outline of the steps you need to
+take.  Note that it requires considerably more effort than using one of the
+pre-defined guides.</p>
+
+<p>This guide is also useful for those wanting to understand at a high level some of the
+steps that existing cluster setup scripts are making.</p>
+
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#designing-and-preparing">Designing and Preparing</a>
+<ul>
+<li><a href="#learning">Learning</a></li>
+<li><a href="#cloud-provider">Cloud Provider</a></li>
+<li><a href="#nodes">Nodes</a></li>
+<li><a href="#network">Network</a>
+<ul>
+<li><a href="#network-connectivity">Network Connectivity</a></li>
+<li><a href="#network-policy">Network Policy</a></li>
+</ul></li>
+<li><a href="#cluster-naming">Cluster Naming</a></li>
+<li><a href="#software-binaries">Software Binaries</a>
+<ul>
+<li><a href="#downloading-and-extracting-kubernetes-binaries">Downloading and Extracting Kubernetes Binaries</a></li>
+<li><a href="#selecting-images">Selecting Images</a></li>
+</ul></li>
+<li><a href="#security-models">Security Models</a>
+<ul>
+<li><a href="#preparing-certs">Preparing Certs</a></li>
+<li><a href="#preparing-credentials">Preparing Credentials</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#configuring-and-installing-base-software-on-nodes">Configuring and Installing Base Software on Nodes</a>
+<ul>
+<li><a href="#docker">Docker</a></li>
+<li><a href="#rkt">rkt</a></li>
+<li><a href="#kubelet">kubelet</a></li>
+<li><a href="#kube-proxy">kube-proxy</a></li>
+<li><a href="#networking">Networking</a></li>
+<li><a href="#other">Other</a></li>
+<li><a href="#using-configuration-management">Using Configuration Management</a></li>
+</ul></li>
+<li><a href="#bootstrapping-the-cluster">Bootstrapping the Cluster</a>
+<ul>
+<li><a href="#etcd">etcd</a></li>
+<li><a href="#apiserver-controller-manager-and-scheduler">Apiserver, Controller Manager, and Scheduler</a>
+<ul>
+<li><a href="#apiserver-pod-template">Apiserver pod template</a>
+<ul>
+<li><a href="#cloud-providers">Cloud Providers</a></li>
+</ul></li>
+<li><a href="#scheduler-pod-template">Scheduler pod template</a></li>
+<li><a href="#controller-manager-template">Controller Manager Template</a></li>
+<li><a href="#starting-and-verifying-apiserver-scheduler-and-controller-manager">Starting and Verifying Apiserver, Scheduler, and Controller Manager</a></li>
+</ul></li>
+<li><a href="#starting-cluster-services">Starting Cluster Services</a></li>
+</ul></li>
+<li><a href="#troubleshooting">Troubleshooting</a>
+<ul>
+<li><a href="#running-validate-cluster">Running validate-cluster</a></li>
+<li><a href="#inspect-pods-and-services">Inspect pods and services</a></li>
+<li><a href="#try-examples">Try Examples</a></li>
+<li><a href="#running-the-conformance-test">Running the Conformance Test</a></li>
+<li><a href="#networking-1">Networking</a></li>
+<li><a href="#getting-help">Getting Help</a></li>
+</ul></li>
+<li><a href="#support-level">Support Level</a></li>
+</ul></li>
+</ul>
+</nav>
+
+<h2 id="designing-and-preparing">Designing and Preparing</h2>
+
+<h3 id="learning">Learning</h3>
+
+<ol>
+<li>You should be familiar with using Kubernetes already.  We suggest you set
+up a temporary cluster by following one of the other Getting Started Guides.
+This will help you become familiar with the CLI (<a href="/docs/user-guide/kubectl/">kubectl</a>) and concepts (<a href="/docs/user-guide/pods/">pods</a>, <a href="/docs/concepts/services-networking/service/">services</a>, etc.) first.</li>
+<li>You should have <code>kubectl</code> installed on your desktop.  This will happen as a side
+effect of completing one of the other Getting Started Guides.  If not, follow the instructions
+<a href="/docs/tasks/kubectl/install/">here</a>.</li>
+</ol>
+
+<h3 id="cloud-provider">Cloud Provider</h3>
+
+<p>Kubernetes has the concept of a Cloud Provider, which is a module which provides
+an interface for managing TCP Load Balancers, Nodes (Instances) and Networking Routes.
+The interface is defined in <code>pkg/cloudprovider/cloud.go</code>.  It is possible to
+create a custom cluster without implementing a cloud provider (for example if using
+bare-metal), and not all parts of the interface need to be implemented, depending
+on how flags are set on various components.</p>
+
+<h3 id="nodes">Nodes</h3>
+
+<ul>
+<li>You can use virtual or physical machines.</li>
+<li>While you can build a cluster with 1 machine, in order to run all the examples and tests you
+need at least 4 nodes.</li>
+<li>Many Getting-started-guides make a distinction between the master node and regular nodes.  This
+is not strictly necessary.</li>
+<li>Nodes will need to run some version of Linux with the x86_64 architecture.  It may be possible
+to run on other OSes and Architectures, but this guide does not try to assist with that.</li>
+<li>Apiserver and etcd together are fine on a machine with 1 core and 1GB RAM for clusters with 10s of nodes.
+Larger or more active clusters may benefit from more cores.</li>
+<li>Other nodes can have any reasonable amount of memory and any number of cores.  They need not
+have identical configurations.</li>
+</ul>
+
+<h3 id="network">Network</h3>
+
+<h4 id="network-connectivity">Network Connectivity</h4>
+
+<p>Kubernetes has a distinctive <a href="/docs/concepts/cluster-administration/networking/">networking model</a>.</p>
+
+<p>Kubernetes allocates an IP address to each pod.  When creating a cluster, you
+need to allocate a block of IPs for Kubernetes to use as Pod IPs.  The simplest
+approach is to allocate a different block of IPs to each node in the cluster as
+the node is added.  A process in one pod should be able to communicate with
+another pod using the IP of the second pod.  This connectivity can be
+accomplished in two ways:</p>
+
+<ul>
+<li><strong>Using an overlay network</strong>
+
+<ul>
+<li>An overlay network obscures the underlying network architecture from the
+pod network through traffic encapsulation (for example vxlan).</li>
+<li>Encapsulation reduces performance, though exactly how much depends on your solution.</li>
+</ul></li>
+<li><strong>Without an overlay network</strong>
+
+<ul>
+<li>Configure the underlying network fabric (switches, routers, etc.) to be aware of pod IP addresses.</li>
+<li>This does not require the encapsulation provided by an overlay, and so can achieve
+better performance.</li>
+</ul></li>
+</ul>
+
+<p>Which method you choose depends on your environment and requirements.  There are various ways
+to implement one of the above options:</p>
+
+<ul>
+<li><strong>Use a network plugin which is called by Kubernetes</strong>
+
+<ul>
+<li>Kubernetes supports the <a href="https://github.com/containernetworking/cni" target="_blank">CNI</a> network plugin interface.</li>
+<li>There are a number of solutions which provide plugins for Kubernetes (listed alphabetically):</li>
+<li><a href="http://docs.projectcalico.org/" target="_blank">Calico</a></li>
+<li><a href="https://github.com/coreos/flannel" target="_blank">Flannel</a></li>
+<li><a href="http://openvswitch.org/" target="_blank">Open vSwitch (OVS)</a></li>
+<li><a href="http://romana.io/" target="_blank">Romana</a></li>
+<li><a href="http://weave.works/" target="_blank">Weave</a></li>
+<li><a href="/docs/admin/networking#how-to-achieve-this/">More found here</a></li>
+<li>You can also write your own.</li>
+</ul></li>
+<li><strong>Compile support directly into Kubernetes</strong>
+
+<ul>
+<li>This can be done by implementing the &ldquo;Routes&rdquo; interface of a Cloud Provider module.</li>
+<li>The Google Compute Engine (<a href="/docs/getting-started-guides/gce/">GCE</a>) and <a href="/docs/getting-started-guides/aws/">AWS</a> guides use this approach.</li>
+</ul></li>
+<li><strong>Configure the network external to Kubernetes</strong>
+
+<ul>
+<li>This can be done by manually running commands, or through a set of externally maintained scripts.</li>
+<li>You have to implement this yourself, but it can give you an extra degree of flexibility.</li>
+</ul></li>
+</ul>
+
+<p>You will need to select an address range for the Pod IPs.</p>
+
+<ul>
+<li>Various approaches:
+
+<ul>
+<li>GCE: each project has its own <code>10.0.0.0/8</code>.  Carve off a <code>/16</code> for each
+Kubernetes cluster from that space, which leaves room for several clusters.
+Each node gets a further subdivision of this space.</li>
+<li>AWS: use one VPC for whole organization, carve off a chunk for each
+cluster, or use different VPC for different clusters.</li>
+</ul></li>
+<li>Allocate one CIDR subnet for each node&rsquo;s PodIPs, or a single large CIDR
+from which smaller CIDRs are automatically allocated to each node.
+
+<ul>
+<li>You need max-pods-per-node * max-number-of-nodes IPs in total. A <code>/24</code> per
+node supports 254 pods per machine and is a common choice.  If IPs are
+scarce, a <code>/26</code> (62 pods per machine) or even a <code>/27</code> (30 pods) may be sufficient.</li>
+<li>For example, use <code>10.10.0.0/16</code> as the range for the cluster, with up to 256 nodes
+using <code>10.10.0.0/24</code> through <code>10.10.255.0/24</code>, respectively.</li>
+<li>Need to make these routable or connect with overlay.</li>
+</ul></li>
+</ul>
+
+<p>Kubernetes also allocates an IP to each <a href="/docs/concepts/services-networking/service/">service</a>.  However,
+service IPs do not necessarily need to be routable.  The kube-proxy takes care
+of translating Service IPs to Pod IPs before traffic leaves the node.  You do
+need to allocate a block of IPs for services.  Call this
+<code>SERVICE_CLUSTER_IP_RANGE</code>.  For example, you could set
+<code>SERVICE_CLUSTER_IP_RANGE=&quot;10.0.0.0/16&quot;</code>, allowing 65534 distinct services to
+be active at once.  Note that you can grow the end of this range, but you
+cannot move it without disrupting the services and pods that already use it.</p>
+
+<p>Also, you need to pick a static IP for master node.</p>
+
+<ul>
+<li>Call this <code>MASTER_IP</code>.</li>
+<li>Open any firewalls to allow access to the apiserver ports 80 and/or 443.</li>
+<li>Enable ipv4 forwarding sysctl, <code>net.ipv4.ip_forward = 1</code></li>
+</ul>
+
+<h4 id="network-policy">Network Policy</h4>
+
+<p>Kubernetes enables the definition of fine-grained network policy between Pods using the <a href="/docs/concepts/services-networking/network-policies/">NetworkPolicy</a> resource.</p>
+
+<p>Not all networking providers support the Kubernetes NetworkPolicy API, see <a href="/docs/tasks/configure-pod-container/declare-network-policy/">Using Network Policy</a> for more information.</p>
+
+<h3 id="cluster-naming">Cluster Naming</h3>
+
+<p>You should pick a name for your cluster.  Pick a short name for each cluster
+which is unique from future cluster names. This will be used in several ways:</p>
+
+<ul>
+<li>by kubectl to distinguish between various clusters you have access to.  You will probably want a
+second one sometime later, such as for testing new Kubernetes releases, running in a different
+region of the world, etc.</li>
+<li>Kubernetes clusters can create cloud provider resources (for example, AWS ELBs) and different clusters
+need to distinguish which resources each created.  Call this <code>CLUSTER_NAME</code>.</li>
+</ul>
+
+<h3 id="software-binaries">Software Binaries</h3>
+
+<p>You will need binaries for:</p>
+
+<ul>
+<li>etcd</li>
+<li>A container runner, one of:
+
+<ul>
+<li>docker</li>
+<li>rkt</li>
+</ul></li>
+<li>Kubernetes
+
+<ul>
+<li>kubelet</li>
+<li>kube-proxy</li>
+<li>kube-apiserver</li>
+<li>kube-controller-manager</li>
+<li>kube-scheduler</li>
+</ul></li>
+</ul>
+
+<h4 id="downloading-and-extracting-kubernetes-binaries">Downloading and Extracting Kubernetes Binaries</h4>
+
+<p>A Kubernetes binary release includes all the Kubernetes binaries as well as the supported release of etcd.
+You can use a Kubernetes binary release (recommended) or build your Kubernetes binaries following the instructions in the
+<a href="https://git.k8s.io/community/contributors/devel/" target="_blank">Developer Documentation</a>.  Only using a binary release is covered in this guide.</p>
+
+<p>Download the <a href="https://github.com/kubernetes/kubernetes/releases/latest" target="_blank">latest binary release</a> and unzip it.
+Server binary tarballs are no longer included in the Kubernetes final tarball, so you will need to locate and run
+<code>./kubernetes/cluster/get-kube-binaries.sh</code> to download the client and server binaries.
+Then locate <code>./kubernetes/server/kubernetes-server-linux-amd64.tar.gz</code> and unzip <em>that</em>.
+Then, within the second set of unzipped files, locate <code>./kubernetes/server/bin</code>, which contains
+all the necessary binaries.</p>
+
+<h4 id="selecting-images">Selecting Images</h4>
+
+<p>You will run docker, kubelet, and kube-proxy outside of a container, the same way you would run any system daemon, so
+you just need the bare binaries.  For etcd, kube-apiserver, kube-controller-manager, and kube-scheduler,
+we recommend that you run these as containers, so you need an image to be built.</p>
+
+<p>You have several choices for Kubernetes images:</p>
+
+<ul>
+<li>Use images hosted on Google Container Registry (GCR):
+
+<ul>
+<li>For example <code>k8s.gcr.io/hyperkube:$TAG</code>, where <code>TAG</code> is the latest
+release tag, which can be found on the <a href="https://github.com/kubernetes/kubernetes/releases/latest" target="_blank">latest releases page</a>.</li>
+<li>Ensure $TAG is the same tag as the release tag you are using for kubelet and kube-proxy.</li>
+<li>The <a href="https://releases.k8s.io/master/cmd/hyperkube" target="_blank">hyperkube</a> binary is an all in one binary</li>
+<li><code>hyperkube kubelet ...</code> runs the kubelet, <code>hyperkube apiserver ...</code> runs an apiserver, etc.</li>
+</ul></li>
+<li>Build your own images.
+
+<ul>
+<li>Useful if you are using a private registry.</li>
+<li>The release contains files such as <code>./kubernetes/server/bin/kube-apiserver.tar</code> which
+can be converted into docker images using a command like
+<code>docker load -i kube-apiserver.tar</code></li>
+<li>You can verify if the image is loaded successfully with the right repository and tag using
+command like <code>docker images</code></li>
+</ul></li>
+</ul>
+
+<p>For etcd, you can:</p>
+
+<ul>
+<li>Use images hosted on Google Container Registry (GCR), such as <code>k8s.gcr.io/etcd:2.2.1</code></li>
+<li>Use images hosted on <a href="https://hub.docker.com/search/?q=etcd" target="_blank">Docker Hub</a> or <a href="https://quay.io/repository/coreos/etcd" target="_blank">Quay.io</a>, such as <code>quay.io/coreos/etcd:v2.2.1</code></li>
+<li>Use etcd binary included in your OS distro.</li>
+<li>Build your own image
+
+<ul>
+<li>You can do: <code>cd kubernetes/cluster/images/etcd; make</code></li>
+</ul></li>
+</ul>
+
+<p>We recommend that you use the etcd version which is provided in the Kubernetes binary distribution.   The Kubernetes binaries in the release
+were tested extensively with this version of etcd and not with any other version.
+The recommended version number can also be found as the value of <code>TAG</code> in <code>kubernetes/cluster/images/etcd/Makefile</code>.</p>
+
+<p>The remainder of the document assumes that the image identifiers have been chosen and stored in corresponding env vars.  Examples (replace with latest tags and appropriate registry):</p>
+
+<ul>
+<li><code>HYPERKUBE_IMAGE=k8s.gcr.io/hyperkube:$TAG</code></li>
+<li><code>ETCD_IMAGE=k8s.gcr.io/etcd:$ETCD_VERSION</code></li>
+</ul>
+
+<h3 id="security-models">Security Models</h3>
+
+<p>There are two main options for security:</p>
+
+<ul>
+<li>Access the apiserver using HTTP.
+
+<ul>
+<li>Use a firewall for security.</li>
+<li>This is easier to setup.</li>
+</ul></li>
+<li>Access the apiserver using HTTPS
+
+<ul>
+<li>Use https with certs, and credentials for user.</li>
+<li>This is the recommended approach.</li>
+<li>Configuring certs can be tricky.</li>
+</ul></li>
+</ul>
+
+<p>If following the HTTPS approach, you will need to prepare certs and credentials.</p>
+
+<h4 id="preparing-certs">Preparing Certs</h4>
+
+<p>You need to prepare several certs:</p>
+
+<ul>
+<li>The master needs a cert to act as an HTTPS server.</li>
+<li>The kubelets optionally need certs to identify themselves as clients of the master, and when
+serving its own API over HTTPS.</li>
+</ul>
+
+<p>Unless you plan to have a real CA generate your certs, you will need
+to generate a root cert and use that to sign the master, kubelet, and
+kubectl certs. How to do this is described in the <a href="/docs/admin/authentication/#creating-certificates/">authentication
+documentation</a>.</p>
+
+<p>You will end up with the following files (we will use these variables later on)</p>
+
+<ul>
+<li><code>CA_CERT</code>
+
+<ul>
+<li>put in on node where apiserver runs, for example in <code>/srv/kubernetes/ca.crt</code>.</li>
+</ul></li>
+<li><code>MASTER_CERT</code>
+
+<ul>
+<li>signed by CA_CERT</li>
+<li>put in on node where apiserver runs, for example in <code>/srv/kubernetes/server.crt</code></li>
+</ul></li>
+<li><code>MASTER_KEY</code>
+
+<ul>
+<li>put in on node where apiserver runs, for example in <code>/srv/kubernetes/server.key</code></li>
+</ul></li>
+<li><code>KUBELET_CERT</code>
+
+<ul>
+<li>optional</li>
+</ul></li>
+<li><code>KUBELET_KEY</code>
+
+<ul>
+<li>optional</li>
+</ul></li>
+</ul>
+
+<h4 id="preparing-credentials">Preparing Credentials</h4>
+
+<p>The admin user (and any users) need:</p>
+
+<ul>
+<li>a token or a password to identify them.</li>
+<li>tokens are just long alphanumeric strings, 32 chars for example. See
+
+<ul>
+<li><code>TOKEN=$(dd if=/dev/urandom bs=128 count=1 2&gt;/dev/null | base64 | tr -d &quot;=+/[:space:]&quot; | dd bs=32 count=1 2&gt;/dev/null)</code></li>
+</ul></li>
+</ul>
+
+<p>Your tokens and passwords need to be stored in a file for the apiserver
+to read.  This guide uses <code>/var/lib/kube-apiserver/known_tokens.csv</code>.
+The format for this file is described in the <a href="/docs/admin/authentication/">authentication documentation</a>.</p>
+
+<p>For distributing credentials to clients, the convention in Kubernetes is to put the credentials
+into a <a href="/docs/concepts/cluster-administration/authenticate-across-clusters-kubeconfig/">kubeconfig file</a>.</p>
+
+<p>The kubeconfig file for the administrator can be created as follows:</p>
+
+<ul>
+<li>If you have already used Kubernetes with a non-custom cluster (for example, used a Getting Started
+Guide), you will already have a <code>$HOME/.kube/config</code> file.</li>
+<li>You need to add certs, keys, and the master IP to the kubeconfig file:
+
+<ul>
+<li>If using the firewall-only security option, set the apiserver this way:
+
+<ul>
+<li><code>kubectl config set-cluster $CLUSTER_NAME --server=http://$MASTER_IP --insecure-skip-tls-verify=true</code></li>
+</ul></li>
+<li>Otherwise, do this to set the apiserver ip, client certs, and user credentials.
+
+<ul>
+<li><code>kubectl config set-cluster $CLUSTER_NAME --certificate-authority=$CA_CERT --embed-certs=true --server=https://$MASTER_IP</code></li>
+<li><code>kubectl config set-credentials $USER --client-certificate=$CLI_CERT --client-key=$CLI_KEY --embed-certs=true --token=$TOKEN</code></li>
+</ul></li>
+<li>Set your cluster as the default cluster to use:
+
+<ul>
+<li><code>kubectl config set-context $CONTEXT_NAME --cluster=$CLUSTER_NAME --user=$USER</code></li>
+<li><code>kubectl config use-context $CONTEXT_NAME</code></li>
+</ul></li>
+</ul></li>
+</ul>
+
+<p>Next, make a kubeconfig file for the kubelets and kube-proxy.  There are a couple of options for how
+many distinct files to make:</p>
+
+<ol>
+<li>Use the same credential as the admin
+
+<ul>
+<li>This is simplest to setup.</li>
+</ul></li>
+<li>One token and kubeconfig file for all kubelets, one for all kube-proxy, one for admin.
+
+<ul>
+<li>This mirrors what is done on GCE today</li>
+</ul></li>
+<li>Different credentials for every kubelet, etc.
+
+<ul>
+<li>We are working on this but all the pieces are not ready yet.</li>
+</ul></li>
+</ol>
+
+<p>You can make the files by copying the <code>$HOME/.kube/config</code> or by using the following template:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Config<span style="color:#bbb">
+</span><span style="color:#bbb"></span>users:<span style="color:#bbb">
+</span><span style="color:#bbb"></span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>kubelet<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>user:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>token:<span style="color:#bbb"> </span>${KUBELET_TOKEN}<span style="color:#bbb">
+</span><span style="color:#bbb"></span>clusters:<span style="color:#bbb">
+</span><span style="color:#bbb"></span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>local<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>cluster:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>certificate-authority:<span style="color:#bbb"> </span>/srv/kubernetes/ca.crt<span style="color:#bbb">
+</span><span style="color:#bbb"></span>contexts:<span style="color:#bbb">
+</span><span style="color:#bbb"></span>-<span style="color:#bbb"> </span>context:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>cluster:<span style="color:#bbb"> </span>local<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>user:<span style="color:#bbb"> </span>kubelet<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>service-account-context<span style="color:#bbb">
+</span><span style="color:#bbb"></span>current-context:<span style="color:#bbb"> </span>service-account-context</code></pre></div>
+<p>Put the kubeconfig(s) on every node.  The examples later in this
+guide assume that there are kubeconfigs in <code>/var/lib/kube-proxy/kubeconfig</code> and
+<code>/var/lib/kubelet/kubeconfig</code>.</p>
+
+<h2 id="configuring-and-installing-base-software-on-nodes">Configuring and Installing Base Software on Nodes</h2>
+
+<p>This section discusses how to configure machines to be Kubernetes nodes.</p>
+
+<p>You should run three daemons on every node:</p>
+
+<ul>
+<li>docker or rkt</li>
+<li>kubelet</li>
+<li>kube-proxy</li>
+</ul>
+
+<p>You will also need to do assorted other configuration on top of a
+base OS install.</p>
+
+<p>Tip: One possible starting point is to setup a cluster using an existing Getting
+Started Guide.   After getting a cluster running, you can then copy the init.d scripts or systemd unit files from that
+cluster, and then modify them for use on your custom cluster.</p>
+
+<h3 id="docker">Docker</h3>
+
+<p>The minimum required Docker version will vary as the kubelet version changes.  The newest stable release is a good choice.  Kubelet will log a warning and refuse to start pods if the version is too old, so pick a version and try it.</p>
+
+<p>If you previously had Docker installed on a node without setting Kubernetes-specific
+options, you may have a Docker-created bridge and iptables rules.  You may want to remove these
+as follows before proceeding to configure Docker for Kubernetes.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">iptables -t nat -F
+ip link <span style="color:#a2f">set</span> docker0 down
+ip link delete docker0</code></pre></div>
+<p>The way you configure docker will depend in whether you have chosen the routable-vip or overlay-network approaches for your network.
+Some suggested docker options:</p>
+
+<ul>
+<li>create your own bridge for the per-node CIDR ranges, call it cbr0, and set <code>--bridge=cbr0</code> option on docker.</li>
+<li>set <code>--iptables=false</code> so docker will not manipulate iptables for host-ports (too coarse on older docker versions, may be fixed in newer versions)
+so that kube-proxy can manage iptables instead of docker.</li>
+<li><code>--ip-masq=false</code>
+
+<ul>
+<li>if you have setup PodIPs to be routable, then you want this false, otherwise, docker will
+rewrite the PodIP source-address to a NodeIP.</li>
+<li>some environments (for example GCE) still need you to masquerade out-bound traffic when it leaves the cloud environment. This is very environment specific.</li>
+<li>if you are using an overlay network, consult those instructions.</li>
+</ul></li>
+<li><code>--mtu=</code>
+
+<ul>
+<li>may be required when using Flannel, because of the extra packet size due to udp encapsulation</li>
+</ul></li>
+<li><code>--insecure-registry $CLUSTER_SUBNET</code>
+
+<ul>
+<li>to connect to a private registry, if you set one up, without using SSL.</li>
+</ul></li>
+</ul>
+
+<p>You may want to increase the number of open files for docker:</p>
+
+<ul>
+<li><code>DOCKER_NOFILE=1000000</code></li>
+</ul>
+
+<p>Where this config goes depends on your node OS.  For example, GCE&rsquo;s Debian-based distro uses <code>/etc/default/docker</code>.</p>
+
+<p>Ensure docker is working correctly on your system before proceeding with the rest of the
+installation, by following examples given in the Docker documentation.</p>
+
+<h3 id="rkt">rkt</h3>
+
+<p><a href="https://github.com/coreos/rkt" target="_blank">rkt</a> is an alternative to Docker.  You only need to install one of Docker or rkt.
+The minimum version required is <a href="https://github.com/coreos/rkt/releases/tag/v0.5.6" target="_blank">v0.5.6</a>.</p>
+
+<p><a href="http://www.freedesktop.org/wiki/Software/systemd/" target="_blank">systemd</a> is required on your node to run rkt.  The
+minimum version required to match rkt v0.5.6 is
+<a href="http://lists.freedesktop.org/archives/systemd-devel/2014-July/020903.html" target="_blank">systemd 215</a>.</p>
+
+<p><a href="https://github.com/coreos/rkt/blob/master/Documentation/networking/overview.md" target="_blank">rkt metadata service</a> is also required
+for rkt networking support.  You can start rkt metadata service by using command like
+<code>sudo systemd-run rkt metadata-service</code></p>
+
+<p>Then you need to configure your kubelet with flag:</p>
+
+<ul>
+<li><code>--container-runtime=rkt</code></li>
+</ul>
+
+<h3 id="kubelet">kubelet</h3>
+
+<p>All nodes should run kubelet.  See <a href="#software-binaries">Software Binaries</a>.</p>
+
+<p>Arguments to consider:</p>
+
+<ul>
+<li>If following the HTTPS security approach:
+
+<ul>
+<li><code>--kubeconfig=/var/lib/kubelet/kubeconfig</code></li>
+</ul></li>
+<li>Otherwise, if taking the firewall-based security approach</li>
+<li><code>--config=/etc/kubernetes/manifests</code></li>
+<li><code>--cluster-dns=</code> to the address of the DNS server you will setup (see <a href="#starting-cluster-services">Starting Cluster Services</a>.)</li>
+<li><code>--cluster-domain=</code> to the dns domain prefix to use for cluster DNS addresses.</li>
+<li><code>--docker-root=</code></li>
+<li><code>--root-dir=</code></li>
+<li><code>--pod-cidr=</code> The CIDR to use for pod IP addresses, only used in standalone mode.  In cluster mode, this is obtained from the master.</li>
+<li><code>--register-node</code> (described in <a href="/docs/admin/node/">Node</a> documentation.)</li>
+</ul>
+
+<h3 id="kube-proxy">kube-proxy</h3>
+
+<p>All nodes should run kube-proxy.  (Running kube-proxy on a &ldquo;master&rdquo; node is not
+strictly required, but being consistent is easier.)   Obtain a binary as described for
+kubelet.</p>
+
+<p>Arguments to consider:</p>
+
+<ul>
+<li>If following the HTTPS security approach:
+
+<ul>
+<li><code>--master=https://$MASTER_IP</code></li>
+<li><code>--kubeconfig=/var/lib/kube-proxy/kubeconfig</code></li>
+</ul></li>
+<li>Otherwise, if taking the firewall-based security approach
+
+<ul>
+<li><code>--master=http://$MASTER_IP</code></li>
+</ul></li>
+</ul>
+
+<p>Note that on some Linux platforms, you may need to manually install the
+<code>conntrack</code> package which is a dependency of kube-proxy, or else kube-proxy
+cannot be started successfully.</p>
+
+<p>For more details on debugging kube-proxy problems, please refer to
+<a href="/docs/tasks/debug-application-cluster/debug-service/">Debug Services</a></p>
+
+<h3 id="networking">Networking</h3>
+
+<p>Each node needs to be allocated its own CIDR range for pod networking.
+Call this <code>NODE_X_POD_CIDR</code>.</p>
+
+<p>A bridge called <code>cbr0</code> needs to be created on each node.  The bridge is explained
+further in the <a href="/docs/concepts/cluster-administration/networking/">networking documentation</a>.  The bridge itself
+needs an address from <code>$NODE_X_POD_CIDR</code> - by convention the first IP.  Call
+this <code>NODE_X_BRIDGE_ADDR</code>.  For example, if <code>NODE_X_POD_CIDR</code> is <code>10.0.0.0/16</code>,
+then <code>NODE_X_BRIDGE_ADDR</code> is <code>10.0.0.1/16</code>.  NOTE: this retains the <code>/16</code> suffix
+because of how this is used later.</p>
+
+<p>If you have turned off Docker&rsquo;s IP masquerading to allow pods to talk to each
+other, then you may need to do masquerading just for destination IPs outside
+the cluster network.  For example:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">iptables -t nat -A POSTROUTING ! -d <span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">CLUSTER_SUBNET</span><span style="color:#b68;font-weight:bold">}</span> -m addrtype ! --dst-type LOCAL -j MASQUERADE</code></pre></div>
+<p>This will rewrite the source address from
+the PodIP to the Node IP for traffic bound outside the cluster, and kernel
+<a href="http://www.iptables.info/en/connection-state.html" target="_blank">connection tracking</a>
+will ensure that responses destined to the node still reach
+the pod.</p>
+
+<p>NOTE: This is environment specific.  Some environments will not need
+any masquerading at all.  Others, such as GCE, will not allow pod IPs to send
+traffic to the internet, but have no problem with them inside your GCE Project.</p>
+
+<h3 id="other">Other</h3>
+
+<ul>
+<li>Enable auto-upgrades for your OS package manager, if desired.</li>
+<li>Configure log rotation for all node components (for example using <a href="http://linux.die.net/man/8/logrotate" target="_blank">logrotate</a>).</li>
+<li>Setup liveness-monitoring (for example using <a href="http://supervisord.org/" target="_blank">supervisord</a>).</li>
+<li>Setup volume plugin support (optional)
+
+<ul>
+<li>Install any client binaries for optional volume types, such as <code>glusterfs-client</code> for GlusterFS
+volumes.</li>
+</ul></li>
+</ul>
+
+<h3 id="using-configuration-management">Using Configuration Management</h3>
+
+<p>The previous steps all involved &ldquo;conventional&rdquo; system administration techniques for setting up
+machines.  You may want to use a Configuration Management system to automate the node configuration
+process.  There are examples of <a href="/docs/admin/salt/">Saltstack</a>, Ansible, Juju, and CoreOS Cloud Config in the
+various Getting Started Guides.</p>
+
+<h2 id="bootstrapping-the-cluster">Bootstrapping the Cluster</h2>
+
+<p>While the basic node services (kubelet, kube-proxy, docker) are typically started and managed using
+traditional system administration/automation approaches, the remaining <em>master</em> components of Kubernetes are
+all configured and managed <em>by Kubernetes</em>:</p>
+
+<ul>
+<li>Their options are specified in a Pod spec (yaml or json) rather than an /etc/init.d file or
+systemd unit.</li>
+<li>They are kept running by Kubernetes rather than by init.</li>
+</ul>
+
+<h3 id="etcd">etcd</h3>
+
+<p>You will need to run one or more instances of etcd.</p>
+
+<ul>
+<li>Highly available and easy to restore - Run 3 or 5 etcd instances with, their logs written to a directory backed
+by durable storage (RAID, GCE PD)</li>
+
+<li><p>Not highly available, but easy to restore - Run one etcd instance, with its log written to a directory backed
+by durable storage (RAID, GCE PD).</p>
+
+<blockquote class="note">
+  <div><strong>Note:</strong> May result in operations outages in case of
+    instance outage.</div>
+</blockquote>
+</li>
+
+<li><p>Highly available - Run 3 or 5 etcd instances with non durable storage.</p>
+
+<blockquote class="note">
+  <div><strong>Note:</strong> Log can be written to non-durable storage
+    because storage is replicated.</div>
+</blockquote>
+</li>
+</ul>
+
+<p>See <a href="/docs/admin/cluster-troubleshooting/">cluster-troubleshooting</a> for more discussion on factors affecting cluster
+availability.</p>
+
+<p>To run an etcd instance:</p>
+
+<ol>
+<li>Copy <a href="https://github.com/kubernetes/kubernetes/blob/master/cluster/gce/manifests/etcd.manifest" target="_blank"><code>cluster/gce/manifests/etcd.manifest</code></a></li>
+<li>Make any modifications needed</li>
+<li>Start the pod by putting it into the kubelet manifest directory</li>
+</ol>
+
+<h3 id="apiserver-controller-manager-and-scheduler">Apiserver, Controller Manager, and Scheduler</h3>
+
+<p>The apiserver, controller manager, and scheduler will each run as a pod on the master node.</p>
+
+<p>For each of these components, the steps to start them running are similar:</p>
+
+<ol>
+<li>Start with a provided template for a pod.</li>
+<li>Set the <code>HYPERKUBE_IMAGE</code> to the values chosen in <a href="#selecting-images">Selecting Images</a>.</li>
+<li>Determine which flags are needed for your cluster, using the advice below each template.</li>
+<li>Set the flags to be individual strings in the command array (for example $ARGN below)</li>
+<li>Start the pod by putting the completed template into the kubelet manifest directory.</li>
+<li>Verify that the pod is started.</li>
+</ol>
+
+<h4 id="apiserver-pod-template">Apiserver pod template</h4>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+  <span style="color:#008000;font-weight:bold">&#34;kind&#34;</span>: <span style="color:#b44">&#34;Pod&#34;</span>,
+  <span style="color:#008000;font-weight:bold">&#34;apiVersion&#34;</span>: <span style="color:#b44">&#34;v1&#34;</span>,
+  <span style="color:#008000;font-weight:bold">&#34;metadata&#34;</span>: {
+    <span style="color:#008000;font-weight:bold">&#34;name&#34;</span>: <span style="color:#b44">&#34;kube-apiserver&#34;</span>
+  },
+  <span style="color:#008000;font-weight:bold">&#34;spec&#34;</span>: {
+    <span style="color:#008000;font-weight:bold">&#34;hostNetwork&#34;</span>: <span style="color:#a2f;font-weight:bold">true</span>,
+    <span style="color:#008000;font-weight:bold">&#34;containers&#34;</span>: [
+      {
+        <span style="color:#008000;font-weight:bold">&#34;name&#34;</span>: <span style="color:#b44">&#34;kube-apiserver&#34;</span>,
+        <span style="color:#008000;font-weight:bold">&#34;image&#34;</span>: <span style="color:#b44">&#34;${HYPERKUBE_IMAGE}&#34;</span>,
+        <span style="color:#008000;font-weight:bold">&#34;command&#34;</span>: [
+          <span style="color:#b44">&#34;/hyperkube&#34;</span>,
+          <span style="color:#b44">&#34;apiserver&#34;</span>,
+          <span style="color:#b44">&#34;$ARG1&#34;</span>,
+          <span style="color:#b44">&#34;$ARG2&#34;</span>,
+          <span style="">...</span>
+          <span style="color:#b44">&#34;$ARGN&#34;</span>
+        ],
+        <span style="color:#008000;font-weight:bold">&#34;ports&#34;</span>: [
+          {
+            <span style="color:#008000;font-weight:bold">&#34;name&#34;</span>: <span style="color:#b44">&#34;https&#34;</span>,
+            <span style="color:#008000;font-weight:bold">&#34;hostPort&#34;</span>: <span style="color:#666">443</span>,
+            <span style="color:#008000;font-weight:bold">&#34;containerPort&#34;</span>: <span style="color:#666">443</span>
+          },
+          {
+            <span style="color:#008000;font-weight:bold">&#34;name&#34;</span>: <span style="color:#b44">&#34;local&#34;</span>,
+            <span style="color:#008000;font-weight:bold">&#34;hostPort&#34;</span>: <span style="color:#666">8080</span>,
+            <span style="color:#008000;font-weight:bold">&#34;containerPort&#34;</span>: <span style="color:#666">8080</span>
+          }
+        ],
+        <span style="color:#008000;font-weight:bold">&#34;volumeMounts&#34;</span>: [
+          {
+            <span style="color:#008000;font-weight:bold">&#34;name&#34;</span>: <span style="color:#b44">&#34;srvkube&#34;</span>,
+            <span style="color:#008000;font-weight:bold">&#34;mountPath&#34;</span>: <span style="color:#b44">&#34;/srv/kubernetes&#34;</span>,
+            <span style="color:#008000;font-weight:bold">&#34;readOnly&#34;</span>: <span style="color:#a2f;font-weight:bold">true</span>
+          },
+          {
+            <span style="color:#008000;font-weight:bold">&#34;name&#34;</span>: <span style="color:#b44">&#34;etcssl&#34;</span>,
+            <span style="color:#008000;font-weight:bold">&#34;mountPath&#34;</span>: <span style="color:#b44">&#34;/etc/ssl&#34;</span>,
+            <span style="color:#008000;font-weight:bold">&#34;readOnly&#34;</span>: <span style="color:#a2f;font-weight:bold">true</span>
+          }
+        ],
+        <span style="color:#008000;font-weight:bold">&#34;livenessProbe&#34;</span>: {
+          <span style="color:#008000;font-weight:bold">&#34;httpGet&#34;</span>: {
+            <span style="color:#008000;font-weight:bold">&#34;scheme&#34;</span>: <span style="color:#b44">&#34;HTTP&#34;</span>,
+            <span style="color:#008000;font-weight:bold">&#34;host&#34;</span>: <span style="color:#b44">&#34;127.0.0.1&#34;</span>,
+            <span style="color:#008000;font-weight:bold">&#34;port&#34;</span>: <span style="color:#666">8080</span>,
+            <span style="color:#008000;font-weight:bold">&#34;path&#34;</span>: <span style="color:#b44">&#34;/healthz&#34;</span>
+          },
+          <span style="color:#008000;font-weight:bold">&#34;initialDelaySeconds&#34;</span>: <span style="color:#666">15</span>,
+          <span style="color:#008000;font-weight:bold">&#34;timeoutSeconds&#34;</span>: <span style="color:#666">15</span>
+        }
+      }
+    ],
+    <span style="color:#008000;font-weight:bold">&#34;volumes&#34;</span>: [
+      {
+        <span style="color:#008000;font-weight:bold">&#34;name&#34;</span>: <span style="color:#b44">&#34;srvkube&#34;</span>,
+        <span style="color:#008000;font-weight:bold">&#34;hostPath&#34;</span>: {
+          <span style="color:#008000;font-weight:bold">&#34;path&#34;</span>: <span style="color:#b44">&#34;/srv/kubernetes&#34;</span>
+        }
+      },
+      {
+        <span style="color:#008000;font-weight:bold">&#34;name&#34;</span>: <span style="color:#b44">&#34;etcssl&#34;</span>,
+        <span style="color:#008000;font-weight:bold">&#34;hostPath&#34;</span>: {
+          <span style="color:#008000;font-weight:bold">&#34;path&#34;</span>: <span style="color:#b44">&#34;/etc/ssl&#34;</span>
+        }
+      }
+    ]
+  }
+}</code></pre></div>
+<p>Here are some apiserver flags you may need to set:</p>
+
+<ul>
+<li><code>--cloud-provider=</code> see <a href="#cloud-providers">cloud providers</a></li>
+<li><code>--cloud-config=</code> see <a href="#cloud-providers">cloud providers</a></li>
+<li><code>--address=${MASTER_IP}</code> <em>or</em> <code>--bind-address=127.0.0.1</code> and <code>--address=127.0.0.1</code> if you want to run a proxy on the master node.</li>
+<li><code>--service-cluster-ip-range=$SERVICE_CLUSTER_IP_RANGE</code></li>
+<li><code>--etcd-servers=http://127.0.0.1:4001</code></li>
+<li><code>--tls-cert-file=/srv/kubernetes/server.cert</code></li>
+<li><code>--tls-private-key-file=/srv/kubernetes/server.key</code></li>
+<li><code>--enable-admission-plugins=$RECOMMENDED_LIST</code>
+
+<ul>
+<li>See <a href="/docs/admin/admission-controllers/">admission controllers</a> for recommended arguments.</li>
+</ul></li>
+<li><code>--allow-privileged=true</code>, only if you trust your cluster user to run pods as root.</li>
+</ul>
+
+<p>If you are following the firewall-only security approach, then use these arguments:</p>
+
+<ul>
+<li><code>--token-auth-file=/dev/null</code></li>
+<li><code>--insecure-bind-address=$MASTER_IP</code></li>
+<li><code>--advertise-address=$MASTER_IP</code></li>
+</ul>
+
+<p>If you are using the HTTPS approach, then set:</p>
+
+<ul>
+<li><code>--client-ca-file=/srv/kubernetes/ca.crt</code></li>
+<li><code>--token-auth-file=/srv/kubernetes/known_tokens.csv</code></li>
+<li><code>--basic-auth-file=/srv/kubernetes/basic_auth.csv</code></li>
+</ul>
+
+<p>This pod mounts several node file system directories using the  <code>hostPath</code> volumes.  Their purposes are:</p>
+
+<ul>
+<li>The <code>/etc/ssl</code> mount allows the apiserver to find the SSL root certs so it can
+authenticate external services, such as a cloud provider.
+
+<ul>
+<li>This is not required if you do not use a cloud provider (bare-metal for example).</li>
+</ul></li>
+<li>The <code>/srv/kubernetes</code> mount allows the apiserver to read certs and credentials stored on the
+node disk.  These could instead be stored on a persistent disk, such as a GCE PD, or baked into the image.</li>
+<li>Optionally, you may want to mount <code>/var/log</code> as well and redirect output there (not shown in template).
+
+<ul>
+<li>Do this if you prefer your logs to be accessible from the root filesystem with tools like journalctl.</li>
+</ul></li>
+</ul>
+
+<p><em>TODO</em> document proxy-ssh setup.</p>
+
+<h5 id="cloud-providers">Cloud Providers</h5>
+
+<p>Apiserver supports several cloud providers.</p>
+
+<ul>
+<li>options for <code>--cloud-provider</code> flag are <code>aws</code>, <code>azure</code>, <code>cloudstack</code>, <code>fake</code>, <code>gce</code>, <code>mesos</code>, <code>openstack</code>, <code>ovirt</code>, <code>rackspace</code>, <code>vsphere</code>, or unset.</li>
+<li>unset used for bare metal setups.</li>
+<li>support for new IaaS is added by contributing code <a href="https://releases.k8s.io/master/pkg/cloudprovider/providers" target="_blank">here</a></li>
+</ul>
+
+<p>Some cloud providers require a config file. If so, you need to put config file into apiserver image or mount through hostPath.</p>
+
+<ul>
+<li><code>--cloud-config=</code> set if cloud provider requires a config file.</li>
+<li>Used by <code>aws</code>, <code>gce</code>, <code>mesos</code>, <code>openstack</code>, <code>ovirt</code> and <code>rackspace</code>.</li>
+<li>You must put config file into apiserver image or mount through hostPath.</li>
+<li>Cloud config file syntax is <a href="https://code.google.com/p/gcfg/" target="_blank">Gcfg</a>.</li>
+<li>AWS format defined by type <a href="https://releases.k8s.io/master/pkg/cloudprovider/providers/aws/aws.go" target="_blank">AWSCloudConfig</a></li>
+<li>There is a similar type in the corresponding file for other cloud providers.</li>
+</ul>
+
+<h4 id="scheduler-pod-template">Scheduler pod template</h4>
+
+<p>Complete this template for the scheduler pod:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+  <span style="color:#008000;font-weight:bold">&#34;kind&#34;</span>: <span style="color:#b44">&#34;Pod&#34;</span>,
+  <span style="color:#008000;font-weight:bold">&#34;apiVersion&#34;</span>: <span style="color:#b44">&#34;v1&#34;</span>,
+  <span style="color:#008000;font-weight:bold">&#34;metadata&#34;</span>: {
+    <span style="color:#008000;font-weight:bold">&#34;name&#34;</span>: <span style="color:#b44">&#34;kube-scheduler&#34;</span>
+  },
+  <span style="color:#008000;font-weight:bold">&#34;spec&#34;</span>: {
+    <span style="color:#008000;font-weight:bold">&#34;hostNetwork&#34;</span>: <span style="color:#a2f;font-weight:bold">true</span>,
+    <span style="color:#008000;font-weight:bold">&#34;containers&#34;</span>: [
+      {
+        <span style="color:#008000;font-weight:bold">&#34;name&#34;</span>: <span style="color:#b44">&#34;kube-scheduler&#34;</span>,
+        <span style="color:#008000;font-weight:bold">&#34;image&#34;</span>: <span style="color:#b44">&#34;$HYPERKUBE_IMAGE&#34;</span>,
+        <span style="color:#008000;font-weight:bold">&#34;command&#34;</span>: [
+          <span style="color:#b44">&#34;/hyperkube&#34;</span>,
+          <span style="color:#b44">&#34;scheduler&#34;</span>,
+          <span style="color:#b44">&#34;--master=127.0.0.1:8080&#34;</span>,
+          <span style="color:#b44">&#34;$SCHEDULER_FLAG1&#34;</span>,
+          <span style="">...</span>
+          <span style="color:#b44">&#34;$SCHEDULER_FLAGN&#34;</span>
+        ],
+        <span style="color:#008000;font-weight:bold">&#34;livenessProbe&#34;</span>: {
+          <span style="color:#008000;font-weight:bold">&#34;httpGet&#34;</span>: {
+            <span style="color:#008000;font-weight:bold">&#34;scheme&#34;</span>: <span style="color:#b44">&#34;HTTP&#34;</span>,
+            <span style="color:#008000;font-weight:bold">&#34;host&#34;</span>: <span style="color:#b44">&#34;127.0.0.1&#34;</span>,
+            <span style="color:#008000;font-weight:bold">&#34;port&#34;</span>: <span style="color:#666">10251</span>,
+            <span style="color:#008000;font-weight:bold">&#34;path&#34;</span>: <span style="color:#b44">&#34;/healthz&#34;</span>
+          },
+          <span style="color:#008000;font-weight:bold">&#34;initialDelaySeconds&#34;</span>: <span style="color:#666">15</span>,
+          <span style="color:#008000;font-weight:bold">&#34;timeoutSeconds&#34;</span>: <span style="color:#666">15</span>
+        }
+      }
+    ]
+  }
+}</code></pre></div>
+<p>Typically, no additional flags are required for the scheduler.</p>
+
+<p>Optionally, you may want to mount <code>/var/log</code> as well and redirect output there.</p>
+
+<h4 id="controller-manager-template">Controller Manager Template</h4>
+
+<p>Template for controller manager pod:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+  <span style="color:#008000;font-weight:bold">&#34;kind&#34;</span>: <span style="color:#b44">&#34;Pod&#34;</span>,
+  <span style="color:#008000;font-weight:bold">&#34;apiVersion&#34;</span>: <span style="color:#b44">&#34;v1&#34;</span>,
+  <span style="color:#008000;font-weight:bold">&#34;metadata&#34;</span>: {
+    <span style="color:#008000;font-weight:bold">&#34;name&#34;</span>: <span style="color:#b44">&#34;kube-controller-manager&#34;</span>
+  },
+  <span style="color:#008000;font-weight:bold">&#34;spec&#34;</span>: {
+    <span style="color:#008000;font-weight:bold">&#34;hostNetwork&#34;</span>: <span style="color:#a2f;font-weight:bold">true</span>,
+    <span style="color:#008000;font-weight:bold">&#34;containers&#34;</span>: [
+      {
+        <span style="color:#008000;font-weight:bold">&#34;name&#34;</span>: <span style="color:#b44">&#34;kube-controller-manager&#34;</span>,
+        <span style="color:#008000;font-weight:bold">&#34;image&#34;</span>: <span style="color:#b44">&#34;$HYPERKUBE_IMAGE&#34;</span>,
+        <span style="color:#008000;font-weight:bold">&#34;command&#34;</span>: [
+          <span style="color:#b44">&#34;/hyperkube&#34;</span>,
+          <span style="color:#b44">&#34;controller-manager&#34;</span>,
+          <span style="color:#b44">&#34;$CNTRLMNGR_FLAG1&#34;</span>,
+          <span style="">...</span>
+          <span style="color:#b44">&#34;$CNTRLMNGR_FLAGN&#34;</span>
+        ],
+        <span style="color:#008000;font-weight:bold">&#34;volumeMounts&#34;</span>: [
+          {
+            <span style="color:#008000;font-weight:bold">&#34;name&#34;</span>: <span style="color:#b44">&#34;srvkube&#34;</span>,
+            <span style="color:#008000;font-weight:bold">&#34;mountPath&#34;</span>: <span style="color:#b44">&#34;/srv/kubernetes&#34;</span>,
+            <span style="color:#008000;font-weight:bold">&#34;readOnly&#34;</span>: <span style="color:#a2f;font-weight:bold">true</span>
+          },
+          {
+            <span style="color:#008000;font-weight:bold">&#34;name&#34;</span>: <span style="color:#b44">&#34;etcssl&#34;</span>,
+            <span style="color:#008000;font-weight:bold">&#34;mountPath&#34;</span>: <span style="color:#b44">&#34;/etc/ssl&#34;</span>,
+            <span style="color:#008000;font-weight:bold">&#34;readOnly&#34;</span>: <span style="color:#a2f;font-weight:bold">true</span>
+          }
+        ],
+        <span style="color:#008000;font-weight:bold">&#34;livenessProbe&#34;</span>: {
+          <span style="color:#008000;font-weight:bold">&#34;httpGet&#34;</span>: {
+            <span style="color:#008000;font-weight:bold">&#34;scheme&#34;</span>: <span style="color:#b44">&#34;HTTP&#34;</span>,
+            <span style="color:#008000;font-weight:bold">&#34;host&#34;</span>: <span style="color:#b44">&#34;127.0.0.1&#34;</span>,
+            <span style="color:#008000;font-weight:bold">&#34;port&#34;</span>: <span style="color:#666">10252</span>,
+            <span style="color:#008000;font-weight:bold">&#34;path&#34;</span>: <span style="color:#b44">&#34;/healthz&#34;</span>
+          },
+          <span style="color:#008000;font-weight:bold">&#34;initialDelaySeconds&#34;</span>: <span style="color:#666">15</span>,
+          <span style="color:#008000;font-weight:bold">&#34;timeoutSeconds&#34;</span>: <span style="color:#666">15</span>
+        }
+      }
+    ],
+    <span style="color:#008000;font-weight:bold">&#34;volumes&#34;</span>: [
+      {
+        <span style="color:#008000;font-weight:bold">&#34;name&#34;</span>: <span style="color:#b44">&#34;srvkube&#34;</span>,
+        <span style="color:#008000;font-weight:bold">&#34;hostPath&#34;</span>: {
+          <span style="color:#008000;font-weight:bold">&#34;path&#34;</span>: <span style="color:#b44">&#34;/srv/kubernetes&#34;</span>
+        }
+      },
+      {
+        <span style="color:#008000;font-weight:bold">&#34;name&#34;</span>: <span style="color:#b44">&#34;etcssl&#34;</span>,
+        <span style="color:#008000;font-weight:bold">&#34;hostPath&#34;</span>: {
+          <span style="color:#008000;font-weight:bold">&#34;path&#34;</span>: <span style="color:#b44">&#34;/etc/ssl&#34;</span>
+        }
+      }
+    ]
+  }
+}</code></pre></div>
+<p>Flags to consider using with controller manager:</p>
+
+<ul>
+<li><code>--cluster-cidr=</code>, the CIDR range for pods in cluster.</li>
+<li><code>--allocate-node-cidrs=</code>, if you are using <code>--cloud-provider=</code>, allocate and set the CIDRs for pods on the cloud provider.</li>
+<li><code>--cloud-provider=</code> and <code>--cloud-config</code> as described in apiserver section.</li>
+<li><code>--service-account-private-key-file=/srv/kubernetes/server.key</code>, used by the <a href="/docs/user-guide/service-accounts">service account</a> feature.</li>
+<li><code>--master=127.0.0.1:8080</code></li>
+</ul>
+
+<h4 id="starting-and-verifying-apiserver-scheduler-and-controller-manager">Starting and Verifying Apiserver, Scheduler, and Controller Manager</h4>
+
+<p>Place each completed pod template into the kubelet config dir
+(whatever <code>--config=</code> argument of kubelet is set to, typically
+<code>/etc/kubernetes/manifests</code>).  The order does not matter: scheduler and
+controller manager will retry reaching the apiserver until it is up.</p>
+
+<p>Use <code>ps</code> or <code>docker ps</code> to verify that each process has started.  For example, verify that kubelet has started a container for the apiserver like this:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ sudo docker ps | grep apiserver
+5783290746d5        k8s.gcr.io/kube-apiserver:e36bf367342b5a80d7467fd7611ad873            <span style="color:#b44">&#34;/bin/sh -c &#39;/usr/lo&#39;&#34;</span>    <span style="color:#666">10</span> seconds ago      Up <span style="color:#666">9</span> seconds                              k8s_kube-apiserver.feb145e7_kube-apiserver-kubernetes-master_default_eaebc600cf80dae59902b44225f2fc0a_225a4695</code></pre></div>
+<p>Then try to connect to the apiserver:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ <span style="color:#a2f">echo</span> <span style="color:#a2f;font-weight:bold">$(</span>curl -s http://localhost:8080/healthz<span style="color:#a2f;font-weight:bold">)</span>
+ok
+$ curl -s http://localhost:8080/api
+<span style="color:#666">{</span>
+  <span style="color:#b44">&#34;versions&#34;</span>: <span style="color:#666">[</span>
+    <span style="color:#b44">&#34;v1&#34;</span>
+  <span style="color:#666">]</span>
+<span style="color:#666">}</span></code></pre></div>
+<p>If you have selected the <code>--register-node=true</code> option for kubelets, they will now begin self-registering with the apiserver.
+You should soon be able to see all your nodes by running the <code>kubectl get nodes</code> command.
+Otherwise, you will need to manually create node objects.</p>
+
+<h3 id="starting-cluster-services">Starting Cluster Services</h3>
+
+<p>You will want to complete your Kubernetes clusters by adding cluster-wide
+services.  These are sometimes called <em>addons</em>, and <a href="/docs/admin/cluster-components/#addons">an overview
+of their purpose is in the admin guide</a>.</p>
+
+<p>Notes for setting up each cluster service are given below:</p>
+
+<ul>
+<li>Cluster DNS:
+
+<ul>
+<li>Required for many Kubernetes examples</li>
+<li><a href="http://releases.k8s.io/master/cluster/addons/dns/" target="_blank">Setup instructions</a></li>
+<li><a href="/docs/concepts/services-networking/dns-pod-service/">Admin Guide</a></li>
+</ul></li>
+<li>Cluster-level Logging
+
+<ul>
+<li><a href="/docs/user-guide/logging/overview/">Cluster-level Logging Overview</a></li>
+<li><a href="/docs/user-guide/logging/elasticsearch/">Cluster-level Logging with Elasticsearch</a></li>
+<li><a href="/docs/user-guide/logging/stackdriver/">Cluster-level Logging with Stackdriver Logging</a></li>
+</ul></li>
+<li>Container Resource Monitoring
+
+<ul>
+<li><a href="http://releases.k8s.io/master/cluster/addons/cluster-monitoring/" target="_blank">Setup instructions</a></li>
+</ul></li>
+<li>GUI
+
+<ul>
+<li><a href="https://github.com/kubernetes/dashboard" target="_blank">Setup instructions</a></li>
+</ul></li>
+</ul>
+
+<h2 id="troubleshooting">Troubleshooting</h2>
+
+<h3 id="running-validate-cluster">Running validate-cluster</h3>
+
+<p><code>cluster/validate-cluster.sh</code> is used by <code>cluster/kube-up.sh</code> to determine if
+the cluster start succeeded.</p>
+
+<p>Example usage and output:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#b8860b">KUBECTL_PATH</span><span style="color:#666">=</span><span style="color:#a2f;font-weight:bold">$(</span>which kubectl<span style="color:#a2f;font-weight:bold">)</span> <span style="color:#b8860b">NUM_NODES</span><span style="color:#666">=</span><span style="color:#666">3</span> <span style="color:#b8860b">KUBERNETES_PROVIDER</span><span style="color:#666">=</span><span style="color:#a2f">local</span> cluster/validate-cluster.sh
+Found <span style="color:#666">3</span> node<span style="color:#666">(</span>s<span style="color:#666">)</span>.
+NAME                    STATUS    AGE     VERSION
+node1.local             Ready     1h      v1.6.9+a3d1dfa6f4335
+node2.local             Ready     1h      v1.6.9+a3d1dfa6f4335
+node3.local             Ready     1h      v1.6.9+a3d1dfa6f4335
+Validate output:
+NAME                 STATUS    MESSAGE              ERROR
+controller-manager   Healthy   ok
+scheduler            Healthy   ok
+etcd-1               Healthy   <span style="color:#666">{</span><span style="color:#b44">&#34;health&#34;</span>: <span style="color:#b44">&#34;true&#34;</span><span style="color:#666">}</span>
+etcd-2               Healthy   <span style="color:#666">{</span><span style="color:#b44">&#34;health&#34;</span>: <span style="color:#b44">&#34;true&#34;</span><span style="color:#666">}</span>
+etcd-0               Healthy   <span style="color:#666">{</span><span style="color:#b44">&#34;health&#34;</span>: <span style="color:#b44">&#34;true&#34;</span><span style="color:#666">}</span>
+Cluster validation succeeded</code></pre></div>
+<h3 id="inspect-pods-and-services">Inspect pods and services</h3>
+
+<p>Try to run through the &ldquo;Inspect your cluster&rdquo; section in one of the other Getting Started Guides, such as <a href="/docs/getting-started-guides/gce/#inspect-your-cluster">GCE</a>.
+You should see some services.  You should also see &ldquo;mirror pods&rdquo; for the apiserver, scheduler and controller-manager, plus any add-ons you started.</p>
+
+<h3 id="try-examples">Try Examples</h3>
+
+<p>At this point you should be able to run through one of the basic examples, such as the <a href="/examples/application/deployment.yaml">nginx example</a>.</p>
+
+<h3 id="running-the-conformance-test">Running the Conformance Test</h3>
+
+<p>You may want to try to run the <a href="http://releases.k8s.io/master/test/e2e_node/conformance/run_test.sh" target="_blank">Conformance test</a>.  Any failures may give a hint as to areas that need more attention.</p>
+
+<h3 id="networking-1">Networking</h3>
+
+<p>The nodes must be able to connect to each other using their private IP. Verify this by
+pinging or SSH-ing from one node to another.</p>
+
+<h3 id="getting-help">Getting Help</h3>
+
+<p>If you run into trouble, please see the section on <a href="/docs/getting-started-guides/gce/#troubleshooting">troubleshooting</a>, post to the
+<a href="https://groups.google.com/forum/#!forum/kubernetes-users" target="_blank">kubernetes-users group</a>, or come ask questions on <a href="/docs/troubleshooting#slack">Slack</a>.</p>
+
+<h2 id="support-level">Support Level</h2>
+
+<table>
+<thead>
+<tr>
+<th>IaaS Provider</th>
+<th>Config. Mgmt</th>
+<th>OS</th>
+<th>Networking</th>
+<th>Docs</th>
+<th>Conforms</th>
+<th>Support Level</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>any</td>
+<td>any</td>
+<td>any</td>
+<td>any</td>
+<td><a href="/docs/getting-started-guides/scratch/">docs</a></td>
+<td></td>
+<td>Community (<a href="https://github.com/erictune" target="_blank">@erictune</a>)</td>
+</tr>
+</tbody>
+</table>
+
+<p>For support level information on all solutions, see the <a href="/docs/getting-started-guides/#table-of-solutions/">Table of solutions</a> chart.</p>
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/setup/scratch.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/setup\/scratch\/",
+					"title" : "Creating a Custom Cluster from Scratch",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/setup\/scratch\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/setup/scratch.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

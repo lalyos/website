@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>基于Replication Controller执行滚动升级 - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="基于Replication Controller执行滚动升级" />
+<meta property="og:description" content="基于Replication Controller执行滚动升级" />
+
+<meta property="og:url" content="https://kubernetes.io/cn/docs/tasks/run-application/rolling-update-replication-controller/" />
+<meta property="og:title" content="基于Replication Controller执行滚动升级 - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+             <li>
+                <a href="#">
+                    Chinese <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/">English</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+        
+        <a class="item" data-title="Home" href="/cn/docs/"></a>
+
+	
+	
+		
+		
+<a class="item" data-title="" href="/cn/docs/concepts/architecture/cloud-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="" href="/cn/docs/concepts/overview/kubernetes-api/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Admins">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Kubelet authentication/authorization" href="/cn/docs/admin/kubelet-authentication-authorization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes API访问控制" href="/cn/docs/admin/accessing-the-api/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes OpenVSwitch GRE/VxLAN 网络" href="/cn/docs/admin/ovs-networking/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="TLS bootstrapping" href="/cn/docs/admin/kubelet-tls-bootstrapping/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kube-apiserver" href="/cn/docs/admin/kube-apiserver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用启动引导令牌（Bootstrap Tokens）认证" href="/cn/docs/admin/bootstrap-tokens/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="创建大规模集群" href="/cn/docs/admin/cluster-large/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="多区域运行" href="/cn/docs/admin/multiple-zones/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="构建高可用集群">
+		<div class="container">
+		
+		
+		<a class="item" data-title="构建高可用集群" href="/cn/docs/admin/high-availability/"></a>
+		
+		
+	
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="概述">
+		<div class="container">
+		
+		
+		<a class="item" data-title="概述" href="/cn/docs/admin/authorization/"></a>
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="ABAC 模式" href="/cn/docs/admin/authorization/abac/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Webhook Mode" href="/cn/docs/admin/authorization/webhook/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="管理Service Accounts" href="/cn/docs/admin/service-accounts-admin/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="节点设置校验" href="/cn/docs/admin/node-conformance/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Cron Job" href="/cn/docs/concepts/workloads/controllers/cron-jobs/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="DNS Pod 与 Service" href="/cn/docs/concepts/services-networking/dns-pod-service/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="DaemonSet" href="/cn/docs/concepts/workloads/controllers/daemonset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Deployments" href="/cn/docs/concepts/workloads/controllers/deployment/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Docker 用户使用 kubectl 命令指南" href="/cn/docs/user-guide/docker-cli-to-kubectl/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Init 容器" href="/cn/docs/concepts/workloads/pods/init-containers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="JSONPath 支持" href="/cn/docs/user-guide/jsonpath/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes 中的代理" href="/cn/docs/concepts/cluster-administration/proxies/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes 组件" href="/cn/docs/concepts/overview/components/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes集群中使用Sysctls" href="/cn/docs/concepts/cluster-administration/sysctl-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Managing Compute Resources for Containers" href="/cn/docs/concepts/configuration/manage-compute-resources-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Master 节点通信" href="/cn/docs/concepts/architecture/master-node-communication/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Nodes" href="/cn/docs/concepts/architecture/nodes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pod Preset" href="/cn/docs/concepts/workloads/pods/podpreset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pod 安全策略" href="/cn/docs/concepts/policy/pod-security-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pod 的生命周期" href="/cn/docs/concepts/workloads/pods/pod-lifecycle/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Secret" href="/cn/docs/concepts/configuration/secret/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Service" href="/cn/docs/concepts/services-networking/service/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Tutorials">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Kubernetes 对象管理" href="/cn/docs/tutorials/object-management-kubectl/object-management/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="StatefulSet基本使用" href="/cn/docs/tutorials/stateful-application/basic-stateful-set/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Try Our Interactive Tutorials">
+		<div class="container">
+		
+		
+		<a class="item" data-title="Try Our Interactive Tutorials" href="/cn/docs/tutorials/kubernetes-basics/"></a>
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="互动教程 - 创建集群" href="/cn/docs/tutorials/kubernetes-basics/cluster-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 应用外部可见" href="/cn/docs/tutorials/kubernetes-basics/expose-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 应用程序探索" href="/cn/docs/tutorials/kubernetes-basics/explore-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 扩展您的应用程序" href="/cn/docs/tutorials/kubernetes-basics/scale-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 更新您的应用程序" href="/cn/docs/tutorials/kubernetes-basics/update-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 部署应用程序" href="/cn/docs/tutorials/kubernetes-basics/deploy-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Minikube 创建一个集群" href="/cn/docs/tutorials/kubernetes-basics/cluster-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 kubectl 创建部署" href="/cn/docs/tutorials/kubernetes-basics/deploy-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用服务发布您的应用程序" href="/cn/docs/tutorials/kubernetes-basics/expose-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="执行滚动更新" href="/cn/docs/tutorials/kubernetes-basics/update-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="查看 Pods 和节点" href="/cn/docs/tutorials/kubernetes-basics/explore-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="运行应用程序的多个实例" href="/cn/docs/tutorials/kubernetes-basics/scale-intro/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="“示例：使用 Stateful Sets 部署 Cassandra”" href="/cn/docs/tutorials/stateful-application/cassandra/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Source IP" href="/cn/docs/tutorials/services/source-ip/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用ConfigMap来配置Redis" href="/cn/docs/tutorials/configuration/configure-redis-using-configmap/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用命令式的方式管理 Kubernetes 对象" href="/cn/docs/tutorials/object-management-kubectl/imperative-object-management-command/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="基于 Persistent Volumes 搭建 WordPress 和 MySQL 应用" href="/cn/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="运行 ZooKeeper， 一个 CP 分布式系统" href="/cn/docs/tutorials/stateful-application/zookeeper/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="kubectl概述" href="/cn/docs/user-guide/kubectl-overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="为容器设置启动时要执行的命令及其入参" href="/cn/docs/tasks/inject-data-application/define-command-argument-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="为容器设置环境变量" href="/cn/docs/tasks/inject-data-application/define-environment-variable-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="云供应商" href="/cn/docs/concepts/cluster-administration/cloud-providers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Calico 来提供 NetworkPolicy" href="/cn/docs/tasks/administer-cluster/calico-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 HostAliases 向 Pod /etc/hosts 文件添加条目" href="/cn/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 PodPreset 将信息注入 Pods" href="/cn/docs/tasks/inject-data-application/podpreset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Romana 来提供 NetworkPolicy" href="/cn/docs/tasks/administer-cluster/romana-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Secret 安全地分发凭证" href="/cn/docs/tasks/inject-data-application/distribute-credentials-secure/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Service 把前端连接到后端" href="/cn/docs/tasks/access-application-cluster/connecting-frontend-backend/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Weave 网络来提供 NetworkPolicy" href="/cn/docs/tasks/administer-cluster/weave-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用Deployment运行一个无状态应用" href="/cn/docs/tasks/run-application/run-stateless-application-deployment/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="关键插件 Pod 的调度保证" href="/cn/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="同 Pod 内的容器使用共享卷通信" href="/cn/docs/tasks/access-application-cluster/communicate-containers-same-pod-shared-volume/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="在 Kubernetes 中配置私有 DNS 和上游域名服务器" href="/cn/docs/tasks/administer-cluster/dns-custom-nameservers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="垃圾收集" href="/cn/docs/concepts/workloads/controllers/garbage-collection/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="基于Replication Controller执行滚动升级" href="/cn/docs/tasks/run-application/rolling-update-replication-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="声明网络策略" href="/cn/docs/tasks/administer-cluster/declare-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="安装扩展（Addons）" href="/cn/docs/concepts/cluster-administration/addons/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="容器环境变量" href="/cn/docs/concepts/containers/container-environment-variables/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="对 DaemonSet 执行回滚" href="/cn/docs/tasks/manage-daemon/rollback-daemon-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="应用故障排查" href="/cn/docs/tasks/debug-application-cluster/debug-application/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="应用资源配额和限额" href="/cn/docs/tasks/administer-cluster/apply-resource-quota-limit/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="应用连接到 Service" href="/cn/docs/concepts/services-networking/connect-applications-service/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="弹缩StatefulSet" href="/cn/docs/tasks/run-application/scale-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="控制节点上的CPU管理策略" href="/cn/docs/tasks/administer-cluster/cpu-management-policies/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="改变默认 StorageClass" href="/cn/docs/tasks/administer-cluster/change-default-storage-class/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="更改 PersistentVolume 的回收策略" href="/cn/docs/tasks/administer-cluster/change-pv-reclaim-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="概念模板示例" href="/cn/docs/concepts/example-concept-template/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="理解 Kubernetes 对象" href="/cn/docs/concepts/overview/working-with-objects/kubernetes-objects/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="知名标签（Label）、注解（Annotation）和 Taints" href="/cn/docs/reference/labels-annotations-taints/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="管理巨页（HugePages）" href="/cn/docs/tasks/manage-hugepages/scheduling-hugepages/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="给容器分配非透明整型资源" href="/cn/docs/tasks/configure-pod-container/opaque-integer-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="网络策略" href="/cn/docs/concepts/services-networking/network-policies/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="联邦" href="/cn/docs/concepts/cluster-administration/federation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="认识 Kubernetes?" href="/cn/docs/concepts/overview/what-is-kubernetes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="认识 Kubernetes?" href="/cn/docs/whatisk8s/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="设备插件" href="/cn/docs/concepts/cluster-administration/device-plugins/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="设置 Pod CPU 和内存限制" href="/cn/docs/tasks/administer-cluster/cpu-memory-limit/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="访问集群上运行的服务" href="/cn/docs/tasks/administer-cluster/access-cluster-services/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="证书" href="/cn/docs/concepts/cluster-administration/certificates/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="证书轮换" href="/cn/docs/tasks/tls/certificate-rotation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="调度 GPU" href="/cn/docs/tasks/manage-gpus/scheduling-gpus/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="调试Pods和Replication Controllers" href="/cn/docs/tasks/debug-application-cluster/debug-pod-replication-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="调试StatefulSet" href="/cn/docs/tasks/debug-application-cluster/debug-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="资源配额" href="/cn/docs/concepts/policy/resource-quotas/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="运行一个单实例有状态应用" href="/cn/docs/tasks/run-application/run-single-instance-stateful-application/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="通过文件将Pod信息呈现给容器" href="/cn/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="通过环境变量将Pod信息呈现给容器" href="/cn/docs/tasks/inject-data-application/environment-variable-expose-pod-information/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="通过配置文件设置 Kubelet 参数" href="/cn/docs/tasks/administer-cluster/kubelet-config-file/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="配置你的云平台防火墙" href="/cn/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="配置命名空间下pod总数" href="/cn/docs/tasks/administer-cluster/quota-pod-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="配置对多集群的访问" href="/cn/docs/tasks/access-application-cluster/configure-access-multiple-clusters/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="镜像" href="/cn/docs/concepts/containers/images/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="集群故障排查" href="/cn/docs/tasks/debug-application-cluster/debug-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="集群管理" href="/cn/docs/tasks/administer-cluster/cluster-management/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="集群管理概述" href="/cn/docs/concepts/cluster-administration/cluster-administration-overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="静态Pods" href="/cn/docs/tasks/administer-cluster/static-pod/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/tasks/run-application/rolling-update-replication-controller.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>基于Replication Controller执行滚动升级</h1>
+
+
+
+
+
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#概述">概述</a></li>
+<li><a href="#通过配置文件更新">通过配置文件更新</a>
+<ul>
+<li><a href="#示例">示例</a></li>
+</ul></li>
+<li><a href="#更新容器镜像">更新容器镜像</a>
+<ul>
+<li><a href="#示例-1">示例</a></li>
+</ul></li>
+<li><a href="#必选和可选字段">必选和可选字段</a></li>
+<li><a href="#实践">实践</a></li>
+<li><a href="#故障分析">故障分析</a></li>
+</ul></li>
+</ul>
+</nav>
+
+<h2 id="概述">概述</h2>
+
+<p><strong>注</strong>: 创建副本应用的首选方法是使用<a href="/docs/api-reference/v1.11/#deployment-v1beta1-apps">Deployment</a>，Deployment使用<a href="/docs/api-reference/v1.11/#replicaset-v1beta1-extensions">ReplicaSet</a>来进行副本控制。
+更多信息, 查看<a href="/docs/tasks/run-application/run-stateless-application-deployment/">使用Deployment运行一个无状态应用</a>。</p>
+
+<p>为了在更新服务的同时不中断业务， <code>kubectl</code> 支持<a href="/docs/user-guide/kubectl/v1.6/#rolling-update">&lsquo;滚动更新&rsquo;</a>，它一次更新一个pod，而不是同时停止整个服务。 有关更多信息，请参阅 <a href="https://git.k8s.io/community/contributors/design-proposals/cli/simple-rolling-update.md" target="_blank">滚动更新设计文档</a> 和 <a href="/docs/tasks/run-application/rolling-update-replication-controller/">滚动更新示例</a>。</p>
+
+<p>请注意， <code>kubectl rolling-update</code> 仅支持Replication Controllers。 但是，如果使用Replication Controllers部署应用，请考虑将其切换到<a href="/docs/concepts/workloads/controllers/deployment/">Deployments</a>. Deployment是一种被推荐使用的更高级别的控制器，它可以对应用进行声明性的自动滚动更新。 如果您仍然希望保留您的Replication Controllers并使用 <code>kubectl rolling-update</code>进行滚动更新， 请继续往下阅读：</p>
+
+<p>滚动更新可以对replication controller所管理的Pod的配置进行变更，变更可以通过一个新的配置文件来进行，或者，如果只更新镜像，则可以直接指定新的容器镜像。</p>
+
+<p>滚动更新的工作流程：</p>
+
+<ol>
+<li>通过新的配置创建一个replication controller</li>
+<li>在新的控制器上增加副本数，在旧的上面减少副本数，直到副本数达到期望值</li>
+<li>删除之前的replication controller</li>
+</ol>
+
+<p>使用<code>kubectl rolling-update</code>命令来进行滚动更新：</p>
+
+<pre><code>$ kubectl rolling-update NAME \
+    ([NEW_NAME] --image=IMAGE | -f FILE)
+</code></pre>
+
+<h2 id="通过配置文件更新">通过配置文件更新</h2>
+
+<p>通过配置文件来进行滚动更新，需要在<code>kubectl rolling-update</code>命令后面带上新的配置文件：</p>
+
+<pre><code>$ kubectl rolling-update NAME -f FILE
+</code></pre>
+
+<p>这个配置文件必须满足以下条件：</p>
+
+<ul>
+<li><p>指定不同的<code>metadata.name</code>值</p></li>
+
+<li><p>至少要修改<code>spec.selector</code>中的一个标签值</p></li>
+
+<li><p><code>metadata.namespace</code>字段必须相同</p></li>
+</ul>
+
+<p>Replication Controllers的配置文件详细介绍见<a href="/docs/tutorials/stateless-application/run-stateless-ap-replication-controller/">创建Replication Controllers</a>.</p>
+
+<h3 id="示例">示例</h3>
+
+<pre><code>// 通过新的配置文件frontend-v2.json来更新frontend-v1的pods
+$ kubectl rolling-update frontend-v1 -f frontend-v2.json
+
+// 将frontend-v2.json数据传到标准输入来更新frontend-v1的pods
+$ cat frontend-v2.json | kubectl rolling-update frontend-v1 -f -
+</code></pre>
+
+<h2 id="更新容器镜像">更新容器镜像</h2>
+
+<p>仅更新容器镜像的话，可通过如下命令，该命令可以指定一个新的控制器名称（可选），通过<code>--image</code>参数来指定新的镜像名称和标签。</p>
+
+<pre><code>$ kubectl rolling-update NAME [NEW_NAME] --image=IMAGE:TAG
+</code></pre>
+
+<p><code>--image</code>参数仅支持单容器pod，多容器pod使用<code>--image</code>参数会返回错误。</p>
+
+<p>如果没有指定 <code>NEW_NAME</code> ，新的replication controller创建后会使用一个临时名称，当更新完成，旧的controller被删除后，新的controller名称会被更新成旧的controller名称。</p>
+
+<p>如果<code>IMAGE:TAG</code> 和当前值相同，更新就会失败。 因此，我们建议使用版本号来作为标签，而不是使用 <code>:latest</code>。从一个 <code>image:latest</code>镜像升级到一个新的 <code>image:latest</code> 镜像将会失败，即使这两个镜像不是相同的。
+所以，我们不建议使用 <code>:latest</code> 来作为标签，详细信息见<a href="/docs/concepts/configuration/overview/#container-images">最佳配置实践</a> 。</p>
+
+<h3 id="示例-1">示例</h3>
+
+<pre><code>// 更新frontend-v1的pod到frontend-v2
+$ kubectl rolling-update frontend-v1 frontend-v2 --image=image:v2
+
+// 更新frontend的pods，不更改replication controller的名称
+$ kubectl rolling-update frontend --image=image:v2
+</code></pre>
+
+<h2 id="必选和可选字段">必选和可选字段</h2>
+
+<p>必选字段：</p>
+
+<ul>
+<li><code>NAME</code>: 需要进行滚动更新的replication controller名称</li>
+</ul>
+
+<p>下面两个字段选其一：</p>
+
+<ul>
+<li><code>-f FILE</code>: 新的replication controller的配置文件，JSON或者YAML格式均可。配置文件必须指定一个新的顶层<code>id</code>值，且至少包含一个现有<code>spec.selector</code>中的键值对。
+详细信息见<a href="/docs/tutorials/stateless-application/run-stateless-ap-replication-controller/#replication-controller-configuration-file">通过Replication Controller运行无状态应用</a>。
+<br>
+<br>
+或者：
+<br>
+<br></li>
+<li><code>--image IMAGE:TAG</code>: 更新后的镜像的名称和标签。必须和当前的image:tag不同。</li>
+</ul>
+
+<p>可选字段包括：</p>
+
+<ul>
+<li><code>NEW_NAME</code>: 只和 <code>--image</code> 一起使用，不和 <code>-f FILE</code> 一起使用。标识新的replication controller的名称。</li>
+<li><code>--poll-interval DURATION</code>: 在更新后轮询控制器状态的间隔时间。有效单位有 <code>ns</code> （纳秒），<code>us</code> 或 <code>µs</code>（微秒），<code>ms</code>（毫秒），<code>s</code>（秒），<code>m</code>（分钟）或 <code>h</code>（小时）。 单位可以自由组合（例如 <code>1m30s</code>）。 默认值为 <code>3s</code>。</li>
+<li><code>--timeout DURATION</code>: 退出更新之前，等待控制器更新一个pod的最大时间。默认是<code>5m0s</code>。有效单位如<code>--poll-interval</code>所述。</li>
+<li><code>--update-period DURATION</code>: 更新两个pod之间等待的时间，默认值是<code>1m0s</code>。有效单位如<code>--poll-interval</code>所述。</li>
+</ul>
+
+<p>有关<code>kubectl rolling-update</code>命令的更多信息见<a href="/docs/user-guide/kubectl/v1.6/#rolling-update"><code>kubectl</code>参考</a>.</p>
+
+<h2 id="实践">实践</h2>
+
+<p>现在你运行了一个1.7.9版本的nginx应用：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>ReplicationController<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>my-nginx<span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>replicas:<span style="color:#bbb"> </span><span style="color:#666">5</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>template:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>labels:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>app:<span style="color:#bbb"> </span>nginx<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>containers:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>nginx<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>image:<span style="color:#bbb"> </span>nginx:<span style="color:#666">1.7</span>.<span style="color:#666">9</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span>ports:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span>containerPort:<span style="color:#bbb"> </span><span style="color:#666">80</span></code></pre></div>
+<p>要更新到1.9.1版本，你可以使用<a href="https://git.k8s.io/community/contributors/design-proposals/cli/simple-rolling-update.md" target="_blank"><code>kubectl rolling-update --image</code></a>来指定一个新的镜像：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl rolling-update my-nginx --image<span style="color:#666">=</span>nginx:1.9.1
+Created my-nginx-ccba8fbd8cc8160970f63f9a2696fc46</code></pre></div>
+<p>在终端上打开另一个窗口 ，你可以看到<code>kubectl</code> 给每个pod都增加了一个值为配置文件哈希值的 <code>deployment</code> 标签，用来区分新旧pod：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl get pods -l <span style="color:#b8860b">app</span><span style="color:#666">=</span>nginx -L deployment
+NAME                                              READY     STATUS    RESTARTS   AGE       DEPLOYMENT
+my-nginx-ccba8fbd8cc8160970f63f9a2696fc46-k156z   <span style="color:#666">1</span>/1       Running   <span style="color:#666">0</span>          1m        ccba8fbd8cc8160970f63f9a2696fc46
+my-nginx-ccba8fbd8cc8160970f63f9a2696fc46-v95yh   <span style="color:#666">1</span>/1       Running   <span style="color:#666">0</span>          35s       ccba8fbd8cc8160970f63f9a2696fc46
+my-nginx-divi2                                    <span style="color:#666">1</span>/1       Running   <span style="color:#666">0</span>          2h        2d1d7a8f682934a254002b56404b813e
+my-nginx-o0ef1                                    <span style="color:#666">1</span>/1       Running   <span style="color:#666">0</span>          2h        2d1d7a8f682934a254002b56404b813e
+my-nginx-q6all                                    <span style="color:#666">1</span>/1       Running   <span style="color:#666">0</span>          8m        2d1d7a8f682934a254002b56404b813e</code></pre></div>
+<p>使用<code>kubectl rolling-update</code>可以实时看到更新的进度：</p>
+
+<pre><code>Scaling up my-nginx-ccba8fbd8cc8160970f63f9a2696fc46 from 0 to 3, scaling down my-nginx from 3 to 0 (keep 3 pods available, don't exceed 4 pods)
+Scaling my-nginx-ccba8fbd8cc8160970f63f9a2696fc46 up to 1
+Scaling my-nginx down to 2
+Scaling my-nginx-ccba8fbd8cc8160970f63f9a2696fc46 up to 2
+Scaling my-nginx down to 1
+Scaling my-nginx-ccba8fbd8cc8160970f63f9a2696fc46 up to 3
+Scaling my-nginx down to 0
+Update succeeded. Deleting old controller: my-nginx
+Renaming my-nginx-ccba8fbd8cc8160970f63f9a2696fc46 to my-nginx
+replicationcontroller &quot;my-nginx&quot; rolling updated
+</code></pre>
+
+<p>如果遇到问题，你可以中途停止滚动更新，并且使用 <code>--rollback</code> 来回滚到以前的版本:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl rolling-update my-nginx --rollback
+Setting <span style="color:#b44">&#34;my-nginx&#34;</span> replicas to <span style="color:#666">1</span>
+Continuing update with existing controller my-nginx.
+Scaling up nginx from <span style="color:#666">1</span> to <span style="color:#666">1</span>, scaling down my-nginx-ccba8fbd8cc8160970f63f9a2696fc46 from <span style="color:#666">1</span> to <span style="color:#666">0</span> <span style="color:#666">(</span>keep <span style="color:#666">1</span> pods available, don<span style="">&#39;</span>t exceed <span style="color:#666">2</span> pods<span style="color:#666">)</span>
+Scaling my-nginx-ccba8fbd8cc8160970f63f9a2696fc46 down to <span style="color:#666">0</span>
+Update succeeded. Deleting my-nginx-ccba8fbd8cc8160970f63f9a2696fc46
+replicationcontroller <span style="color:#b44">&#34;my-nginx&#34;</span> rolling updated</code></pre></div>
+<p>这个例子说明容器的不变性是个巨大的优点。</p>
+
+<p>如果你不仅仅是需要更新镜像，(例如，更新命令参数，环境变量等)，你可以创建一个新的replication controller配置文件，包含一个新的名称和不同的标签值，例如：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>ReplicationController<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>my-nginx-v4<span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>replicas:<span style="color:#bbb"> </span><span style="color:#666">5</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>selector:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>app:<span style="color:#bbb"> </span>nginx<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>deployment:<span style="color:#bbb"> </span>v4<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>template:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>labels:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>app:<span style="color:#bbb"> </span>nginx<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>deployment:<span style="color:#bbb"> </span>v4<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>containers:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>nginx<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>image:<span style="color:#bbb"> </span>nginx:<span style="color:#666">1.9</span>.<span style="color:#666">2</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span>args:<span style="color:#bbb"> </span>[<span style="color:#b44">&#34;nginx&#34;</span>,<span style="color:#bbb"> </span><span style="color:#b44">&#34;-T&#34;</span>]<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>ports:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span>containerPort:<span style="color:#bbb"> </span><span style="color:#666">80</span></code></pre></div>
+<p>然后使用它来进行更新：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl rolling-update my-nginx -f ./nginx-rc.yaml
+Created my-nginx-v4
+Scaling up my-nginx-v4 from <span style="color:#666">0</span> to <span style="color:#666">5</span>, scaling down my-nginx from <span style="color:#666">4</span> to <span style="color:#666">0</span> <span style="color:#666">(</span>keep <span style="color:#666">4</span> pods available, don<span style="">&#39;</span>t exceed <span style="color:#666">5</span> pods<span style="color:#666">)</span>
+Scaling my-nginx-v4 up to <span style="color:#666">1</span>
+Scaling my-nginx down to <span style="color:#666">3</span>
+Scaling my-nginx-v4 up to <span style="color:#666">2</span>
+Scaling my-nginx down to <span style="color:#666">2</span>
+Scaling my-nginx-v4 up to <span style="color:#666">3</span>
+Scaling my-nginx down to <span style="color:#666">1</span>
+Scaling my-nginx-v4 up to <span style="color:#666">4</span>
+Scaling my-nginx down to <span style="color:#666">0</span>
+Scaling my-nginx-v4 up to <span style="color:#666">5</span>
+Update succeeded. Deleting old controller: my-nginx
+replicationcontroller <span style="color:#b44">&#34;my-nginx-v4&#34;</span> rolling updated</code></pre></div>
+<h2 id="故障分析">故障分析</h2>
+
+<p>如果更新过程中，达到超时时长<code>timeout</code>后还没更新完成，则更新会失败。这时，一些pod会属于新的replication controller，一些会属于旧的。</p>
+
+<p>如果更新失败，可以尝试使用同样的命令来继续更新过程。</p>
+
+<p>在尝试更新之前如果需要回滚到之前的状态，可在之前的命令后面添加<code>--rollback=true</code>参数，这将回退所有的更改。</p>
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/tasks/run-application/rolling-update-replication-controller.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/cn\/docs\/tasks\/run-application\/rolling-update-replication-controller\/",
+					"title" : "基于Replication Controller执行滚动升级",
+					"permalink" : "https:\/\/kubernetes.io\/cn\/docs\/tasks\/run-application\/rolling-update-replication-controller\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/tasks/run-application/rolling-update-replication-controller.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

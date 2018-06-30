@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Setting up Kubernetes with Juju - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="Setting up Kubernetes with Juju" />
+<meta property="og:description" content="Setting up Kubernetes with Juju" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/getting-started-guides/ubuntu/installation/" />
+<meta property="og:title" content="Setting up Kubernetes with Juju - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Independent Solutions" href="/docs/getting-started-guides/"></a>
+
+	
+	
+		
+		
+	<div class="item" data-title="Bare Metal">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Fedora (Multi Node)" href="/docs/getting-started-guides/fedora/flannel_multi_node_cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Fedora (Single Node)" href="/docs/getting-started-guides/fedora/fedora_manual_config/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Deprecated Alternatives" href="/docs/getting-started-guides/alternatives/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Kubernetes on Ubuntu">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Backups" href="/docs/getting-started-guides/ubuntu/backups/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Decommissioning" href="/docs/getting-started-guides/ubuntu/decommissioning/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Glossary and Terminology" href="/docs/getting-started-guides/ubuntu/glossary/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Local Kubernetes development with LXD" href="/docs/getting-started-guides/ubuntu/local/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Logging" href="/docs/getting-started-guides/ubuntu/logging/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Monitoring" href="/docs/getting-started-guides/ubuntu/monitoring/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Networking" href="/docs/getting-started-guides/ubuntu/networking/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Operational Considerations" href="/docs/getting-started-guides/ubuntu/operational-considerations/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Rancher Integration with Ubuntu Kubernetes" href="/docs/getting-started-guides/ubuntu/rancher/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Scaling" href="/docs/getting-started-guides/ubuntu/scaling/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Security Considerations" href="/docs/getting-started-guides/ubuntu/security/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Setting up Kubernetes with Juju" href="/docs/getting-started-guides/ubuntu/installation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Storage" href="/docs/getting-started-guides/ubuntu/storage/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Troubleshooting" href="/docs/getting-started-guides/ubuntu/troubleshooting/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Upgrades" href="/docs/getting-started-guides/ubuntu/upgrades/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Validation - End-to-end Testing" href="/docs/getting-started-guides/ubuntu/validation/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/getting-started-guides/ubuntu/installation.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>Setting up Kubernetes with Juju</h1>
+
+
+
+
+<p>Ubuntu 16.04 introduced the <a href="https://www.ubuntu.com/cloud/kubernetes" target="_blank">Canonical Distribution of Kubernetes</a>, a pure upstream distribution of Kubernetes designed for production usage. This page shows you how to deploy a cluster.</p>
+
+
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+<li><a href="#before-you-begin">Before you begin</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#deployment-overview">Deployment overview</a></li>
+
+
+
+
+<li><a href="#support-level">Support Level</a></li>
+
+
+
+
+<li><a href="#installation-options">Installation options</a></li>
+
+
+
+
+<li><a href="#conjure-up">Conjure-up</a></li>
+
+
+
+
+<li><a href="#juju-deploy">Juju deploy</a></li>
+
+
+
+
+<li><a href="#monitor-deployment">Monitor deployment</a></li>
+
+
+
+
+<li><a href="#interacting-with-the-cluster">Interacting with the cluster</a></li>
+
+
+
+
+<li><a href="#scale-up-cluster">Scale up cluster</a></li>
+
+
+
+
+<li><a href="#scale-out-cluster">Scale out cluster</a></li>
+
+
+
+
+<li><a href="#tear-down-cluster">Tear down cluster</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#more-info">More Info</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</ul>
+
+
+
+<h2 id="before-you-begin">Before you begin</h2>
+<ul>
+<li>A working <a href="https://jujucharms.com/docs/2.3/reference-install" target="_blank">Juju client</a>; this does not have to be a Linux machine, it can also be Windows or OSX.</li>
+<li>A <a href="#cloud-compatibility">supported cloud</a>.
+
+<ul>
+<li>Bare Metal deployments are supported via <a href="http://maas.io" target="_blank">MAAS</a>. Refer to the <a href="http://maas.io/docs/" target="_blank">MAAS documentation</a> for configuration instructions.</li>
+<li>OpenStack deployments are currently only tested on Icehouse and newer.</li>
+</ul></li>
+<li>One of the following:
+
+<ul>
+<li>Network access to the following domains</li>
+<li>*.jujucharms.com</li>
+<li>gcr.io</li>
+<li>github.com</li>
+<li>Access to an Ubuntu mirror (public or private)</li>
+<li>Offline deployment prepared with <a href="https://github.com/juju-solutions/bundle-canonical-kubernetes/wiki/Running-CDK-in-a-restricted-environment" target="_blank">these</a> instructions.</li>
+</ul></li>
+</ul>
+
+
+
+
+<h2 id="deployment-overview">Deployment overview</h2>
+
+<p>Out of the box the deployment comes with the following components on 9 machines:</p>
+
+<ul>
+<li>Kubernetes (automated deployment, operations, and scaling)
+
+<ul>
+<li>Four node Kubernetes cluster with one master and three worker nodes.</li>
+<li>TLS used for communication between units for security.</li>
+<li>Flannel Software Defined Network (SDN) plugin</li>
+<li>A load balancer for HA kubernetes-master (Experimental)</li>
+<li>Optional Ingress Controller (on worker)</li>
+<li>Optional Dashboard addon (on master) including Heapster for cluster monitoring</li>
+</ul></li>
+<li>EasyRSA
+
+<ul>
+<li>Performs the role of a certificate authority serving self signed certificates
+to the requesting units of the cluster.</li>
+</ul></li>
+<li>ETCD (distributed key value store)
+
+<ul>
+<li>Three unit cluster for reliability.</li>
+</ul></li>
+</ul>
+
+<p>The Juju Kubernetes work is curated by the Big Software team at <a href="https://www.canonical.com/" target="_blank">Canonical Ltd</a>,
+let us know how we are doing. If you find any problems please open an
+<a href="https://github.com/juju-solutions/bundle-canonical-kubernetes" target="_blank">issue on our tracker</a>
+so we can find them.</p>
+
+<h2 id="support-level">Support Level</h2>
+
+<table>
+<thead>
+<tr>
+<th>IaaS Provider</th>
+<th>Config. Mgmt</th>
+<th>OS</th>
+<th>Networking</th>
+<th>Docs</th>
+<th>Conforms</th>
+<th>Support Level</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Amazon Web Services (AWS)</td>
+<td>Juju</td>
+<td>Ubuntu</td>
+<td>flannel, calico*</td>
+<td><a href="/docs/getting-started-guides/ubuntu">docs</a></td>
+<td></td>
+<td><a href="https://ubuntu.com/cloud/kubernetes" target="_blank">Commercial</a>, <a href="https://github.com/juju-solutions/bundle-kubernetes-core" target="_blank">Community</a></td>
+</tr>
+
+<tr>
+<td>OpenStack</td>
+<td>Juju</td>
+<td>Ubuntu</td>
+<td>flannel, calico</td>
+<td><a href="/docs/getting-started-guides/ubuntu">docs</a></td>
+<td></td>
+<td><a href="https://ubuntu.com/cloud/kubernetes" target="_blank">Commercial</a>, <a href="https://github.com/juju-solutions/bundle-kubernetes-core" target="_blank">Community</a></td>
+</tr>
+
+<tr>
+<td>Microsoft Azure</td>
+<td>Juju</td>
+<td>Ubuntu</td>
+<td>flannel</td>
+<td><a href="/docs/getting-started-guides/ubuntu">docs</a></td>
+<td></td>
+<td><a href="https://ubuntu.com/cloud/kubernetes" target="_blank">Commercial</a>, <a href="https://github.com/juju-solutions/bundle-kubernetes-core" target="_blank">Community</a></td>
+</tr>
+
+<tr>
+<td>Google Compute Engine (GCE)</td>
+<td>Juju</td>
+<td>Ubuntu</td>
+<td>flannel, calico</td>
+<td><a href="/docs/getting-started-guides/ubuntu">docs</a></td>
+<td></td>
+<td><a href="https://ubuntu.com/cloud/kubernetes" target="_blank">Commercial</a>, <a href="https://github.com/juju-solutions/bundle-kubernetes-core" target="_blank">Community</a></td>
+</tr>
+
+<tr>
+<td>Joyent</td>
+<td>Juju</td>
+<td>Ubuntu</td>
+<td>flannel</td>
+<td><a href="/docs/getting-started-guides/ubuntu">docs</a></td>
+<td></td>
+<td><a href="https://ubuntu.com/cloud/kubernetes" target="_blank">Commercial</a>, <a href="https://github.com/juju-solutions/bundle-kubernetes-core" target="_blank">Community</a></td>
+</tr>
+
+<tr>
+<td>Rackspace</td>
+<td>Juju</td>
+<td>Ubuntu</td>
+<td>flannel</td>
+<td><a href="/docs/getting-started-guides/ubuntu">docs</a></td>
+<td></td>
+<td><a href="https://ubuntu.com/cloud/kubernetes" target="_blank">Commercial</a>, <a href="https://github.com/juju-solutions/bundle-kubernetes-core" target="_blank">Community</a></td>
+</tr>
+
+<tr>
+<td>VMware vSphere</td>
+<td>Juju</td>
+<td>Ubuntu</td>
+<td>flannel, calico</td>
+<td><a href="/docs/getting-started-guides/ubuntu">docs</a></td>
+<td></td>
+<td><a href="https://ubuntu.com/cloud/kubernetes" target="_blank">Commercial</a>, <a href="https://github.com/juju-solutions/bundle-kubernetes-core" target="_blank">Community</a></td>
+</tr>
+
+<tr>
+<td>Bare Metal (MAAS)</td>
+<td>Juju</td>
+<td>Ubuntu</td>
+<td>flannel, calico</td>
+<td><a href="/docs/getting-started-guides/ubuntu">docs</a></td>
+<td></td>
+<td><a href="https://ubuntu.com/cloud/kubernetes" target="_blank">Commercial</a>, <a href="https://github.com/juju-solutions/bundle-kubernetes-core" target="_blank">Community</a></td>
+</tr>
+</tbody>
+</table>
+
+<p>For support level information on all solutions, see the <a href="/docs/getting-started-guides/#table-of-solutions">Table of solutions</a> chart.</p>
+
+<h2 id="installation-options">Installation options</h2>
+
+<p>You can launch a cluster in one of two ways: <a href="#conjure-up">conjure-up</a> or <a href="#juju-deploy">juju deploy</a>. Conjure-up is just a convenience wrapper over juju and simplifies the installation. As such, it is the preferred method of install.</p>
+
+<p>Deployment of the cluster is <a href="#cloud-compatibility">supported on a wide variety of public clouds</a>, private OpenStack clouds, or raw bare metal clusters. Bare metal deployments are supported via <a href="http://maas.io/" target="_blank">MAAS</a>.</p>
+
+<h2 id="conjure-up">Conjure-up</h2>
+
+<p>To install Kubernetes with conjure-up, you need only to run the following commands and then follow the prompts:</p>
+
+<pre><code>sudo snap install conjure-up --classic
+conjure-up kubernetes
+</code></pre>
+
+<h2 id="juju-deploy">Juju deploy</h2>
+
+<h3 id="configure-juju-to-use-your-cloud-provider">Configure Juju to use your cloud provider</h3>
+
+<p>After deciding which cloud to deploy to, follow the <a href="https://jujucharms.com/docs/devel/getting-started" target="_blank">cloud setup page</a> to configure deploying to that cloud.</p>
+
+<p>Load your <a href="https://jujucharms.com/docs/2.3/credentials" target="_blank">cloud credentials</a> for each
+cloud provider you would like to use.</p>
+
+<p>In this example</p>
+
+<pre><code>juju add-credential aws
+credential name: my_credentials
+select auth-type [userpass, oauth, etc]: userpass
+enter username: jorge
+enter password: *******
+</code></pre>
+
+<p>You can also just auto load credentials for popular clouds with the <code>juju autoload-credentials</code> command, which will auto import your credentials from the default files and environment variables for each cloud.</p>
+
+<p>Next we need to bootstrap a controller to manage the cluster. You need to define the cloud you want to bootstrap on, the region, and then any name for your controller node:</p>
+
+<pre><code>juju update-clouds # This command ensures all the latest regions are up to date on your client
+juju bootstrap aws/us-east-2
+</code></pre>
+
+<p>or, another example, this time on Azure:</p>
+
+<pre><code>juju bootstrap azure/westus2
+</code></pre>
+
+<p>If you receive this error, it is likely that the default Azure VM size (Standard D1 v2 [1 vcpu, 3.5 GB memory]) is not available in the Azure location:</p>
+
+<pre><code>ERROR failed to bootstrap model: instance provisioning failed (Failed)
+</code></pre>
+
+<p>You will need a controller node for each cloud or region you are deploying to. See the <a href="https://jujucharms.com/docs/2.3/controllers" target="_blank">controller documentation</a> for more information.</p>
+
+<p>Note that each controller can host multiple Kubernetes clusters in a given cloud or region.</p>
+
+<h3 id="launch-a-kubernetes-cluster">Launch a Kubernetes cluster</h3>
+
+<p>The following command will deploy the initial 9-node starter cluster. The speed of execution is very dependent of the performance of the cloud you&rsquo;re deploying to:</p>
+
+<pre><code>juju deploy canonical-kubernetes
+</code></pre>
+
+<p>After this command executes the cloud will then launch instances and begin the deployment process.</p>
+
+<h2 id="monitor-deployment">Monitor deployment</h2>
+
+<p>The <code>juju status</code> command provides information about each unit in the cluster. Use the <code>watch -c juju status --color</code> command to get a real-time view of the cluster as it deploys. When all the states are green and &ldquo;Idle&rdquo;, the cluster is ready to be used:</p>
+
+<pre><code>juju status
+</code></pre>
+
+<p>Output:</p>
+
+<pre><code>Model                         Controller          Cloud/Region   Version  SLA
+conjure-canonical-kubern-f48  conjure-up-aws-650  aws/us-east-2  2.3.2    unsupported
+
+App                    Version  Status  Scale  Charm                  Store       Rev  OS      Notes
+easyrsa                3.0.1    active      1  easyrsa                jujucharms   27  ubuntu  
+etcd                   2.3.8    active      3  etcd                   jujucharms   63  ubuntu  
+flannel                0.9.1    active      4  flannel                jujucharms   40  ubuntu  
+kubeapi-load-balancer  1.10.3   active      1  kubeapi-load-balancer  jujucharms   43  ubuntu  exposed
+kubernetes-master      1.9.3    active      1  kubernetes-master      jujucharms   13  ubuntu  
+kubernetes-worker      1.9.3    active      3  kubernetes-worker      jujucharms   81  ubuntu  exposed
+
+Unit                      Workload  Agent  Machine  Public address  Ports           Message
+easyrsa/0*                active    idle   3        18.219.190.99                   Certificate Authority connected.
+etcd/0                    active    idle   5        18.219.56.23    2379/tcp        Healthy with 3 known peers
+etcd/1*                   active    idle   0        18.219.212.151  2379/tcp        Healthy with 3 known peers
+etcd/2                    active    idle   6        13.59.240.210   2379/tcp        Healthy with 3 known peers
+kubeapi-load-balancer/0*  active    idle   1        18.222.61.65    443/tcp         Loadbalancer ready.
+kubernetes-master/0*      active    idle   4        18.219.105.220  6443/tcp        Kubernetes master running.
+  flannel/3               active    idle            18.219.105.220                  Flannel subnet 10.1.78.1/24
+kubernetes-worker/0       active    idle   2        18.219.221.98   80/tcp,443/tcp  Kubernetes worker running.
+  flannel/1               active    idle            18.219.221.98                   Flannel subnet 10.1.38.1/24
+kubernetes-worker/1*      active    idle   7        18.219.249.103  80/tcp,443/tcp  Kubernetes worker running.
+  flannel/2               active    idle            18.219.249.103                  Flannel subnet 10.1.68.1/24
+kubernetes-worker/2       active    idle   8        52.15.89.16     80/tcp,443/tcp  Kubernetes worker running.
+  flannel/0*              active    idle            52.15.89.16                     Flannel subnet 10.1.73.1/24
+
+Machine  State    DNS             Inst id              Series  AZ          Message
+0        started  18.219.212.151  i-065eab4eabc691b25  xenial  us-east-2a  running
+1        started  18.222.61.65    i-0b332955f028d6281  xenial  us-east-2b  running
+2        started  18.219.221.98   i-0879ef1ed95b569bc  xenial  us-east-2a  running
+3        started  18.219.190.99   i-08a7b364fc008fc85  xenial  us-east-2c  running
+4        started  18.219.105.220  i-0f92d3420b01085af  xenial  us-east-2a  running
+5        started  18.219.56.23    i-0271f6448cebae352  xenial  us-east-2c  running
+6        started  13.59.240.210   i-0789ef5837e0669b3  xenial  us-east-2b  running
+7        started  18.219.249.103  i-02f110b0ab042f7ac  xenial  us-east-2b  running
+8        started  52.15.89.16     i-086852bf1bee63d4e  xenial  us-east-2c  running
+
+Relation provider                    Requirer                             Interface         Type         Message
+easyrsa:client                       etcd:certificates                    tls-certificates  regular      
+easyrsa:client                       kubeapi-load-balancer:certificates   tls-certificates  regular      
+easyrsa:client                       kubernetes-master:certificates       tls-certificates  regular      
+easyrsa:client                       kubernetes-worker:certificates       tls-certificates  regular      
+etcd:cluster                         etcd:cluster                         etcd              peer         
+etcd:db                              flannel:etcd                         etcd              regular      
+etcd:db                              kubernetes-master:etcd               etcd              regular      
+kubeapi-load-balancer:loadbalancer   kubernetes-master:loadbalancer       public-address    regular      
+kubeapi-load-balancer:website        kubernetes-worker:kube-api-endpoint  http              regular      
+kubernetes-master:cni                flannel:cni                          kubernetes-cni    subordinate  
+kubernetes-master:kube-api-endpoint  kubeapi-load-balancer:apiserver      http              regular      
+kubernetes-master:kube-control       kubernetes-worker:kube-control       kube-control      regular      
+kubernetes-worker:cni                flannel:cni                          kubernetes-cni    subordinate  
+</code></pre>
+
+<h2 id="interacting-with-the-cluster">Interacting with the cluster</h2>
+
+<p>After the cluster is deployed you may assume control over the cluster from any kubernetes-master, or kubernetes-worker node.</p>
+
+<p>If you didn&rsquo;t use conjure-up, you will first need to download the credentials and client application to your local workstation:</p>
+
+<p>Create the kubectl config directory.</p>
+
+<pre><code>mkdir -p ~/.kube
+</code></pre>
+
+<p>Copy the kubeconfig file to the default location.</p>
+
+<pre><code>juju scp kubernetes-master/0:/home/ubuntu/config ~/.kube/config
+</code></pre>
+
+<p>The next step is to install the kubectl client on your local machine. The recommended way to do this on Ubuntu is using the kubectl snap (<a href="https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-with-snap-on-ubuntu" target="_blank">https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-with-snap-on-ubuntu</a>).</p>
+
+<p>The following command should be run on the machine you wish to use to control the kubernetes cluster:</p>
+
+<pre><code>sudo snap install kubectl --classic
+</code></pre>
+
+<p>This will install and deploy the kubectl binary. You may need to restart your terminal as your $PATH may have been updated.</p>
+
+<p>Query the cluster:</p>
+
+<pre><code>kubectl cluster-info
+</code></pre>
+
+<p>Output:</p>
+
+<pre><code>Kubernetes master is running at https://52.15.104.227:443
+Heapster is running at https://52.15.104.227:443/api/v1/namespaces/kube-system/services/heapster/proxy
+KubeDNS is running at https://52.15.104.227:443/api/v1/namespaces/kube-system/services/kube-dns/proxy
+Grafana is running at https://52.15.104.227:443/api/v1/namespaces/kube-system/services/monitoring-grafana/proxy
+InfluxDB is running at https://52.15.104.227:443/api/v1/namespaces/kube-system/services/monitoring-influxdb/proxy
+</code></pre>
+
+<p>Congratulations, you&rsquo;ve now set up a Kubernetes cluster!</p>
+
+<h2 id="scale-up-cluster">Scale up cluster</h2>
+
+<p>Want larger Kubernetes nodes? It is easy to request different sizes of cloud
+resources from Juju by using <strong>constraints</strong>. You can increase the amount of
+CPU or memory (RAM) in any of the systems requested by Juju. This allows you
+to fine tune the Kubernetes cluster to fit your workload. Use flags on the
+bootstrap command or as a separate <code>juju constraints</code> command. Look to the
+<a href="https://jujucharms.com/docs/2.3/charms-constraints" target="_blank">Juju documentation for machine</a>
+details.</p>
+
+<h2 id="scale-out-cluster">Scale out cluster</h2>
+
+<p>Need more workers? We just add more units:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">juju add-unit kubernetes-worker</code></pre></div>
+<p>Or multiple units at one time:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">juju add-unit -n3 kubernetes-worker</code></pre></div>
+<p>You can also ask for specific instance types or other machine-specific constraints. See the <a href="https://jujucharms.com/docs/stable/reference-constraints" target="_blank">constraints documentation</a> for more information. Here are some examples, note that generic constraints such as <code>cores</code> and <code>mem</code> are more portable between clouds. In this case we&rsquo;ll ask for a specific instance type from AWS:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">juju set-constraints kubernetes-worker instance-type<span style="color:#666">=</span>c4.large
+juju add-unit kubernetes-worker</code></pre></div>
+<p>You can also scale the etcd charm for more fault tolerant key/value storage:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">juju add-unit -n3 etcd</code></pre></div>
+<p>It is strongly recommended to run an odd number of units for quorum.</p>
+
+<h2 id="tear-down-cluster">Tear down cluster</h2>
+
+<p>If you used conjure-up to create your cluster, you can tear it down with <code>conjure-down</code>. If you used juju directly, you can tear it down by destroying the Juju model or the controller. Use the <code>juju switch</code> command to get the current controller name:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">juju switch
+juju destroy-controller <span style="color:#b8860b">$controllername</span> --destroy-all-models</code></pre></div>
+<p>This will shutdown and terminate all running instances on that cloud.</p>
+
+
+
+
+<h2 id="more-info">More Info</h2>
+
+<p>The Ubuntu Kubernetes deployment uses open-source operations, or operations as code, known as charms. These charms are assembled from layers which keeps the code smaller and more focused on the operations of just Kubernetes and its components.</p>
+
+<p>The Kubernetes layer and bundles can be found in the <code>kubernetes</code>
+project on github.com:</p>
+
+<ul>
+<li><a href="https://git.k8s.io/kubernetes/cluster/juju/bundles" target="_blank">Bundle location</a></li>
+<li><a href="https://git.k8s.io/kubernetes/cluster/juju/layers" target="_blank">Kubernetes charm layer location</a></li>
+<li><a href="https://jujucharms.com/kubernetes" target="_blank">Canonical Kubernetes home</a></li>
+<li><a href="https://github.com/juju-solutions/bundle-canonical-kubernetes" target="_blank">Main issue tracker</a></li>
+</ul>
+
+<p>Feature requests, bug reports, pull requests and feedback are appreciated.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/getting-started-guides/ubuntu/installation.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/getting-started-guides\/ubuntu\/installation\/",
+					"title" : "Setting up Kubernetes with Juju",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/getting-started-guides\/ubuntu\/installation\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/getting-started-guides/ubuntu/installation.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

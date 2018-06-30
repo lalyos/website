@@ -1,0 +1,1679 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Feature Gates - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="Feature Gates" />
+<meta property="og:description" content="Feature Gates" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/reference/command-line-tools-reference/feature-gates/" />
+<meta property="og:title" content="Feature Gates - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h1>Reference Documentation</h1>
+<h5></h5>
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/" class="YAH">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Reference" href="/docs/reference/"></a>
+
+	
+	
+		
+		
+<a class="item" data-title="Standardized Glossary" href="/docs/reference/glossary/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Kubernetes Issues and Security">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Kubernetes Issue Tracker" href="/docs/reference/issues-security/issues/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes Security and Disclosure Information" href="/docs/reference/issues-security/security/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Using the Kubernetes API">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Kubernetes API Overview" href="/docs/reference/using-api/api-overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes API Concepts" href="/docs/reference/using-api/api-concepts/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Client Libraries" href="/docs/reference/using-api/client-libraries/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes Deprecation Policy" href="/docs/reference/using-api/deprecation-policy/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Accessing the API">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Controlling Access to the Kubernetes API" href="/docs/reference/access-authn-authz/controlling-access/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Authenticating" href="/docs/reference/access-authn-authz/authentication/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Authenticating with Bootstrap Tokens" href="/docs/reference/access-authn-authz/bootstrap-tokens/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using Admission Controllers" href="/docs/reference/access-authn-authz/admission-controllers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Dynamic Admission Control" href="/docs/reference/access-authn-authz/extensible-admission-controllers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Managing Service Accounts" href="/docs/reference/access-authn-authz/service-accounts-admin/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Authorization Overview" href="/docs/reference/access-authn-authz/authorization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using RBAC Authorization" href="/docs/reference/access-authn-authz/rbac/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using ABAC Authorization" href="/docs/reference/access-authn-authz/abac/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using Node Authorization" href="/docs/reference/access-authn-authz/node/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Webhook Mode" href="/docs/reference/access-authn-authz/webhook/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="API Reference">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Well-Known Labels, Annotations and Taints" href="/docs/reference/kubernetes-api/labels-annotations-taints/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="v1.11" href="/docs/reference/kubernetes-api/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Federation API">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="extensions/v1beta1 Model Definitions" href="/docs/reference/federation/extensions/v1beta1/definitions/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="extensions/v1beta1 Operations" href="/docs/reference/federation/extensions/v1beta1/operations/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="v1 Model Definitions" href="/docs/reference/federation/v1/definitions/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="v1 Operations" href="/docs/reference/federation/v1/operations/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Setup tools reference">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+	<div class="item" data-title="Kubeadm">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Overview of kubeadm" href="/docs/reference/setup-tools/kubeadm/kubeadm/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm init" href="/docs/reference/setup-tools/kubeadm/kubeadm-init/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm join" href="/docs/reference/setup-tools/kubeadm/kubeadm-join/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm upgrade" href="/docs/reference/setup-tools/kubeadm/kubeadm-upgrade/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm config" href="/docs/reference/setup-tools/kubeadm/kubeadm-config/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm reset" href="/docs/reference/setup-tools/kubeadm/kubeadm-reset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm token" href="/docs/reference/setup-tools/kubeadm/kubeadm-token/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm version" href="/docs/reference/setup-tools/kubeadm/kubeadm-version/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm alpha" href="/docs/reference/setup-tools/kubeadm/kubeadm-alpha/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Implementation details" href="/docs/reference/setup-tools/kubeadm/implementation-details/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="kubefed">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="kubefed" href="/docs/reference/setup-tools/kubefed/kubefed/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubefed options" href="/docs/reference/setup-tools/kubefed/kubefed-options/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubefed init" href="/docs/reference/setup-tools/kubefed/kubefed-init/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubefed join" href="/docs/reference/setup-tools/kubefed/kubefed-join/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubefed unjoin" href="/docs/reference/setup-tools/kubefed/kubefed-unjoin/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubefed version" href="/docs/reference/setup-tools/kubefed/kubefed-version/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Command line tools reference">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Feature Gates" href="/docs/reference/command-line-tools-reference/feature-gates/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="federation-apiserver" href="/docs/reference/command-line-tools-reference/federation-apiserver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="federation-controller-manager" href="/docs/reference/command-line-tools-reference/federation-controller-manager/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubelet authentication/authorization" href="/docs/reference/command-line-tools-reference/kubelet-authentication-authorization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="TLS bootstrapping" href="/docs/reference/command-line-tools-reference/kubelet-tls-bootstrapping/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="cloud-controller-manager" href="/docs/reference/command-line-tools-reference/cloud-controller-manager/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kube-apiserver" href="/docs/reference/command-line-tools-reference/kube-apiserver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kube-controller-manager" href="/docs/reference/command-line-tools-reference/kube-controller-manager/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kube-proxy" href="/docs/reference/command-line-tools-reference/kube-proxy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kube-scheduler" href="/docs/reference/command-line-tools-reference/kube-scheduler/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubelet" href="/docs/reference/command-line-tools-reference/kubelet/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="kubectl CLI">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="JSONPath Support" href="/docs/reference/kubectl/jsonpath/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Overview of kubectl" href="/docs/reference/kubectl/overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubectl" href="/docs/reference/kubectl/kubectl/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubectl Cheat Sheet" href="/docs/reference/kubectl/cheatsheet/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubectl Commands" href="/docs/reference/kubectl/kubectl-cmds/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubectl Usage Conventions" href="/docs/reference/kubectl/conventions/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubectl for Docker Users" href="/docs/reference/kubectl/docker-cli-to-kubectl/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Tools" href="/docs/reference/tools/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/reference/command-line-tools-reference/feature-gates.md" id="editPageButton">Edit This Page</a></p>
+
+
+
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#feature-gates">Feature Gates</a></li>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#using-a-feature">Using a Feature</a>
+<ul>
+<li><a href="#feature-stages">Feature Stages</a></li>
+<li><a href="#feature-gates-1">Feature Gates</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+
+
+
+<h2 id="feature-gates">Feature Gates</h2>
+
+<p>This page contains an overview of the various feature gates an administrator
+can specify on different Kubernetes components.</p>
+
+<h2 id="overview">Overview</h2>
+
+<p>Feature gates are a set of key=value pairs that describe alpha or experimental
+features.
+An administrator can use the <code>--feature-gates</code> command line flag on each component
+to turn a feature on or off.
+The following table is a summary of the feature gates that you can set on
+different Kubernetes components.</p>
+
+<ul>
+<li>The &ldquo;Since&rdquo; column contains the Kubernetes release when a feature is introduced
+or its release stage is changed.</li>
+<li>The &ldquo;Until&rdquo; column, if not empty, contains the last Kubernetes release in which
+you can still use a feature gate.</li>
+</ul>
+
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Default</th>
+<th>Stage</th>
+<th>Since</th>
+<th>Until</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>Accelerators</code></td>
+<td><code>false</code></td>
+<td>Alpha</td>
+<td>1.6</td>
+<td>1.10</td>
+</tr>
+
+<tr>
+<td><code>AdvancedAuditing</code></td>
+<td><code>false</code></td>
+<td>Alpha</td>
+<td>1.7</td>
+<td>1.7</td>
+</tr>
+
+<tr>
+<td><code>AdvancedAuditing</code></td>
+<td><code>true</code></td>
+<td>Beta</td>
+<td>1.8</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>AffinityInAnnotations</code></td>
+<td><code>false</code></td>
+<td>Alpha</td>
+<td>1.6</td>
+<td>1.7</td>
+</tr>
+
+<tr>
+<td><code>AllowExtTrafficLocalEndpoints</code></td>
+<td><code>false</code></td>
+<td>Beta</td>
+<td>1.4</td>
+<td>1.6</td>
+</tr>
+
+<tr>
+<td><code>AllowExtTrafficLocalEndpoints</code></td>
+<td><code>true</code></td>
+<td>GA</td>
+<td>1.7</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>APIListChunking</code></td>
+<td><code>false</code></td>
+<td>Alpha</td>
+<td>1.8</td>
+<td>1.8</td>
+</tr>
+
+<tr>
+<td><code>APIListChunking</code></td>
+<td><code>true</code></td>
+<td>Beta</td>
+<td>1.9</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>APIResponseCompression</code></td>
+<td><code>false</code></td>
+<td>Alpha</td>
+<td>1.7</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>AppArmor</code></td>
+<td><code>true</code></td>
+<td>Beta</td>
+<td>1.4</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>AttachVolumeLimit</code></td>
+<td><code>false</code></td>
+<td>Alpha</td>
+<td>1.11</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>BlockVolume</code></td>
+<td><code>false</code></td>
+<td>Alpha</td>
+<td>1.9</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>CPUManager</code></td>
+<td><code>false</code></td>
+<td>Alpha</td>
+<td>1.8</td>
+<td>1.9</td>
+</tr>
+
+<tr>
+<td><code>CPUManager</code></td>
+<td><code>true</code></td>
+<td>Beta</td>
+<td>1.10</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>CRIContainerLogRotation</code></td>
+<td><code>false</code></td>
+<td>Alpha</td>
+<td>1.10</td>
+<td>1.10</td>
+</tr>
+
+<tr>
+<td><code>CRIContainerLogRotation</code></td>
+<td><code>true</code></td>
+<td>Beta</td>
+<td>1.11</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>CSIBlockVolume</code></td>
+<td><code>false</code></td>
+<td>Alpha</td>
+<td>1.11</td>
+<td>1.11</td>
+</tr>
+
+<tr>
+<td><code>CSIPersistentVolume</code></td>
+<td><code>false</code></td>
+<td>Alpha</td>
+<td>1.9</td>
+<td>1.9</td>
+</tr>
+
+<tr>
+<td><code>CSIPersistentVolume</code></td>
+<td><code>true</code></td>
+<td>Beta</td>
+<td>1.10</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>CustomPodDNS</code></td>
+<td><code>false</code></td>
+<td>Alpha</td>
+<td>1.9</td>
+<td>1.9</td>
+</tr>
+
+<tr>
+<td><code>CustomPodDNS</code></td>
+<td><code>true</code></td>
+<td>Beta</td>
+<td>1.10</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>CustomResourceSubresources</code></td>
+<td><code>false</code></td>
+<td>Alpha</td>
+<td>1.10</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>CustomResourceValidation</code></td>
+<td><code>false</code></td>
+<td>Alpha</td>
+<td>1.8</td>
+<td>1.8</td>
+</tr>
+
+<tr>
+<td><code>CustomResourceValidation</code></td>
+<td><code>true</code></td>
+<td>Beta</td>
+<td>1.9</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>DebugContainers</code></td>
+<td><code>false</code></td>
+<td>Alpha</td>
+<td>1.10</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>DevicePlugins</code></td>
+<td><code>false</code></td>
+<td>Alpha</td>
+<td>1.8</td>
+<td>1.9</td>
+</tr>
+
+<tr>
+<td><code>DevicePlugins</code></td>
+<td><code>true</code></td>
+<td>Beta</td>
+<td>1.10</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>DynamicKubeletConfig</code></td>
+<td><code>false</code></td>
+<td>Alpha</td>
+<td>1.4</td>
+<td>1.10</td>
+</tr>
+
+<tr>
+<td><code>DynamicKubeletConfig</code></td>
+<td><code>true</code></td>
+<td>Beta</td>
+<td>1.11</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>DynamicVolumeProvisioning</code></td>
+<td><code>true</code></td>
+<td>Alpha</td>
+<td>1.3</td>
+<td>1.7</td>
+</tr>
+
+<tr>
+<td><code>DynamicVolumeProvisioning</code></td>
+<td><code>true</code></td>
+<td>GA</td>
+<td>1.8</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>EnableEquivalenceClassCache</code></td>
+<td><code>false</code></td>
+<td>Alpha</td>
+<td>1.8</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>ExpandPersistentVolumes</code></td>
+<td><code>false</code></td>
+<td>Alpha</td>
+<td>1.8</td>
+<td>1.10</td>
+</tr>
+
+<tr>
+<td><code>ExpandPersistentVolumes</code></td>
+<td><code>true</code></td>
+<td>Beta</td>
+<td>1.11</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>ExperimentalCriticalPodAnnotation</code></td>
+<td><code>false</code></td>
+<td>Alpha</td>
+<td>1.5</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>ExperimentalHostUserNamespaceDefaulting</code></td>
+<td><code>false</code></td>
+<td>Beta</td>
+<td>1.5</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>GCERegionalPersistentDisk</code></td>
+<td><code>true</code></td>
+<td>Beta</td>
+<td>1.10</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>HugePages</code></td>
+<td><code>false</code></td>
+<td>Alpha</td>
+<td>1.8</td>
+<td>1.9</td>
+</tr>
+
+<tr>
+<td><code>HugePages</code></td>
+<td><code>true</code></td>
+<td>Beta</td>
+<td>1.10</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>HyperVContainer</code></td>
+<td><code>false</code></td>
+<td>Alpha</td>
+<td>1.10</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>Initializers</code></td>
+<td><code>false</code></td>
+<td>Alpha</td>
+<td>1.7</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>KubeletConfigFile</code></td>
+<td><code>false</code></td>
+<td>Alpha</td>
+<td>1.8</td>
+<td>1.9</td>
+</tr>
+
+<tr>
+<td><code>KubeletPluginsWatcher</code></td>
+<td><code>false</code></td>
+<td>Alpha</td>
+<td>1.11</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>LocalStorageCapacityIsolation</code></td>
+<td><code>false</code></td>
+<td>Alpha</td>
+<td>1.7</td>
+<td>1.9</td>
+</tr>
+
+<tr>
+<td><code>LocalStorageCapacityIsolation</code></td>
+<td><code>true</code></td>
+<td>Beta</td>
+<td>1.10</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>MountContainers</code></td>
+<td><code>false</code></td>
+<td>Alpha</td>
+<td>1.9</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>MountPropagation</code></td>
+<td><code>false</code></td>
+<td>Alpha</td>
+<td>1.8</td>
+<td>1.9</td>
+</tr>
+
+<tr>
+<td><code>MountPropagation</code></td>
+<td><code>true</code></td>
+<td>Beta</td>
+<td>1.10</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>PersistentLocalVolumes</code></td>
+<td><code>false</code></td>
+<td>Alpha</td>
+<td>1.7</td>
+<td>1.9</td>
+</tr>
+
+<tr>
+<td><code>PersistentLocalVolumes</code></td>
+<td><code>true</code></td>
+<td>Beta</td>
+<td>1.10</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>PodPriority</code></td>
+<td><code>false</code></td>
+<td>Alpha</td>
+<td>1.8</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>PodReadinessGates</code></td>
+<td><code>false</code></td>
+<td>Alpha</td>
+<td>1.11</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>PodShareProcessNamespace</code></td>
+<td><code>false</code></td>
+<td>Alpha</td>
+<td>1.10</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>PVCProtection</code></td>
+<td><code>false</code></td>
+<td>Alpha</td>
+<td>1.9</td>
+<td>1.9</td>
+</tr>
+
+<tr>
+<td><code>ReadOnlyAPIDataVolumes</code></td>
+<td><code>true</code></td>
+<td>Deprecated</td>
+<td>1.10</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>ResourceLimitsPriorityFunction</code></td>
+<td><code>false</code></td>
+<td>Alpha</td>
+<td>1.9</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>RotateKubeletClientCertificate</code></td>
+<td><code>true</code></td>
+<td>Beta</td>
+<td>1.7</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>RotateKubeletServerCertificate</code></td>
+<td><code>false</code></td>
+<td>Alpha</td>
+<td>1.7</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>RunAsGroup</code></td>
+<td><code>false</code></td>
+<td>Alpha</td>
+<td>1.10</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>ServiceNodeExclusion</code></td>
+<td><code>false</code></td>
+<td>Alpha</td>
+<td>1.8</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>StorageObjectInUseProtection</code></td>
+<td><code>true</code></td>
+<td>Beta</td>
+<td>1.10</td>
+<td>1.10</td>
+</tr>
+
+<tr>
+<td><code>StorageObjectInUseProtection</code></td>
+<td><code>true</code></td>
+<td>GA</td>
+<td>1.11</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>StreamingProxyRedirects</code></td>
+<td><code>true</code></td>
+<td>Beta</td>
+<td>1.5</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>SupportIPVSProxyMode</code></td>
+<td><code>false</code></td>
+<td>Alpha</td>
+<td>1.8</td>
+<td>1.8</td>
+</tr>
+
+<tr>
+<td><code>SupportIPVSProxyMode</code></td>
+<td><code>false</code></td>
+<td>Beta</td>
+<td>1.9</td>
+<td>1.9</td>
+</tr>
+
+<tr>
+<td><code>SupportIPVSProxyMode</code></td>
+<td><code>true</code></td>
+<td>Beta</td>
+<td>1.10</td>
+<td>1.10</td>
+</tr>
+
+<tr>
+<td><code>SupportIPVSProxyMode</code></td>
+<td><code>true</code></td>
+<td>GA</td>
+<td>1.11</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>SupportPodPidsLimit</code></td>
+<td><code>false</code></td>
+<td>Alpha</td>
+<td>1.10</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>Sysctls</code></td>
+<td><code>true</code></td>
+<td>Beta</td>
+<td>1.11</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>TaintBasedEvictions</code></td>
+<td><code>false</code></td>
+<td>Alpha</td>
+<td>1.6</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>TaintNodesByCondition</code></td>
+<td><code>false</code></td>
+<td>Alpha</td>
+<td>1.8</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>TokenRequest</code></td>
+<td><code>false</code></td>
+<td>Alpha</td>
+<td>1.10</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>TokenRequestProjection</code></td>
+<td><code>false</code></td>
+<td>Alpha</td>
+<td>1.11</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>VolumeScheduling</code></td>
+<td><code>false</code></td>
+<td>Alpha</td>
+<td>1.9</td>
+<td>1.9</td>
+</tr>
+
+<tr>
+<td><code>VolumeScheduling</code></td>
+<td><code>true</code></td>
+<td>Beta</td>
+<td>1.10</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>VolumeSubpathEnvExpansion</code></td>
+<td><code>false</code></td>
+<td>Alpha</td>
+<td>1.11</td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>ScheduleDaemonSetPods</code></td>
+<td><code>false</code></td>
+<td>Alpha</td>
+<td>1.11</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="using-a-feature">Using a Feature</h2>
+
+<h3 id="feature-stages">Feature Stages</h3>
+
+<p>A feature can be in <em>Alpha</em>, <em>Beta</em> or <em>GA</em> stage.
+An <em>Alpha</em> feature means:</p>
+
+<ul>
+<li>Disabled by default.</li>
+<li>Might be buggy. Enabling the feature may expose bugs.</li>
+<li>Support for feature may be dropped at any time without notice.</li>
+<li>The API may change in incompatible ways in a later software release without notice.</li>
+<li>Recommended for use only in short-lived testing clusters, due to increased
+risk of bugs and lack of long-term support.</li>
+</ul>
+
+<p>A <em>Beta</em> feature means:</p>
+
+<ul>
+<li>Enabled by default.</li>
+<li>The feature is well tested. Enabling the feature is considered safe.</li>
+<li>Support for the overall feature will not be dropped, though details may change.</li>
+<li>The schema and/or semantics of objects may change in incompatible ways in a
+subsequent beta or stable release. When this happens, we will provide instructions
+for migrating to the next version. This may require deleting, editing, and
+re-creating API objects. The editing process may require some thought.
+This may require downtime for applications that rely on the feature.</li>
+<li>Recommended for only non-business-critical uses because of potential for
+incompatible changes in subsequent releases. If you have multiple clusters
+that can be upgraded independently, you may be able to relax this restriction.</li>
+</ul>
+
+<blockquote class="note">
+  <div><strong>Note:</strong> Please do try <em>Beta</em> features and give feedback on them!
+After they exit beta, it may not be practical for us to make more changes.</div>
+</blockquote>
+
+
+<p>A <em>GA</em> feature is also referred to as a <em>stable</em> feature. It means:</p>
+
+<ul>
+<li>The corresponding feature gate is no longer needed.</li>
+<li>Stable versions of features will appear in released software for many subsequent versions.</li>
+</ul>
+
+<h3 id="feature-gates-1">Feature Gates</h3>
+
+<p>Each feature gate is designed for enabling/disabling a specific feature:</p>
+
+<ul>
+<li><code>Accelerators</code>: Enable Nvidia GPU support when using Docker</li>
+<li><code>AdvancedAuditing</code>: Enable <a href="/docs/tasks/debug-application-cluster/audit/#advanced-audit">advanced auditing</a></li>
+<li><code>AffinityInAnnotations</code>(<em>deprecated</em>): Enable setting <a href="/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity">Pod affinity or anti-affinitys</a>.</li>
+<li><code>AllowExtTrafficLocalEndpoints</code>: Enable a service to route external requests to node local endpoints.</li>
+<li><code>APIListChunking</code>: Enable the API clients to retrieve (<code>LIST</code> or <code>GET</code>) resources from API server in chunks.</li>
+<li><code>APIResponseCompression</code>: Compress the API responses for <code>LIST</code> or <code>GET</code> requests.</li>
+<li><code>AppArmor</code>: Enable AppArmor based mandatory access control on Linux nodes when using Docker.
+See <a href="/docs/tutorials/clusters/apparmor/">AppArmor Tutorial</a> for more details.</li>
+<li><code>AttachVolumeLimit</code>: Enable volume plugins to report limits on number of volumes
+that can be attached to a node.
+See <a href="/docs/concepts/storage/storage-limits/#dynamic-volume-limits">dynamic volume limits</a> for more details.</li>
+<li><code>BlockVolume</code>: Enable the definition and consumption of raw block devices in Pods.
+See <a href="/docs/concepts/storage/persistent-volumes/#raw-block-volume-support">Raw Block Volume Support</a>
+for more details.</li>
+<li><code>CPUManager</code>: Enable container level CPU affinity support, see <a href="/docs/tasks/administer-cluster/cpu-management-policies/">CPU Management Policies</a>.</li>
+<li><code>CRIContainerLogRotation</code>: Enable container log rotation for cri container runtime.</li>
+<li><code>CSIBlockVolume</code>: Enable external CSI volume drivers to support block storage. See the <a href="/docs/concepts/storage/volumes/#csi-raw-block-volume-support"><code>csi</code> raw block volume support</a> documentation for more details.</li>
+<li><code>CSIPersistentVolume</code>: Enable discovering and mounting volumes provisioned through a
+<a href="https://github.com/kubernetes/community/blob/master/contributors/design-proposals/storage/container-storage-interface.md" target="_blank">CSI (Container Storage Interface)</a>
+compatible volume plugin.
+Check the <a href="/docs/concepts/storage/volumes/#csi"><code>csi</code> volume type</a> documentation for more details.</li>
+<li><code>CustomPodDNS</code>: Enable customizing the DNS settings for a Pod using its <code>dnsConfig</code> property.
+Check <a href="/docs/concepts/services-networking/dns-pod-service/#pods-dns-config">Pod&rsquo;s DNS Config</a>
+for more details.</li>
+<li><code>CustomResourceSubresources</code>: Enable <code>/status</code> and <code>/scale</code> subresources
+on resources created from <a href="/docs/concepts/api-extension/custom-resources/">CustomResourceDefinition</a>.</li>
+<li><code>CustomResourceValidation</code>: Enable schema based validation on resources created from
+<a href="/docs/concepts/api-extension/custom-resources/">CustomResourceDefinition</a>.</li>
+<li><code>DebugContainers</code>: Enable running a &ldquo;debugging&rdquo; container in a Pod&rsquo;s namespace to
+troubleshoot a running Pod.</li>
+<li><code>DevicePlugins</code>: Enable the <a href="/docs/concepts/cluster-administration/device-plugins/">device-plugins</a>
+based resource provisioning on nodes.</li>
+<li><code>DynamicKubeletConfig</code>: Enable the dynamic configuration of kubelet. See <a href="/docs/tasks/administer-cluster/reconfigure-kubelet/">Reconfigure kubelet</a>.</li>
+<li><code>DynamicVolumeProvisioning</code>(<em>deprecated</em>): Enable the <a href="/docs/concepts/storage/dynamic-provisioning/">dynamic provisioning</a> of persistent volumes to Pods.</li>
+<li><code>EnableEquivalenceClassCache</code>: Enable the scheduler to cache equivalence of nodes when scheduling Pods.</li>
+<li><code>ExpandPersistentVolumes</code>: Enable the expanding of persistent volumes. See <a href="/docs/concepts/storage/persistent-volumes/#expanding-persistent-volumes-claims">Expanding Persistent Volumes Claims</a>.</li>
+<li><code>ExperimentalCriticalPodAnnotation</code>: Enable annotating specific pods as <em>critical</em> so that their <a href="/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/">scheduling is guaranteed</a>.</li>
+<li><code>ExperimentalHostUserNamespaceDefaultingGate</code>: Enabling the defaulting user
+namespace to host. This is for containers that are using other host namespaces,
+host mounts, or containers that are privileged or using specific non-namespaced
+capabilities (e.g. <code>MKNODE</code>, <code>SYS_MODULE</code> etc.). This should only be enabled
+if user namespace remapping is enabled in the Docker daemon.</li>
+<li><code>GCERegionalPersistentDisk</code>: Enable the regional PD feature on GCE.</li>
+<li><code>HugePages</code>: Enable the allocation and consumption of pre-allocated <a href="/docs/tasks/manage-hugepages/scheduling-hugepages/">huge pages</a>.</li>
+<li><code>HyperVContainer</code>: Enable <a href="https://docs.microsoft.com/en-us/virtualization/windowscontainers/manage-containers/hyperv-container" target="_blank">Hyper-V isolation</a> for Windows containers.</li>
+<li><code>Intializers</code>: Enable the <a href="/docs/admin/extensible-admission-controllers/">dynamic admission control</a>
+as an extension to the built-in <a href="/docs/admin/admission-controllers/">admission controllers</a>.
+When the <code>Initializers</code> admission controller is enabled, this feature is automatically enabled.</li>
+<li><code>KubeletConfigFile</code>: Enable loading kubelet configuration from a file specified using a config file.
+See <a href="/docs/tasks/administer-cluster/kubelet-config-file/">setting kubelet parameters via a config file</a> for more details.</li>
+<li><code>KubletPluginsWatcher</code>: Enable probe-based plugin watcher utility to enable kubelet
+to discover plugins such as <a href="/docs/concepts/storage/volumes/#csi">CSI volume drivers</a>.</li>
+<li><code>LocalStorageCapacityIsolation</code>: Enable the consumption of <a href="/docs/concepts/configuration/manage-compute-resources-container/">local ephemeral storage</a> and also the <code>sizeLimit</code> property of an <a href="/docs/concepts/storage/volumes/#emptydir">emptyDir volume</a>.</li>
+<li><code>MountContainers</code>: Enable using utility containers on host as the volume mounter.</li>
+<li><code>MountPropagation</code>: Enable sharing volume mounted by one container to other containers or pods.
+For more details, please see <a href="/docs/concepts/storage/volumes/#mount-propagation">mount propagation</a>.</li>
+<li><code>PersistentLocalVolumes</code>: Enable the usage of <code>local</code> volume type in Pods.
+Pod affinity has to be specified if requesting a <code>local</code> volume.</li>
+<li><code>PodPriority</code>: Enable the descheduling and preemption of Pods based on their <a href="/docs/concepts/configuration/pod-priority-preemption/">priorities</a>.</li>
+<li><code>PodReadinessGates</code>: Enable the setting of <code>PodReadinessGate</code> field for extending
+Pod readiness evaluation.
+For more details, please see <a href="/docs/concepts/workloads/pods/pod-lifecycle/#pod-readiness-gate">Pod readiness gate</a>.</li>
+<li><code>PVCProtection</code>: Enable the prevention of a PersistentVolumeClaim (PVC) from
+being deleted when it is still used by any Pod.
+More details can be found <a href="/docs/tasks/administer-cluster/pvc-protection/">here</a>.</li>
+<li><code>ReadOnlyAPIDataVolumes</code>: Set Secret, ConfigMap, DownwardAPI and projected volumes to be mounted in read-only mode.
+This gate exists only for backward compatibility. It will be removed in 1.11 release.</li>
+<li><code>ResourceLimitsPriorityFunction</code>: Enable a scheduler priority function that
+assigns a lowest possible score of 1 to a node that satisfies at least one of
+the input Pod&rsquo;s cpu and memory limits. The intent is to break ties between
+nodes with same scores.</li>
+<li><code>RotateKubeletClientCertificate</code>: Enable the rotation of the client TLS certificate on the kubelet.
+See <a href="/docs/reference/command-line-tools-reference/kubelet-tls-bootstrapping/#kubelet-configuration">kubelet configuration</a> for more details.</li>
+<li><code>RotateKubeletServerCertificate</code>: Enable the rotation of the server TLS certificate on the kubelet.
+See <a href="/docs/reference/command-line-tools-reference/kubelet-tls-bootstrapping/#kubelet-configuration">kubelet configuration</a> for more details.</li>
+<li><code>RunAsGroup</code>: Enable control over the primary group ID set on the init processes of containers.</li>
+<li><code>ScheduleDaemonSetPods</code>: Enable DaemonSet Pods to be scheduled by the default scheduler instead of the DaemonSet controller.</li>
+<li><code>ServiceNodeExclusion</code>: Enable the exclusion of nodes from load balancers created by a cloud provider.
+A node is eligible for exclusion if annotated with &ldquo;<code>alpha.service-controller.kubernetes.io/exclude-balancer</code>&rdquo; key.</li>
+<li><code>StorageObjectInUseProtection</code>: Postpone the deletion of PersistentVolume or
+PersistentVolumeClaim objects if they are still being used.</li>
+<li><code>StreamingProxyRedirects</code>: Instructs the API server to intercept (and follow)
+redirects from the backend (kubelet) for streaming requests.
+Examples of streaming requests include the <code>exec</code>, <code>attach</code> and <code>port-forward</code> requests.</li>
+<li><code>SupportIPVSProxyMode</code>: Enable providing in-cluster service load balancing using IPVS.
+See <a href="/docs/concepts/services-networking/service/#virtual-ips-and-service-proxies">service proxies</a> for more details.</li>
+<li><code>SupportPodPidsLimit</code>: Enable the support to limiting PIDs in Pods.</li>
+<li><code>Sysctls</code>: Enable support for namespaced kernel parameters (sysctls) that can be set for each pod.
+See <a href="/docs/tasks/administer-cluster/sysctl-cluster/">sysctls</a> for more details.</li>
+<li><code>TaintBasedEvictions</code>: Enable evicting pods from nodes based on taints on nodes and tolerations on Pods.
+See <a href="/docs/concepts/configuration/taint-and-toleration/">taints and tolerations</a> for more details.</li>
+<li><code>TaintNodesByCondition</code>: Enable automatic tainting nodes based on <a href="/docs/concepts/architecture/nodes/#condition">node conditions</a>.</li>
+<li><code>TokenRequest</code>: Enable the <code>TokenRequest</code> endpoint on service account resources.</li>
+<li><code>TokenRequestProjection</code>: Enable the injection of service account tokens into
+a Pod through the <a href="/docs/concepts/storage/volumes/#projected"><code>projected</code> volume</a>.</li>
+<li><code>VolumeScheduling</code>: Enable volume topology aware scheduling and make the
+PersistentVolumeClaim (PVC) binding aware of scheduling decisions. It also
+enables the usage of <a href="/docs/concepts/storage/volumes/#local"><code>local</code></a> volume
+type when used together with the <code>PersistentLocalVolumes</code> feature gate.</li>
+</ul>
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/reference/command-line-tools-reference/feature-gates.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/reference\/command-line-tools-reference\/feature-gates\/",
+					"title" : "Feature Gates",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/reference\/command-line-tools-reference\/feature-gates\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/reference/command-line-tools-reference/feature-gates.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

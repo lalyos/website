@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Kubernetes Developer Guide - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="Kubernetes Developer Guide" />
+<meta property="og:description" content="Kubernetes Developer Guide" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/imported/community/devel/" />
+<meta property="og:title" content="Kubernetes Developer Guide - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+         
+        
+        <a class="item" data-title="Imported Docs" href="/docs/imported/"></a>
+
+	
+	
+		
+		
+	<div class="item" data-title="Community">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Kubernetes Contributor Guide" href="/docs/imported/community/guide/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes Developer Guide" href="/docs/imported/community/devel/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes Enhancement Proposal Process" href="/docs/imported/community/keps/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes Mentoring Initiatives" href="/docs/imported/community/mentoring/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Downloading Kubernetes">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="v1.11 Release Notes" href="/docs/imported/release/notes/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/imported/community/devel.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>Kubernetes Developer Guide</h1>
+
+
+
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#the-process-of-developing-and-contributing-code-to-the-kubernetes-project">The process of developing and contributing code to the Kubernetes project</a></li>
+<li><a href="#setting-up-your-dev-environment-coding-and-debugging">Setting up your dev environment, coding, and debugging</a></li>
+<li><a href="#developing-against-the-kubernetes-api">Developing against the Kubernetes API</a></li>
+<li><a href="#writing-plugins">Writing plugins</a></li>
+<li><a href="#building-releases">Building releases</a></li>
+</ul></li>
+</ul>
+</nav>
+
+
+
+<p>The developer guide is for anyone wanting to either write code which directly accesses the
+Kubernetes API, or to contribute directly to the Kubernetes project.
+It assumes some familiarity with concepts in the <a href="http://kubernetes.io/docs/user-guide/" target="_blank">User Guide</a> and the <a href="http://kubernetes.io/docs/admin/" target="_blank">Cluster Admin
+Guide</a>.</p>
+
+<h2 id="the-process-of-developing-and-contributing-code-to-the-kubernetes-project">The process of developing and contributing code to the Kubernetes project</h2>
+
+<ul>
+<li><p><strong>Contributor Guide</strong>
+(<a href="https://github.com/kubernetes/community/tree/master/contributors/guide/README.md" target="_blank">Please start here</a>) to learn about how to contribute to Kubernetes</p></li>
+
+<li><p><strong>GitHub Issues</strong> (<a href="https://github.com/kubernetes/community/blob/master/contributors/guide/issue-triage.md" target="_blank">issues-triage.md</a>): How incoming issues are triaged.</p></li>
+
+<li><p><strong>Pull Request Process</strong> (<a href="https://github.com/kubernetes/community/tree/master/contributors/guide/pull-requests.md" target="_blank">/contributors/guide/pull-requests.md</a>): When and why pull requests are closed.</p></li>
+
+<li><p><strong>Getting Recent Builds</strong> (<a href="https://github.com/kubernetes/community/tree/master/contributors/devel/getting-builds.md" target="_blank">getting-builds.md</a>): How to get recent builds including the latest builds that pass CI.</p></li>
+
+<li><p><strong>Automated Tools</strong> (<a href="https://github.com/kubernetes/community/tree/master/contributors/devel/automation.md" target="_blank">automation.md</a>): Descriptions of the automation that is running on our github repository.</p></li>
+</ul>
+
+<h2 id="setting-up-your-dev-environment-coding-and-debugging">Setting up your dev environment, coding, and debugging</h2>
+
+<ul>
+<li><p><strong>Development Guide</strong> (<a href="https://github.com/kubernetes/community/tree/master/contributors/devel/development.md" target="_blank">development.md</a>): Setting up your development environment.</p></li>
+
+<li><p><strong>Testing</strong> (<a href="https://github.com/kubernetes/community/tree/master/contributors/devel/testing.md" target="_blank">testing.md</a>): How to run unit, integration, and end-to-end tests in your development sandbox.</p></li>
+
+<li><p><strong>Hunting flaky tests</strong> (<a href="https://github.com/kubernetes/community/tree/master/contributors/devel/flaky-tests.md" target="_blank">flaky-tests.md</a>): We have a goal of 99.9% flake free tests.
+Here&rsquo;s how to run your tests many times.</p></li>
+
+<li><p><strong>Logging Conventions</strong> (<a href="https://github.com/kubernetes/community/tree/master/contributors/devel/logging.md" target="_blank">logging.md</a>): Glog levels.</p></li>
+
+<li><p><strong>Profiling Kubernetes</strong> (<a href="https://github.com/kubernetes/community/tree/master/contributors/devel/profiling.md" target="_blank">profiling.md</a>): How to plug in go pprof profiler to Kubernetes.</p></li>
+
+<li><p><strong>Instrumenting Kubernetes with a new metric</strong>
+(<a href="https://github.com/kubernetes/community/tree/master/contributors/devel/instrumentation.md" target="_blank">instrumentation.md</a>): How to add a new metrics to the
+Kubernetes code base.</p></li>
+
+<li><p><strong>Coding Conventions</strong> (<a href="https://github.com/kubernetes/community/tree/master/contributors/devel/../guide/coding-conventions.md" target="_blank">coding-conventions.md</a>):
+Coding style advice for contributors.</p></li>
+
+<li><p><strong>Document Conventions</strong> (<a href="https://github.com/kubernetes/community/tree/master/contributors/devel/how-to-doc.md" target="_blank">how-to-doc.md</a>)
+Document style advice for contributors.</p></li>
+
+<li><p><strong>Running a cluster locally</strong> (<a href="https://github.com/kubernetes/community/tree/master/contributors/devel/running-locally.md" target="_blank">running-locally.md</a>):
+A fast and lightweight local cluster deployment for development.</p></li>
+</ul>
+
+<h2 id="developing-against-the-kubernetes-api">Developing against the Kubernetes API</h2>
+
+<ul>
+<li><p>The <a href="http://kubernetes.io/docs/reference/" target="_blank">REST API documentation</a> explains the REST
+API exposed by apiserver.</p></li>
+
+<li><p><strong>Annotations</strong> (<a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/" target="_blank">Annotations</a>): are for attaching arbitrary non-identifying metadata to objects.
+Programs that automate Kubernetes objects may use annotations to store small amounts of their state.</p></li>
+
+<li><p><strong>API Conventions</strong> (<a href="https://github.com/kubernetes/community/tree/master/contributors/devel/api-conventions.md" target="_blank">api-conventions.md</a>):
+Defining the verbs and resources used in the Kubernetes API.</p></li>
+
+<li><p><strong>API Client Libraries</strong> (<a href="/docs/reference/using-api/client-libraries/">client-libraries</a>):
+A list of existing client libraries, both supported and user-contributed.</p></li>
+</ul>
+
+<h2 id="writing-plugins">Writing plugins</h2>
+
+<ul>
+<li><p><strong>Authentication</strong> (<a href="http://kubernetes.io/docs/admin/authentication/" target="_blank">Authentication</a>):
+The current and planned states of authentication tokens.</p></li>
+
+<li><p><strong>Authorization Plugins</strong> (<a href="http://kubernetes.io/docs/admin/authorization/" target="_blank">Authorization</a>):
+Authorization applies to all HTTP requests on the main apiserver port.
+This doc explains the available authorization implementations.</p></li>
+
+<li><p><strong>Admission Control Plugins</strong> (<a href="https://github.com/kubernetes/community/tree/master/contributors/design-proposals/api-machinery/admission_control.md" target="_blank">admission_control</a>)</p></li>
+</ul>
+
+<h2 id="building-releases">Building releases</h2>
+
+<p>See the <a href="https://github.com/kubernetes/release" target="_blank">kubernetes/release</a> repository for details on creating releases and related tools and helper scripts.</p>
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/imported/community/devel.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/imported\/community\/devel\/",
+					"title" : "Kubernetes Developer Guide",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/imported\/community\/devel\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/imported/community/devel.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

@@ -1,0 +1,1516 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Assigning Pods to Nodes - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="Assigning Pods to Nodes" />
+<meta property="og:description" content="Assigning Pods to Nodes" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/concepts/configuration/assign-pod-node/" />
+<meta property="og:title" content="Assigning Pods to Nodes - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+
+
+<h1>Concepts</h1>
+<h5></h5>
+
+
+
+
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/" class="YAH">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Concepts" href="/docs/concepts/"></a>
+
+	
+	
+		
+		
+	<div class="item" data-title="Overview">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="What is Kubernetes?" href="/docs/concepts/overview/what-is-kubernetes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes Components" href="/docs/concepts/overview/components/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="The Kubernetes API" href="/docs/concepts/overview/kubernetes-api/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Working with Kubernetes Objects">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Understanding Kubernetes Objects" href="/docs/concepts/overview/working-with-objects/kubernetes-objects/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Names" href="/docs/concepts/overview/working-with-objects/names/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Namespaces" href="/docs/concepts/overview/working-with-objects/namespaces/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Labels and Selectors" href="/docs/concepts/overview/working-with-objects/labels/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Annotations" href="/docs/concepts/overview/working-with-objects/annotations/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Object Management Using kubectl">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Kubernetes Object Management" href="/docs/concepts/overview/object-management-kubectl/overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Managing Kubernetes Objects Using Imperative Commands" href="/docs/concepts/overview/object-management-kubectl/imperative-command/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Imperative Management of Kubernetes Objects Using Configuration Files" href="/docs/concepts/overview/object-management-kubectl/imperative-config/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Declarative Management of Kubernetes Objects Using Configuration Files" href="/docs/concepts/overview/object-management-kubectl/declarative-config/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Compute, Storage, and Networking Extensions">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Cluster Administration Overview" href="/docs/concepts/cluster-administration/cluster-administration-overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Certificates" href="/docs/concepts/cluster-administration/certificates/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Cloud Providers" href="/docs/concepts/cluster-administration/cloud-providers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Managing Resources" href="/docs/concepts/cluster-administration/manage-deployment/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Cluster Networking" href="/docs/concepts/cluster-administration/networking/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Logging Architecture" href="/docs/concepts/cluster-administration/logging/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configuring kubelet Garbage Collection" href="/docs/concepts/cluster-administration/kubelet-garbage-collection/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federation" href="/docs/concepts/cluster-administration/federation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Proxies in Kubernetes" href="/docs/concepts/cluster-administration/proxies/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Controller manager metrics" href="/docs/concepts/cluster-administration/controller-metrics/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Installing Addons" href="/docs/concepts/cluster-administration/addons/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Kubernetes Architecture">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Nodes" href="/docs/concepts/architecture/nodes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Master-Node communication" href="/docs/concepts/architecture/master-node-communication/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Concepts Underlying the Cloud Controller Manager" href="/docs/concepts/architecture/cloud-controller/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Extending Kubernetes">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Extending your Kubernetes Cluster" href="/docs/concepts/extend-kubernetes/extend-cluster/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Extending the Kubernetes API">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Extending the Kubernetes API with the aggregation layer" href="/docs/concepts/extend-kubernetes/api-extension/apiserver-aggregation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Custom Resources" href="/docs/concepts/extend-kubernetes/api-extension/custom-resources/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Compute, Storage, and Networking Extensions">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Network Plugins" href="/docs/concepts/extend-kubernetes/compute-storage-net/network-plugins/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Device Plugins" href="/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Service Catalog" href="/docs/concepts/extend-kubernetes/service-catalog/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Containers">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Images" href="/docs/concepts/containers/images/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Container Environment Variables" href="/docs/concepts/containers/container-environment-variables/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Container Lifecycle Hooks" href="/docs/concepts/containers/container-lifecycle-hooks/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Workloads">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+	<div class="item" data-title="Pods">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Pod Overview" href="/docs/concepts/workloads/pods/pod-overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pods" href="/docs/concepts/workloads/pods/pod/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pod Lifecycle" href="/docs/concepts/workloads/pods/pod-lifecycle/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Init Containers" href="/docs/concepts/workloads/pods/init-containers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pod Preset" href="/docs/concepts/workloads/pods/podpreset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Disruptions" href="/docs/concepts/workloads/pods/disruptions/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Controllers">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="ReplicaSet" href="/docs/concepts/workloads/controllers/replicaset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="ReplicationController" href="/docs/concepts/workloads/controllers/replicationcontroller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Deployments" href="/docs/concepts/workloads/controllers/deployment/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="StatefulSets" href="/docs/concepts/workloads/controllers/statefulset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="DaemonSet" href="/docs/concepts/workloads/controllers/daemonset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Garbage Collection" href="/docs/concepts/workloads/controllers/garbage-collection/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Jobs - Run to Completion" href="/docs/concepts/workloads/controllers/jobs-run-to-completion/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="CronJob" href="/docs/concepts/workloads/controllers/cron-jobs/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Configuration">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Configuration Best Practices" href="/docs/concepts/configuration/overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Managing Compute Resources for Containers" href="/docs/concepts/configuration/manage-compute-resources-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Assigning Pods to Nodes" href="/docs/concepts/configuration/assign-pod-node/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Taints and Tolerations" href="/docs/concepts/configuration/taint-and-toleration/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Secrets" href="/docs/concepts/configuration/secret/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Organizing Cluster Access Using kubeconfig Files" href="/docs/concepts/configuration/organize-cluster-access-kubeconfig/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pod Priority and Preemption" href="/docs/concepts/configuration/pod-priority-preemption/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Services, Load Balancing, and Networking">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Services" href="/docs/concepts/services-networking/service/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="DNS for Services and Pods" href="/docs/concepts/services-networking/dns-pod-service/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Connecting Applications with Services" href="/docs/concepts/services-networking/connect-applications-service/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Ingress" href="/docs/concepts/services-networking/ingress/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Network Policies" href="/docs/concepts/services-networking/network-policies/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Adding entries to Pod /etc/hosts with HostAliases" href="/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Storage">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Volumes" href="/docs/concepts/storage/volumes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Persistent Volumes" href="/docs/concepts/storage/persistent-volumes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Storage Classes" href="/docs/concepts/storage/storage-classes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Dynamic Volume Provisioning" href="/docs/concepts/storage/dynamic-provisioning/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Node-specific Volume Limits" href="/docs/concepts/storage/storage-limits/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Policies">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Resource Quotas" href="/docs/concepts/policy/resource-quotas/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pod Security Policies" href="/docs/concepts/policy/pod-security-policy/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/concepts/configuration/assign-pod-node.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>Assigning Pods to Nodes</h1>
+
+
+
+<p>You can constrain a <a href="/docs/concepts/workloads/pods/pod/">pod</a> to only be able to run on particular <a href="/docs/concepts/architecture/nodes/">nodes</a> or to prefer to
+run on particular nodes. There are several ways to do this, and they all use
+<a href="/docs/concepts/overview/working-with-objects/labels/">label selectors</a> to make the selection.
+Generally such constraints are unnecessary, as the scheduler will automatically do a reasonable placement
+(e.g. spread your pods across nodes, not place the pod on a node with insufficient free resources, etc.)
+but there are some circumstances where you may want more control on a node where a pod lands, e.g. to ensure
+that a pod ends up on a machine with an SSD attached to it, or to co-locate pods from two different
+services that communicate a lot into the same availability zone.</p>
+
+<p>You can find all the files for these examples <a href="https://github.com/kubernetes/website/tree/master/content/en/docs/concepts/configuration/" target="_blank">in our docs
+repo here</a>.</p>
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+<li><a href="#nodeselector">nodeSelector</a></li>
+
+
+
+
+<li><a href="#interlude-built-in-node-labels">Interlude: built-in node labels</a></li>
+
+
+
+
+<li><a href="#affinity-and-anti-affinity">Affinity and anti-affinity</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</ul>
+
+
+<h2 id="nodeselector">nodeSelector</h2>
+
+<p><code>nodeSelector</code> is the simplest form of constraint.
+<code>nodeSelector</code> is a field of PodSpec. It specifies a map of key-value pairs. For the pod to be eligible
+to run on a node, the node must have each of the indicated key-value pairs as labels (it can have
+additional labels as well). The most common usage is one key-value pair.</p>
+
+<p>Let&rsquo;s walk through an example of how to use <code>nodeSelector</code>.</p>
+
+<h3 id="step-zero-prerequisites">Step Zero: Prerequisites</h3>
+
+<p>This example assumes that you have a basic understanding of Kubernetes pods and that you have <a href="https://github.com/kubernetes/kubernetes#documentation" target="_blank">turned up a Kubernetes cluster</a>.</p>
+
+<h3 id="step-one-attach-label-to-the-node">Step One: Attach label to the node</h3>
+
+<p>Run <code>kubectl get nodes</code> to get the names of your cluster&rsquo;s nodes. Pick out the one that you want to add a label to, and then run <code>kubectl label nodes &lt;node-name&gt; &lt;label-key&gt;=&lt;label-value&gt;</code> to add a label to the node you&rsquo;ve chosen. For example, if my node name is &lsquo;kubernetes-foo-node-1.c.a-robinson.internal&rsquo; and my desired label is &lsquo;disktype=ssd&rsquo;, then I can run <code>kubectl label nodes kubernetes-foo-node-1.c.a-robinson.internal disktype=ssd</code>.</p>
+
+<p>If this fails with an &ldquo;invalid command&rdquo; error, you&rsquo;re likely using an older version of kubectl that doesn&rsquo;t have the <code>label</code> command. In that case, see the <a href="https://github.com/kubernetes/kubernetes/blob/a053dbc313572ed60d89dae9821ecab8bfd676dc/examples/node-selection/README.md" target="_blank">previous version</a> of this guide for instructions on how to manually set labels on a node.</p>
+
+<p>You can verify that it worked by re-running <code>kubectl get nodes --show-labels</code> and checking that the node now has a label.</p>
+
+<h3 id="step-two-add-a-nodeselector-field-to-your-pod-configuration">Step Two: Add a nodeSelector field to your pod configuration</h3>
+
+<p>Take whatever pod config file you want to run, and add a nodeSelector section to it, like this. For example, if this is my pod config:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Pod<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>nginx<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>labels:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>env:<span style="color:#bbb"> </span>test<span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>containers:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>nginx<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>image:<span style="color:#bbb"> </span>nginx</code></pre></div>
+<p>Then add a nodeSelector like so:</p>
+
+<table class="includecode" id="pod-yaml">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://github.com/kubernetes/website/blob/master/content/en/docs/concepts/configuration/pod.yaml" download="pod.yaml">
+                    <code>pod.yaml docs/concepts/configuration</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('pod-yaml')" title="Copy pod.yaml to clipboard">
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Pod<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>nginx<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>labels:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>env:<span style="color:#bbb"> </span>test<span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>containers:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>nginx<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>image:<span style="color:#bbb"> </span>nginx<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>imagePullPolicy:<span style="color:#bbb"> </span>IfNotPresent<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>nodeSelector:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>disktype:<span style="color:#bbb"> </span>ssd<span style="color:#bbb">
+</span><span style="color:#bbb"></span></code></pre></div>  </td>
+        </tr>
+    </tbody>
+</table>
+
+<p>When you then run <code>kubectl create -f pod.yaml</code>, the pod will get scheduled on the node that you attached the label to! You can verify that it worked by running <code>kubectl get pods -o wide</code> and looking at the &ldquo;NODE&rdquo; that the pod was assigned to.</p>
+
+<h2 id="interlude-built-in-node-labels">Interlude: built-in node labels</h2>
+
+<p>In addition to labels you <a href="#step-one-attach-label-to-the-node">attach</a>, nodes come pre-populated
+with a standard set of labels. As of Kubernetes v1.4 these labels are</p>
+
+<ul>
+<li><code>kubernetes.io/hostname</code></li>
+<li><code>failure-domain.beta.kubernetes.io/zone</code></li>
+<li><code>failure-domain.beta.kubernetes.io/region</code></li>
+<li><code>beta.kubernetes.io/instance-type</code></li>
+<li><code>beta.kubernetes.io/os</code></li>
+<li><code>beta.kubernetes.io/arch</code></li>
+</ul>
+
+<blockquote class="note">
+  <div><strong>Note:</strong> The value of these labels is cloud provider specific and is not guaranteed to be reliable.
+For example, the value of <code>kubernetes.io/hostname</code> may be the same as the Node name in some environments
+and a different value in other environments.</div>
+</blockquote>
+
+<h2 id="affinity-and-anti-affinity">Affinity and anti-affinity</h2>
+
+<p><code>nodeSelector</code> provides a very simple way to constrain pods to nodes with particular labels. The affinity/anti-affinity
+feature, currently in beta, greatly expands the types of constraints you can express. The key enhancements are</p>
+
+<ol>
+<li>the language is more expressive (not just &ldquo;AND of exact match&rdquo;)</li>
+<li>you can indicate that the rule is &ldquo;soft&rdquo;/&ldquo;preference&rdquo; rather than a hard requirement, so if the scheduler
+can&rsquo;t satisfy it, the pod will still be scheduled</li>
+<li>you can constrain against labels on other pods running on the node (or other topological domain),
+rather than against labels on the node itself, which allows rules about which pods can and cannot be co-located</li>
+</ol>
+
+<p>The affinity feature consists of two types of affinity, &ldquo;node affinity&rdquo; and &ldquo;inter-pod affinity/anti-affinity&rdquo;.
+Node affinity is like the existing <code>nodeSelector</code> (but with the first two benefits listed above),
+while inter-pod affinity/anti-affinity constrains against pod labels rather than node labels, as
+described in the third item listed above, in addition to having the first and second properties listed above.</p>
+
+<p><code>nodeSelector</code> continues to work as usual, but will eventually be deprecated, as node affinity can express
+everything that <code>nodeSelector</code> can express.</p>
+
+<h3 id="node-affinity-beta-feature">Node affinity (beta feature)</h3>
+
+<p>Node affinity was introduced as alpha in Kubernetes 1.2.
+Node affinity is conceptually similar to <code>nodeSelector</code> &ndash; it allows you to constrain which nodes your
+pod is eligible to be scheduled on, based on labels on the node.</p>
+
+<p>There are currently two types of node affinity, called <code>requiredDuringSchedulingIgnoredDuringExecution</code> and
+<code>preferredDuringSchedulingIgnoredDuringExecution</code>. You can think of them as &ldquo;hard&rdquo; and &ldquo;soft&rdquo; respectively,
+in the sense that the former specifies rules that <em>must</em> be met for a pod to be scheduled onto a node (just like
+<code>nodeSelector</code> but using a more expressive syntax), while the latter specifies <em>preferences</em> that the scheduler
+will try to enforce but will not guarantee. The &ldquo;IgnoredDuringExecution&rdquo; part of the names means that, similar
+to how <code>nodeSelector</code> works, if labels on a node change at runtime such that the affinity rules on a pod are no longer
+met, the pod will still continue to run on the node. In the future we plan to offer
+<code>requiredDuringSchedulingRequiredDuringExecution</code> which will be just like <code>requiredDuringSchedulingIgnoredDuringExecution</code>
+except that it will evict pods from nodes that cease to satisfy the pods&rsquo; node affinity requirements.</p>
+
+<p>Thus an example of <code>requiredDuringSchedulingIgnoredDuringExecution</code> would be &ldquo;only run the pod on nodes with Intel CPUs&rdquo;
+and an example <code>preferredDuringSchedulingIgnoredDuringExecution</code> would be &ldquo;try to run this set of pods in availability
+zone XYZ, but if it&rsquo;s not possible, then allow some to run elsewhere&rdquo;.</p>
+
+<p>Node affinity is specified as field <code>nodeAffinity</code> of field <code>affinity</code> in the PodSpec.</p>
+
+<p>Here&rsquo;s an example of a pod that uses node affinity:</p>
+
+<table class="includecode" id="pod-with-node-affinity-yaml">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://github.com/kubernetes/website/blob/master/content/en/docs/concepts/configuration/pod-with-node-affinity.yaml" download="pod-with-node-affinity.yaml">
+                    <code>pod-with-node-affinity.yaml docs/concepts/configuration</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('pod-with-node-affinity-yaml')" title="Copy pod-with-node-affinity.yaml to clipboard">
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Pod<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>with-node-affinity<span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>affinity:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>nodeAffinity:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>requiredDuringSchedulingIgnoredDuringExecution:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>nodeSelectorTerms:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span>matchExpressions:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>-<span style="color:#bbb"> </span>key:<span style="color:#bbb"> </span>kubernetes.io/e2e-az-name<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>operator:<span style="color:#bbb"> </span>In<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>values:<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>-<span style="color:#bbb"> </span>e2e-az1<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>-<span style="color:#bbb"> </span>e2e-az2<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>preferredDuringSchedulingIgnoredDuringExecution:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>-<span style="color:#bbb"> </span>weight:<span style="color:#bbb"> </span><span style="color:#666">1</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span>preference:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>matchExpressions:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>-<span style="color:#bbb"> </span>key:<span style="color:#bbb"> </span>another-node-label-key<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>operator:<span style="color:#bbb"> </span>In<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>values:<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>-<span style="color:#bbb"> </span>another-node-label-value<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>containers:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>with-node-affinity<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>image:<span style="color:#bbb"> </span>k8s.gcr.io/pause:<span style="color:#666">2.0</span></code></pre></div>  </td>
+        </tr>
+    </tbody>
+</table>
+
+<p>This node affinity rule says the pod can only be placed on a node with a label whose key is
+<code>kubernetes.io/e2e-az-name</code> and whose value is either <code>e2e-az1</code> or <code>e2e-az2</code>. In addition,
+among nodes that meet that criteria, nodes with a label whose key is <code>another-node-label-key</code> and whose
+value is <code>another-node-label-value</code> should be preferred.</p>
+
+<p>You can see the operator <code>In</code> being used in the example. The new node affinity syntax supports the following operators: <code>In</code>, <code>NotIn</code>, <code>Exists</code>, <code>DoesNotExist</code>, <code>Gt</code>, <code>Lt</code>.
+You can use <code>NotIn</code> and <code>DoesNotExist</code> to achieve node anti-affinity behavior, or use
+<a href="/docs/concepts/configuration/taint-and-toleration/">node taints</a> to repel pods from specific nodes.</p>
+
+<p>If you specify both <code>nodeSelector</code> and <code>nodeAffinity</code>, <em>both</em> must be satisfied for the pod
+to be scheduled onto a candidate node.</p>
+
+<p>If you specify multiple <code>nodeSelectorTerms</code> associated with <code>nodeAffinity</code> types, then the pod can be scheduled onto a node <strong>if one of</strong> the <code>nodeSelectorTerms</code> is satisfied.</p>
+
+<p>If you specify multiple <code>matchExpressions</code> associated with <code>nodeSelectorTerms</code>, then the pod can be scheduled onto a node <strong>only if all</strong> <code>matchExpressions</code> can be satisfied.</p>
+
+<p>If you remove or change the label of the node where the pod is scheduled, the pod won&rsquo;t be removed. In other words, the affinity selection works only at the time of scheduling the pod.</p>
+
+<p>The <code>weight</code> field in <code>preferredDuringSchedulingIgnoredDuringExecution</code> is in the range 1-100. For each node that meets all of the scheduling requirements (resource request, RequiredDuringScheduling affinity expressions, etc.), the scheduler will compute a sum by iterating through the elements of this field and adding &ldquo;weight&rdquo; to the sum if the node matches the corresponding MatchExpressions. This score is then combined with the scores of other priority functions for the node. The node(s) with the highest total score are the most preferred.</p>
+
+<p>For more information on node affinity, see the
+<a href="https://git.k8s.io/community/contributors/design-proposals/scheduling/nodeaffinity.md" target="_blank">design doc</a>.</p>
+
+<h3 id="inter-pod-affinity-and-anti-affinity-beta-feature">Inter-pod affinity and anti-affinity (beta feature)</h3>
+
+<p>Inter-pod affinity and anti-affinity were introduced in Kubernetes 1.4.
+Inter-pod affinity and anti-affinity allow you to constrain which nodes your pod is eligible to be scheduled <em>based on
+labels on pods that are already running on the node</em> rather than based on labels on nodes. The rules are of the form &ldquo;this pod should (or, in the case of
+anti-affinity, should not) run in an X if that X is already running one or more pods that meet rule Y&rdquo;. Y is expressed
+as a LabelSelector with an associated list of namespaces (or &ldquo;all&rdquo; namespaces); unlike nodes, because pods are namespaced
+(and therefore the labels on pods are implicitly namespaced),
+a label selector over pod labels must specify which namespaces the selector should apply to. Conceptually X is a topology domain
+like node, rack, cloud provider zone, cloud provider region, etc. You express it using a <code>topologyKey</code> which is the
+key for the node label that the system uses to denote such a topology domain, e.g. see the label keys listed above
+in the section <a href="#interlude-built-in-node-labels">Interlude: built-in node labels</a>.</p>
+
+<p><strong>Note:</strong> Inter-pod affinity and anti-affinity require substantial amount of
+processing which can slow down scheduling in large clusters significantly. We do
+not recommend using them in clusters larger than several hundred nodes.</p>
+
+<p>As with node affinity, there are currently two types of pod affinity and anti-affinity, called <code>requiredDuringSchedulingIgnoredDuringExecution</code> and
+<code>preferredDuringSchedulingIgnoredDuringExecution</code> which denote &ldquo;hard&rdquo; vs. &ldquo;soft&rdquo; requirements.
+See the description in the node affinity section earlier.
+An example of <code>requiredDuringSchedulingIgnoredDuringExecution</code> affinity would be &ldquo;co-locate the pods of service A and service B
+in the same zone, since they communicate a lot with each other&rdquo;
+and an example <code>preferredDuringSchedulingIgnoredDuringExecution</code> anti-affinity would be &ldquo;spread the pods from this service across zones&rdquo;
+(a hard requirement wouldn&rsquo;t make sense, since you probably have more pods than zones).</p>
+
+<p>Inter-pod affinity is specified as field <code>podAffinity</code> of field <code>affinity</code> in the PodSpec.
+And inter-pod anti-affinity is specified as field <code>podAntiAffinity</code> of field <code>affinity</code> in the PodSpec.</p>
+
+<h4 id="an-example-of-a-pod-that-uses-pod-affinity">An example of a pod that uses pod affinity:</h4>
+
+<table class="includecode" id="pod-with-pod-affinity-yaml">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://github.com/kubernetes/website/blob/master/content/en/docs/concepts/configuration/pod-with-pod-affinity.yaml" download="pod-with-pod-affinity.yaml">
+                    <code>pod-with-pod-affinity.yaml docs/concepts/configuration</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('pod-with-pod-affinity-yaml')" title="Copy pod-with-pod-affinity.yaml to clipboard">
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Pod<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>with-pod-affinity<span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>affinity:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>podAffinity:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>requiredDuringSchedulingIgnoredDuringExecution:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>-<span style="color:#bbb"> </span>labelSelector:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>matchExpressions:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>-<span style="color:#bbb"> </span>key:<span style="color:#bbb"> </span>security<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>operator:<span style="color:#bbb"> </span>In<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>values:<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>-<span style="color:#bbb"> </span>S1<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>topologyKey:<span style="color:#bbb"> </span>failure-domain.beta.kubernetes.io/zone<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>podAntiAffinity:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>preferredDuringSchedulingIgnoredDuringExecution:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>-<span style="color:#bbb"> </span>weight:<span style="color:#bbb"> </span><span style="color:#666">100</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span>podAffinityTerm:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>labelSelector:<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>matchExpressions:<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>-<span style="color:#bbb"> </span>key:<span style="color:#bbb"> </span>security<span style="color:#bbb">
+</span><span style="color:#bbb">              </span>operator:<span style="color:#bbb"> </span>In<span style="color:#bbb">
+</span><span style="color:#bbb">              </span>values:<span style="color:#bbb">
+</span><span style="color:#bbb">              </span>-<span style="color:#bbb"> </span>S2<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>topologyKey:<span style="color:#bbb"> </span>kubernetes.io/hostname<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>containers:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>with-pod-affinity<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>image:<span style="color:#bbb"> </span>k8s.gcr.io/pause:<span style="color:#666">2.0</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span></code></pre></div>  </td>
+        </tr>
+    </tbody>
+</table>
+
+<p>The affinity on this pod defines one pod affinity rule and one pod anti-affinity rule. In this example, the
+<code>podAffinity</code> is <code>requiredDuringSchedulingIgnoredDuringExecution</code>
+while the <code>podAntiAffinity</code> is <code>preferredDuringSchedulingIgnoredDuringExecution</code>. The
+pod affinity rule says that the pod can be scheduled onto a node only if that node is in the same zone
+as at least one already-running pod that has a label with key &ldquo;security&rdquo; and value &ldquo;S1&rdquo;. (More precisely, the pod is eligible to run
+on node N if node N has a label with key <code>failure-domain.beta.kubernetes.io/zone</code> and some value V
+such that there is at least one node in the cluster with key <code>failure-domain.beta.kubernetes.io/zone</code> and
+value V that is running a pod that has a label with key &ldquo;security&rdquo; and value &ldquo;S1&rdquo;.) The pod anti-affinity
+rule says that the pod prefers not to be scheduled onto a node if that node is already running a pod with label
+having key &ldquo;security&rdquo; and value &ldquo;S2&rdquo;. (If the <code>topologyKey</code> were <code>failure-domain.beta.kubernetes.io/zone</code> then
+it would mean that the pod cannot be scheduled onto a node if that node is in the same zone as a pod with
+label having key &ldquo;security&rdquo; and value &ldquo;S2&rdquo;.) See the
+<a href="https://git.k8s.io/community/contributors/design-proposals/scheduling/podaffinity.md" target="_blank">design doc</a>
+for many more examples of pod affinity and anti-affinity, both the <code>requiredDuringSchedulingIgnoredDuringExecution</code>
+flavor and the <code>preferredDuringSchedulingIgnoredDuringExecution</code> flavor.</p>
+
+<p>The legal operators for pod affinity and anti-affinity are <code>In</code>, <code>NotIn</code>, <code>Exists</code>, <code>DoesNotExist</code>.</p>
+
+<p>In principle, the <code>topologyKey</code> can be any legal label-key. However,
+for performance and security reasons, there are some constraints on topologyKey:</p>
+
+<ol>
+<li>For affinity and for <code>requiredDuringSchedulingIgnoredDuringExecution</code> pod anti-affinity,
+empty <code>topologyKey</code> is not allowed.</li>
+<li>For <code>requiredDuringSchedulingIgnoredDuringExecution</code> pod anti-affinity, the admission controller <code>LimitPodHardAntiAffinityTopology</code> was introduced to limit <code>topologyKey</code> to <code>kubernetes.io/hostname</code>. If you want to make it available for custom topologies, you may modify the admission controller, or simply disable it.</li>
+<li>For <code>preferredDuringSchedulingIgnoredDuringExecution</code> pod anti-affinity, empty <code>topologyKey</code> is interpreted as &ldquo;all topologies&rdquo; (&ldquo;all topologies&rdquo; here is now limited to the combination of <code>kubernetes.io/hostname</code>, <code>failure-domain.beta.kubernetes.io/zone</code> and <code>failure-domain.beta.kubernetes.io/region</code>).</li>
+<li>Except for the above cases, the <code>topologyKey</code> can be any legal label-key.</li>
+</ol>
+
+<p>In addition to <code>labelSelector</code> and <code>topologyKey</code>, you can optionally specify a list <code>namespaces</code>
+of namespaces which the <code>labelSelector</code> should match against (this goes at the same level of the definition as <code>labelSelector</code> and <code>topologyKey</code>).
+If omitted, it defaults to the namespace of the pod where the affinity/anti-affinity definition appears.
+If defined but empty, it means &ldquo;all namespaces&rdquo;.</p>
+
+<p>All <code>matchExpressions</code> associated with <code>requiredDuringSchedulingIgnoredDuringExecution</code> affinity and anti-affinity
+must be satisfied for the pod to be scheduled onto a node.</p>
+
+<h4 id="more-practical-use-cases">More Practical Use-cases</h4>
+
+<p>Interpod Affinity and AntiAffinity can be even more useful when they are used with higher
+level collections such as ReplicaSets, StatefulSets, Deployments, etc.  One can easily configure that a set of workloads should
+be co-located in the same defined topology, eg., the same node.</p>
+
+<h5 id="always-co-located-in-the-same-node">Always co-located in the same node</h5>
+
+<p>In a three node cluster, a web application has in-memory cache such as redis. We want the web-servers to be co-located with the cache as much as possible.
+Here is the yaml snippet of a simple redis deployment with three replicas and selector label <code>app=store</code>. The deployment has <code>PodAntiAffinity</code> configured to ensure the scheduler does not co-locate replicas on a single node.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>apps/v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Deployment<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>redis-cache<span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>selector:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>matchLabels:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>app:<span style="color:#bbb"> </span>store<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>replicas:<span style="color:#bbb"> </span><span style="color:#666">3</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>template:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>labels:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>app:<span style="color:#bbb"> </span>store<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>affinity:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>podAntiAffinity:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>requiredDuringSchedulingIgnoredDuringExecution:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>-<span style="color:#bbb"> </span>labelSelector:<span style="color:#bbb">
+</span><span style="color:#bbb">              </span>matchExpressions:<span style="color:#bbb">
+</span><span style="color:#bbb">              </span>-<span style="color:#bbb"> </span>key:<span style="color:#bbb"> </span>app<span style="color:#bbb">
+</span><span style="color:#bbb">                </span>operator:<span style="color:#bbb"> </span>In<span style="color:#bbb">
+</span><span style="color:#bbb">                </span>values:<span style="color:#bbb">
+</span><span style="color:#bbb">                </span>-<span style="color:#bbb"> </span>store<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>topologyKey:<span style="color:#bbb"> </span><span style="color:#b44">&#34;kubernetes.io/hostname&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">      </span>containers:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>redis-server<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>image:<span style="color:#bbb"> </span>redis:<span style="color:#666">3.2</span>-alpine</code></pre></div>
+<p>The below yaml snippet of the webserver deployment has <code>podAntiAffinity</code> and <code>podAffinity</code> configured. This informs the scheduler that all its replicas are to be co-located with pods that have selector label <code>app=store</code>. This will also ensure that each web-server replica does not co-locate on a single node.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>apps/v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Deployment<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>web-server<span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>selector:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>matchLabels:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>app:<span style="color:#bbb"> </span>web-store<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>replicas:<span style="color:#bbb"> </span><span style="color:#666">3</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>template:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>labels:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>app:<span style="color:#bbb"> </span>web-store<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>affinity:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>podAntiAffinity:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>requiredDuringSchedulingIgnoredDuringExecution:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>-<span style="color:#bbb"> </span>labelSelector:<span style="color:#bbb">
+</span><span style="color:#bbb">              </span>matchExpressions:<span style="color:#bbb">
+</span><span style="color:#bbb">              </span>-<span style="color:#bbb"> </span>key:<span style="color:#bbb"> </span>app<span style="color:#bbb">
+</span><span style="color:#bbb">                </span>operator:<span style="color:#bbb"> </span>In<span style="color:#bbb">
+</span><span style="color:#bbb">                </span>values:<span style="color:#bbb">
+</span><span style="color:#bbb">                </span>-<span style="color:#bbb"> </span>web-store<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>topologyKey:<span style="color:#bbb"> </span><span style="color:#b44">&#34;kubernetes.io/hostname&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span>podAffinity:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>requiredDuringSchedulingIgnoredDuringExecution:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>-<span style="color:#bbb"> </span>labelSelector:<span style="color:#bbb">
+</span><span style="color:#bbb">              </span>matchExpressions:<span style="color:#bbb">
+</span><span style="color:#bbb">              </span>-<span style="color:#bbb"> </span>key:<span style="color:#bbb"> </span>app<span style="color:#bbb">
+</span><span style="color:#bbb">                </span>operator:<span style="color:#bbb"> </span>In<span style="color:#bbb">
+</span><span style="color:#bbb">                </span>values:<span style="color:#bbb">
+</span><span style="color:#bbb">                </span>-<span style="color:#bbb"> </span>store<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>topologyKey:<span style="color:#bbb"> </span><span style="color:#b44">&#34;kubernetes.io/hostname&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">      </span>containers:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>web-app<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>image:<span style="color:#bbb"> </span>nginx:<span style="color:#666">1.12</span>-alpine</code></pre></div>
+<p>If we create the above two deployments, our three node cluster should look like below.</p>
+
+<table>
+<thead>
+<tr>
+<th align="center">node-1</th>
+<th align="center">node-2</th>
+<th align="center">node-3</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center"><em>webserver-1</em></td>
+<td align="center"><em>webserver-2</em></td>
+<td align="center"><em>webserver-3</em></td>
+</tr>
+
+<tr>
+<td align="center"><em>cache-1</em></td>
+<td align="center"><em>cache-2</em></td>
+<td align="center"><em>cache-3</em></td>
+</tr>
+</tbody>
+</table>
+
+<p>As you can see, all the 3 replicas of the <code>web-server</code> are automatically co-located with the cache as expected.</p>
+
+<pre><code>$ kubectl get pods -o wide
+NAME                           READY     STATUS    RESTARTS   AGE       IP           NODE
+redis-cache-1450370735-6dzlj   1/1       Running   0          8m        10.192.4.2   kube-node-3
+redis-cache-1450370735-j2j96   1/1       Running   0          8m        10.192.2.2   kube-node-1
+redis-cache-1450370735-z73mh   1/1       Running   0          8m        10.192.3.1   kube-node-2
+web-server-1287567482-5d4dz    1/1       Running   0          7m        10.192.2.3   kube-node-1
+web-server-1287567482-6f7v5    1/1       Running   0          7m        10.192.4.3   kube-node-3
+web-server-1287567482-s330j    1/1       Running   0          7m        10.192.3.2   kube-node-2
+</code></pre>
+
+<h5 id="never-co-located-in-the-same-node">Never co-located in the same node</h5>
+
+<p>The above example uses <code>PodAntiAffinity</code> rule with <code>topologyKey: &quot;kubernetes.io/hostname&quot;</code> to deploy the redis cluster so that
+no two instances are located on the same host.
+See <a href="/docs/tutorials/stateful-application/zookeeper/#tolerating-node-failure">ZooKeeper tutorial</a>
+for an example of a StatefulSet configured with anti-affinity for high availability, using the same technique.</p>
+
+<p>For more information on inter-pod affinity/anti-affinity, see the
+<a href="https://git.k8s.io/community/contributors/design-proposals/scheduling/podaffinity.md" target="_blank">design doc</a>.</p>
+
+<p>You may want to check <a href="/docs/concepts/configuration/taint-and-toleration/">Taints</a>
+as well, which allow a <em>node</em> to <em>repel</em> a set of pods.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/concepts/configuration/assign-pod-node.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/concepts\/configuration\/assign-pod-node\/",
+					"title" : "Assigning Pods to Nodes",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/concepts\/configuration\/assign-pod-node\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/concepts/configuration/assign-pod-node.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Services - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="Services" />
+<meta property="og:description" content="Services" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/tutorials/services/" />
+<meta property="og:title" content="Services - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h1>Tutorials</h1>
+<h5></h5>
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/" class="YAH">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Tutorials" href="/docs/tutorials/"></a>
+
+	
+	
+		
+		
+<a class="item" data-title="Hello Minikube" href="/docs/tutorials/hello-minikube/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Kubernetes Basics">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Overview" href="/docs/tutorials/kubernetes-basics/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Create a Cluster">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Using Minikube to Create a Cluster" href="/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Interactive Tutorial - Creating a Cluster" href="/docs/tutorials/kubernetes-basics/create-cluster/cluster-interactive/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Deploy an App">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Using kubectl to Create a Deployment" href="/docs/tutorials/kubernetes-basics/deploy-app/deploy-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Interactive Tutorial - Deploying an App" href="/docs/tutorials/kubernetes-basics/deploy-app/deploy-interactive/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Explore Your App">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Viewing Pods and Nodes" href="/docs/tutorials/kubernetes-basics/explore/explore-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Interactive Tutorial - Exploring Your App" href="/docs/tutorials/kubernetes-basics/explore/explore-interactive/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Expose Your App Publicly">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Using a Service to Expose Your App" href="/docs/tutorials/kubernetes-basics/expose/expose-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Interactive Tutorial - Exposing Your App" href="/docs/tutorials/kubernetes-basics/expose/expose-interactive/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Scale Your App">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Running Multiple Instances of Your App" href="/docs/tutorials/kubernetes-basics/scale/scale-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Interactive Tutorial - Scaling Your App" href="/docs/tutorials/kubernetes-basics/scale/scale-interactive/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Update Your App">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Performing a Rolling Update" href="/docs/tutorials/kubernetes-basics/update/update-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Interactive Tutorial - Updating Your App" href="/docs/tutorials/kubernetes-basics/update/update-interactive/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Online Training Courses">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Overview of Kubernetes Online Training" href="/docs/tutorials/online-training/overview/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Configuration">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Configuring Redis using a ConfigMap" href="/docs/tutorials/configuration/configure-redis-using-configmap/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Stateless Applications">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Exposing an External IP Address to Access an Application in a Cluster" href="/docs/tutorials/stateless-application/expose-external-ip-address/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Example: Deploying PHP Guestbook application with Redis" href="/docs/tutorials/stateless-application/guestbook/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Stateful Applications">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="StatefulSet Basics" href="/docs/tutorials/stateful-application/basic-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Example: Deploying WordPress and MySQL with Persistent Volumes" href="/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Example: Deploying Cassandra with Stateful Sets" href="/docs/tutorials/stateful-application/cassandra/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Running ZooKeeper, A Distributed System Coordinator" href="/docs/tutorials/stateful-application/zookeeper/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Clusters">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="AppArmor" href="/docs/tutorials/clusters/apparmor/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Services">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Using Source IP" href="/docs/tutorials/services/source-ip/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes 101" href="/docs/tutorials/k8s101/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes 201" href="/docs/tutorials/k8s201/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+	 
+    
+    
+    <p><a href="/docs/editdocs#docs/tutorials/services/source-ip.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>Using Source IP</h1>
+
+
+
+<p>Applications running in a Kubernetes cluster find and communicate with each
+other, and the outside world, through the Service abstraction. This document
+explains what happens to the source IP of packets sent to different types
+of Services, and how you can toggle this behavior according to your needs.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+<li><a href="#objectives">Objectives</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#before-you-begin">Before you begin</a></li>
+
+
+
+
+<li><a href="#terminology">Terminology</a></li>
+
+
+
+
+<li><a href="#prerequisites">Prerequisites</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#source-ip-for-services-with-type-clusterip">Source IP for Services with Type=ClusterIP</a></li>
+
+
+
+
+<li><a href="#source-ip-for-services-with-type-nodeport">Source IP for Services with Type=NodePort</a></li>
+
+
+
+
+<li><a href="#source-ip-for-services-with-type-loadbalancer">Source IP for Services with Type=LoadBalancer</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#cleaning-up">Cleaning up</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#what-s-next">What's next</a></li>
+
+
+
+</ul>
+
+
+
+<h2 id="objectives">Objectives</h2>
+<ul>
+<li>Expose a simple application through various types of Services</li>
+<li>Understand how each Service type handles source IP NAT</li>
+<li>Understand the tradeoffs involved in preserving source IP</li>
+</ul>
+
+
+
+
+
+<h2 id="before-you-begin">Before you begin</h2>
+<p>You need to have a Kubernetes cluster, and the kubectl command-line tool must
+be configured to communicate with your cluster. If you do not already have a
+cluster, you can create one by using
+<a href="/docs/getting-started-guides/minikube">Minikube</a>,
+or you can use one of these Kubernetes playgrounds:</p>
+
+<ul>
+<li><a href="https://www.katacoda.com/courses/kubernetes/playground" target="_blank">Katacoda</a></li>
+<li><a href="http://labs.play-with-k8s.com/" target="_blank">Play with Kubernetes</a></li>
+</ul>
+ 
+
+<p>To check the version, enter <code>kubectl version</code>.</p>
+
+<h2 id="terminology">Terminology</h2>
+
+<p>This document makes use of the following terms:</p>
+
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Network_address_translation" target="_blank">NAT</a>: network address translation</li>
+<li><a href="https://en.wikipedia.org/wiki/Network_address_translation#SNAT" target="_blank">Source NAT</a>: replacing the source IP on a packet, usually with a node&rsquo;s IP</li>
+<li><a href="https://en.wikipedia.org/wiki/Network_address_translation#DNAT" target="_blank">Destination NAT</a>: replacing the destination IP on a packet, usually with a pod IP</li>
+<li><a href="/docs/concepts/services-networking/service/#virtual-ips-and-service-proxies">VIP</a>: a virtual IP, such as the one assigned to every Kubernetes Service</li>
+<li><a href="/docs/concepts/services-networking/service/#virtual-ips-and-service-proxies">Kube-proxy</a>: a network daemon that orchestrates Service VIP management on every node</li>
+</ul>
+
+<h2 id="prerequisites">Prerequisites</h2>
+
+<p>You must have a working Kubernetes 1.5 cluster to run the examples in this
+document. The examples use a small nginx webserver that echoes back the source
+IP of requests it receives through an HTTP header. You can create it as follows:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ kubectl run source-ip-app --image=k8s.gcr.io/echoserver:1.4
+deployment &#34;source-ip-app&#34; created</code></pre></div>
+
+
+
+<h2 id="source-ip-for-services-with-type-clusterip">Source IP for Services with Type=ClusterIP</h2>
+
+<p>Packets sent to ClusterIP from within the cluster are never source NAT&rsquo;d if
+you&rsquo;re running kube-proxy in <a href="/docs/concepts/services-networking/service/#proxy-mode-iptables">iptables mode</a>,
+which is the default since Kubernetes 1.2. Kube-proxy exposes its mode through
+a <code>proxyMode</code> endpoint:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ kubectl get nodes
+NAME                           STATUS     AGE     VERSION
+kubernetes-minion-group-6jst   Ready      2h      v1.6.0+fff5156
+kubernetes-minion-group-cx31   Ready      2h      v1.6.0+fff5156
+kubernetes-minion-group-jj1t   Ready      2h      v1.6.0+fff5156
+
+kubernetes-minion-group-6jst $ curl localhost:10249/proxyMode
+iptables</code></pre></div>
+<p>You can test source IP preservation by creating a Service over the source IP app:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ kubectl expose deployment source-ip-app --name=clusterip --port=80 --target-port=8080
+service &#34;clusterip&#34; exposed
+
+$ kubectl get svc clusterip
+NAME         CLUSTER-IP    EXTERNAL-IP   PORT(S)   AGE
+clusterip    10.0.170.92   &lt;none&gt;        80/TCP    51s</code></pre></div>
+<p>And hitting the <code>ClusterIP</code> from a pod in the same cluster:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ kubectl run busybox -it --image=busybox --restart=Never --rm
+Waiting for pod default/busybox to be running, status is Pending, pod ready: false
+If you don&#39;t see a command prompt, try pressing enter.
+
+# ip addr
+1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host
+       valid_lft forever preferred_lft forever
+3: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1460 qdisc noqueue
+    link/ether 0a:58:0a:f4:03:08 brd ff:ff:ff:ff:ff:ff
+    inet 10.244.3.8/24 scope global eth0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::188a:84ff:feb0:26a5/64 scope link
+       valid_lft forever preferred_lft forever
+
+# wget -qO - 10.0.170.92
+CLIENT VALUES:
+client_address=10.244.3.8
+command=GET
+...</code></pre></div>
+<p>If the client pod and server pod are in the same node, the client_address is the client pod&rsquo;s IP address. However, if the client pod and server pod are in different nodes, the client_address is the client pod&rsquo;s node flannel IP address.</p>
+
+<h2 id="source-ip-for-services-with-type-nodeport">Source IP for Services with Type=NodePort</h2>
+
+<p>As of Kubernetes 1.5, packets sent to Services with <a href="/docs/concepts/services-networking/service/#type-nodeport">Type=NodePort</a>
+are source NAT&rsquo;d by default. You can test this by creating a <code>NodePort</code> Service:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ kubectl expose deployment source-ip-app --name=nodeport --port=80 --target-port=8080 --type=NodePort
+service &#34;nodeport&#34; exposed
+
+$ NODEPORT=$(kubectl get -o jsonpath=&#34;{.spec.ports[0].nodePort}&#34; services nodeport)
+$ NODES=$(kubectl get nodes -o jsonpath=&#39;{ $.items[*].status.addresses[?(@.type==&#34;ExternalIP&#34;)].address }&#39;)</code></pre></div>
+<p>If you&rsquo;re running on a cloudprovider, you may need to open up a firewall-rule
+for the <code>nodes:nodeport</code> reported above.
+Now you can try reaching the Service from outside the cluster through the node
+port allocated above.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ for node in $NODES; do curl -s $node:$NODEPORT | grep -i client_address; done
+client_address=10.180.1.1
+client_address=10.240.0.5
+client_address=10.240.0.3</code></pre></div>
+<p>Note that these are not the correct client IPs, they&rsquo;re cluster internal IPs. This is what happens:</p>
+
+<ul>
+<li>Client sends packet to <code>node2:nodePort</code></li>
+<li><code>node2</code> replaces the source IP address (SNAT) in the packet with its own IP address</li>
+<li><code>node2</code> replaces the destination IP on the packet with the pod IP</li>
+<li>packet is routed to node 1, and then to the endpoint</li>
+<li>the pod&rsquo;s reply is routed back to node2</li>
+<li>the pod&rsquo;s reply is sent back to the client</li>
+</ul>
+
+<p>Visually:</p>
+
+<pre><code>          client
+             \ ^
+              \ \
+               v \
+   node 1 &lt;--- node 2
+    | ^   SNAT
+    | |   ---&gt;
+    v |
+ endpoint
+</code></pre>
+
+<p>To avoid this, Kubernetes has a feature to preserve the client source IP
+<a href="/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip">(check here for feature availability)</a>.
+Setting <code>service.spec.externalTrafficPolicy</code> to the value <code>Local</code> will only
+proxy requests to local endpoints, never forwarding traffic to other nodes
+and thereby preserving the original source IP address. If there are no
+local endpoints, packets sent to the node are dropped, so you can rely
+on the correct source-ip in any packet processing rules you might apply a
+packet that make it through to the endpoint.</p>
+
+<p>Set the <code>service.spec.externalTrafficPolicy</code> field as follows:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ kubectl patch svc nodeport -p &#39;{&#34;spec&#34;:{&#34;externalTrafficPolicy&#34;:&#34;Local&#34;}}&#39;
+service &#34;nodeport&#34; patched</code></pre></div>
+<p>Now, re-run the test:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ for node in $NODES; do curl --connect-timeout 1 -s $node:$NODEPORT | grep -i client_address; done
+client_address=104.132.1.79</code></pre></div>
+<p>Note that you only got one reply, with the <em>right</em> client IP, from the one node on which the endpoint pod
+is running.</p>
+
+<p>This is what happens:</p>
+
+<ul>
+<li>client sends packet to <code>node2:nodePort</code>, which doesn&rsquo;t have any endpoints</li>
+<li>packet is dropped</li>
+<li>client sends packet to <code>node1:nodePort</code>, which <em>does</em> have endpoints</li>
+<li>node1 routes packet to endpoint with the correct source IP</li>
+</ul>
+
+<p>Visually:</p>
+
+<pre><code>        client
+       ^ /   \
+      / /     \
+     / v       X
+   node 1     node 2
+    ^ |
+    | |
+    | v
+ endpoint
+</code></pre>
+
+<h2 id="source-ip-for-services-with-type-loadbalancer">Source IP for Services with Type=LoadBalancer</h2>
+
+<p>As of Kubernetes 1.5, packets sent to Services with <a href="/docs/concepts/services-networking/service/#type-loadbalancer">Type=LoadBalancer</a> are
+source NAT&rsquo;d by default, because all schedulable Kubernetes nodes in the
+<code>Ready</code> state are eligible for loadbalanced traffic. So if packets arrive
+at a node without an endpoint, the system proxies it to a node <em>with</em> an
+endpoint, replacing the source IP on the packet with the IP of the node (as
+described in the previous section).</p>
+
+<p>You can test this by exposing the source-ip-app through a loadbalancer</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ kubectl expose deployment source-ip-app --name=loadbalancer --port=80 --target-port=8080 --type=LoadBalancer
+service &#34;loadbalancer&#34; exposed
+
+$ kubectl get svc loadbalancer
+NAME           CLUSTER-IP    EXTERNAL-IP       PORT(S)   AGE
+loadbalancer   10.0.65.118   104.198.149.140   80/TCP    5m
+
+$ curl 104.198.149.140
+CLIENT VALUES:
+client_address=10.240.0.5
+...</code></pre></div>
+<p>However, if you&rsquo;re running on Google Kubernetes Engine/GCE, setting the same <code>service.spec.externalTrafficPolicy</code>
+field to <code>Local</code> forces nodes <em>without</em> Service endpoints to remove
+themselves from the list of nodes eligible for loadbalanced traffic by
+deliberately failing health checks.</p>
+
+<p>Visually:</p>
+
+<pre><code>                      client
+                        |
+                      lb VIP
+                     / ^
+                    v /
+health check ---&gt;   node 1   node 2 &lt;--- health check
+        200  &lt;---   ^ |             ---&gt; 500
+                    | V
+                 endpoint
+</code></pre>
+
+<p>You can test this by setting the annotation:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ kubectl patch svc loadbalancer -p &#39;{&#34;spec&#34;:{&#34;externalTrafficPolicy&#34;:&#34;Local&#34;}}&#39;</code></pre></div>
+<p>You should immediately see the <code>service.spec.healthCheckNodePort</code> field allocated
+by Kubernetes:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ kubectl get svc loadbalancer -o yaml | grep -i healthCheckNodePort
+  healthCheckNodePort: 32122</code></pre></div>
+<p>The <code>service.spec.healthCheckNodePort</code> field points to a port on every node
+serving the health check at <code>/healthz</code>. You can test this:</p>
+
+<pre><code>$ kubectl get pod -o wide -l run=source-ip-app
+NAME                            READY     STATUS    RESTARTS   AGE       IP             NODE
+source-ip-app-826191075-qehz4   1/1       Running   0          20h       10.180.1.136   kubernetes-minion-group-6jst
+
+kubernetes-minion-group-6jst $ curl localhost:32122/healthz
+1 Service Endpoints found
+
+kubernetes-minion-group-jj1t $ curl localhost:32122/healthz
+No Service Endpoints Found
+</code></pre>
+
+<p>A service controller running on the master is responsible for allocating the cloud
+loadbalancer, and when it does so, it also allocates HTTP health checks
+pointing to this port/path on each node. Wait about 10 seconds for the 2 nodes
+without endpoints to fail health checks, then curl the lb ip:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ curl 104.198.149.140
+CLIENT VALUES:
+client_address=104.132.1.79
+...</code></pre></div>
+<p><strong>Cross platform support</strong></p>
+
+<p>As of Kubernetes 1.5, support for source IP preservation through Services
+with Type=LoadBalancer is only implemented in a subset of cloudproviders
+(GCP and Azure). The cloudprovider you&rsquo;re running on might fulfill the
+request for a loadbalancer in a few different ways:</p>
+
+<ol>
+<li><p>With a proxy that terminates the client connection and opens a new connection
+to your nodes/endpoints. In such cases the source IP will always be that of the
+cloud LB, not that of the client.</p></li>
+
+<li><p>With a packet forwarder, such that requests from the client sent to the
+loadbalancer VIP end up at the node with the source IP of the client, not
+an intermediate proxy.</p></li>
+</ol>
+
+<p>Loadbalancers in the first category must use an agreed upon
+protocol between the loadbalancer and backend to communicate the true client IP
+such as the HTTP <a href="https://en.wikipedia.org/wiki/X-Forwarded-For" target="_blank">X-FORWARDED-FOR</a>
+header, or the <a href="http://www.haproxy.org/download/1.5/doc/proxy-protocol.txt" target="_blank">proxy protocol</a>.
+Loadbalancers in the second category can leverage the feature described above
+by simply creating an HTTP health check pointing at the port stored in
+the <code>service.spec.healthCheckNodePort</code> field on the Service.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="cleaning-up">Cleaning up</h2>
+<p>Delete the Services:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ kubectl delete svc -l run=source-ip-app</code></pre></div>
+<p>Delete the Deployment, ReplicaSet and Pod:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ kubectl delete deployment source-ip-app</code></pre></div>
+
+
+
+
+<h2 id="what-s-next">What&#39;s next</h2>
+<ul>
+<li>Learn more about <a href="/docs/concepts/services-networking/connect-applications-service/">connecting applications via services</a></li>
+<li>Learn more about <a href="/docs/user-guide/load-balancer">loadbalancing</a></li>
+</ul>
+
+
+
+
+
+
+    
+    
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/tutorials/services/_index.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/tutorials\/services\/",
+					"title" : "Services",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/tutorials\/services\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/tutorials/services/_index.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

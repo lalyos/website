@@ -1,0 +1,2112 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Debug Services - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="Debug Services" />
+<meta property="og:description" content="Debug Services" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/tasks/debug-application-cluster/debug-service/" />
+<meta property="og:title" content="Debug Services - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+
+
+
+
+<h1>Tasks</h1>
+<h5></h5>
+
+
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/" class="YAH">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Tasks" href="/docs/tasks/"></a>
+
+	
+	
+		
+		
+	<div class="item" data-title="Install Tools">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Install and Set Up kubectl" href="/docs/tasks/tools/install-kubectl/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Install Minikube" href="/docs/tasks/tools/install-minikube/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Installing kubeadm" href="/docs/tasks/tools/install-kubeadm/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Administer a Cluster">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+	<div class="item" data-title="Administration with kubeadm">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Upgrading kubeadm HA clusters from 1.9.x to 1.9.y" href="/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-ha/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Upgrading kubeadm clusters from 1.7 to 1.8" href="/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-1-8/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Upgrading kubeadm clusters from v1.10 to v1.11" href="/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-1-11/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Upgrading/downgrading kubeadm clusters between v1.8 to v1.9" href="/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-1-9/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Manage Memory, CPU, and API Resources">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Configure Default Memory Requests and Limits for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/memory-default-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Default CPU Requests and Limits for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/cpu-default-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Minimum and Maximum Memory Constraints for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/memory-constraint-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Minimum and Maximum CPU Constraints for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/cpu-constraint-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Memory and CPU Quotas for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/quota-memory-cpu-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod Quota for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/quota-pod-namespace/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Install a Network Policy Provider">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Use Calico for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/calico-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use Cilium for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/cilium-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use Kube-router for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/kube-router-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Romana for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/romana-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Weave Net for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/weave-network-policy/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Access Clusters Using the Kubernetes API" href="/docs/tasks/administer-cluster/access-cluster-api/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Access Services Running on Clusters" href="/docs/tasks/administer-cluster/access-cluster-services/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Advertise Extended Resources for a Node" href="/docs/tasks/administer-cluster/extended-resource-node/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Autoscale the DNS Service in a Cluster" href="/docs/tasks/administer-cluster/dns-horizontal-autoscaling/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Change the Reclaim Policy of a PersistentVolume" href="/docs/tasks/administer-cluster/change-pv-reclaim-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Change the default StorageClass" href="/docs/tasks/administer-cluster/change-default-storage-class/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Cluster Management" href="/docs/tasks/administer-cluster/cluster-management/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Multiple Schedulers" href="/docs/tasks/administer-cluster/configure-multiple-schedulers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Out Of Resource Handling" href="/docs/tasks/administer-cluster/out-of-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Quotas for API Objects" href="/docs/tasks/administer-cluster/quota-api-object/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Control CPU Management Policies on the Node" href="/docs/tasks/administer-cluster/cpu-management-policies/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Customizing DNS Service" href="/docs/tasks/administer-cluster/dns-custom-nameservers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debugging DNS Resolution" href="/docs/tasks/administer-cluster/dns-debugging-resolution/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Declare Network Policy" href="/docs/tasks/administer-cluster/declare-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Developing Cloud Controller Manager" href="/docs/tasks/administer-cluster/developing-cloud-controller-manager/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Encrypting Secret Data at Rest" href="/docs/tasks/administer-cluster/encrypt-data/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Guaranteed Scheduling For Critical Add-On Pods" href="/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="IP Masquerade Agent User Guide" href="/docs/tasks/administer-cluster/ip-masq-agent/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes Cloud Controller Manager" href="/docs/tasks/administer-cluster/running-cloud-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Limit Storage Consumption" href="/docs/tasks/administer-cluster/limit-storage-consumption/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Namespaces Walkthrough" href="/docs/tasks/administer-cluster/namespaces-walkthrough/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Operating etcd clusters for Kubernetes" href="/docs/tasks/administer-cluster/configure-upgrade-etcd/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Reconfigure a Node&#39;s Kubelet in a Live Cluster" href="/docs/tasks/administer-cluster/reconfigure-kubelet/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Reserve Compute Resources for System Daemons" href="/docs/tasks/administer-cluster/reserve-compute-resources/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Safely Drain a Node while Respecting Application SLOs" href="/docs/tasks/administer-cluster/safely-drain-node/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Securing a Cluster" href="/docs/tasks/administer-cluster/securing-a-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set Kubelet parameters via a config file" href="/docs/tasks/administer-cluster/kubelet-config-file/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up High-Availability Kubernetes Masters" href="/docs/tasks/administer-cluster/highly-available-master/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up a Highly Availabile etcd Cluster With kubeadm" href="/docs/tasks/administer-cluster/setup-ha-etcd-with-kubeadm/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Share a Cluster with Namespaces" href="/docs/tasks/administer-cluster/namespaces/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Static Pods" href="/docs/tasks/administer-cluster/static-pod/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Storage Object in Use Protection" href="/docs/tasks/administer-cluster/storage-object-in-use-protection/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using CoreDNS for Service Discovery" href="/docs/tasks/administer-cluster/coredns/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using a KMS provider for data encryption" href="/docs/tasks/administer-cluster/kms-provider/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using sysctls in a Kubernetes Cluster" href="/docs/tasks/administer-cluster/sysctl-cluster/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Configure Pods and Containers">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Assign Memory Resources to Containers and Pods" href="/docs/tasks/configure-pod-container/assign-memory-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Assign CPU Resources to Containers and Pods" href="/docs/tasks/configure-pod-container/assign-cpu-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Quality of Service for Pods" href="/docs/tasks/configure-pod-container/quality-service-pod/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Assign Extended Resources to a Container" href="/docs/tasks/configure-pod-container/extended-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod to Use a Volume for Storage" href="/docs/tasks/configure-pod-container/configure-volume-storage/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod to Use a PersistentVolume for Storage" href="/docs/tasks/configure-pod-container/configure-persistent-volume-storage/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod to Use a Projected Volume for Storage" href="/docs/tasks/configure-pod-container/configure-projected-volume-storage/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Security Context for a Pod or Container" href="/docs/tasks/configure-pod-container/security-context/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Service Accounts for Pods" href="/docs/tasks/configure-pod-container/configure-service-account/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pull an Image from a Private Registry" href="/docs/tasks/configure-pod-container/pull-image-private-registry/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Liveness and Readiness Probes" href="/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Assign Pods to Nodes" href="/docs/tasks/configure-pod-container/assign-pods-nodes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Pod Initialization" href="/docs/tasks/configure-pod-container/configure-pod-initialization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Attach Handlers to Container Lifecycle Events" href="/docs/tasks/configure-pod-container/attach-handler-lifecycle-event/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod to Use a ConfigMap" href="/docs/tasks/configure-pod-container/configure-pod-configmap/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Share Process Namespace between Containers in a Pod" href="/docs/tasks/configure-pod-container/share-process-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Translate a Docker Compose File to Kubernetes Resources" href="/docs/tasks/configure-pod-container/translate-compose-kubernetes/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Inject Data Into Applications">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Define a Command and Arguments for a Container" href="/docs/tasks/inject-data-application/define-command-argument-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Define Environment Variables for a Container" href="/docs/tasks/inject-data-application/define-environment-variable-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Expose Pod Information to Containers Through Environment Variables" href="/docs/tasks/inject-data-application/environment-variable-expose-pod-information/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Expose Pod Information to Containers Through Files" href="/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Distribute Credentials Securely Using Secrets" href="/docs/tasks/inject-data-application/distribute-credentials-secure/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Inject Information into Pods Using a PodPreset" href="/docs/tasks/inject-data-application/podpreset/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Run Applications">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Run a Stateless Application Using a Deployment" href="/docs/tasks/run-application/run-stateless-application-deployment/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Run a Single-Instance Stateful Application" href="/docs/tasks/run-application/run-single-instance-stateful-application/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Run a Replicated Stateful Application" href="/docs/tasks/run-application/run-replicated-stateful-application/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Update API Objects in Place Using kubectl patch" href="/docs/tasks/run-application/update-api-object-kubectl-patch/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Scale a StatefulSet" href="/docs/tasks/run-application/scale-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Delete a StatefulSet" href="/docs/tasks/run-application/delete-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Force Delete StatefulSet Pods" href="/docs/tasks/run-application/force-delete-stateful-set-pod/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Perform Rolling Update Using a Replication Controller" href="/docs/tasks/run-application/rolling-update-replication-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Horizontal Pod Autoscaler" href="/docs/tasks/run-application/horizontal-pod-autoscale/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Horizontal Pod Autoscaler Walkthrough" href="/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Specifying a Disruption Budget for your Application" href="/docs/tasks/run-application/configure-pdb/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Run Jobs">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Running automated tasks with cron jobs" href="/docs/tasks/job/automated-tasks-with-cron-jobs/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Parallel Processing using Expansions" href="/docs/tasks/job/parallel-processing-expansion/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Coarse Parallel Processing Using a Work Queue" href="/docs/tasks/job/coarse-parallel-processing-work-queue/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Fine Parallel Processing Using a Work Queue" href="/docs/tasks/job/fine-parallel-processing-work-queue/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Access Applications in a Cluster">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Web UI (Dashboard)" href="/docs/tasks/access-application-cluster/web-ui-dashboard/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Accessing Clusters" href="/docs/tasks/access-application-cluster/access-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Access to Multiple Clusters" href="/docs/tasks/access-application-cluster/configure-access-multiple-clusters/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use Port Forwarding to Access Applications in a Cluster" href="/docs/tasks/access-application-cluster/port-forward-access-application-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Provide Load-Balanced Access to an Application in a Cluster" href="/docs/tasks/access-application-cluster/load-balance-access-application-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use a Service to Access an Application in a Cluster" href="/docs/tasks/access-application-cluster/service-access-application-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Connect a Front End to a Back End Using a Service" href="/docs/tasks/access-application-cluster/connecting-frontend-backend/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Create an External Load Balancer" href="/docs/tasks/access-application-cluster/create-external-load-balancer/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Your Cloud Provider&#39;s Firewalls" href="/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="List All Container Images Running in a Cluster" href="/docs/tasks/access-application-cluster/list-all-running-container-images/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Communicate Between Containers in the Same Pod Using a Shared Volume" href="/docs/tasks/access-application-cluster/communicate-containers-same-pod-shared-volume/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure DNS for a Cluster" href="/docs/tasks/access-application-cluster/configure-dns-cluster/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Monitor, Log, and Debug">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Application Introspection and Debugging" href="/docs/tasks/debug-application-cluster/debug-application-introspection/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Auditing" href="/docs/tasks/debug-application-cluster/audit/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Core metrics pipeline" href="/docs/tasks/debug-application-cluster/core-metrics-pipeline/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debug Init Containers" href="/docs/tasks/debug-application-cluster/debug-init-containers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debug Pods and Replication Controllers" href="/docs/tasks/debug-application-cluster/debug-pod-replication-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debug Services" href="/docs/tasks/debug-application-cluster/debug-service/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debug a StatefulSet" href="/docs/tasks/debug-application-cluster/debug-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debugging Kubernetes nodes with crictl" href="/docs/tasks/debug-application-cluster/crictl/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Determine the Reason for Pod Failure" href="/docs/tasks/debug-application-cluster/determine-reason-pod-failure/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Developing and debugging services locally" href="/docs/tasks/debug-application-cluster/local-debugging/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Events in Stackdriver" href="/docs/tasks/debug-application-cluster/events-stackdriver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Get a Shell to a Running Container" href="/docs/tasks/debug-application-cluster/get-shell-running-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Logging Using Elasticsearch and Kibana" href="/docs/tasks/debug-application-cluster/logging-elasticsearch-kibana/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Logging Using Stackdriver" href="/docs/tasks/debug-application-cluster/logging-stackdriver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Monitor Node Health" href="/docs/tasks/debug-application-cluster/monitor-node-health/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Tools for Monitoring Compute, Storage, and Network Resources" href="/docs/tasks/debug-application-cluster/resource-usage-monitoring/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Troubleshoot Applications" href="/docs/tasks/debug-application-cluster/debug-application/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Troubleshoot Clusters" href="/docs/tasks/debug-application-cluster/debug-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Troubleshooting" href="/docs/tasks/debug-application-cluster/troubleshooting/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Extend Kubernetes">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Configure the aggregation layer" href="/docs/tasks/access-kubernetes-api/configure-aggregation-layer/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Use Custom Resources">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Extend the Kubernetes API with CustomResourceDefinitions" href="/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Versions of CustomResourceDefinitions" href="/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definition-versioning/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Migrate a ThirdPartyResource to CustomResourceDefinition" href="/docs/tasks/access-kubernetes-api/custom-resources/migrate-third-party-resource/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Setup an extension API server" href="/docs/tasks/access-kubernetes-api/setup-extension-api-server/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use an HTTP Proxy to Access the Kubernetes API" href="/docs/tasks/access-kubernetes-api/http-proxy-access-api/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="TLS">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Certificate Rotation" href="/docs/tasks/tls/certificate-rotation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Manage TLS Certificates in a Cluster" href="/docs/tasks/tls/managing-tls-in-a-cluster/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Federation - Run an App on Multiple Clusters">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Cross-cluster Service Discovery using Federated Services" href="/docs/tasks/federation/federation-service-discovery/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up Cluster Federation with Kubefed" href="/docs/tasks/federation/set-up-cluster-federation-kubefed/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up CoreDNS as DNS provider for Cluster Federation" href="/docs/tasks/federation/set-up-coredns-provider-federation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up placement policies in Federation" href="/docs/tasks/federation/set-up-placement-policies-federation/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Manage Cluster Daemons">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Perform a Rolling Update on a DaemonSet" href="/docs/tasks/manage-daemon/update-daemon-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Performing a Rollback on a DaemonSet" href="/docs/tasks/manage-daemon/rollback-daemon-set/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Install Service Catalog">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Install Service Catalog using Helm" href="/docs/tasks/service-catalog/install-service-catalog-using-helm/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Install Service Catalog using SC" href="/docs/tasks/service-catalog/install-service-catalog-using-sc/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Federation - Run an App on Multiple Clusters">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Federated Cluster" href="/docs/tasks/administer-federation/cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated ConfigMap" href="/docs/tasks/administer-federation/configmap/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated DaemonSet" href="/docs/tasks/administer-federation/daemonset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Deployment" href="/docs/tasks/administer-federation/deployment/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Events" href="/docs/tasks/administer-federation/events/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Horizontal Pod Autoscalers (HPA)" href="/docs/tasks/administer-federation/hpa/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Ingress" href="/docs/tasks/administer-federation/ingress/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Jobs" href="/docs/tasks/administer-federation/job/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Namespaces" href="/docs/tasks/administer-federation/namespaces/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated ReplicaSets" href="/docs/tasks/administer-federation/replicaset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Secrets" href="/docs/tasks/administer-federation/secret/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Extend kubectl with plugins" href="/docs/tasks/extend-kubectl/kubectl-plugins/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Manage HugePages" href="/docs/tasks/manage-hugepages/scheduling-hugepages/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Schedule GPUs" href="/docs/tasks/manage-gpus/scheduling-gpus/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/tasks/debug-application-cluster/debug-service.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>Debug Services</h1>
+
+
+
+<p>An issue that comes up rather frequently for new installations of Kubernetes is
+that a <code>Service</code> is not working properly.  You&rsquo;ve run your <code>Deployment</code> and
+created a <code>Service</code>, but you get no response when you try to access it.
+This document will hopefully help you to figure out what&rsquo;s going wrong.</p>
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+<li><a href="#conventions">Conventions</a></li>
+
+
+
+
+<li><a href="#running-commands-in-a-pod">Running commands in a Pod</a></li>
+
+
+
+
+<li><a href="#setup">Setup</a></li>
+
+
+
+
+<li><a href="#does-the-service-exist">Does the Service exist?</a></li>
+
+
+
+
+<li><a href="#does-the-service-work-by-dns">Does the Service work by DNS?</a></li>
+
+
+
+
+<li><a href="#does-the-service-work-by-ip">Does the Service work by IP?</a></li>
+
+
+
+
+<li><a href="#is-the-service-correct">Is the Service correct?</a></li>
+
+
+
+
+<li><a href="#does-the-service-have-any-endpoints">Does the Service have any Endpoints?</a></li>
+
+
+
+
+<li><a href="#are-the-pods-working">Are the Pods working?</a></li>
+
+
+
+
+<li><a href="#is-the-kube-proxy-working">Is the kube-proxy working?</a></li>
+
+
+
+
+<li><a href="#seek-help">Seek help</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#what-s-next">What's next</a></li>
+
+
+
+</ul>
+
+
+<h2 id="conventions">Conventions</h2>
+
+<p>Throughout this doc you will see various commands that you can run.  Some
+commands need to be run within a <code>Pod</code>, others on a Kubernetes <code>Node</code>, and others
+can run anywhere you have <code>kubectl</code> and credentials for the cluster.  To make it
+clear what is expected, this document will use the following conventions.</p>
+
+<p>If the command &ldquo;COMMAND&rdquo; is expected to run in a <code>Pod</code> and produce &ldquo;OUTPUT&rdquo;:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">u@pod$ COMMAND
+OUTPUT</code></pre></div>
+<p>If the command &ldquo;COMMAND&rdquo; is expected to run on a <code>Node</code> and produce &ldquo;OUTPUT&rdquo;:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">u@node$ COMMAND
+OUTPUT</code></pre></div>
+<p>If the command is &ldquo;kubectl ARGS&rdquo;:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl ARGS
+OUTPUT</code></pre></div>
+<h2 id="running-commands-in-a-pod">Running commands in a Pod</h2>
+
+<p>For many steps here you will want to see what a <code>Pod</code> running in the cluster
+sees.  The simplest way to do this is to run an interactive busybox <code>Pod</code>:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-none" data-lang="none">$ kubectl run -it --rm --restart=Never busybox --image=busybox sh
+If you don&#39;t see a command prompt, try pressing enter.
+/ #</code></pre></div>
+<p>If you already have a running <code>Pod</code> that you prefer to use, you can run a
+command in it using:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl <span style="color:#a2f">exec</span> &lt;POD-NAME&gt; -c &lt;CONTAINER-NAME&gt; -- &lt;COMMAND&gt;</code></pre></div>
+<h2 id="setup">Setup</h2>
+
+<p>For the purposes of this walk-through, let&rsquo;s run some <code>Pods</code>.  Since you&rsquo;re
+probably debugging your own <code>Service</code> you can substitute your own details, or you
+can follow along and get a second data point.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl run hostnames --image<span style="color:#666">=</span>k8s.gcr.io/serve_hostname <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>                        --labels<span style="color:#666">=</span><span style="color:#b8860b">app</span><span style="color:#666">=</span>hostnames <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>                        --port<span style="color:#666">=</span><span style="color:#666">9376</span> <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>                        --replicas<span style="color:#666">=</span><span style="color:#666">3</span>
+deployment <span style="color:#b44">&#34;hostnames&#34;</span> created</code></pre></div>
+<p><code>kubectl</code> commands will print the type and name of the resource created or mutated, which can then be used in subsequent commands.
+Note that this is the same as if you had started the <code>Deployment</code> with
+the following YAML:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>apps/v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Deployment<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>hostnames<span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>selector:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>matchLabels:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>app:<span style="color:#bbb"> </span>hostnames<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>replicas:<span style="color:#bbb"> </span><span style="color:#666">3</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>template:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>labels:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>app:<span style="color:#bbb"> </span>hostnames<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>containers:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>hostnames<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>image:<span style="color:#bbb"> </span>k8s.gcr.io/serve_hostname<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>ports:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span>containerPort:<span style="color:#bbb"> </span><span style="color:#666">9376</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span>protocol:<span style="color:#bbb"> </span>TCP</code></pre></div>
+<p>Confirm your <code>Pods</code> are running:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl get pods -l <span style="color:#b8860b">app</span><span style="color:#666">=</span>hostnames
+NAME                        READY     STATUS    RESTARTS   AGE
+hostnames-632524106-bbpiw   <span style="color:#666">1</span>/1       Running   <span style="color:#666">0</span>          2m
+hostnames-632524106-ly40y   <span style="color:#666">1</span>/1       Running   <span style="color:#666">0</span>          2m
+hostnames-632524106-tlaok   <span style="color:#666">1</span>/1       Running   <span style="color:#666">0</span>          2m</code></pre></div>
+<h2 id="does-the-service-exist">Does the Service exist?</h2>
+
+<p>The astute reader will have noticed that we did not actually create a <code>Service</code>
+yet - that is intentional.  This is a step that sometimes gets forgotten, and
+is the first thing to check.</p>
+
+<p>So what would happen if I tried to access a non-existent <code>Service</code>?  Assuming you
+have another <code>Pod</code> that consumes this <code>Service</code> by name you would get something
+like:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">u@pod$ wget -qO- hostnames
+wget: bad address <span style="color:#b44">&#39;hostname&#39;</span></code></pre></div>
+<p>So the first thing to check is whether that <code>Service</code> actually exists:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl get svc hostnames
+Error from server <span style="color:#666">(</span>NotFound<span style="color:#666">)</span>: services <span style="color:#b44">&#34;hostnames&#34;</span> not found</code></pre></div>
+<p>So we have a culprit, let&rsquo;s create the <code>Service</code>.  As before, this is for the
+walk-through - you can use your own <code>Service</code>&rsquo;s details here.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl expose deployment hostnames --port<span style="color:#666">=</span><span style="color:#666">80</span> --target-port<span style="color:#666">=</span><span style="color:#666">9376</span>
+service <span style="color:#b44">&#34;hostnames&#34;</span> exposed</code></pre></div>
+<p>And read it back, just to be sure:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl get svc hostnames
+NAME        CLUSTER-IP   EXTERNAL-IP   PORT<span style="color:#666">(</span>S<span style="color:#666">)</span>   AGE
+hostnames   <span style="color:#666">10</span>.0.1.175   &lt;none&gt;        <span style="color:#666">80</span>/TCP    5s</code></pre></div>
+<p>As before, this is the same as if you had started the <code>Service</code> with YAML:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Service<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>hostnames<span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>selector:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>app:<span style="color:#bbb"> </span>hostnames<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>ports:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>default<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>protocol:<span style="color:#bbb"> </span>TCP<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>port:<span style="color:#bbb"> </span><span style="color:#666">80</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>targetPort:<span style="color:#bbb"> </span><span style="color:#666">9376</span></code></pre></div>
+<p>Now you can confirm that the <code>Service</code> exists.</p>
+
+<h2 id="does-the-service-work-by-dns">Does the Service work by DNS?</h2>
+
+<p>From a <code>Pod</code> in the same <code>Namespace</code>:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">u@pod$ nslookup hostnames
+Address <span style="color:#666">1</span>: <span style="color:#666">10</span>.0.0.10 kube-dns.kube-system.svc.cluster.local
+
+Name:      hostnames
+Address <span style="color:#666">1</span>: <span style="color:#666">10</span>.0.1.175 hostnames.default.svc.cluster.local</code></pre></div>
+<p>If this fails, perhaps your <code>Pod</code> and <code>Service</code> are in different
+<code>Namespaces</code>, try a namespace-qualified name:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">u@pod$ nslookup hostnames.default
+Address <span style="color:#666">1</span>: <span style="color:#666">10</span>.0.0.10 kube-dns.kube-system.svc.cluster.local
+
+Name:      hostnames.default
+Address <span style="color:#666">1</span>: <span style="color:#666">10</span>.0.1.175 hostnames.default.svc.cluster.local</code></pre></div>
+<p>If this works, you&rsquo;ll need to adjust your app to use a cross-namespace name, or
+run your app and <code>Service</code> in the same <code>Namespace</code>.  If this still fails, try a
+fully-qualified name:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">u@pod$ nslookup hostnames.default.svc.cluster.local
+Address <span style="color:#666">1</span>: <span style="color:#666">10</span>.0.0.10 kube-dns.kube-system.svc.cluster.local
+
+Name:      hostnames.default.svc.cluster.local
+Address <span style="color:#666">1</span>: <span style="color:#666">10</span>.0.1.175 hostnames.default.svc.cluster.local</code></pre></div>
+<p>Note the suffix here: &ldquo;default.svc.cluster.local&rdquo;.  The &ldquo;default&rdquo; is the
+<code>Namespace</code> we&rsquo;re operating in.  The &ldquo;svc&rdquo; denotes that this is a <code>Service</code>.
+The &ldquo;cluster.local&rdquo; is your cluster domain, which COULD be different in your
+own cluster.</p>
+
+<p>You can also try this from a <code>Node</code> in the cluster (note: 10.0.0.10 is my DNS
+<code>Service</code>, yours might be different):</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">u@node$ nslookup hostnames.default.svc.cluster.local <span style="color:#666">10</span>.0.0.10
+Server:         <span style="color:#666">10</span>.0.0.10
+Address:        <span style="color:#666">10</span>.0.0.10#53
+
+Name:   hostnames.default.svc.cluster.local
+Address: <span style="color:#666">10</span>.0.1.175</code></pre></div>
+<p>If you are able to do a fully-qualified name lookup but not a relative one, you
+need to check that your <code>/etc/resolv.conf</code> file is correct.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">u@pod$ cat /etc/resolv.conf
+nameserver <span style="color:#666">10</span>.0.0.10
+search default.svc.cluster.local svc.cluster.local cluster.local example.com
+options ndots:5</code></pre></div>
+<p>The <code>nameserver</code> line must indicate your cluster&rsquo;s DNS <code>Service</code>.  This is
+passed into <code>kubelet</code> with the <code>--cluster-dns</code> flag.</p>
+
+<p>The <code>search</code> line must include an appropriate suffix for you to find the
+<code>Service</code> name.  In this case it is looking for <code>Services</code> in the local
+<code>Namespace</code> (<code>default.svc.cluster.local</code>), <code>Services</code> in all <code>Namespaces</code>
+(<code>svc.cluster.local</code>), and the cluster (<code>cluster.local</code>).  Depending on your own
+install you might have additional records after that (up to 6 total).  The
+cluster suffix is passed into <code>kubelet</code> with the <code>--cluster-domain</code> flag.  We
+assume that is &ldquo;cluster.local&rdquo; in this document, but yours might be different,
+in which case you should change that in all of the commands above.</p>
+
+<p>The <code>options</code> line must set <code>ndots</code> high enough that your DNS client library
+considers search paths at all.  Kubernetes sets this to 5 by default, which is
+high enough to cover all of the DNS names it generates.</p>
+
+<h3 id="does-any-service-exist-in-dns">Does any Service exist in DNS?</h3>
+
+<p>If the above still fails - DNS lookups are not working for your <code>Service</code> - we
+can take a step back and see what else is not working.  The Kubernetes master
+<code>Service</code> should always work:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">u@pod$ nslookup kubernetes.default
+Server:    <span style="color:#666">10</span>.0.0.10
+Address <span style="color:#666">1</span>: <span style="color:#666">10</span>.0.0.10 kube-dns.kube-system.svc.cluster.local
+
+Name:      kubernetes.default
+Address <span style="color:#666">1</span>: <span style="color:#666">10</span>.0.0.1 kubernetes.default.svc.cluster.local</code></pre></div>
+<p>If this fails, you might need to go to the kube-proxy section of this doc, or
+even go back to the top of this document and start over, but instead of
+debugging your own <code>Service</code>, debug DNS.</p>
+
+<h2 id="does-the-service-work-by-ip">Does the Service work by IP?</h2>
+
+<p>Assuming we can confirm that DNS works, the next thing to test is whether your
+<code>Service</code> works at all.  From a node in your cluster, access the <code>Service</code>&rsquo;s
+IP (from <code>kubectl get</code> above).</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">u@node$ curl <span style="color:#666">10</span>.0.1.175:80
+hostnames-0uton
+
+u@node$ curl <span style="color:#666">10</span>.0.1.175:80
+hostnames-yp2kp
+
+u@node$ curl <span style="color:#666">10</span>.0.1.175:80
+hostnames-bvc05</code></pre></div>
+<p>If your <code>Service</code> is working, you should get correct responses.  If not, there
+are a number of things that could be going wrong.  Read on.</p>
+
+<h2 id="is-the-service-correct">Is the Service correct?</h2>
+
+<p>It might sound silly, but you should really double and triple check that your
+<code>Service</code> is correct and matches your <code>Pod</code>&rsquo;s port.  Read back your <code>Service</code>
+and verify it:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl get service hostnames -o json</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+    <span style="color:#008000;font-weight:bold">&#34;kind&#34;</span>: <span style="color:#b44">&#34;Service&#34;</span>,
+    <span style="color:#008000;font-weight:bold">&#34;apiVersion&#34;</span>: <span style="color:#b44">&#34;v1&#34;</span>,
+    <span style="color:#008000;font-weight:bold">&#34;metadata&#34;</span>: {
+        <span style="color:#008000;font-weight:bold">&#34;name&#34;</span>: <span style="color:#b44">&#34;hostnames&#34;</span>,
+        <span style="color:#008000;font-weight:bold">&#34;namespace&#34;</span>: <span style="color:#b44">&#34;default&#34;</span>,
+        <span style="color:#008000;font-weight:bold">&#34;selfLink&#34;</span>: <span style="color:#b44">&#34;/api/v1/namespaces/default/services/hostnames&#34;</span>,
+        <span style="color:#008000;font-weight:bold">&#34;uid&#34;</span>: <span style="color:#b44">&#34;428c8b6c-24bc-11e5-936d-42010af0a9bc&#34;</span>,
+        <span style="color:#008000;font-weight:bold">&#34;resourceVersion&#34;</span>: <span style="color:#b44">&#34;347189&#34;</span>,
+        <span style="color:#008000;font-weight:bold">&#34;creationTimestamp&#34;</span>: <span style="color:#b44">&#34;2015-07-07T15:24:29Z&#34;</span>,
+        <span style="color:#008000;font-weight:bold">&#34;labels&#34;</span>: {
+            <span style="color:#008000;font-weight:bold">&#34;app&#34;</span>: <span style="color:#b44">&#34;hostnames&#34;</span>
+        }
+    },
+    <span style="color:#008000;font-weight:bold">&#34;spec&#34;</span>: {
+        <span style="color:#008000;font-weight:bold">&#34;ports&#34;</span>: [
+            {
+                <span style="color:#008000;font-weight:bold">&#34;name&#34;</span>: <span style="color:#b44">&#34;default&#34;</span>,
+                <span style="color:#008000;font-weight:bold">&#34;protocol&#34;</span>: <span style="color:#b44">&#34;TCP&#34;</span>,
+                <span style="color:#008000;font-weight:bold">&#34;port&#34;</span>: <span style="color:#666">80</span>,
+                <span style="color:#008000;font-weight:bold">&#34;targetPort&#34;</span>: <span style="color:#666">9376</span>,
+                <span style="color:#008000;font-weight:bold">&#34;nodePort&#34;</span>: <span style="color:#666">0</span>
+            }
+        ],
+        <span style="color:#008000;font-weight:bold">&#34;selector&#34;</span>: {
+            <span style="color:#008000;font-weight:bold">&#34;app&#34;</span>: <span style="color:#b44">&#34;hostnames&#34;</span>
+        },
+        <span style="color:#008000;font-weight:bold">&#34;clusterIP&#34;</span>: <span style="color:#b44">&#34;10.0.1.175&#34;</span>,
+        <span style="color:#008000;font-weight:bold">&#34;type&#34;</span>: <span style="color:#b44">&#34;ClusterIP&#34;</span>,
+        <span style="color:#008000;font-weight:bold">&#34;sessionAffinity&#34;</span>: <span style="color:#b44">&#34;None&#34;</span>
+    },
+    <span style="color:#008000;font-weight:bold">&#34;status&#34;</span>: {
+        <span style="color:#008000;font-weight:bold">&#34;loadBalancer&#34;</span>: {}
+    }
+}</code></pre></div>
+<p>Is the port you are trying to access in <code>spec.ports[]</code>?  Is the <code>targetPort</code>
+correct for your <code>Pods</code> (many <code>Pods</code> choose to use a different port than the
+<code>Service</code>)?  If you meant it to be a numeric port, is it a number (9376) or a
+string &ldquo;9376&rdquo;?  If you meant it to be a named port, do your <code>Pods</code> expose a port
+with the same name?  Is the port&rsquo;s <code>protocol</code> the same as the <code>Pod</code>&rsquo;s?</p>
+
+<h2 id="does-the-service-have-any-endpoints">Does the Service have any Endpoints?</h2>
+
+<p>If you got this far, we assume that you have confirmed that your <code>Service</code>
+exists and is resolved by DNS.  Now let&rsquo;s check that the <code>Pods</code> you ran are
+actually being selected by the <code>Service</code>.</p>
+
+<p>Earlier we saw that the <code>Pods</code> were running.  We can re-check that:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl get pods -l <span style="color:#b8860b">app</span><span style="color:#666">=</span>hostnames
+NAME              READY     STATUS    RESTARTS   AGE
+hostnames-0uton   <span style="color:#666">1</span>/1       Running   <span style="color:#666">0</span>          1h
+hostnames-bvc05   <span style="color:#666">1</span>/1       Running   <span style="color:#666">0</span>          1h
+hostnames-yp2kp   <span style="color:#666">1</span>/1       Running   <span style="color:#666">0</span>          1h</code></pre></div>
+<p>The &ldquo;AGE&rdquo; column says that these <code>Pods</code> are about an hour old, which implies that
+they are running fine and not crashing.</p>
+
+<p>The <code>-l app=hostnames</code> argument is a label selector - just like our <code>Service</code>
+has.  Inside the Kubernetes system is a control loop which evaluates the
+selector of every <code>Service</code> and saves the results into an <code>Endpoints</code> object.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl get endpoints hostnames
+NAME        ENDPOINTS
+hostnames   <span style="color:#666">10</span>.244.0.5:9376,10.244.0.6:9376,10.244.0.7:9376</code></pre></div>
+<p>This confirms that the endpoints controller has found the correct <code>Pods</code> for
+your <code>Service</code>.  If the <code>hostnames</code> row is blank, you should check that the
+<code>spec.selector</code> field of your <code>Service</code> actually selects for <code>metadata.labels</code>
+values on your <code>Pods</code>.  A common mistake is to have a typo or other error, such
+as the <code>Service</code> selecting for <code>run=hostnames</code>, but the <code>Deployment</code> specifying
+<code>app=hostnames</code>.</p>
+
+<h2 id="are-the-pods-working">Are the Pods working?</h2>
+
+<p>At this point, we know that your <code>Service</code> exists and has selected your <code>Pods</code>.
+Let&rsquo;s check that the <code>Pods</code> are actually working - we can bypass the <code>Service</code>
+mechanism and go straight to the <code>Pods</code>.  Note that these commands use the <code>Pod</code>
+port (9376), rather than the <code>Service</code> port (80).</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">u@pod$ wget -qO- <span style="color:#666">10</span>.244.0.5:9376
+hostnames-0uton
+
+pod $ wget -qO- <span style="color:#666">10</span>.244.0.6:9376
+hostnames-bvc05
+
+u@pod$ wget -qO- <span style="color:#666">10</span>.244.0.7:9376
+hostnames-yp2kp</code></pre></div>
+<p>We expect each <code>Pod</code> in the <code>Endpoints</code> list to return its own hostname.  If
+this is not what happens (or whatever the correct behavior is for your own
+<code>Pods</code>), you should investigate what&rsquo;s happening there.  You might find
+<code>kubectl logs</code> to be useful or <code>kubectl exec</code> directly to your <code>Pods</code> and check
+service from there.</p>
+
+<p>Another thing to check is that your <code>Pods</code> are not crashing or being restarted.
+Frequent restarts could lead to intermittent connectivity issues.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl get pods -l <span style="color:#b8860b">app</span><span style="color:#666">=</span>hostnames
+NAME                        READY     STATUS    RESTARTS   AGE
+hostnames-632524106-bbpiw   <span style="color:#666">1</span>/1       Running   <span style="color:#666">0</span>          2m
+hostnames-632524106-ly40y   <span style="color:#666">1</span>/1       Running   <span style="color:#666">0</span>          2m
+hostnames-632524106-tlaok   <span style="color:#666">1</span>/1       Running   <span style="color:#666">0</span>          2m</code></pre></div>
+<p>If the restart count is high, read more about how to <a href="/docs/tasks/debug-application-cluster/debug-pod-replication-controller/#debugging-pods">debug
+pods</a>.</p>
+
+<h2 id="is-the-kube-proxy-working">Is the kube-proxy working?</h2>
+
+<p>If you get here, your <code>Service</code> is running, has <code>Endpoints</code>, and your <code>Pods</code>
+are actually serving.  At this point, the whole <code>Service</code> proxy mechanism is
+suspect.  Let&rsquo;s confirm it, piece by piece.</p>
+
+<h3 id="is-kube-proxy-running">Is kube-proxy running?</h3>
+
+<p>Confirm that <code>kube-proxy</code> is running on your <code>Nodes</code>.  You should get something
+like the below:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">u@node$ ps auxw | grep kube-proxy
+root  <span style="color:#666">4194</span>  <span style="color:#666">0</span>.4  <span style="color:#666">0</span>.1 <span style="color:#666">101864</span> <span style="color:#666">17696</span> ?    Sl Jul04  <span style="color:#666">25</span>:43 /usr/local/bin/kube-proxy --master<span style="color:#666">=</span>https://kubernetes-master --kubeconfig<span style="color:#666">=</span>/var/lib/kube-proxy/kubeconfig --v<span style="color:#666">=</span><span style="color:#666">2</span></code></pre></div>
+<p>Next, confirm that it is not failing something obvious, like contacting the
+master.  To do this, you&rsquo;ll have to look at the logs.  Accessing the logs
+depends on your <code>Node</code> OS.  On some OSes it is a file, such as
+/var/log/kube-proxy.log, while other OSes use <code>journalctl</code> to access logs.  You
+should see something like:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-none" data-lang="none">I1027 22:14:53.995134    5063 server.go:200] Running in resource-only container &#34;/kube-proxy&#34;
+I1027 22:14:53.998163    5063 server.go:247] Using iptables Proxier.
+I1027 22:14:53.999055    5063 server.go:255] Tearing down userspace rules. Errors here are acceptable.
+I1027 22:14:54.038140    5063 proxier.go:352] Setting endpoints for &#34;kube-system/kube-dns:dns-tcp&#34; to [10.244.1.3:53]
+I1027 22:14:54.038164    5063 proxier.go:352] Setting endpoints for &#34;kube-system/kube-dns:dns&#34; to [10.244.1.3:53]
+I1027 22:14:54.038209    5063 proxier.go:352] Setting endpoints for &#34;default/kubernetes:https&#34; to [10.240.0.2:443]
+I1027 22:14:54.038238    5063 proxier.go:429] Not syncing iptables until Services and Endpoints have been received from master
+I1027 22:14:54.040048    5063 proxier.go:294] Adding new service &#34;default/kubernetes:https&#34; at 10.0.0.1:443/TCP
+I1027 22:14:54.040154    5063 proxier.go:294] Adding new service &#34;kube-system/kube-dns:dns&#34; at 10.0.0.10:53/UDP
+I1027 22:14:54.040223    5063 proxier.go:294] Adding new service &#34;kube-system/kube-dns:dns-tcp&#34; at 10.0.0.10:53/TCP</code></pre></div>
+<p>If you see error messages about not being able to contact the master, you
+should double-check your <code>Node</code> configuration and installation steps.</p>
+
+<p>One of the possible reasons that <code>kube-proxy</code> cannot run correctly is that the
+required <code>conntrack</code> binary cannot be found. This may happen on some Linux
+systems, depending on how you are installing the cluster, for example, you are
+installing Kubernetes from scratch. If this is the case, you need to manually
+install the <code>conntrack</code> package (e.g. <code>sudo apt install conntrack</code> on Ubuntu)
+and then retry.</p>
+
+<h3 id="is-kube-proxy-writing-iptables-rules">Is kube-proxy writing iptables rules?</h3>
+
+<p>One of the main responsibilities of <code>kube-proxy</code> is to write the <code>iptables</code>
+rules which implement <code>Services</code>.  Let&rsquo;s check that those rules are getting
+written.</p>
+
+<p>The kube-proxy can run in &ldquo;userspace&rdquo; mode, &ldquo;iptables&rdquo; mode or &ldquo;ipvs&rdquo; mode.
+Hopefully you are using the &ldquo;iptables&rdquo; mode or &ldquo;ipvs&rdquo; mode.  You
+should see one of the following cases.</p>
+
+<h4 id="userspace">Userspace</h4>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">u@node$ iptables-save | grep hostnames
+-A KUBE-PORTALS-CONTAINER -d <span style="color:#666">10</span>.0.1.175/32 -p tcp -m comment --comment <span style="color:#b44">&#34;default/hostnames:default&#34;</span> -m tcp --dport <span style="color:#666">80</span> -j REDIRECT --to-ports <span style="color:#666">48577</span>
+-A KUBE-PORTALS-HOST -d <span style="color:#666">10</span>.0.1.175/32 -p tcp -m comment --comment <span style="color:#b44">&#34;default/hostnames:default&#34;</span> -m tcp --dport <span style="color:#666">80</span> -j DNAT --to-destination <span style="color:#666">10</span>.240.115.247:48577</code></pre></div>
+<p>There should be 2 rules for each port on your <code>Service</code> (just one in this
+example) - a &ldquo;KUBE-PORTALS-CONTAINER&rdquo; and a &ldquo;KUBE-PORTALS-HOST&rdquo;.  If you do
+not see these, try restarting <code>kube-proxy</code> with the <code>-V</code> flag set to 4, and
+then look at the logs again.</p>
+
+<p>Almost nobody should be using the &ldquo;userspace&rdquo; mode any more, so we won&rsquo;t spend
+more time on it here.</p>
+
+<h4 id="iptables">Iptables</h4>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">u@node$ iptables-save | grep hostnames
+-A KUBE-SEP-57KPRZ3JQVENLNBR -s <span style="color:#666">10</span>.244.3.6/32 -m comment --comment <span style="color:#b44">&#34;default/hostnames:&#34;</span> -j MARK --set-xmark 0x00004000/0x00004000
+-A KUBE-SEP-57KPRZ3JQVENLNBR -p tcp -m comment --comment <span style="color:#b44">&#34;default/hostnames:&#34;</span> -m tcp -j DNAT --to-destination <span style="color:#666">10</span>.244.3.6:9376
+-A KUBE-SEP-WNBA2IHDGP2BOBGZ -s <span style="color:#666">10</span>.244.1.7/32 -m comment --comment <span style="color:#b44">&#34;default/hostnames:&#34;</span> -j MARK --set-xmark 0x00004000/0x00004000
+-A KUBE-SEP-WNBA2IHDGP2BOBGZ -p tcp -m comment --comment <span style="color:#b44">&#34;default/hostnames:&#34;</span> -m tcp -j DNAT --to-destination <span style="color:#666">10</span>.244.1.7:9376
+-A KUBE-SEP-X3P2623AGDH6CDF3 -s <span style="color:#666">10</span>.244.2.3/32 -m comment --comment <span style="color:#b44">&#34;default/hostnames:&#34;</span> -j MARK --set-xmark 0x00004000/0x00004000
+-A KUBE-SEP-X3P2623AGDH6CDF3 -p tcp -m comment --comment <span style="color:#b44">&#34;default/hostnames:&#34;</span> -m tcp -j DNAT --to-destination <span style="color:#666">10</span>.244.2.3:9376
+-A KUBE-SERVICES -d <span style="color:#666">10</span>.0.1.175/32 -p tcp -m comment --comment <span style="color:#b44">&#34;default/hostnames: cluster IP&#34;</span> -m tcp --dport <span style="color:#666">80</span> -j KUBE-SVC-NWV5X2332I4OT4T3
+-A KUBE-SVC-NWV5X2332I4OT4T3 -m comment --comment <span style="color:#b44">&#34;default/hostnames:&#34;</span> -m statistic --mode random --probability <span style="color:#666">0</span>.33332999982 -j KUBE-SEP-WNBA2IHDGP2BOBGZ
+-A KUBE-SVC-NWV5X2332I4OT4T3 -m comment --comment <span style="color:#b44">&#34;default/hostnames:&#34;</span> -m statistic --mode random --probability <span style="color:#666">0</span>.50000000000 -j KUBE-SEP-X3P2623AGDH6CDF3
+-A KUBE-SVC-NWV5X2332I4OT4T3 -m comment --comment <span style="color:#b44">&#34;default/hostnames:&#34;</span> -j KUBE-SEP-57KPRZ3JQVENLNBR</code></pre></div>
+<p>There should be 1 rule in <code>KUBE-SERVICES</code>, 1 or 2 rules per endpoint in
+<code>KUBE-SVC-(hash)</code> (depending on <code>SessionAffinity</code>), one <code>KUBE-SEP-(hash)</code> chain
+per endpoint, and a few rules in each <code>KUBE-SEP-(hash)</code> chain.  The exact rules
+will vary based on your exact config (including node-ports and load-balancers).</p>
+
+<h4 id="ipvs">IPVS</h4>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">u@node$ ipvsadm -ln
+Prot LocalAddress:Port Scheduler Flags
+  -&gt; RemoteAddress:Port           Forward Weight ActiveConn InActConn
+...
+TCP  <span style="color:#666">10</span>.0.1.175:80 rr
+  -&gt; <span style="color:#666">10</span>.244.0.5:9376               Masq    <span style="color:#666">1</span>      <span style="color:#666">0</span>          <span style="color:#666">0</span>
+  -&gt; <span style="color:#666">10</span>.244.0.6:9376               Masq    <span style="color:#666">1</span>      <span style="color:#666">0</span>          <span style="color:#666">0</span>
+  -&gt; <span style="color:#666">10</span>.244.0.7:9376               Masq    <span style="color:#666">1</span>      <span style="color:#666">0</span>          <span style="color:#666">0</span>
+...</code></pre></div>
+<p>IPVS proxy will create a virtual server for each service address(e.g. Cluster IP, External IP, NodePort IP, Load Balancer IP etc.) and some corresponding real servers for endpoints of the service, if any. In this example, service hostnames(<code>10.0.1.175:80</code>) has 3 endpoints(<code>10.244.0.5:9376</code>, <code>10.244.0.6:9376</code>, <code>10.244.0.7:9376</code>) and you&rsquo;ll get results similar to above.</p>
+
+<h3 id="is-kube-proxy-proxying">Is kube-proxy proxying?</h3>
+
+<p>Assuming you do see the above rules, try again to access your <code>Service</code> by IP:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">u@node$ curl <span style="color:#666">10</span>.0.1.175:80
+hostnames-0uton</code></pre></div>
+<p>If this fails and you are using the userspace proxy, you can try accessing the
+proxy directly.  If you are using the iptables proxy, skip this section.</p>
+
+<p>Look back at the <code>iptables-save</code> output above, and extract the
+port number that <code>kube-proxy</code> is using for your <code>Service</code>.  In the above
+examples it is &ldquo;48577&rdquo;.  Now connect to that:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">u@node$ curl localhost:48577
+hostnames-yp2kp</code></pre></div>
+<p>If this still fails, look at the <code>kube-proxy</code> logs for specific lines like:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">Setting endpoints <span style="color:#a2f;font-weight:bold">for</span> default/hostnames:default to <span style="color:#666">[</span><span style="color:#666">10</span>.244.0.5:9376 <span style="color:#666">10</span>.244.0.6:9376 <span style="color:#666">10</span>.244.0.7:9376<span style="color:#666">]</span></code></pre></div>
+<p>If you don&rsquo;t see those, try restarting <code>kube-proxy</code> with the <code>-V</code> flag set to 4, and
+then look at the logs again.</p>
+
+<h3 id="a-pod-cannot-reach-itself-via-service-ip">A Pod cannot reach itself via Service IP</h3>
+
+<p>This can happen when the network is not properly configured for &ldquo;hairpin&rdquo;
+traffic, usually when <code>kube-proxy</code> is running in <code>iptables</code> mode and Pods
+are connected with bridge network. The <code>Kubelet</code> exposes a <code>hairpin-mode</code>
+<a href="/docs/admin/kubelet/">flag</a> that allows endpoints of a Service to loadbalance back to themselves
+if they try to access their own Service VIP. The <code>hairpin-mode</code> flag must either be
+set to <code>hairpin-veth</code> or <code>promiscuous-bridge</code>.</p>
+
+<p>The common steps to trouble shoot this are as follows:</p>
+
+<ul>
+<li>Confirm <code>hairpin-mode</code> is set to <code>hairpin-veth</code> or <code>promiscuous-bridge</code>.
+You should see something like the below. <code>hairpin-mode</code> is set to
+<code>promiscuous-bridge</code> in the following example.</li>
+</ul>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">u@node$ ps auxw|grep kubelet
+root      <span style="color:#666">3392</span>  <span style="color:#666">1</span>.1  <span style="color:#666">0</span>.8 <span style="color:#666">186804</span> <span style="color:#666">65208</span> ?        Sl   <span style="color:#666">00</span>:51  <span style="color:#666">11</span>:11 /usr/local/bin/kubelet --enable-debugging-handlers<span style="color:#666">=</span><span style="color:#a2f">true</span> --config<span style="color:#666">=</span>/etc/kubernetes/manifests --allow-privileged<span style="color:#666">=</span>True --v<span style="color:#666">=</span><span style="color:#666">4</span> --cluster-dns<span style="color:#666">=</span><span style="color:#666">10</span>.0.0.10 --cluster-domain<span style="color:#666">=</span>cluster.local --configure-cbr0<span style="color:#666">=</span><span style="color:#a2f">true</span> --cgroup-root<span style="color:#666">=</span>/ --system-cgroups<span style="color:#666">=</span>/system --hairpin-mode<span style="color:#666">=</span>promiscuous-bridge --runtime-cgroups<span style="color:#666">=</span>/docker-daemon --kubelet-cgroups<span style="color:#666">=</span>/kubelet --babysit-daemons<span style="color:#666">=</span><span style="color:#a2f">true</span> --max-pods<span style="color:#666">=</span><span style="color:#666">110</span> --serialize-image-pulls<span style="color:#666">=</span><span style="color:#a2f">false</span> --outofdisk-transition-frequency<span style="color:#666">=</span><span style="color:#666">0</span></code></pre></div>
+<ul>
+<li>Confirm the effective <code>hairpin-mode</code>. To do this, you&rsquo;ll have to look at
+kubelet log. Accessing the logs depends on your Node OS. On some OSes it
+is a file, such as /var/log/kubelet.log, while other OSes use <code>journalctl</code>
+to access logs. Please be noted that the effective hairpin mode may not
+match <code>--hairpin-mode</code> flag due to compatibility. Check if there is any log
+lines with key word <code>hairpin</code> in kubelet.log. There should be log lines
+indicating the effective hairpin mode, like something below.</li>
+</ul>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">I0629 <span style="color:#666">00</span>:51:43.648698    <span style="color:#666">3252</span> kubelet.go:380<span style="color:#666">]</span> Hairpin mode <span style="color:#a2f">set</span> to <span style="color:#b44">&#34;promiscuous-bridge&#34;</span></code></pre></div>
+<ul>
+<li>If the effective hairpin mode is <code>hairpin-veth</code>, ensure the <code>Kubelet</code> has
+the permission to operate in <code>/sys</code> on node. If everything works properly,
+you should see something like:</li>
+</ul>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#a2f;font-weight:bold">for</span> intf in /sys/devices/virtual/net/cbr0/brif/*; <span style="color:#a2f;font-weight:bold">do</span> cat <span style="color:#b8860b">$intf</span>/hairpin_mode; <span style="color:#a2f;font-weight:bold">done</span>
+<span style="color:#666">1</span>
+<span style="color:#666">1</span>
+<span style="color:#666">1</span>
+<span style="color:#666">1</span></code></pre></div>
+<ul>
+<li>If the effective hairpin mode is <code>promiscuous-bridge</code>, ensure <code>Kubelet</code>
+has the permission to manipulate linux bridge on node. If cbr0` bridge is
+used and configured properly, you should see:</li>
+</ul>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">u@node$ ifconfig cbr0 |grep PROMISC
+UP BROADCAST RUNNING PROMISC MULTICAST  MTU:1460  Metric:1</code></pre></div>
+<ul>
+<li>Seek help if none of above works out.</li>
+</ul>
+
+<h2 id="seek-help">Seek help</h2>
+
+<p>If you get this far, something very strange is happening.  Your <code>Service</code> is
+running, has <code>Endpoints</code>, and your <code>Pods</code> are actually serving.  You have DNS
+working, <code>iptables</code> rules installed, and <code>kube-proxy</code> does not seem to be
+misbehaving.  And yet your <code>Service</code> is not working.  You should probably let
+us know, so we can help investigate!</p>
+
+<p>Contact us on
+<a href="/docs/troubleshooting/#slack">Slack</a> or
+<a href="https://groups.google.com/forum/#!forum/kubernetes-users" target="_blank">email</a> or
+<a href="https://github.com/kubernetes/kubernetes" target="_blank">GitHub</a>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="what-s-next">What&#39;s next</h2>
+<p>Visit <a href="/docs/troubleshooting/">troubleshooting document</a> for more information.</p>
+
+
+
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/tasks/debug-application-cluster/debug-service.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/tasks\/debug-application-cluster\/debug-service\/",
+					"title" : "Debug Services",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/tasks\/debug-application-cluster\/debug-service\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/tasks/debug-application-cluster/debug-service.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

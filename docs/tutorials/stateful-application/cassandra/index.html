@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Example: Deploying Cassandra with Stateful Sets - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="Example: Deploying Cassandra with Stateful Sets" />
+<meta property="og:description" content="Example: Deploying Cassandra with Stateful Sets" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/tutorials/stateful-application/cassandra/" />
+<meta property="og:title" content="Example: Deploying Cassandra with Stateful Sets - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h1>Tutorials</h1>
+<h5></h5>
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/" class="YAH">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Tutorials" href="/docs/tutorials/"></a>
+
+	
+	
+		
+		
+<a class="item" data-title="Hello Minikube" href="/docs/tutorials/hello-minikube/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Kubernetes Basics">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Overview" href="/docs/tutorials/kubernetes-basics/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Create a Cluster">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Using Minikube to Create a Cluster" href="/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Interactive Tutorial - Creating a Cluster" href="/docs/tutorials/kubernetes-basics/create-cluster/cluster-interactive/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Deploy an App">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Using kubectl to Create a Deployment" href="/docs/tutorials/kubernetes-basics/deploy-app/deploy-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Interactive Tutorial - Deploying an App" href="/docs/tutorials/kubernetes-basics/deploy-app/deploy-interactive/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Explore Your App">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Viewing Pods and Nodes" href="/docs/tutorials/kubernetes-basics/explore/explore-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Interactive Tutorial - Exploring Your App" href="/docs/tutorials/kubernetes-basics/explore/explore-interactive/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Expose Your App Publicly">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Using a Service to Expose Your App" href="/docs/tutorials/kubernetes-basics/expose/expose-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Interactive Tutorial - Exposing Your App" href="/docs/tutorials/kubernetes-basics/expose/expose-interactive/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Scale Your App">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Running Multiple Instances of Your App" href="/docs/tutorials/kubernetes-basics/scale/scale-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Interactive Tutorial - Scaling Your App" href="/docs/tutorials/kubernetes-basics/scale/scale-interactive/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Update Your App">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Performing a Rolling Update" href="/docs/tutorials/kubernetes-basics/update/update-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Interactive Tutorial - Updating Your App" href="/docs/tutorials/kubernetes-basics/update/update-interactive/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Online Training Courses">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Overview of Kubernetes Online Training" href="/docs/tutorials/online-training/overview/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Configuration">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Configuring Redis using a ConfigMap" href="/docs/tutorials/configuration/configure-redis-using-configmap/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Stateless Applications">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Exposing an External IP Address to Access an Application in a Cluster" href="/docs/tutorials/stateless-application/expose-external-ip-address/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Example: Deploying PHP Guestbook application with Redis" href="/docs/tutorials/stateless-application/guestbook/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Stateful Applications">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="StatefulSet Basics" href="/docs/tutorials/stateful-application/basic-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Example: Deploying WordPress and MySQL with Persistent Volumes" href="/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Example: Deploying Cassandra with Stateful Sets" href="/docs/tutorials/stateful-application/cassandra/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Running ZooKeeper, A Distributed System Coordinator" href="/docs/tutorials/stateful-application/zookeeper/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Clusters">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="AppArmor" href="/docs/tutorials/clusters/apparmor/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Services">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Using Source IP" href="/docs/tutorials/services/source-ip/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes 101" href="/docs/tutorials/k8s101/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes 201" href="/docs/tutorials/k8s201/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/tutorials/stateful-application/cassandra.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>Example: Deploying Cassandra with Stateful Sets</h1>
+
+
+
+<p>This tutorial shows you how to develop a native cloud <a href="http://cassandra.apache.org/" target="_blank">Cassandra</a> deployment on Kubernetes. In this instance, a custom Cassandra <code>SeedProvider</code> enables Cassandra to discover new Cassandra nodes as they join the cluster.</p>
+
+<p>Deploying stateful distributed applications, like Cassandra, within a clustered environment can be challenging. StatefulSets greatly simplify this process. Please read about <a href="/docs/concepts/workloads/controllers/statefulset/">StatefulSets</a>  for more information about the features used in this tutorial.</p>
+
+<p><strong>Cassandra Docker</strong></p>
+
+<p>The Pods use the <a href="https://github.com/kubernetes/examples/blob/master/cassandra/image/Dockerfile" target="_blank"><code>gcr.io/google-samples/cassandra:v13</code></a>
+image from Google&rsquo;s <a href="https://cloud.google.com/container-registry/docs/" target="_blank">container registry</a>.
+The docker image above is based on <a href="https://github.com/kubernetes/kubernetes/tree/master/build/debian-base" target="_blank">debian-base</a> and includes OpenJDK 8. This image includes a standard Cassandra installation from the Apache Debian repo.  By using environment variables you can change values that are inserted into <code>cassandra.yaml</code>.</p>
+
+<table>
+<thead>
+<tr>
+<th>ENV VAR</th>
+<th align="center">DEFAULT VALUE</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>CASSANDRA_CLUSTER_NAME</td>
+<td align="center">&lsquo;Test Cluster&rsquo;</td>
+</tr>
+
+<tr>
+<td>CASSANDRA_NUM_TOKENS</td>
+<td align="center">32</td>
+</tr>
+
+<tr>
+<td>CASSANDRA_RPC_ADDRESS</td>
+<td align="center">0.0.0.0</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+<li><a href="#objectives">Objectives</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#before-you-begin">Before you begin</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#creating-a-cassandra-headless-service">Creating a Cassandra Headless Service</a></li>
+
+
+
+
+<li><a href="#using-a-statefulset-to-create-a-cassandra-ring">Using a StatefulSet to Create a Cassandra Ring</a></li>
+
+
+
+
+<li><a href="#validating-the-cassandra-statefulset">Validating The Cassandra StatefulSet</a></li>
+
+
+
+
+<li><a href="#modifying-the-cassandra-statefulset">Modifying the Cassandra StatefulSet</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#cleaning-up">Cleaning up</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#what-s-next">What's next</a></li>
+
+
+
+</ul>
+
+
+
+<h2 id="objectives">Objectives</h2>
+<ul>
+<li>Create and Validate a Cassandra headless <a href="/docs/concepts/services-networking/service/">Services</a>.</li>
+<li>Use a <a href="/docs/concepts/workloads/controllers/statefulset/">StatefulSet</a> to create a Cassandra ring.</li>
+<li>Validate the <a href="/docs/concepts/workloads/controllers/statefulset/">StatefulSet</a>.</li>
+<li>Modify the <a href="/docs/concepts/workloads/controllers/statefulset/">StatefulSet</a>.</li>
+<li>Delete the <a href="/docs/concepts/workloads/controllers/statefulset/">StatefulSet</a> and its <a href="/docs/concepts/workloads/pods/pod/">Pods</a>.</li>
+</ul>
+
+
+
+
+
+<h2 id="before-you-begin">Before you begin</h2>
+<p>To complete this tutorial, you should already have a basic familiarity with <a href="/docs/concepts/workloads/pods/pod/">Pods</a>, <a href="/docs/concepts/services-networking/service/">Services</a>, and <a href="/docs/concepts/workloads/controllers/statefulset/">StatefulSets</a>. In addition, you should:</p>
+
+<ul>
+<li><p><a href="/docs/tasks/tools/install-kubectl/">Install and Configure</a> the <code>kubectl</code> command line</p></li>
+
+<li><p>Download <a href="/docs/tutorials/stateful-application/cassandra/cassandra-service.yaml">cassandra-service.yaml</a> and <a href="/docs/tutorials/stateful-application/cassandra/cassandra-statefulset.yaml">cassandra-statefulset.yaml</a></p></li>
+
+<li><p>Have a supported Kubernetes Cluster running</p></li>
+</ul>
+
+<blockquote class="note">
+  <div><strong>Note:</strong> Please read the <a href="/docs/setup/pick-right-solution/">getting started guides</a> if you do not already have a cluster.</div>
+</blockquote>
+
+<h3 id="additional-minikube-setup-instructions">Additional Minikube Setup Instructions</h3>
+
+<blockquote class="caution">
+  <div><strong>Caution:</strong> <a href="/docs/getting-started-guides/minikube/">Minikube</a> defaults to 1024MB of memory and 1 CPU which results in an insufficient resource errors during this tutorial.</div>
+</blockquote>
+
+<p>To avoid these errors, run minikube with:</p>
+
+<pre><code>minikube start --memory 5120 --cpus=4
+</code></pre>
+
+
+
+
+<h2 id="creating-a-cassandra-headless-service">Creating a Cassandra Headless Service</h2>
+
+<p>A Kubernetes <a href="/docs/concepts/services-networking/service/">Service</a> describes a set of <a href="/docs/concepts/workloads/pods/pod/">Pods</a> that perform the same task.</p>
+
+<p>The following <code>Service</code> is used for DNS lookups between Cassandra Pods and clients within the Kubernetes Cluster.</p>
+
+<ol>
+<li>Launch a terminal window in the directory you downloaded the manifest files.</li>
+
+<li><p>Create a <code>Service</code> to track all Cassandra StatefulSet Nodes from the <code>cassandra-service.yaml</code> file:</p>
+
+<p>kubectl create -f cassandra-service.yaml</p></li>
+</ol>
+
+<table class="includecode" id="cassandra-cassandra-service-yaml">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://github.com/kubernetes/website/blob/master/content/en/docs/tutorials/stateful-application/cassandra/cassandra-service.yaml" download="cassandra/cassandra-service.yaml">
+                    <code>cassandra/cassandra-service.yaml docs/tutorials/stateful-application/cassandra</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('cassandra-cassandra-service-yaml')" title="Copy cassandra/cassandra-service.yaml to clipboard">
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Service<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>labels:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>app:<span style="color:#bbb"> </span>cassandra<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>cassandra<span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>clusterIP:<span style="color:#bbb"> </span>None<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>ports:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>port:<span style="color:#bbb"> </span><span style="color:#666">9042</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>selector:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>app:<span style="color:#bbb"> </span>cassandra<span style="color:#bbb">
+</span><span style="color:#bbb"></span></code></pre></div>  </td>
+        </tr>
+    </tbody>
+</table>
+
+<h3 id="validating-optional">Validating (optional)</h3>
+
+<p>Get the Cassandra <code>Service</code>.</p>
+
+<pre><code>kubectl get svc cassandra
+</code></pre>
+
+<p>The response should be</p>
+
+<pre><code>NAME        CLUSTER-IP   EXTERNAL-IP   PORT(S)    AGE
+cassandra   None         &lt;none&gt;        9042/TCP   45s
+</code></pre>
+
+<p>If anything else returns, the service was not successfully created. Read <a href="/docs/tasks/debug-application-cluster/debug-service/">Debug Services</a> for common issues.</p>
+
+<h2 id="using-a-statefulset-to-create-a-cassandra-ring">Using a StatefulSet to Create a Cassandra Ring</h2>
+
+<p>The StatefulSet manifest, included below, creates a Cassandra ring that consists of three Pods.</p>
+
+<blockquote class="note">
+  <div><strong>Note:</strong> This example uses the default provisioner for Minikube. Please update the following StatefulSet for the cloud you are working with.</div>
+</blockquote>
+
+<ol>
+<li>Update the StatefulSet if necessary.</li>
+
+<li><p>Create the Cassandra StatefulSet from the <code>cassandra-statefulset.yaml</code> file:</p>
+
+<p>kubectl create -f cassandra-statefulset.yaml</p></li>
+</ol>
+
+<table class="includecode" id="cassandra-cassandra-statefulset-yaml">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://github.com/kubernetes/website/blob/master/content/en/docs/tutorials/stateful-application/cassandra/cassandra-statefulset.yaml" download="cassandra/cassandra-statefulset.yaml">
+                    <code>cassandra/cassandra-statefulset.yaml docs/tutorials/stateful-application/cassandra</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('cassandra-cassandra-statefulset-yaml')" title="Copy cassandra/cassandra-statefulset.yaml to clipboard">
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>apps/v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>StatefulSet<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>cassandra<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>labels:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>app:<span style="color:#bbb"> </span>cassandra<span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>serviceName:<span style="color:#bbb"> </span>cassandra<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>replicas:<span style="color:#bbb"> </span><span style="color:#666">3</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>selector:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>matchLabels:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>app:<span style="color:#bbb"> </span>cassandra<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>template:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>labels:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>app:<span style="color:#bbb"> </span>cassandra<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>terminationGracePeriodSeconds:<span style="color:#bbb"> </span><span style="color:#666">1800</span><span style="color:#bbb">
+</span><span style="color:#bbb">      </span>containers:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>cassandra<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>image:<span style="color:#bbb"> </span>gcr.io/google-samples/cassandra:v13<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>imagePullPolicy:<span style="color:#bbb"> </span>Always<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>ports:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span>containerPort:<span style="color:#bbb"> </span><span style="color:#666">7000</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span>name:<span style="color:#bbb"> </span>intra-node<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span>containerPort:<span style="color:#bbb"> </span><span style="color:#666">7001</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span>name:<span style="color:#bbb"> </span>tls-intra-node<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span>containerPort:<span style="color:#bbb"> </span><span style="color:#666">7199</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span>name:<span style="color:#bbb"> </span>jmx<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span>containerPort:<span style="color:#bbb"> </span><span style="color:#666">9042</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span>name:<span style="color:#bbb"> </span>cql<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>resources:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>limits:<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>cpu:<span style="color:#bbb"> </span><span style="color:#b44">&#34;500m&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">            </span>memory:<span style="color:#bbb"> </span>1Gi<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>requests:<span style="color:#bbb">
+</span><span style="color:#bbb">           </span>cpu:<span style="color:#bbb"> </span><span style="color:#b44">&#34;500m&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">           </span>memory:<span style="color:#bbb"> </span>1Gi<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>securityContext:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>capabilities:<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>add:<span style="color:#bbb">
+</span><span style="color:#bbb">              </span>-<span style="color:#bbb"> </span>IPC_LOCK<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>lifecycle:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>preStop:<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>exec:<span style="color:#bbb">
+</span><span style="color:#bbb">              </span>command:<span style="color:#bbb"> 
+</span><span style="color:#bbb">              </span>-<span style="color:#bbb"> </span>/bin/sh<span style="color:#bbb">
+</span><span style="color:#bbb">              </span>-<span style="color:#bbb"> </span>-c<span style="color:#bbb">
+</span><span style="color:#bbb">              </span>-<span style="color:#bbb"> </span>nodetool<span style="color:#bbb"> </span>drain<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>env:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>MAX_HEAP_SIZE<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>value:<span style="color:#bbb"> </span>512M<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>HEAP_NEWSIZE<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>value:<span style="color:#bbb"> </span>100M<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>CASSANDRA_SEEDS<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>value:<span style="color:#bbb"> </span><span style="color:#b44">&#34;cassandra-0.cassandra.default.svc.cluster.local&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>CASSANDRA_CLUSTER_NAME<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>value:<span style="color:#bbb"> </span><span style="color:#b44">&#34;K8Demo&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>CASSANDRA_DC<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>value:<span style="color:#bbb"> </span><span style="color:#b44">&#34;DC1-K8Demo&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>CASSANDRA_RACK<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>value:<span style="color:#bbb"> </span><span style="color:#b44">&#34;Rack1-K8Demo&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>POD_IP<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>valueFrom:<span style="color:#bbb">
+</span><span style="color:#bbb">              </span>fieldRef:<span style="color:#bbb">
+</span><span style="color:#bbb">                </span>fieldPath:<span style="color:#bbb"> </span>status.podIP<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>readinessProbe:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>exec:<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>command:<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>-<span style="color:#bbb"> </span>/bin/bash<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>-<span style="color:#bbb"> </span>-c<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>-<span style="color:#bbb"> </span>/ready-probe.sh<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>initialDelaySeconds:<span style="color:#bbb"> </span><span style="color:#666">15</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span>timeoutSeconds:<span style="color:#bbb"> </span><span style="color:#666">5</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#080;font-style:italic"># These volume mounts are persistent. They are like inline claims,</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#080;font-style:italic"># but not exactly because the names need to match exactly one of</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#080;font-style:italic"># the stateful pod volumes.</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span>volumeMounts:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>cassandra-data<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>mountPath:<span style="color:#bbb"> </span>/cassandra_data<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#080;font-style:italic"># These are converted to volume claims by the controller</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#080;font-style:italic"># and mounted at the paths mentioned above.</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#080;font-style:italic"># do not use these in production until ssd GCEPersistentDisk or other ssd pd</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>volumeClaimTemplates:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>name:<span style="color:#bbb"> </span>cassandra-data<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>accessModes:<span style="color:#bbb"> </span>[<span style="color:#bbb"> </span><span style="color:#b44">&#34;ReadWriteOnce&#34;</span><span style="color:#bbb"> </span>]<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>storageClassName:<span style="color:#bbb"> </span>fast<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>resources:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>requests:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>storage:<span style="color:#bbb"> </span>1Gi<span style="color:#bbb">
+</span><span style="color:#bbb"></span>---<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>StorageClass<span style="color:#bbb">
+</span><span style="color:#bbb"></span>apiVersion:<span style="color:#bbb"> </span>storage.k8s.io/v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>fast<span style="color:#bbb">
+</span><span style="color:#bbb"></span>provisioner:<span style="color:#bbb"> </span>k8s.io/minikube-hostpath<span style="color:#bbb">
+</span><span style="color:#bbb"></span>parameters:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>type:<span style="color:#bbb"> </span>pd-ssd<span style="color:#bbb">
+</span><span style="color:#bbb"></span></code></pre></div>  </td>
+        </tr>
+    </tbody>
+</table>
+
+<h2 id="validating-the-cassandra-statefulset">Validating The Cassandra StatefulSet</h2>
+
+<ol>
+<li><p>Get the Cassandra StatefulSet:</p>
+
+<p>kubectl get statefulset cassandra</p></li>
+</ol>
+
+<p>The response should be</p>
+
+<pre><code>   NAME        DESIRED   CURRENT   AGE
+   cassandra   3         0         13s
+</code></pre>
+
+<p>The StatefulSet resource deploys Pods sequentially.</p>
+
+<ol>
+<li><p>Get the Pods to see the ordered creation status:</p>
+
+<p>kubectl get pods -l=&ldquo;app=cassandra&rdquo;</p></li>
+</ol>
+
+<p>The response should be</p>
+
+<pre><code>   NAME          READY     STATUS              RESTARTS   AGE
+   cassandra-0   1/1       Running             0          1m
+   cassandra-1   0/1       ContainerCreating   0          8s
+</code></pre>
+
+<p><blockquote class="note">
+  <div><strong>Note:</strong> It can take up to ten minutes for all three Pods to deploy.</div>
+</blockquote></p>
+
+<pre><code>Once all Pods are deployed, the same command returns:
+
+   NAME          READY     STATUS    RESTARTS   AGE
+   cassandra-0   1/1       Running   0          10m
+   cassandra-1   1/1       Running   0          9m
+   cassandra-2   1/1       Running   0          8m
+</code></pre>
+
+<ol>
+<li><p>Run the Cassandra utility nodetool to display the status of the ring.</p>
+
+<p>kubectl exec cassandra-0 &ndash; nodetool status</p></li>
+</ol>
+
+<p>The response is:</p>
+
+<pre><code>   Datacenter: DC1-K8Demo
+   ======================
+   Status=Up/Down
+   |/ State=Normal/Leaving/Joining/Moving
+   --  Address     Load       Tokens       Owns (effective)  Host ID                               Rack
+   UN  172.17.0.5  83.57 KiB  32           74.0%             e2dd09e6-d9d3-477e-96c5-45094c08db0f  Rack1-K8Demo
+   UN  172.17.0.4  101.04 KiB  32           58.8%             f89d6835-3a42-4419-92b3-0e62cae1479c  Rack1-K8Demo
+   UN  172.17.0.6  84.74 KiB  32           67.1%             a6a1e8c2-3dc5-4417-b1a0-26507af2aaad  Rack1-K8Demo
+</code></pre>
+
+<h2 id="modifying-the-cassandra-statefulset">Modifying the Cassandra StatefulSet</h2>
+
+<p>Use <code>kubectl edit</code> to modify the size of a Cassandra StatefulSet.</p>
+
+<ol>
+<li><p>Run the following command:</p>
+
+<p>kubectl edit statefulset cassandra</p></li>
+</ol>
+
+<p>This command opens an editor in your terminal. The line you need to change is the <code>replicas</code> field.</p>
+
+<p><blockquote class="note">
+  <div><strong>Note:</strong> The following sample is an excerpt of the StatefulSet file.</div>
+</blockquote></p>
+
+<pre><code>    # Please edit the object below. Lines beginning with a '#' will be ignored,
+    # and an empty file will abort the edit. If an error occurs while saving this file will be
+    # reopened with the relevant failures.
+    #
+    apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+    kind: StatefulSet
+    metadata:
+     creationTimestamp: 2016-08-13T18:40:58Z
+     generation: 1
+     labels:
+       app: cassandra
+     name: cassandra
+     namespace: default
+     resourceVersion: &quot;323&quot;
+     selfLink: /apis/apps/v1/namespaces/default/statefulsets/cassandra
+     uid: 7a219483-6185-11e6-a910-42010a8a0fc0
+    spec:
+     replicas: 3
+</code></pre>
+
+<ol>
+<li>Change the number of replicas to 4, and then save the manifest.</li>
+</ol>
+
+<p>The StatefulSet now contains 4 Pods.</p>
+
+<ol>
+<li><p>Get the Cassandra StatefulSet to verify:</p>
+
+<p>kubectl get statefulset cassandra</p></li>
+</ol>
+
+<p>The response should be</p>
+
+<pre><code>   NAME        DESIRED   CURRENT   AGE
+   cassandra   4         4         36m
+</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="cleaning-up">Cleaning up</h2>
+<p>Deleting or scaling a StatefulSet down does not delete the volumes associated with the StatefulSet. This ensures safety first: your data is more valuable than an auto purge of all related StatefulSet resources.</p>
+
+<blockquote class="warning">
+  <div><strong>Warning:</strong> Depending on the storage class and reclaim policy, deleting the Persistent Volume Claims may cause the associated volumes to also be deleted. Never assume you’ll be able to access data if its volume claims are deleted.</div>
+</blockquote>
+
+<ol>
+<li><p>Run the following commands to delete everything in a <code>StatefulSet</code>:</p>
+
+<p>grace=$(kubectl get po cassandra-0 -o=jsonpath=&lsquo;{.spec.terminationGracePeriodSeconds}&rsquo;) <br />
+     &amp;&amp; kubectl delete statefulset -l app=cassandra <br />
+     &amp;&amp; echo &ldquo;Sleeping $grace&rdquo; <br />
+     &amp;&amp; sleep $grace <br />
+     &amp;&amp; kubectl delete pvc -l app=cassandra</p></li>
+
+<li><p>Run the following command to delete the Cassandra <code>Service</code>.</p>
+
+<p>kubectl delete service -l app=cassandra</p></li>
+</ol>
+
+
+
+
+
+<h2 id="what-s-next">What&#39;s next</h2>
+<ul>
+<li>Learn how to <a href="/docs/tasks/run-application/scale-stateful-set/">Scale a StatefulSet</a>.</li>
+<li>Learn more about the <a href="https://github.com/kubernetes/examples/blob/master/cassandra/java/src/main/java/io/k8s/cassandra/KubernetesSeedProvider.java" target="_blank">KubernetesSeedProvider</a></li>
+<li>See more custom <a href="https://git.k8s.io/examples/cassandra/java/README.md" target="_blank">Seed Provider Configurations</a></li>
+</ul>
+
+
+
+
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/tutorials/stateful-application/cassandra.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/tutorials\/stateful-application\/cassandra\/",
+					"title" : "Example: Deploying Cassandra with Stateful Sets",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/tutorials\/stateful-application\/cassandra\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/tutorials/stateful-application/cassandra.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Upgrades - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="Upgrades" />
+<meta property="og:description" content="Upgrades" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/getting-started-guides/ubuntu/upgrades/" />
+<meta property="og:title" content="Upgrades - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Independent Solutions" href="/docs/getting-started-guides/"></a>
+
+	
+	
+		
+		
+	<div class="item" data-title="Bare Metal">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Fedora (Multi Node)" href="/docs/getting-started-guides/fedora/flannel_multi_node_cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Fedora (Single Node)" href="/docs/getting-started-guides/fedora/fedora_manual_config/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Deprecated Alternatives" href="/docs/getting-started-guides/alternatives/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Kubernetes on Ubuntu">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Backups" href="/docs/getting-started-guides/ubuntu/backups/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Decommissioning" href="/docs/getting-started-guides/ubuntu/decommissioning/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Glossary and Terminology" href="/docs/getting-started-guides/ubuntu/glossary/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Local Kubernetes development with LXD" href="/docs/getting-started-guides/ubuntu/local/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Logging" href="/docs/getting-started-guides/ubuntu/logging/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Monitoring" href="/docs/getting-started-guides/ubuntu/monitoring/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Networking" href="/docs/getting-started-guides/ubuntu/networking/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Operational Considerations" href="/docs/getting-started-guides/ubuntu/operational-considerations/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Rancher Integration with Ubuntu Kubernetes" href="/docs/getting-started-guides/ubuntu/rancher/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Scaling" href="/docs/getting-started-guides/ubuntu/scaling/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Security Considerations" href="/docs/getting-started-guides/ubuntu/security/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Setting up Kubernetes with Juju" href="/docs/getting-started-guides/ubuntu/installation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Storage" href="/docs/getting-started-guides/ubuntu/storage/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Troubleshooting" href="/docs/getting-started-guides/ubuntu/troubleshooting/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Upgrades" href="/docs/getting-started-guides/ubuntu/upgrades/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Validation - End-to-end Testing" href="/docs/getting-started-guides/ubuntu/validation/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/getting-started-guides/ubuntu/upgrades.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>Upgrades</h1>
+
+
+
+
+<p>This page will outline how to manage and execute a Kubernetes upgrade.</p>
+
+
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+<li><a href="#before-you-begin">Before you begin</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#patch-kubernetes-upgrades-for-example-1-9-0-1-9-1">Patch kubernetes upgrades for example 1.9.0 -> 1.9.1</a></li>
+
+
+
+
+<li><a href="#upgrading-a-minor-kubernetes-release-for-example-1-8-1-1-9-0">Upgrading a minor Kubernetes release for example 1.8.1 -> 1.9.0</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</ul>
+
+
+
+<h2 id="before-you-begin">Before you begin</h2>
+<p>This page assumes you have a working deployed cluster.</p>
+
+<blockquote class="warning">
+  <div><strong>Warning:</strong> You should always back up all your data before attempting an upgrade.
+Don&rsquo;t forget to include the workload inside your cluster!
+Refer to the <a href="/docs/getting-started-guides/ubuntu/backups">backup documentation</a>.</div>
+</blockquote>
+
+
+
+
+<h2 id="patch-kubernetes-upgrades-for-example-1-9-0-1-9-1">Patch kubernetes upgrades for example 1.9.0 -&gt; 1.9.1</h2>
+
+<p>Clusters are transparently upgraded to the latest Kubernetes patch release.
+To be clear, a cluster deployed using the 1.9/stable channel
+will transparently receive unattended upgrades for the 1.9.X Kubernetes
+releases.
+The upgrade causes no disruption to the operation of the cluster and requires
+no intervention from a cluster administrator.
+Each patch release is evaluated by the
+Canonical Kubernetes Distribution team.
+Once a patch release passes internal testing and is deemed safe for upgrade,
+it is packaged in snap format and pushed to the stable channel.</p>
+
+<h2 id="upgrading-a-minor-kubernetes-release-for-example-1-8-1-1-9-0">Upgrading a minor Kubernetes release for example 1.8.1 -&gt; 1.9.0</h2>
+
+<p>The Kubernetes charms follow the Kubernetes releases. Please consult
+your support plan on the upgrade frequency. Important operational considerations
+and changes in behaviour will always be documented in the release notes.</p>
+
+<h3 id="upgrade-etcd">Upgrade etcd</h3>
+
+<p>Backing up etcd requires an export and snapshot, refer to the
+<a href="/docs/getting-started-guides/ubuntu/backups">backup documentation</a> to create a snapshot.
+After the snapshot, upgrade the etcd service with:</p>
+
+<pre><code>juju upgrade-charm etcd
+</code></pre>
+
+<p>This will handle upgrades between minor versions of etcd. Instructions on how to upgrade from 2.x to 3.x can be found <a href="https://github.com/juju-solutions/bundle-canonical-kubernetes/wiki/Etcd-2.3-to-3.x-upgrade" target="_blank">here</a> in the juju-solutions wiki.</p>
+
+<h3 id="upgrade-kubeapi-load-balancer">Upgrade kubeapi-load-balancer</h3>
+
+<p>The Kubernetes Charms are generally all updated and released at the same time. A core part of a cluster on Ubuntu is the kubeapi-load-balancer component. Incorrect or missing changes there can have an effect on API availability and access controls. To ensure API service continuity for the master and workers when they are updated, this upgrade needs to precede them.</p>
+
+<p>To upgrade the charm run:</p>
+
+<pre><code>juju upgrade-charm kubeapi-load-balancer
+</code></pre>
+
+<h3 id="upgrade-kubernetes">Upgrade Kubernetes</h3>
+
+<p>The Kubernetes Charms use snap channels to drive payloads.
+The channels are defined by <code>X.Y/channel</code> where <code>X.Y</code> is the <code>major.minor</code> release
+of Kubernetes (for example 1.9) and <code>channel</code> is one of the four following channels:</p>
+
+<table>
+<thead>
+<tr>
+<th>Channel name</th>
+<th>Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>stable</td>
+<td>The latest stable released patch version of Kubernetes</td>
+</tr>
+
+<tr>
+<td>candidate</td>
+<td>Release candidate releases of Kubernetes</td>
+</tr>
+
+<tr>
+<td>beta</td>
+<td>Latest alpha or beta of Kubernetes for that minor release</td>
+</tr>
+
+<tr>
+<td>edge</td>
+<td>Nightly builds of that minor release of Kubernetes</td>
+</tr>
+</tbody>
+</table>
+
+<p>If a release isn&rsquo;t available, the next highest channel is used.
+For example, 1.9/beta will load <code>/candidate</code> or <code>/stable</code> depending on availability of release.
+Development versions of Kubernetes are available in the edge channel for each minor release.
+There is no guarantee that edge snaps will work with the current charms.</p>
+
+<h3 id="master-upgrades">Master Upgrades</h3>
+
+<p>First you need to upgrade the masters:</p>
+
+<pre><code>juju upgrade-charm kubernetes-master
+</code></pre>
+
+<blockquote class="note">
+  <div><strong>Note:</strong> Always upgrade the masters before the workers.</div>
+</blockquote>
+
+<p>Once the latest charm is deployed, the channel for Kubernetes can be selected by issuing the following:</p>
+
+<pre><code>juju config kubernetes-master channel=1.x/stable
+</code></pre>
+
+<p>Where <code>x</code> is the minor version of Kubernetes. For example, <code>1.9/stable</code>. See above for Channel definitions.
+Once you&rsquo;ve configured kubernetes-master with the appropriate channel, run the upgrade action on each master:</p>
+
+<pre><code>juju run-action kubernetes-master/0 upgrade
+juju run-action kubernetes-master/1 upgrade
+...
+</code></pre>
+
+<h3 id="worker-upgrades">Worker Upgrades</h3>
+
+<p>Two methods of upgrading workers are supported.
+<a href="http://martinfowler.com/bliki/BlueGreenDeployment.html" target="_blank">Blue/Green Deployment</a>
+and upgrade-in-place. Both methods are provided for operational flexibility and both
+are supported and tested. Blue/Green will require more hardware up front than in-place,
+but is a safer upgrade route.</p>
+
+<h4 id="blue-green-worker-upgrade">Blue/green worker upgrade</h4>
+
+<p>Given a deployment where the workers are named kubernetes-alpha.</p>
+
+<p>Deploy new workers:</p>
+
+<pre><code>juju deploy kubernetes-beta
+</code></pre>
+
+<p>Pause the old workers so your workload migrates:</p>
+
+<pre><code>juju run-action kubernetes-alpha/# pause
+</code></pre>
+
+<p>Verify old workloads have migrated with:</p>
+
+<pre><code>kubectl get pod -o wide
+</code></pre>
+
+<p>Tear down old workers with:</p>
+
+<pre><code>juju remove-application kubernetes-alpha
+</code></pre>
+
+<h4 id="in-place-worker-upgrade">In place worker upgrade</h4>
+
+<pre><code>juju upgrade-charm kubernetes-worker
+juju config kubernetes-worker channel=1.x/stable
+</code></pre>
+
+<p>Where <code>x</code> is the minor version of Kubernetes. For example, <code>1.9/stable</code>.
+See above for Channel definitions. Once you&rsquo;ve configured kubernetes-worker with the appropriate channel,
+run the upgrade action on each worker:</p>
+
+<pre><code>juju run-action kubernetes-worker/0 upgrade
+juju run-action kubernetes-worker/1 upgrade
+...
+</code></pre>
+
+<h3 id="verify-upgrade">Verify upgrade</h3>
+
+<p><code>kubectl version</code> should return the newer version.</p>
+
+<p>It is recommended to rerun a <a href="/docs/getting-started-guides/ubuntu/validation">cluster validation</a>
+to ensure that the cluster upgrade has successfully completed.</p>
+
+<h3 id="upgrade-flannel">Upgrade Flannel</h3>
+
+<p>Upgrading flannel can be done at any time, it is independent of Kubernetes upgrades.
+Be advised that networking is interrupted during the upgrade. You can initiate a flannel upgrade with:</p>
+
+<pre><code>juju upgrade-charm flannel
+</code></pre>
+
+<h3 id="upgrade-easyrsa">Upgrade easyrsa</h3>
+
+<p>Upgrading easyrsa can be done at any time, it is independent of Kubernetes upgrades.
+Upgrading easyrsa should result in zero downtime as it is not a running service:</p>
+
+<pre><code>juju upgrade-charm easyrsa
+</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/getting-started-guides/ubuntu/upgrades.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/getting-started-guides\/ubuntu\/upgrades\/",
+					"title" : "Upgrades",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/getting-started-guides\/ubuntu\/upgrades\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/getting-started-guides/ubuntu/upgrades.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Clusters - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="Clusters" />
+<meta property="og:description" content="Clusters" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/tutorials/clusters/" />
+<meta property="og:title" content="Clusters - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h1>Tutorials</h1>
+<h5></h5>
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/" class="YAH">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Tutorials" href="/docs/tutorials/"></a>
+
+	
+	
+		
+		
+<a class="item" data-title="Hello Minikube" href="/docs/tutorials/hello-minikube/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Kubernetes Basics">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Overview" href="/docs/tutorials/kubernetes-basics/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Create a Cluster">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Using Minikube to Create a Cluster" href="/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Interactive Tutorial - Creating a Cluster" href="/docs/tutorials/kubernetes-basics/create-cluster/cluster-interactive/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Deploy an App">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Using kubectl to Create a Deployment" href="/docs/tutorials/kubernetes-basics/deploy-app/deploy-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Interactive Tutorial - Deploying an App" href="/docs/tutorials/kubernetes-basics/deploy-app/deploy-interactive/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Explore Your App">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Viewing Pods and Nodes" href="/docs/tutorials/kubernetes-basics/explore/explore-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Interactive Tutorial - Exploring Your App" href="/docs/tutorials/kubernetes-basics/explore/explore-interactive/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Expose Your App Publicly">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Using a Service to Expose Your App" href="/docs/tutorials/kubernetes-basics/expose/expose-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Interactive Tutorial - Exposing Your App" href="/docs/tutorials/kubernetes-basics/expose/expose-interactive/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Scale Your App">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Running Multiple Instances of Your App" href="/docs/tutorials/kubernetes-basics/scale/scale-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Interactive Tutorial - Scaling Your App" href="/docs/tutorials/kubernetes-basics/scale/scale-interactive/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Update Your App">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Performing a Rolling Update" href="/docs/tutorials/kubernetes-basics/update/update-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Interactive Tutorial - Updating Your App" href="/docs/tutorials/kubernetes-basics/update/update-interactive/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Online Training Courses">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Overview of Kubernetes Online Training" href="/docs/tutorials/online-training/overview/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Configuration">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Configuring Redis using a ConfigMap" href="/docs/tutorials/configuration/configure-redis-using-configmap/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Stateless Applications">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Exposing an External IP Address to Access an Application in a Cluster" href="/docs/tutorials/stateless-application/expose-external-ip-address/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Example: Deploying PHP Guestbook application with Redis" href="/docs/tutorials/stateless-application/guestbook/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Stateful Applications">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="StatefulSet Basics" href="/docs/tutorials/stateful-application/basic-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Example: Deploying WordPress and MySQL with Persistent Volumes" href="/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Example: Deploying Cassandra with Stateful Sets" href="/docs/tutorials/stateful-application/cassandra/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Running ZooKeeper, A Distributed System Coordinator" href="/docs/tutorials/stateful-application/zookeeper/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Clusters">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="AppArmor" href="/docs/tutorials/clusters/apparmor/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Services">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Using Source IP" href="/docs/tutorials/services/source-ip/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes 101" href="/docs/tutorials/k8s101/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes 201" href="/docs/tutorials/k8s201/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+	 
+    
+    
+    <p><a href="/docs/editdocs#docs/tutorials/clusters/apparmor.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>AppArmor</h1>
+
+
+
+<div style="margin-top: 10px; margin-bottom: 10px;">
+
+
+
+<b>FEATURE STATE:</b> <code>Kubernetes v1.4</code>
+
+
+
+
+    
+    
+    
+    
+    
+<a href="#" id="feature-state-dialog-link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-newwin"></span>beta</a>
+<div id="feature-state-dialog" class="ui-dialog-content" title="beta">
+This feature is currently in a <em>beta</em> state, meaning:</p>
+
+<ul>
+<li>The version names contain beta (e.g. v2beta3).</li>
+<li>Code is well tested. Enabling the feature is considered safe. Enabled by default.</li>
+<li>Support for the overall feature will not be dropped, though details may change.</li>
+<li>The schema and/or semantics of objects may change in incompatible ways in a subsequent beta or stable release. When this happens, we will provide instructions for migrating to the next version. This may require deleting, editing, and re-creating API objects. The editing process may require some thought. This may require downtime for applications that rely on the feature.</li>
+<li>Recommended for only non-business-critical uses because of potential for incompatible changes in subsequent releases. If you have multiple clusters that can be upgraded independently, you may be able to relax this restriction.</li>
+<li><strong>Please do try our beta features and give feedback on them! After they exit beta, it may not be practical for us to make more changes.</strong></li>
+</ul>
+
+</div>
+<script>
+$(function(){
+    
+    $( "#feature-state-dialog" ).dialog({
+        autoOpen: false,
+        width: "600",
+        buttons: [
+            {
+                text: "Ok",
+                click: function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        ]
+    });
+
+    
+    $( "#feature-state-dialog-link" ).click(function( event ) {
+        $( "#feature-state-dialog" ).dialog( "open" );
+        event.preventDefault();
+    });
+
+});
+</script>
+
+    
+
+</div>
+
+<p>AppArmor is a Linux kernel security module that supplements the standard Linux user and group based
+permissions to confine programs to a limited set of resources. AppArmor can be configured for any
+application to reduce its potential attack surface and provide greater in-depth defense. It is
+configured through profiles tuned to whitelist the access needed by a specific program or container,
+such as Linux capabilities, network access, file permissions, etc. Each profile can be run in either
+<em>enforcing</em> mode, which blocks access to disallowed resources, or <em>complain</em> mode, which only reports
+violations.</p>
+
+<p>AppArmor can help you to run a more secure deployment by restricting what containers are allowed to
+do, and/or provide better auditing through system logs. However, it is important to keep in mind
+that AppArmor is not a silver bullet and can only do so much to protect against exploits in your
+application code. It is important to provide good, restrictive profiles, and harden your
+applications and cluster from other angles as well.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+<li><a href="#objectives">Objectives</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#before-you-begin">Before you begin</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#securing-a-pod">Securing a Pod</a></li>
+
+
+
+
+<li><a href="#example">Example</a></li>
+
+
+
+
+<li><a href="#administration">Administration</a></li>
+
+
+
+
+<li><a href="#authoring-profiles">Authoring Profiles</a></li>
+
+
+
+
+<li><a href="#api-reference">API Reference</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#what-s-next">What's next</a></li>
+
+
+
+</ul>
+
+
+
+<h2 id="objectives">Objectives</h2>
+<ul>
+<li>See an example of how to load a profile on a node</li>
+<li>Learn how to enforce the profile on a Pod</li>
+<li>Learn how to check that the profile is loaded</li>
+<li>See what happens when a profile is violated</li>
+<li>See what happens when a profile cannot be loaded</li>
+</ul>
+
+
+
+
+
+<h2 id="before-you-begin">Before you begin</h2>
+<p>Make sure:</p>
+
+<ol>
+<li>Kubernetes version is at least v1.4 &ndash; Kubernetes support for AppArmor was added in
+v1.4. Kubernetes components older than v1.4 are not aware of the new AppArmor annotations, and
+will <strong>silently ignore</strong> any AppArmor settings that are provided. To ensure that your Pods are
+receiving the expected protections, it is important to verify the Kubelet version of your nodes:</li>
+</ol>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">   $ kubectl get nodes -o<span style="color:#666">=</span><span style="color:#b8860b">jsonpath</span><span style="color:#666">=</span><span style="color:#b44">$&#39;{range .items[*]}{@.metadata.name}: {@.status.nodeInfo.kubeletVersion}\n{end}&#39;</span>
+   gke-test-default-pool-239f5d02-gyn2: v1.4.0
+   gke-test-default-pool-239f5d02-x1kf: v1.4.0
+   gke-test-default-pool-239f5d02-xwux: v1.4.0</code></pre></div>
+<ol>
+<li>AppArmor kernel module is enabled &ndash; For the Linux kernel to enforce an AppArmor profile, the
+AppArmor kernel module must be installed and enabled. Several distributions enable the module by
+default, such as Ubuntu and SUSE, and many others provide optional support. To check whether the
+module is enabled, check the <code>/sys/module/apparmor/parameters/enabled</code> file:</li>
+</ol>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">   $ cat /sys/module/apparmor/parameters/enabled
+   Y</code></pre></div>
+<p>If the Kubelet contains AppArmor support (&gt;= v1.4), it will refuse to run a Pod with AppArmor
+   options if the kernel module is not enabled.</p>
+
+<p><strong>Note:</strong> Ubuntu carries many AppArmor patches that have not been merged into the upstream Linux
+    kernel, including patches that add additional hooks and features. Kubernetes has only been
+    tested with the upstream version, and does not promise support for other features.</p>
+
+<ol>
+<li>Container runtime is Docker &ndash; Currently the only Kubernetes-supported container runtime that
+also supports AppArmor is Docker. As more runtimes add AppArmor support, the options will be
+expanded. You can verify that your nodes are running docker with:</li>
+</ol>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">   $ kubectl get nodes -o<span style="color:#666">=</span><span style="color:#b8860b">jsonpath</span><span style="color:#666">=</span><span style="color:#b44">$&#39;{range .items[*]}{@.metadata.name}: {@.status.nodeInfo.containerRuntimeVersion}\n{end}&#39;</span>
+   gke-test-default-pool-239f5d02-gyn2: docker://1.11.2
+   gke-test-default-pool-239f5d02-x1kf: docker://1.11.2
+   gke-test-default-pool-239f5d02-xwux: docker://1.11.2</code></pre></div>
+<p>If the Kubelet contains AppArmor support (&gt;= v1.4), it will refuse to run a Pod with AppArmor
+   options if the runtime is not Docker.</p>
+
+<ol>
+<li>Profile is loaded &ndash; AppArmor is applied to a Pod by specifying an AppArmor profile that each
+container should be run with. If any of the specified profiles is not already loaded in the
+kernel, the Kubelet (&gt;= v1.4) will reject the Pod. You can view which profiles are loaded on a
+node by checking the <code>/sys/kernel/security/apparmor/profiles</code> file. For example:</li>
+</ol>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">   $ ssh gke-test-default-pool-239f5d02-gyn2 <span style="color:#b44">&#34;sudo cat /sys/kernel/security/apparmor/profiles | sort&#34;</span>
+   apparmor-test-deny-write <span style="color:#666">(</span>enforce<span style="color:#666">)</span>
+   apparmor-test-audit-write <span style="color:#666">(</span>enforce<span style="color:#666">)</span>
+   docker-default <span style="color:#666">(</span>enforce<span style="color:#666">)</span>
+   k8s-nginx <span style="color:#666">(</span>enforce<span style="color:#666">)</span></code></pre></div>
+<p>For more details on loading profiles on nodes, see
+   <a href="#setting-up-nodes-with-profiles">Setting up nodes with profiles</a>.</p>
+
+<p>As long as the Kubelet version includes AppArmor support (&gt;= v1.4), the Kubelet will reject a Pod
+with AppArmor options if any of the prerequisites are not met. You can also verify AppArmor support
+on nodes by checking the node ready condition message (though this is likely to be removed in a
+later release):</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl get nodes -o<span style="color:#666">=</span><span style="color:#b8860b">jsonpath</span><span style="color:#666">=</span><span style="color:#b44">$&#39;{range .items[*]}{@.metadata.name}: {.status.conditions[?(@.reason==&#34;KubeletReady&#34;)].message}\n{end}&#39;</span>
+gke-test-default-pool-239f5d02-gyn2: kubelet is posting ready status. AppArmor enabled
+gke-test-default-pool-239f5d02-x1kf: kubelet is posting ready status. AppArmor enabled
+gke-test-default-pool-239f5d02-xwux: kubelet is posting ready status. AppArmor enabled</code></pre></div>
+
+
+
+<h2 id="securing-a-pod">Securing a Pod</h2>
+
+<p><strong>Note:</strong> AppArmor is currently in beta, so options are specified as annotations. Once support graduates to
+general availability, the annotations will be replaced with first-class fields (more details in
+<a href="#upgrade-path-to-general-availability">Upgrade path to GA</a>).</p>
+
+<p>AppArmor profiles are specified <em>per-container</em>. To specify the AppArmor profile to run a Pod
+container with, add an annotation to the Pod&rsquo;s metadata:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">container.apparmor.security.beta.kubernetes.io/&lt;container_name&gt;:<span style="color:#bbb"> </span>&lt;profile_ref&gt;</code></pre></div>
+<p>Where <code>&lt;container_name&gt;</code> is the name of the container to apply the profile to, and <code>&lt;profile_ref&gt;</code>
+specifies the profile to apply. The <code>profile_ref</code> can be one of:</p>
+
+<ul>
+<li><code>runtime/default</code> to apply the runtime&rsquo;s default profile</li>
+<li><code>localhost/&lt;profile_name&gt;</code> to apply the profile loaded on the host with the name <code>&lt;profile_name&gt;</code></li>
+<li><code>unconfined</code> to indicate that no profiles will be loaded</li>
+</ul>
+
+<p>See the <a href="#api-reference">API Reference</a> for the full details on the annotation and profile name formats.</p>
+
+<p>Kubernetes AppArmor enforcement works by first checking that all the prerequisites have been
+met, and then forwarding the profile selection to the container runtime for enforcement. If the
+prerequisites have not been met, the Pod will be rejected, and will not run.</p>
+
+<p>To verify that the profile was applied, you can look for the AppArmor security option listed in the container created event:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl get events | grep Created
+22s        22s         <span style="color:#666">1</span>         hello-apparmor     Pod       spec.containers<span style="color:#666">{</span>hello<span style="color:#666">}</span>   Normal    Created     <span style="color:#666">{</span>kubelet e2e-test-stclair-minion-group-31nt<span style="color:#666">}</span>   Created container with docker id 269a53b202d3; Security:<span style="color:#666">[</span><span style="color:#b8860b">seccomp</span><span style="color:#666">=</span>unconfined <span style="color:#b8860b">apparmor</span><span style="color:#666">=</span>k8s-apparmor-example-deny-write<span style="color:#666">]</span></code></pre></div>
+<p>You can also verify directly that the container&rsquo;s root process is running with the correct profile by checking its proc attr:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl <span style="color:#a2f">exec</span> &lt;pod_name&gt; cat /proc/1/attr/current
+k8s-apparmor-example-deny-write <span style="color:#666">(</span>enforce<span style="color:#666">)</span></code></pre></div>
+<h2 id="example">Example</h2>
+
+<p><em>This example assumes you have already set up a cluster with AppArmor support.</em></p>
+
+<p>First, we need to load the profile we want to use onto our nodes. The profile we&rsquo;ll use simply
+denies all file writes:</p>
+
+<table class="includecode" id="deny-write-profile">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://github.com/kubernetes/website/blob/master/content/en/docs/tutorials/clusters/deny-write.profile" download="deny-write.profile">
+                    <code>deny-write.profile docs/tutorials/clusters</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('deny-write-profile')" title="Copy deny-write.profile to clipboard">
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">#include &lt;tunables/global&gt;
+
+profile k8s-apparmor-example-deny-write flags=(attach_disconnected) {
+  #include &lt;abstractions/base&gt;
+
+  file,
+
+  # Deny all file writes.
+  deny /** w,
+}
+</code></pre></div>  </td>
+        </tr>
+    </tbody>
+</table>
+
+<p>Since we don&rsquo;t know where the Pod will be scheduled, we&rsquo;ll need to load the profile on all our
+nodes. For this example we&rsquo;ll just use SSH to install the profiles, but other approaches are
+discussed in <a href="#setting-up-nodes-with-profiles">Setting up nodes with profiles</a>.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ <span style="color:#b8860b">NODES</span><span style="color:#666">=(</span>
+    <span style="color:#080;font-style:italic"># The SSH-accessible domain names of your nodes
+</span><span style="color:#080;font-style:italic"></span>    gke-test-default-pool-239f5d02-gyn2.us-central1-a.my-k8s
+    gke-test-default-pool-239f5d02-x1kf.us-central1-a.my-k8s
+    gke-test-default-pool-239f5d02-xwux.us-central1-a.my-k8s<span style="color:#666">)</span>
+$ <span style="color:#a2f;font-weight:bold">for</span> NODE in <span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">NODES</span>[*]<span style="color:#b68;font-weight:bold">}</span>; <span style="color:#a2f;font-weight:bold">do</span> ssh <span style="color:#b8860b">$NODE</span> <span style="color:#b44">&#39;sudo apparmor_parser -q &lt;&lt;EOF
+</span><span style="color:#b44">#include &lt;tunables/global&gt;
+</span><span style="color:#b44">
+</span><span style="color:#b44">profile k8s-apparmor-example-deny-write flags=(attach_disconnected) {
+</span><span style="color:#b44">  #include &lt;abstractions/base&gt;
+</span><span style="color:#b44">
+</span><span style="color:#b44">  file,
+</span><span style="color:#b44">
+</span><span style="color:#b44">  # Deny all file writes.
+</span><span style="color:#b44">  deny /** w,
+</span><span style="color:#b44">}
+</span><span style="color:#b44">EOF&#39;</span>
+<span style="color:#a2f;font-weight:bold">done</span></code></pre></div>
+<p>Next, we&rsquo;ll run a simple &ldquo;Hello AppArmor&rdquo; pod with the deny-write profile:</p>
+
+<table class="includecode" id="hello-apparmor-pod-yaml">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://github.com/kubernetes/website/blob/master/content/en/docs/tutorials/clusters/hello-apparmor-pod.yaml" download="hello-apparmor-pod.yaml">
+                    <code>hello-apparmor-pod.yaml docs/tutorials/clusters</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('hello-apparmor-pod-yaml')" title="Copy hello-apparmor-pod.yaml to clipboard">
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Pod<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>hello-apparmor<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>annotations:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#080;font-style:italic"># Tell Kubernetes to apply the AppArmor profile &#34;k8s-apparmor-example-deny-write&#34;.</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#080;font-style:italic"># Note that this is ignored if the Kubernetes node is not running version 1.4 or greater.</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>container.apparmor.security.beta.kubernetes.io/hello:<span style="color:#bbb"> </span>localhost/k8s-apparmor-example-deny-write<span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>containers:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>hello<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>image:<span style="color:#bbb"> </span>busybox<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>command:<span style="color:#bbb"> </span>[<span style="color:#bbb"> </span><span style="color:#b44">&#34;sh&#34;</span>,<span style="color:#bbb"> </span><span style="color:#b44">&#34;-c&#34;</span>,<span style="color:#bbb"> </span><span style="color:#b44">&#34;echo &#39;Hello AppArmor!&#39; &amp;&amp; sleep 1h&#34;</span><span style="color:#bbb"> </span>]<span style="color:#bbb">
+</span><span style="color:#bbb"></span></code></pre></div>  </td>
+        </tr>
+    </tbody>
+</table>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl create -f ./hello-apparmor-pod.yaml</code></pre></div>
+<p>If we look at the pod events, we can see that the Pod container was created with the AppArmor
+profile &ldquo;k8s-apparmor-example-deny-write&rdquo;:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl get events | grep hello-apparmor
+14s        14s         <span style="color:#666">1</span>         hello-apparmor   Pod                                Normal    Scheduled   <span style="color:#666">{</span>default-scheduler <span style="color:#666">}</span>                           Successfully assigned hello-apparmor to gke-test-default-pool-239f5d02-gyn2
+14s        14s         <span style="color:#666">1</span>         hello-apparmor   Pod       spec.containers<span style="color:#666">{</span>hello<span style="color:#666">}</span>   Normal    Pulling     <span style="color:#666">{</span>kubelet gke-test-default-pool-239f5d02-gyn2<span style="color:#666">}</span>   pulling image <span style="color:#b44">&#34;busybox&#34;</span>
+13s        13s         <span style="color:#666">1</span>         hello-apparmor   Pod       spec.containers<span style="color:#666">{</span>hello<span style="color:#666">}</span>   Normal    Pulled      <span style="color:#666">{</span>kubelet gke-test-default-pool-239f5d02-gyn2<span style="color:#666">}</span>   Successfully pulled image <span style="color:#b44">&#34;busybox&#34;</span>
+13s        13s         <span style="color:#666">1</span>         hello-apparmor   Pod       spec.containers<span style="color:#666">{</span>hello<span style="color:#666">}</span>   Normal    Created     <span style="color:#666">{</span>kubelet gke-test-default-pool-239f5d02-gyn2<span style="color:#666">}</span>   Created container with docker id 06b6cd1c0989; Security:<span style="color:#666">[</span><span style="color:#b8860b">seccomp</span><span style="color:#666">=</span>unconfined <span style="color:#b8860b">apparmor</span><span style="color:#666">=</span>k8s-apparmor-example-deny-write<span style="color:#666">]</span>
+13s        13s         <span style="color:#666">1</span>         hello-apparmor   Pod       spec.containers<span style="color:#666">{</span>hello<span style="color:#666">}</span>   Normal    Started     <span style="color:#666">{</span>kubelet gke-test-default-pool-239f5d02-gyn2<span style="color:#666">}</span>   Started container with docker id 06b6cd1c0989</code></pre></div>
+<p>We can verify that the container is actually running with that profile by checking its proc attr:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl <span style="color:#a2f">exec</span> hello-apparmor cat /proc/1/attr/current
+k8s-apparmor-example-deny-write <span style="color:#666">(</span>enforce<span style="color:#666">)</span></code></pre></div>
+<p>Finally, we can see what happens if we try to violate the profile by writing to a file:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl <span style="color:#a2f">exec</span> hello-apparmor touch /tmp/test
+touch: /tmp/test: Permission denied
+error: error executing remote command: <span style="color:#a2f">command</span> terminated with non-zero <span style="color:#a2f">exit</span> code: Error executing in Docker Container: <span style="color:#666">1</span></code></pre></div>
+<p>To wrap up, let&rsquo;s look at what happens if we try to specify a profile that hasn&rsquo;t been loaded:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl create -f /dev/stdin <span style="color:#b44">&lt;&lt;EOF
+</span><span style="color:#b44">apiVersion: v1
+</span><span style="color:#b44">kind: Pod
+</span><span style="color:#b44">metadata:
+</span><span style="color:#b44">  name: hello-apparmor-2
+</span><span style="color:#b44">  annotations:
+</span><span style="color:#b44">    container.apparmor.security.beta.kubernetes.io/hello: localhost/k8s-apparmor-example-allow-write
+</span><span style="color:#b44">spec:
+</span><span style="color:#b44">  containers:
+</span><span style="color:#b44">  - name: hello
+</span><span style="color:#b44">    image: busybox
+</span><span style="color:#b44">    command: [ &#34;sh&#34;, &#34;-c&#34;, &#34;echo &#39;Hello AppArmor!&#39; &amp;&amp; sleep 1h&#34; ]
+</span><span style="color:#b44">EOF</span>
+pod <span style="color:#b44">&#34;hello-apparmor-2&#34;</span> created
+
+$ kubectl describe pod hello-apparmor-2
+Name:          hello-apparmor-2
+Namespace:     default
+Node:          gke-test-default-pool-239f5d02-x1kf/
+Start Time:    Tue, <span style="color:#666">30</span> Aug <span style="color:#666">2016</span> <span style="color:#666">17</span>:58:56 -0700
+Labels:        &lt;none&gt;
+Annotations:   container.apparmor.security.beta.kubernetes.io/hello<span style="color:#666">=</span>localhost/k8s-apparmor-example-allow-write
+Status:        Pending
+Reason:        AppArmor
+Message:       Pod Cannot enforce AppArmor: profile <span style="color:#b44">&#34;k8s-apparmor-example-allow-write&#34;</span> is not loaded
+IP:
+Controllers:   &lt;none&gt;
+Containers:
+  hello:
+    Container ID:
+    Image:     busybox
+    Image ID:
+    Port:
+    Command:
+      sh
+      -c
+      <span style="color:#a2f">echo</span> <span style="color:#b44">&#39;Hello AppArmor!&#39;</span> <span style="color:#666">&amp;&amp;</span> sleep 1h
+    State:              Waiting
+      Reason:           Blocked
+    Ready:              False
+    Restart Count:      <span style="color:#666">0</span>
+    Environment:        &lt;none&gt;
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from default-token-dnz7v <span style="color:#666">(</span>ro<span style="color:#666">)</span>
+Conditions:
+  Type          Status
+  Initialized   True
+  Ready         False
+  PodScheduled  True
+Volumes:
+  default-token-dnz7v:
+    Type:    Secret <span style="color:#666">(</span>a volume populated by a Secret<span style="color:#666">)</span>
+    SecretName:    default-token-dnz7v
+    Optional:   <span style="color:#a2f">false</span>
+QoS Class:      BestEffort
+Node-Selectors: &lt;none&gt;
+Tolerations:    &lt;none&gt;
+Events:
+  FirstSeen    LastSeen    Count    From                        SubobjectPath    Type        Reason        Message
+  ---------    --------    -----    ----                        -------------    --------    ------        -------
+  23s          23s         <span style="color:#666">1</span>        <span style="color:#666">{</span>default-scheduler <span style="color:#666">}</span>                         Normal      Scheduled     Successfully assigned hello-apparmor-2 to e2e-test-stclair-minion-group-t1f5
+  23s          23s         <span style="color:#666">1</span>        <span style="color:#666">{</span>kubelet e2e-test-stclair-minion-group-t1f5<span style="color:#666">}</span>             Warning        AppArmor    Cannot enforce AppArmor: profile <span style="color:#b44">&#34;k8s-apparmor-example-allow-write&#34;</span> is not loaded</code></pre></div>
+<p>Note the pod status is Failed, with a helpful error message: <code>Pod Cannot enforce AppArmor: profile
+&quot;k8s-apparmor-example-allow-write&quot; is not loaded</code>. An event was also recorded with the same message.</p>
+
+<h2 id="administration">Administration</h2>
+
+<h3 id="setting-up-nodes-with-profiles">Setting up nodes with profiles</h3>
+
+<p>Kubernetes does not currently provide any native mechanisms for loading AppArmor profiles onto
+nodes. There are lots of ways to setup the profiles though, such as:</p>
+
+<ul>
+<li>Through a <a href="/docs/concepts/workloads/controllers/daemonset/">DaemonSet</a> that runs a Pod on each node to
+ensure the correct profiles are loaded. An example implementation can be found
+<a href="https://git.k8s.io/contrib/apparmor/loader" target="_blank">here</a>.</li>
+<li>At node initialization time, using your node initialization scripts (e.g. Salt, Ansible, etc.) or
+image.</li>
+<li>By copying the profiles to each node and loading them through SSH, as demonstrated in the
+<a href="#example">Example</a>.</li>
+</ul>
+
+<p>The scheduler is not aware of which profiles are loaded onto which node, so the full set of profiles
+must be loaded onto every node.  An alternative approach is to add a node label for each profile (or
+class of profiles) on the node, and use a
+<a href="/docs/concepts/configuration/assign-pod-node/">node selector</a> to ensure the Pod is run on a
+node with the required profile.</p>
+
+<h3 id="restricting-profiles-with-the-podsecuritypolicy">Restricting profiles with the PodSecurityPolicy</h3>
+
+<p>If the PodSecurityPolicy extension is enabled, cluster-wide AppArmor restrictions can be applied. To
+enable the PodSecurityPolicy, the following flag must be set on the <code>apiserver</code>:</p>
+
+<pre><code>--enable-admission-plugins=PodSecurityPolicy[,others...]
+</code></pre>
+
+<p>The AppArmor options can be specified as annotations on the PodSecurityPolicy:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apparmor.security.beta.kubernetes.io/defaultProfileName:<span style="color:#bbb"> </span>&lt;profile_ref<span style="color:#b44;font-style:italic">&gt;
+</span><span style="color:#b44;font-style:italic">apparmor.security.beta.kubernetes.io/allowedProfileNames: &lt;profile_ref&gt;[,others...]</span></code></pre></div>
+<p>The default profile name option specifies the profile to apply to containers by default when none is
+specified. The allowed profile names option specifies a list of profiles that Pod containers are
+allowed to be run with. If both options are provided, the default must be allowed. The profiles are
+specified in the same format as on containers. See the <a href="#api-reference">API Reference</a> for the full
+specification.</p>
+
+<h3 id="disabling-apparmor">Disabling AppArmor</h3>
+
+<p>If you do not want AppArmor to be available on your cluster, it can be disabled by a command-line flag:</p>
+
+<pre><code>--feature-gates=AppArmor=false
+</code></pre>
+
+<p>When disabled, any Pod that includes an AppArmor profile will fail validation with a &ldquo;Forbidden&rdquo;
+error. Note that by default docker always enables the &ldquo;docker-default&rdquo; profile on non-privileged
+pods (if the AppArmor kernel module is enabled), and will continue to do so even if the feature-gate
+is disabled. The option to disable AppArmor will be removed when AppArmor graduates to general
+availability (GA).</p>
+
+<h3 id="upgrading-to-kubernetes-v1-4-with-apparmor">Upgrading to Kubernetes v1.4 with AppArmor</h3>
+
+<p>No action is required with respect to AppArmor to upgrade your cluster to v1.4. However, if any
+existing pods had an AppArmor annotation, they will not go through validation (or PodSecurityPolicy
+admission). If permissive profiles are loaded on the nodes, a malicious user could pre-apply a
+permissive profile to escalate the pod privileges above the docker-default. If this is a concern, it
+is recommended to scrub the cluster of any pods containing an annotation with
+<code>apparmor.security.beta.kubernetes.io</code>.</p>
+
+<h3 id="upgrade-path-to-general-availability">Upgrade path to General Availability</h3>
+
+<p>When AppArmor is ready to be graduated to general availability (GA), the options currently specified
+through annotations will be converted to fields. Supporting all the upgrade and downgrade paths
+through the transition is very nuanced, and will be explained in detail when the transition
+occurs. We will commit to supporting both fields and annotations for at least 2 releases, and will
+explicitly reject the annotations for at least 2 releases after that.</p>
+
+<h2 id="authoring-profiles">Authoring Profiles</h2>
+
+<p>Getting AppArmor profiles specified correctly can be a tricky business. Fortunately there are some
+tools to help with that:</p>
+
+<ul>
+<li><code>aa-genprof</code> and <code>aa-logprof</code> generate profile rules by monitoring an application&rsquo;s activity and
+logs, and admitting the actions it takes. Further instructions are provided by the
+<a href="https://gitlab.com/apparmor/apparmor/wikis/Profiling_with_tools" target="_blank">AppArmor documentation</a>.</li>
+<li><a href="https://github.com/jfrazelle/bane" target="_blank">bane</a> is an AppArmor profile generator for Docker that uses a
+simplified profile language.</li>
+</ul>
+
+<p>It is recommended to run your application through Docker on a development workstation to generate
+the profiles, but there is nothing preventing running the tools on the Kubernetes node where your
+Pod is running.</p>
+
+<p>To debug problems with AppArmor, you can check the system logs to see what, specifically, was
+denied. AppArmor logs verbose messages to <code>dmesg</code>, and errors can usually be found in the system
+logs or through <code>journalctl</code>. More information is provided in
+<a href="http://wiki.apparmor.net/index.php/AppArmor_Failures" target="_blank">AppArmor failures</a>.</p>
+
+<h2 id="api-reference">API Reference</h2>
+
+<h3 id="pod-annotation">Pod Annotation</h3>
+
+<p>Specifying the profile a container will run with:</p>
+
+<ul>
+<li><strong>key</strong>: <code>container.apparmor.security.beta.kubernetes.io/&lt;container_name&gt;</code>
+Where <code>&lt;container_name&gt;</code> matches the name of a container in the Pod.
+A separate profile can be specified for each container in the Pod.</li>
+<li><strong>value</strong>: a profile reference, described below</li>
+</ul>
+
+<h3 id="profile-reference">Profile Reference</h3>
+
+<ul>
+<li><code>runtime/default</code>: Refers to the default runtime profile.
+
+<ul>
+<li>Equivalent to not specifying a profile (without a PodSecurityPolicy default), except it still
+requires AppArmor to be enabled.</li>
+<li>For Docker, this resolves to the
+<a href="https://docs.docker.com/engine/security/apparmor/" target="_blank"><code>docker-default</code></a> profile for non-privileged
+containers, and unconfined (no profile) for privileged containers.</li>
+</ul></li>
+<li><code>localhost/&lt;profile_name&gt;</code>: Refers to a profile loaded on the node (localhost) by name.
+
+<ul>
+<li>The possible profile names are detailed in the
+<a href="http://wiki.apparmor.net/index.php/AppArmor_Core_Policy_Reference#Profile_names_and_attachment_specifications" target="_blank">core policy reference</a>.</li>
+</ul></li>
+<li><code>unconfined</code>: This effectively disables AppArmor on the container.</li>
+</ul>
+
+<p>Any other profile reference format is invalid.</p>
+
+<h3 id="podsecuritypolicy-annotations">PodSecurityPolicy Annotations</h3>
+
+<p>Specifying the default profile to apply to containers when none is provided:</p>
+
+<ul>
+<li><strong>key</strong>: <code>apparmor.security.beta.kubernetes.io/defaultProfileName</code></li>
+<li><strong>value</strong>: a profile reference, described above</li>
+</ul>
+
+<p>Specifying the list of profiles Pod containers is allowed to specify:</p>
+
+<ul>
+<li><strong>key</strong>: <code>apparmor.security.beta.kubernetes.io/allowedProfileNames</code></li>
+<li><strong>value</strong>: a comma-separated list of profile references (described above)
+
+<ul>
+<li>Although an escaped comma is a legal character in a profile name, it cannot be explicitly
+allowed here.</li>
+</ul></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="what-s-next">What&#39;s next</h2>
+<p>Additional resources:</p>
+
+<ul>
+<li><a href="http://wiki.apparmor.net/index.php/QuickProfileLanguage" target="_blank">Quick guide to the AppArmor profile language</a></li>
+<li><a href="http://wiki.apparmor.net/index.php/ProfileLanguage" target="_blank">AppArmor core policy reference</a></li>
+</ul>
+
+
+
+
+
+
+    
+    
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/tutorials/clusters/_index.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/tutorials\/clusters\/",
+					"title" : "Clusters",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/tutorials\/clusters\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/tutorials/clusters/_index.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

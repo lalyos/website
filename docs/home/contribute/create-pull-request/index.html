@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Creating a Documentation Pull Request - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="Creating a Documentation Pull Request" />
+<meta property="og:description" content="Creating a Documentation Pull Request" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/home/contribute/create-pull-request/" />
+<meta property="og:title" content="Creating a Documentation Pull Request - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+<h1></h1>
+<h5></h5>
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/" class="YAH">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Documentation" href="/docs/home/"></a>
+
+	
+	
+		
+		
+	<div class="item" data-title="Contributing to the Kubernetes Docs">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Content Organization" href="/docs/home/contribute/content-organization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Creating a Documentation Pull Request" href="/docs/home/contribute/create-pull-request/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Custom Hugo Shortcodes" href="/docs/home/contribute/includes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Documentation Style Guide" href="/docs/home/contribute/style-guide/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Generating Reference Documentation for Kubernetes Federation API" href="/docs/home/contribute/generated-reference/federation-api/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Generating Reference Documentation for kubectl Commands" href="/docs/home/contribute/generated-reference/kubectl/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Generating Reference Documentation for the Kubernetes API" href="/docs/home/contribute/generated-reference/kubernetes-api/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Generating Reference Pages for Kubernetes Components and Tools" href="/docs/home/contribute/generated-reference/kubernetes-components/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Localizing Kubernetes Documentation" href="/docs/home/contribute/localization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Participating in SIG-DOCS" href="/docs/home/contribute/participating/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Reviewing Documentation Issues" href="/docs/home/contribute/review-issues/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using Page Templates" href="/docs/home/contribute/page-templates/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Writing a Blog Post" href="/docs/home/contribute/blog-post/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Writing a New Topic" href="/docs/home/contribute/write-new-topic/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Supported Versions of the Kubernetes Documentation" href="/docs/home/supported-doc-versions/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/home/contribute/create-pull-request.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>Creating a Documentation Pull Request</h1>
+
+
+
+
+<p>To contribute to the Kubernetes documentation, create a pull request against the
+<a href="https://github.com/kubernetes/website" target="_blank" class="_">kubernetes/website</a>
+repository. This page shows how to create a pull request.</p>
+
+
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+<li><a href="#before-you-begin">Before you begin</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#creating-a-fork-of-the-kubernetes-documentation-repository">Creating a fork of the Kubernetes documentation repository</a></li>
+
+
+
+
+<li><a href="#making-your-changes">Making your changes</a></li>
+
+
+
+
+<li><a href="#viewing-your-changes-locally">Viewing your changes locally</a></li>
+
+
+
+
+<li><a href="#viewing-your-changes-in-the-netlify-preview">Viewing your changes in the Netlify preview</a></li>
+
+
+
+
+<li><a href="#submitting-a-pull-request-to-the-master-branch-current-release">Submitting a pull request to the master branch (Current Release)</a></li>
+
+
+
+
+<li><a href="#submitting-a-pull-request-to-the-lt-vnext-gt-branch-upcoming-release">Submitting a pull request to the <vnext> branch (Upcoming Release)</a></li>
+
+
+
+
+<li><a href="#pull-request-review-process-for-both-current-and-upcoming-releases">Pull request review process for both Current and Upcoming Releases</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#what-s-next">What's next</a></li>
+
+
+
+</ul>
+
+
+
+<h2 id="before-you-begin">Before you begin</h2>
+<ol>
+<li><p>Create a <a href="https://github.com/" target="_blank" class="_">Github account</a>.</p></li>
+
+<li><p>Sign the
+<a href="https://identity.linuxfoundation.org/projects/cncf" target="_blank" class="_">Linux Foundation Contributor License Agreement (CLA)</a>.</p></li>
+</ol>
+
+<p>Documentation will be published under the <a href="https://git.k8s.io/website/LICENSE" target="_blank">CC BY SA 4.0</a> license.</p>
+
+
+
+
+<h2 id="creating-a-fork-of-the-kubernetes-documentation-repository">Creating a fork of the Kubernetes documentation repository</h2>
+
+<ol>
+<li><p>Go to the
+<a href="https://github.com/kubernetes/website" target="_blank" class="_">kubernetes/website</a>
+repository.</p></li>
+
+<li><p>In the upper-right corner, click <strong>Fork</strong>. This creates a copy of the
+Kubernetes documentation repository in your GitHub account. The copy
+is called a <em>fork</em>.</p></li>
+</ol>
+
+<h2 id="making-your-changes">Making your changes</h2>
+
+<ol>
+<li><p>In your GitHub account, in your fork of the Kubernetes docs, create
+a new branch to use for your contribution.</p></li>
+
+<li><p>In your new branch, make your changes and commit them. If you want to
+<a href="/docs/home/contribute/write-new-topic/">write a new topic</a>,
+choose the
+<a href="/docs/home/contribute/page-templates/">page type</a>
+that is the best fit for your content.</p></li>
+</ol>
+
+<h2 id="viewing-your-changes-locally">Viewing your changes locally</h2>
+
+<p>You can use Hugo to see a preview of your changes locally.</p>
+
+<ol>
+<li><p><a href="https://gohugo.io/getting-started/installing/" target="_blank">Install Hugo</a>
+version 0.40.3 or later.</p></li>
+
+<li><p>Go to the root directory of your clone of the Kubernetes docs, and
+enter this command:</p>
+
+<pre><code>hugo server
+</code></pre></li>
+
+<li><p>In your browser&rsquo;s address bar, enter <code>localhost:1313</code>.</p></li>
+</ol>
+
+<h2 id="viewing-your-changes-in-the-netlify-preview">Viewing your changes in the Netlify preview</h2>
+
+<p>When you submit a pull request, you can see a preview of your changes at
+<a href="https://www.netlify.com/" target="_blank">Netlify</a>. In your pull request, at the bottom,
+to the right of <strong>deploy/netlify</strong>, click <strong>Details</strong>. Also, there is often
+a link to the Netlify preview in the pull request comments.</p>
+
+<h2 id="submitting-a-pull-request-to-the-master-branch-current-release">Submitting a pull request to the master branch (Current Release)</h2>
+
+<p>If you want your change to be published in the released version Kubernetes docs,
+create a pull request against the master branch of the Kubernetes
+documentation repository.</p>
+
+<ol>
+<li><p>In your GitHub account, in your new branch, create a pull request
+against the master branch of the kubernetes/website
+repository. This opens a page that shows the status of your pull request.</p></li>
+
+<li><p>Click <strong>Show all checks</strong>. Wait for the <strong>deploy/netlify</strong> check to complete.
+To the right of <strong>deploy/netlify</strong>, click <strong>Details</strong>. This opens a staging
+site where you can verify that your changes have rendered correctly.</p></li>
+
+<li><p>During the next few days, check your pull request for reviewer comments.
+If needed, revise your pull request by committing changes to your
+new branch in your fork.</p></li>
+</ol>
+
+<h2 id="submitting-a-pull-request-to-the-lt-vnext-gt-branch-upcoming-release">Submitting a pull request to the &lt;vnext&gt; branch (Upcoming Release)</h2>
+
+<p>If your documentation change should not be released until the next release of
+the Kubernetes product, create a pull request against the &lt;vnext&gt; branch
+of the Kubernetes documentation repository. The &lt;vnext&gt; branch has the
+form <code>release-&lt;version-number&gt;</code>, for example release-1.5.</p>
+
+<ol>
+<li><p>In your GitHub account, in your new branch, create a pull request
+against the &lt;vnext&gt; branch of the kubernetes/website
+repository. This opens a page that shows the status of your pull request.</p></li>
+
+<li><p>Click <strong>Show all checks</strong>. Wait for the <strong>deploy/netlify</strong> check to complete.
+To the right of <strong>deploy/netlify</strong>, click <strong>Details</strong>. This opens a staging
+site where you can verify that your changes have rendered correctly.</p></li>
+
+<li><p>During the next few days, check your pull request for reviewer comments.
+If needed, revise your pull request by committing changes to your
+new branch in your fork.</p></li>
+</ol>
+
+<p>The staging site for the upcoming Kubernetes release is here:
+<a href="http://kubernetes-io-vnext-staging.netlify.com/" target="_blank">http://kubernetes-io-vnext-staging.netlify.com/</a>.
+The staging site reflects the current state of what&rsquo;s been merged in the
+release branch, or in other words, what the docs will look like for the
+next upcoming release. It&rsquo;s automatically updated as new PRs get merged.</p>
+
+<h2 id="pull-request-review-process-for-both-current-and-upcoming-releases">Pull request review process for both Current and Upcoming Releases</h2>
+
+<p>Once your pull request is created, a Kubernetes reviewer will take responsibility for providing clear, actionable feedback.  As the owner of the pull request, <strong>it is your responsibility to modify your pull request to address the feedback that has been provided to you by the Kubernetes reviewer.</strong>  Also note that you may end up having more than one Kubernetes reviewer provide you feedback or you may end up getting feedback from a Kubernetes reviewer that is different than the one originally assigned to provide you feedback.  Furthermore, in some cases, one of your reviewers might ask for a technical review from a <a href="https://github.com/kubernetes/website/wiki/Tech-reviewers" target="_blank">Kubernetes tech reviewer</a> when needed.  Reviewers will do their best to provide feedback in a timely fashion but response time can vary based on circumstances.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="what-s-next">What&#39;s next</h2>
+<ul>
+<li>Learn about <a href="/docs/home/contribute/write-new-topic/">writing a new topic</a>.</li>
+<li>Learn about <a href="/docs/home/contribute/page-templates/">using page templates</a>.</li>
+<li>Learn about <a href="/docs/home/contribute/stage-documentation-changes/">staging your changes</a>.</li>
+</ul>
+
+
+
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/home/contribute/create-pull-request.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/home\/contribute\/create-pull-request\/",
+					"title" : "Creating a Documentation Pull Request",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/home\/contribute\/create-pull-request\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/home/contribute/create-pull-request.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

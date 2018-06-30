@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Cloud Providers - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="Cloud Providers" />
+<meta property="og:description" content="Cloud Providers" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/concepts/cluster-administration/cloud-providers/" />
+<meta property="og:title" content="Cloud Providers - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+
+
+<h1>Concepts</h1>
+<h5></h5>
+
+
+
+
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/" class="YAH">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Concepts" href="/docs/concepts/"></a>
+
+	
+	
+		
+		
+	<div class="item" data-title="Overview">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="What is Kubernetes?" href="/docs/concepts/overview/what-is-kubernetes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes Components" href="/docs/concepts/overview/components/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="The Kubernetes API" href="/docs/concepts/overview/kubernetes-api/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Working with Kubernetes Objects">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Understanding Kubernetes Objects" href="/docs/concepts/overview/working-with-objects/kubernetes-objects/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Names" href="/docs/concepts/overview/working-with-objects/names/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Namespaces" href="/docs/concepts/overview/working-with-objects/namespaces/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Labels and Selectors" href="/docs/concepts/overview/working-with-objects/labels/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Annotations" href="/docs/concepts/overview/working-with-objects/annotations/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Object Management Using kubectl">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Kubernetes Object Management" href="/docs/concepts/overview/object-management-kubectl/overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Managing Kubernetes Objects Using Imperative Commands" href="/docs/concepts/overview/object-management-kubectl/imperative-command/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Imperative Management of Kubernetes Objects Using Configuration Files" href="/docs/concepts/overview/object-management-kubectl/imperative-config/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Declarative Management of Kubernetes Objects Using Configuration Files" href="/docs/concepts/overview/object-management-kubectl/declarative-config/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Compute, Storage, and Networking Extensions">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Cluster Administration Overview" href="/docs/concepts/cluster-administration/cluster-administration-overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Certificates" href="/docs/concepts/cluster-administration/certificates/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Cloud Providers" href="/docs/concepts/cluster-administration/cloud-providers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Managing Resources" href="/docs/concepts/cluster-administration/manage-deployment/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Cluster Networking" href="/docs/concepts/cluster-administration/networking/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Logging Architecture" href="/docs/concepts/cluster-administration/logging/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configuring kubelet Garbage Collection" href="/docs/concepts/cluster-administration/kubelet-garbage-collection/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federation" href="/docs/concepts/cluster-administration/federation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Proxies in Kubernetes" href="/docs/concepts/cluster-administration/proxies/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Controller manager metrics" href="/docs/concepts/cluster-administration/controller-metrics/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Installing Addons" href="/docs/concepts/cluster-administration/addons/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Kubernetes Architecture">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Nodes" href="/docs/concepts/architecture/nodes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Master-Node communication" href="/docs/concepts/architecture/master-node-communication/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Concepts Underlying the Cloud Controller Manager" href="/docs/concepts/architecture/cloud-controller/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Extending Kubernetes">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Extending your Kubernetes Cluster" href="/docs/concepts/extend-kubernetes/extend-cluster/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Extending the Kubernetes API">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Extending the Kubernetes API with the aggregation layer" href="/docs/concepts/extend-kubernetes/api-extension/apiserver-aggregation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Custom Resources" href="/docs/concepts/extend-kubernetes/api-extension/custom-resources/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Compute, Storage, and Networking Extensions">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Network Plugins" href="/docs/concepts/extend-kubernetes/compute-storage-net/network-plugins/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Device Plugins" href="/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Service Catalog" href="/docs/concepts/extend-kubernetes/service-catalog/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Containers">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Images" href="/docs/concepts/containers/images/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Container Environment Variables" href="/docs/concepts/containers/container-environment-variables/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Container Lifecycle Hooks" href="/docs/concepts/containers/container-lifecycle-hooks/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Workloads">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+	<div class="item" data-title="Pods">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Pod Overview" href="/docs/concepts/workloads/pods/pod-overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pods" href="/docs/concepts/workloads/pods/pod/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pod Lifecycle" href="/docs/concepts/workloads/pods/pod-lifecycle/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Init Containers" href="/docs/concepts/workloads/pods/init-containers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pod Preset" href="/docs/concepts/workloads/pods/podpreset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Disruptions" href="/docs/concepts/workloads/pods/disruptions/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Controllers">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="ReplicaSet" href="/docs/concepts/workloads/controllers/replicaset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="ReplicationController" href="/docs/concepts/workloads/controllers/replicationcontroller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Deployments" href="/docs/concepts/workloads/controllers/deployment/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="StatefulSets" href="/docs/concepts/workloads/controllers/statefulset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="DaemonSet" href="/docs/concepts/workloads/controllers/daemonset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Garbage Collection" href="/docs/concepts/workloads/controllers/garbage-collection/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Jobs - Run to Completion" href="/docs/concepts/workloads/controllers/jobs-run-to-completion/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="CronJob" href="/docs/concepts/workloads/controllers/cron-jobs/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Configuration">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Configuration Best Practices" href="/docs/concepts/configuration/overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Managing Compute Resources for Containers" href="/docs/concepts/configuration/manage-compute-resources-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Assigning Pods to Nodes" href="/docs/concepts/configuration/assign-pod-node/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Taints and Tolerations" href="/docs/concepts/configuration/taint-and-toleration/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Secrets" href="/docs/concepts/configuration/secret/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Organizing Cluster Access Using kubeconfig Files" href="/docs/concepts/configuration/organize-cluster-access-kubeconfig/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pod Priority and Preemption" href="/docs/concepts/configuration/pod-priority-preemption/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Services, Load Balancing, and Networking">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Services" href="/docs/concepts/services-networking/service/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="DNS for Services and Pods" href="/docs/concepts/services-networking/dns-pod-service/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Connecting Applications with Services" href="/docs/concepts/services-networking/connect-applications-service/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Ingress" href="/docs/concepts/services-networking/ingress/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Network Policies" href="/docs/concepts/services-networking/network-policies/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Adding entries to Pod /etc/hosts with HostAliases" href="/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Storage">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Volumes" href="/docs/concepts/storage/volumes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Persistent Volumes" href="/docs/concepts/storage/persistent-volumes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Storage Classes" href="/docs/concepts/storage/storage-classes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Dynamic Volume Provisioning" href="/docs/concepts/storage/dynamic-provisioning/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Node-specific Volume Limits" href="/docs/concepts/storage/storage-limits/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Policies">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Resource Quotas" href="/docs/concepts/policy/resource-quotas/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pod Security Policies" href="/docs/concepts/policy/pod-security-policy/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/concepts/cluster-administration/cloud-providers.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>Cloud Providers</h1>
+
+
+
+<p>This page explains how to manage Kubernetes running on a specific
+cloud provider.</p>
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+<li><a href="#aws">AWS</a></li>
+
+
+
+
+<li><a href="#azure">Azure</a></li>
+
+
+
+
+<li><a href="#cloudstack">CloudStack</a></li>
+
+
+
+
+<li><a href="#gce">GCE</a></li>
+
+
+
+
+<li><a href="#openstack">OpenStack</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#ovirt">OVirt</a></li>
+
+
+
+
+<li><a href="#photon">Photon</a></li>
+
+
+
+
+<li><a href="#vsphere">VSphere</a></li>
+
+
+
+
+
+
+
+
+
+
+
+</ul>
+
+
+<h2 id="aws">AWS</h2>
+
+<p>This section describes all the possible configurations which can
+be used when running Kubernetes on Amazon Web Services.</p>
+
+<h3 id="node-name">Node Name</h3>
+
+<p>The AWS cloud provider uses the private DNS name of the AWS instance as the name of the Kubernetes Node object.</p>
+
+<h3 id="load-balancers">Load Balancers</h3>
+
+<p>You can setup <a href="/docs/tasks/access-application-cluster/create-external-load-balancer/">external load balancers</a>
+to use specific features in AWS by configuring the annotations as shown below.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Service<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>example<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>namespace:<span style="color:#bbb"> </span>kube-system<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>labels:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>run:<span style="color:#bbb"> </span>example<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>annotations:<span style="color:#bbb">
+</span><span style="color:#bbb">     </span>service.beta.kubernetes.io/aws-load-balancer-ssl-cert:<span style="color:#bbb"> </span>arn:aws:acm:xx-xxxx-x:xxxxxxxxx:xxxxxxx/xxxxx-xxxx-xxxx-xxxx-xxxxxxxxx<span style="color:#bbb"> </span><span style="color:#080;font-style:italic">#replace this value</span><span style="color:#bbb">
+</span><span style="color:#bbb">     </span>service.beta.kubernetes.io/aws-load-balancer-backend-protocol:<span style="color:#bbb"> </span>http<span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>type:<span style="color:#bbb"> </span>LoadBalancer<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>ports:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>port:<span style="color:#bbb"> </span><span style="color:#666">443</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>targetPort:<span style="color:#bbb"> </span><span style="color:#666">5556</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>protocol:<span style="color:#bbb"> </span>TCP<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>selector:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>app:<span style="color:#bbb"> </span>example</code></pre></div>
+<p>Different settings can be applied to a load balancer service in AWS using <em>annotations</em>. The following describes the annotations supported on AWS ELBs:</p>
+
+<ul>
+<li><code>service.beta.kubernetes.io/aws-load-balancer-access-log-emit-interval</code>: Used to specify access log emit interval.</li>
+<li><code>service.beta.kubernetes.io/aws-load-balancer-access-log-enabled</code>: Used on the service to enable or disable access logs.</li>
+<li><code>service.beta.kubernetes.io/aws-load-balancer-access-log-s3-bucket-name</code>: Used to specify access log s3 bucket name.</li>
+<li><code>service.beta.kubernetes.io/aws-load-balancer-access-log-s3-bucket-prefix</code>: Used to specify access log s3 bucket prefix.</li>
+<li><code>service.beta.kubernetes.io/aws-load-balancer-additional-resource-tags</code>: Used on the service to specify a comma-separated list of key-value pairs which will be recorded as additional tags in the ELB. For example: <code>&quot;Key1=Val1,Key2=Val2,KeyNoVal1=,KeyNoVal2&quot;</code>.</li>
+<li><code>service.beta.kubernetes.io/aws-load-balancer-backend-protocol</code>: Used on the service to specify the protocol spoken by the backend (pod) behind a listener. If <code>http</code> (default) or <code>https</code>, an HTTPS listener that terminates the connection and parses headers is created. If set to <code>ssl</code> or <code>tcp</code>, a &ldquo;raw&rdquo; SSL listener is used. If set to <code>http</code> and <code>aws-load-balancer-ssl-cert</code> is not used then a HTTP listener is used.</li>
+<li><code>service.beta.kubernetes.io/aws-load-balancer-ssl-cert</code>: Used on the service to request a secure listener. Value is a valid certificate ARN. For more, see <a href="http://docs.aws.amazon.com/ElasticLoadBalancing/latest/DeveloperGuide/elb-listener-config.html" target="_blank">ELB Listener Config</a> CertARN is an IAM or CM certificate ARN, e.g. <code>arn:aws:acm:us-east-1:123456789012:certificate/12345678-1234-1234-1234-123456789012</code>.</li>
+<li><code>service.beta.kubernetes.io/aws-load-balancer-connection-draining-enabled</code>: Used on the service to enable or disable connection draining.</li>
+<li><code>service.beta.kubernetes.io/aws-load-balancer-connection-draining-timeout</code>: Used on the service to specify a connection draining timeout.</li>
+<li><code>service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout</code>: Used on the service to specify the idle connection timeout.</li>
+<li><code>service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled</code>: Used on the service to enable or disable cross-zone load balancing.</li>
+<li><code>service.beta.kubernetes.io/aws-load-balancer-extra-security-groups</code>: Used on the service to specify additional security groups to be added to ELB created</li>
+<li><code>service.beta.kubernetes.io/aws-load-balancer-internal</code>: Used on the service to indicate that we want an internal ELB.</li>
+<li><code>service.beta.kubernetes.io/aws-load-balancer-proxy-protocol</code>: Used on the service to enable the proxy protocol on an ELB. Right now we only accept the value <code>*</code> which means enable the proxy protocol on all ELB backends. In the future we could adjust this to allow setting the proxy protocol only on certain backends.</li>
+<li><code>service.beta.kubernetes.io/aws-load-balancer-ssl-ports</code>: Used on the service to specify a comma-separated list of ports that will use SSL/HTTPS listeners. Defaults to <code>*</code> (all)</li>
+</ul>
+
+<p>The information for the annotations for AWS is taken from the comments on <a href="https://github.com/kubernetes/kubernetes/blob/master/pkg/cloudprovider/providers/aws/aws.go" target="_blank">aws.go</a></p>
+
+<h2 id="azure">Azure</h2>
+
+<h3 id="node-name-1">Node Name</h3>
+
+<p>The Azure cloud provider uses the hostname of the node (as determined by the kubelet or overridden with <code>--hostname-override</code>) as the name of the Kubernetes Node object.
+Note that the Kubernetes Node name must match the Azure VM name.</p>
+
+<h2 id="cloudstack">CloudStack</h2>
+
+<h3 id="node-name-2">Node Name</h3>
+
+<p>The CloudStack cloud provider uses the hostname of the node (as determined by the kubelet or overridden with <code>--hostname-override</code>) as the name of the Kubernetes Node object.
+Note that the Kubernetes Node name must match the CloudStack VM name.</p>
+
+<h2 id="gce">GCE</h2>
+
+<h3 id="node-name-3">Node Name</h3>
+
+<p>The GCE cloud provider uses the hostname of the node (as determined by the kubelet or overridden with <code>--hostname-override</code>) as the name of the Kubernetes Node object.
+Note that the first segment of the Kubernetes Node name must match the GCE instance name (e.g. a Node named <code>kubernetes-node-2.c.my-proj.internal</code> must correspond to an instance named <code>kubernetes-node-2</code>).</p>
+
+<h2 id="openstack">OpenStack</h2>
+
+<p>This section describes all the possible configurations which can
+be used when using OpenStack with Kubernetes.</p>
+
+<h3 id="node-name-4">Node Name</h3>
+
+<p>The OpenStack cloud provider uses the instance name (as determined from OpenStack metadata) as the name of the Kubernetes Node object.
+Note that the instance name must be a valid Kubernetes Node name in order for the kubelet to successfully register its Node object.</p>
+
+<h3 id="services">Services</h3>
+
+<p>The OpenStack cloud provider
+implementation for Kubernetes supports the use of these OpenStack services from
+the underlying cloud, where available:</p>
+
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>API Version(s)</th>
+<th>Required</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Block Storage (Cinder)</td>
+<td>V1†, V2, V3</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>Compute (Nova)</td>
+<td>V2</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>Identity (Keystone)</td>
+<td>V2‡,  V3</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>Load Balancing (Neutron)</td>
+<td>V1§, V2</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>Load Balancing (Octavia)</td>
+<td>V2</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+
+<p>† Block Storage V1 API support is deprecated, Block Storage V3 API support was
+added in Kubernetes 1.9.</p>
+
+<p>‡ Identity V2 API support is deprecated and will be removed from the provider in
+a future release. As of the &ldquo;Queens&rdquo; release, OpenStack will no longer expose the
+Identity V2 API.</p>
+
+<p>§ Load Balancing V1 API support was removed in Kubernetes 1.9.</p>
+
+<p>Service discovery is achieved by listing the service catalog managed by
+OpenStack Identity (Keystone) using the <code>auth-url</code> provided in the provider
+configuration. The provider will gracefully degrade in functionality when
+OpenStack services other than Keystone are not available and simply disclaim
+support for impacted features. Certain features are also enabled or disabled
+based on the list of extensions published by Neutron in the underlying cloud.</p>
+
+<h3 id="cloud-conf">cloud.conf</h3>
+
+<p>Kubernetes knows how to interact with OpenStack via the file cloud.conf. It is
+the file that will provide Kubernetes with credentials and location for the OpenStack auth endpoint.
+You can create a cloud.conf file by specifying the following details in it</p>
+
+<h4 id="typical-configuration">Typical configuration</h4>
+
+<p>This is an example of a typical configuration that touches the values that most
+often need to be set. It points the provider at the OpenStack cloud&rsquo;s Keystone
+endpoint, provides details for how to authenticate with it, and configures the
+load balancer:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">[Global]<span style="color:#bbb">
+</span><span style="color:#bbb"></span>username=user<span style="color:#bbb">
+</span><span style="color:#bbb"></span>password=pass<span style="color:#bbb">
+</span><span style="color:#bbb"></span>auth-url=https://&lt;keystone_ip&gt;/identity/v3<span style="color:#bbb">
+</span><span style="color:#bbb"></span>tenant-id=c869168a828847f39f7f06edd7305637<span style="color:#bbb">
+</span><span style="color:#bbb"></span>domain-id=2a73b8f597c04551a0fdc8e95544be8a<span style="color:#bbb">
+</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>[LoadBalancer]<span style="color:#bbb">
+</span><span style="color:#bbb"></span>subnet-id=6937f8fa-858d-4bc9-a3a5-18d2c957166a</code></pre></div>
+<h5 id="global">Global</h5>
+
+<p>These configuration options for the OpenStack provider pertain to its global
+configuration and should appear in the <code>[Global]</code> section of the <code>cloud.conf</code>
+file:</p>
+
+<ul>
+<li><code>auth-url</code> (Required): The URL of the keystone API used to authenticate. On
+OpenStack control panels, this can be found at Access and Security &gt; API
+Access &gt; Credentials.</li>
+<li><code>username</code> (Required): Refers to the username of a valid user set in keystone.</li>
+<li><code>password</code> (Required): Refers to the password of a valid user set in keystone.</li>
+<li><code>tenant-id</code> (Required): Used to specify the id of the project where you want
+to create your resources.</li>
+<li><code>tenant-name</code> (Optional): Used to specify the name of the project where you
+want to create your resources.</li>
+<li><code>trust-id</code> (Optional): Used to specify the identifier of the trust to use for
+authorization. A trust represents a user&rsquo;s (the trustor) authorization to
+delegate roles to another user (the trustee), and optionally allow the trustee
+to impersonate the trustor. Available trusts are found under the
+<code>/v3/OS-TRUST/trusts</code> endpoint of the Keystone API.</li>
+<li><code>domain-id</code> (Optional): Used to specify the id of the domain your user belongs
+to.</li>
+<li><code>domain-name</code> (Optional): Used to specify the name of the domain your user
+belongs to.</li>
+<li><code>region</code> (Optional): Used to specify the identifier of the region to use when
+running on a multi-region OpenStack cloud. A region is a general division of
+an OpenStack deployment. Although a region does not have a strict geographical
+connotation, a deployment can use a geographical name for a region identifier
+such as <code>us-east</code>. Available regions are found under the <code>/v3/regions</code>
+endpoint of the Keystone API.</li>
+<li><code>ca-file</code> (Optional): Used to specify the path to your custom CA file.</li>
+</ul>
+
+<p>When using Keystone V3 - which changes tenant to project - the <code>tenant-id</code> value
+is automatically mapped to the project construct in the API.</p>
+
+<h5 id="load-balancer">Load Balancer</h5>
+
+<p>These configuration options for the OpenStack provider pertain to the load
+balancer and should appear in the <code>[LoadBalancer]</code> section of the <code>cloud.conf</code>
+file:</p>
+
+<ul>
+<li><code>lb-version</code> (Optional): Used to override automatic version detection. Valid
+values are <code>v1</code> or <code>v2</code>. Where no value is provided automatic detection will
+select the highest supported version exposed by the underlying OpenStack
+cloud.</li>
+<li><code>use-octavia</code> (Optional): Used to determine whether to look for and use an
+Octavia LBaaS V2 service catalog endpoint. Valid values are <code>true</code> or <code>false</code>.
+Where <code>true</code> is specified and an Octaiva LBaaS V2 entry can not be found, the
+provider will fall back and attempt to find a Neutron LBaaS V2 endpoint
+instead. The default value is <code>false</code>.</li>
+<li><code>subnet-id</code> (Optional): Used to specify the id of the subnet you want to
+create your loadbalancer on. Can be found at Network &gt; Networks. Click on the
+respective network to get its subnets.</li>
+<li><code>floating-network-id</code> (Optional): If specified, will create a floating IP for
+the load balancer.</li>
+<li><code>lb-method</code> (Optional): Used to specify algorithm by which load will be
+distributed amongst members of the load balancer pool. The value can be
+<code>ROUND_ROBIN</code>, <code>LEAST_CONNECTIONS</code>, or <code>SOURCE_IP</code>. The default behavior if
+none is specified is <code>ROUND_ROBIN</code>.</li>
+<li><code>lb-provider</code> (Optional): Used to specify the provider of the load balancer.
+If not specified, the default provider service configured in neutron will be
+used.</li>
+<li><code>create-monitor</code> (Optional): Indicates whether or not to create a health
+monitor for the Neutron load balancer. Valid values are <code>true</code> and <code>false</code>.
+The default is <code>false</code>. When <code>true</code> is specified then <code>monitor-delay</code>,
+<code>monitor-timeout</code>, and <code>monitor-max-retries</code> must also be set.</li>
+<li><code>monitor-delay</code> (Optional): The time, in seconds, between sending probes to
+members of the load balancer.</li>
+<li><code>monitor-timeout</code> (Optional): Maximum number of seconds for a monitor to wait
+for a ping reply before it times out. The value must be less than the delay
+value.</li>
+<li><code>monitor-max-retries</code> (Optional): Number of permissible ping failures before
+changing the load balancer member&rsquo;s status to INACTIVE. Must be a number
+between 1 and 10.</li>
+<li><code>manage-security-groups</code> (Optional): Determines whether or not the load
+balancer should automatically manage the security group rules. Valid values
+are <code>true</code> and <code>false</code>. The default is <code>false</code>. When <code>true</code> is specified
+<code>node-security-group</code> must also be supplied.</li>
+<li><code>node-security-group</code> (Optional): ID of the security group to manage.</li>
+</ul>
+
+<h5 id="block-storage">Block Storage</h5>
+
+<p>These configuration options for the OpenStack provider pertain to block storage
+and should appear in the <code>[BlockStorage]</code> section of the <code>cloud.conf</code> file:</p>
+
+<ul>
+<li><code>bs-version</code> (Optional): Used to override automatic version detection. Valid
+values are <code>v1</code>, <code>v2</code>, <code>v3</code> and <code>auto</code>. When <code>auto</code> is specified automatic
+detection will select the highest supported version exposed by the underlying
+OpenStack cloud. The default value if none is provided is <code>auto</code>.</li>
+<li><code>trust-device-path</code> (Optional): In most scenarios the block device names
+provided by Cinder (e.g. <code>/dev/vda</code>) can not be trusted. This boolean toggles
+this behavior. Setting it to <code>true</code> results in trusting the block device names
+provided by Cinder. The default value of <code>false</code> results in the discovery of
+the device path based on its serial number and <code>/dev/disk/by-id</code> mapping and is
+the recommended approach.</li>
+<li><code>ignore-volume-az</code> (Optional): Used to influence availability zone use when
+attaching Cinder volumes. When Nova and Cinder have different availability
+zones, this should be set to <code>true</code>. This is most commonly the case where
+there are many Nova availability zones but only one Cinder availability zone.
+The default value is <code>false</code> to preserve the behavior used in earlier
+releases, but may change in the future.</li>
+</ul>
+
+<p>If deploying Kubernetes versions &lt;= 1.8 on an OpenStack deployment that uses
+paths rather than ports to differentiate between endpoints it may be necessary
+to explicitly set the <code>bs-version</code> parameter. A path based endpoint is of the
+form <code>http://foo.bar/volume</code> while a port based endpoint is of the form
+<code>http://foo.bar:xxx</code>.</p>
+
+<p>In environments that use path based endpoints and Kubernetes is using the older
+auto-detection logic a <code>BS API version autodetection failed.</code> error will be
+returned on attempting volume detachment. To workaround this issue it is
+possible to force the use of Cinder API version 2 by adding this to the cloud
+provider configuration:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">[BlockStorage]<span style="color:#bbb">
+</span><span style="color:#bbb"></span>bs-version=v2</code></pre></div>
+<h5 id="metadata">Metadata</h5>
+
+<p>These configuration options for the OpenStack provider pertain to metadata and
+should appear in the <code>[Metadata]</code> section of the <code>cloud.conf</code> file:</p>
+
+<ul>
+<li><code>search-order</code> (Optional): This configuration key influences the way that the
+provider retrieves metadata relating to the instance(s) in which it runs. The
+default value of <code>configDrive,metadataService</code> results in the provider
+retrieving metadata relating to the instance from the config drive first if
+available and then the metadata service. Alternative values are:
+
+<ul>
+<li><code>configDrive</code> - Only retrieve instance metadata from the configuration
+drive.</li>
+<li><code>metadataService</code> - Only retrieve instance metadata from the metadata
+service.</li>
+<li><code>metadataService,configDrive</code> - Retrieve instance metadata from the metadata
+service first if available, then the configuration drive.</li>
+</ul></li>
+</ul>
+
+<p>Influencing this behavior may be desirable as the metadata on the
+  configuration drive may grow stale over time, whereas the metadata service
+  always provides the most up to date view. Not all OpenStack clouds provide
+  both configuration drive and metadata service though and only one or the other
+  may be available which is why the default is to check both.</p>
+
+<h5 id="router">Router</h5>
+
+<p>These configuration options for the OpenStack provider pertain to the <a href="https://kubernetes.io/docs/concepts/cluster-administration/network-plugins/#kubenet" target="_blank">kubenet</a>
+Kubernetes network plugin and should appear in the <code>[Router]</code> section of the
+<code>cloud.conf</code> file:</p>
+
+<ul>
+<li><code>router-id</code> (Optional): If the underlying cloud&rsquo;s Neutron deployment supports
+the <code>extraroutes</code> extension then use <code>router-id</code> to specify a router to add
+routes to.  The router chosen must span the private networks containing your
+cluster nodes (typically there is only one node network, and this value should be
+the default router for the node network).  This value is required to use <a href="https://kubernetes.io/docs/concepts/cluster-administration/network-plugins/#kubenet" target="_blank">kubenet</a>
+on OpenStack.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+<h2 id="ovirt">OVirt</h2>
+
+<h3 id="node-name">Node Name</h3>
+
+<p>The OVirt cloud provider uses the hostname of the node (as determined by the kubelet or overridden with <code>--hostname-override</code>) as the name of the Kubernetes Node object.
+Note that the Kubernetes Node name must match the VM FQDN (reported by OVirt under <code>&lt;vm&gt;&lt;guest_info&gt;&lt;fqdn&gt;...&lt;/fqdn&gt;&lt;/guest_info&gt;&lt;/vm&gt;</code>)</p>
+
+<h2 id="photon">Photon</h2>
+
+<h3 id="node-name-1">Node Name</h3>
+
+<p>The Photon cloud provider uses the hostname of the node (as determined by the kubelet or overridden with <code>--hostname-override</code>) as the name of the Kubernetes Node object.
+Note that the Kubernetes Node name must match the Photon VM name (or if <code>overrideIP</code> is set to true in the <code>--cloud-config</code>, the Kubernetes Node name must match the Photon VM IP address).</p>
+
+<h2 id="vsphere">VSphere</h2>
+
+<h3 id="node-name-2">Node Name</h3>
+
+<p>The VSphere cloud provider uses the hostname of the node (as determined by the kubelet or overridden with <code>--hostname-override</code>) as the name of the Kubernetes Node object.</p>
+
+
+
+
+
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/concepts/cluster-administration/cloud-providers.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/concepts\/cluster-administration\/cloud-providers\/",
+					"title" : "Cloud Providers",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/concepts\/cluster-administration\/cloud-providers\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/concepts/cluster-administration/cloud-providers.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

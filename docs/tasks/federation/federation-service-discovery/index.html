@@ -1,0 +1,2036 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Cross-cluster Service Discovery using Federated Services - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="Cross-cluster Service Discovery using Federated Services" />
+<meta property="og:description" content="Cross-cluster Service Discovery using Federated Services" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/tasks/federation/federation-service-discovery/" />
+<meta property="og:title" content="Cross-cluster Service Discovery using Federated Services - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+
+
+
+
+<h1>Tasks</h1>
+<h5></h5>
+
+
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/" class="YAH">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Tasks" href="/docs/tasks/"></a>
+
+	
+	
+		
+		
+	<div class="item" data-title="Install Tools">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Install and Set Up kubectl" href="/docs/tasks/tools/install-kubectl/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Install Minikube" href="/docs/tasks/tools/install-minikube/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Installing kubeadm" href="/docs/tasks/tools/install-kubeadm/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Administer a Cluster">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+	<div class="item" data-title="Administration with kubeadm">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Upgrading kubeadm HA clusters from 1.9.x to 1.9.y" href="/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-ha/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Upgrading kubeadm clusters from 1.7 to 1.8" href="/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-1-8/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Upgrading kubeadm clusters from v1.10 to v1.11" href="/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-1-11/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Upgrading/downgrading kubeadm clusters between v1.8 to v1.9" href="/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-1-9/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Manage Memory, CPU, and API Resources">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Configure Default Memory Requests and Limits for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/memory-default-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Default CPU Requests and Limits for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/cpu-default-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Minimum and Maximum Memory Constraints for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/memory-constraint-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Minimum and Maximum CPU Constraints for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/cpu-constraint-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Memory and CPU Quotas for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/quota-memory-cpu-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod Quota for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/quota-pod-namespace/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Install a Network Policy Provider">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Use Calico for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/calico-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use Cilium for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/cilium-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use Kube-router for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/kube-router-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Romana for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/romana-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Weave Net for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/weave-network-policy/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Access Clusters Using the Kubernetes API" href="/docs/tasks/administer-cluster/access-cluster-api/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Access Services Running on Clusters" href="/docs/tasks/administer-cluster/access-cluster-services/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Advertise Extended Resources for a Node" href="/docs/tasks/administer-cluster/extended-resource-node/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Autoscale the DNS Service in a Cluster" href="/docs/tasks/administer-cluster/dns-horizontal-autoscaling/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Change the Reclaim Policy of a PersistentVolume" href="/docs/tasks/administer-cluster/change-pv-reclaim-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Change the default StorageClass" href="/docs/tasks/administer-cluster/change-default-storage-class/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Cluster Management" href="/docs/tasks/administer-cluster/cluster-management/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Multiple Schedulers" href="/docs/tasks/administer-cluster/configure-multiple-schedulers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Out Of Resource Handling" href="/docs/tasks/administer-cluster/out-of-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Quotas for API Objects" href="/docs/tasks/administer-cluster/quota-api-object/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Control CPU Management Policies on the Node" href="/docs/tasks/administer-cluster/cpu-management-policies/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Customizing DNS Service" href="/docs/tasks/administer-cluster/dns-custom-nameservers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debugging DNS Resolution" href="/docs/tasks/administer-cluster/dns-debugging-resolution/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Declare Network Policy" href="/docs/tasks/administer-cluster/declare-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Developing Cloud Controller Manager" href="/docs/tasks/administer-cluster/developing-cloud-controller-manager/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Encrypting Secret Data at Rest" href="/docs/tasks/administer-cluster/encrypt-data/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Guaranteed Scheduling For Critical Add-On Pods" href="/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="IP Masquerade Agent User Guide" href="/docs/tasks/administer-cluster/ip-masq-agent/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes Cloud Controller Manager" href="/docs/tasks/administer-cluster/running-cloud-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Limit Storage Consumption" href="/docs/tasks/administer-cluster/limit-storage-consumption/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Namespaces Walkthrough" href="/docs/tasks/administer-cluster/namespaces-walkthrough/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Operating etcd clusters for Kubernetes" href="/docs/tasks/administer-cluster/configure-upgrade-etcd/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Reconfigure a Node&#39;s Kubelet in a Live Cluster" href="/docs/tasks/administer-cluster/reconfigure-kubelet/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Reserve Compute Resources for System Daemons" href="/docs/tasks/administer-cluster/reserve-compute-resources/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Safely Drain a Node while Respecting Application SLOs" href="/docs/tasks/administer-cluster/safely-drain-node/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Securing a Cluster" href="/docs/tasks/administer-cluster/securing-a-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set Kubelet parameters via a config file" href="/docs/tasks/administer-cluster/kubelet-config-file/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up High-Availability Kubernetes Masters" href="/docs/tasks/administer-cluster/highly-available-master/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up a Highly Availabile etcd Cluster With kubeadm" href="/docs/tasks/administer-cluster/setup-ha-etcd-with-kubeadm/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Share a Cluster with Namespaces" href="/docs/tasks/administer-cluster/namespaces/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Static Pods" href="/docs/tasks/administer-cluster/static-pod/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Storage Object in Use Protection" href="/docs/tasks/administer-cluster/storage-object-in-use-protection/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using CoreDNS for Service Discovery" href="/docs/tasks/administer-cluster/coredns/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using a KMS provider for data encryption" href="/docs/tasks/administer-cluster/kms-provider/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using sysctls in a Kubernetes Cluster" href="/docs/tasks/administer-cluster/sysctl-cluster/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Configure Pods and Containers">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Assign Memory Resources to Containers and Pods" href="/docs/tasks/configure-pod-container/assign-memory-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Assign CPU Resources to Containers and Pods" href="/docs/tasks/configure-pod-container/assign-cpu-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Quality of Service for Pods" href="/docs/tasks/configure-pod-container/quality-service-pod/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Assign Extended Resources to a Container" href="/docs/tasks/configure-pod-container/extended-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod to Use a Volume for Storage" href="/docs/tasks/configure-pod-container/configure-volume-storage/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod to Use a PersistentVolume for Storage" href="/docs/tasks/configure-pod-container/configure-persistent-volume-storage/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod to Use a Projected Volume for Storage" href="/docs/tasks/configure-pod-container/configure-projected-volume-storage/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Security Context for a Pod or Container" href="/docs/tasks/configure-pod-container/security-context/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Service Accounts for Pods" href="/docs/tasks/configure-pod-container/configure-service-account/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pull an Image from a Private Registry" href="/docs/tasks/configure-pod-container/pull-image-private-registry/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Liveness and Readiness Probes" href="/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Assign Pods to Nodes" href="/docs/tasks/configure-pod-container/assign-pods-nodes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Pod Initialization" href="/docs/tasks/configure-pod-container/configure-pod-initialization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Attach Handlers to Container Lifecycle Events" href="/docs/tasks/configure-pod-container/attach-handler-lifecycle-event/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod to Use a ConfigMap" href="/docs/tasks/configure-pod-container/configure-pod-configmap/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Share Process Namespace between Containers in a Pod" href="/docs/tasks/configure-pod-container/share-process-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Translate a Docker Compose File to Kubernetes Resources" href="/docs/tasks/configure-pod-container/translate-compose-kubernetes/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Inject Data Into Applications">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Define a Command and Arguments for a Container" href="/docs/tasks/inject-data-application/define-command-argument-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Define Environment Variables for a Container" href="/docs/tasks/inject-data-application/define-environment-variable-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Expose Pod Information to Containers Through Environment Variables" href="/docs/tasks/inject-data-application/environment-variable-expose-pod-information/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Expose Pod Information to Containers Through Files" href="/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Distribute Credentials Securely Using Secrets" href="/docs/tasks/inject-data-application/distribute-credentials-secure/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Inject Information into Pods Using a PodPreset" href="/docs/tasks/inject-data-application/podpreset/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Run Applications">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Run a Stateless Application Using a Deployment" href="/docs/tasks/run-application/run-stateless-application-deployment/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Run a Single-Instance Stateful Application" href="/docs/tasks/run-application/run-single-instance-stateful-application/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Run a Replicated Stateful Application" href="/docs/tasks/run-application/run-replicated-stateful-application/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Update API Objects in Place Using kubectl patch" href="/docs/tasks/run-application/update-api-object-kubectl-patch/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Scale a StatefulSet" href="/docs/tasks/run-application/scale-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Delete a StatefulSet" href="/docs/tasks/run-application/delete-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Force Delete StatefulSet Pods" href="/docs/tasks/run-application/force-delete-stateful-set-pod/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Perform Rolling Update Using a Replication Controller" href="/docs/tasks/run-application/rolling-update-replication-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Horizontal Pod Autoscaler" href="/docs/tasks/run-application/horizontal-pod-autoscale/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Horizontal Pod Autoscaler Walkthrough" href="/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Specifying a Disruption Budget for your Application" href="/docs/tasks/run-application/configure-pdb/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Run Jobs">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Running automated tasks with cron jobs" href="/docs/tasks/job/automated-tasks-with-cron-jobs/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Parallel Processing using Expansions" href="/docs/tasks/job/parallel-processing-expansion/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Coarse Parallel Processing Using a Work Queue" href="/docs/tasks/job/coarse-parallel-processing-work-queue/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Fine Parallel Processing Using a Work Queue" href="/docs/tasks/job/fine-parallel-processing-work-queue/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Access Applications in a Cluster">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Web UI (Dashboard)" href="/docs/tasks/access-application-cluster/web-ui-dashboard/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Accessing Clusters" href="/docs/tasks/access-application-cluster/access-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Access to Multiple Clusters" href="/docs/tasks/access-application-cluster/configure-access-multiple-clusters/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use Port Forwarding to Access Applications in a Cluster" href="/docs/tasks/access-application-cluster/port-forward-access-application-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Provide Load-Balanced Access to an Application in a Cluster" href="/docs/tasks/access-application-cluster/load-balance-access-application-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use a Service to Access an Application in a Cluster" href="/docs/tasks/access-application-cluster/service-access-application-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Connect a Front End to a Back End Using a Service" href="/docs/tasks/access-application-cluster/connecting-frontend-backend/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Create an External Load Balancer" href="/docs/tasks/access-application-cluster/create-external-load-balancer/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Your Cloud Provider&#39;s Firewalls" href="/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="List All Container Images Running in a Cluster" href="/docs/tasks/access-application-cluster/list-all-running-container-images/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Communicate Between Containers in the Same Pod Using a Shared Volume" href="/docs/tasks/access-application-cluster/communicate-containers-same-pod-shared-volume/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure DNS for a Cluster" href="/docs/tasks/access-application-cluster/configure-dns-cluster/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Monitor, Log, and Debug">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Application Introspection and Debugging" href="/docs/tasks/debug-application-cluster/debug-application-introspection/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Auditing" href="/docs/tasks/debug-application-cluster/audit/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Core metrics pipeline" href="/docs/tasks/debug-application-cluster/core-metrics-pipeline/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debug Init Containers" href="/docs/tasks/debug-application-cluster/debug-init-containers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debug Pods and Replication Controllers" href="/docs/tasks/debug-application-cluster/debug-pod-replication-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debug Services" href="/docs/tasks/debug-application-cluster/debug-service/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debug a StatefulSet" href="/docs/tasks/debug-application-cluster/debug-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debugging Kubernetes nodes with crictl" href="/docs/tasks/debug-application-cluster/crictl/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Determine the Reason for Pod Failure" href="/docs/tasks/debug-application-cluster/determine-reason-pod-failure/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Developing and debugging services locally" href="/docs/tasks/debug-application-cluster/local-debugging/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Events in Stackdriver" href="/docs/tasks/debug-application-cluster/events-stackdriver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Get a Shell to a Running Container" href="/docs/tasks/debug-application-cluster/get-shell-running-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Logging Using Elasticsearch and Kibana" href="/docs/tasks/debug-application-cluster/logging-elasticsearch-kibana/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Logging Using Stackdriver" href="/docs/tasks/debug-application-cluster/logging-stackdriver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Monitor Node Health" href="/docs/tasks/debug-application-cluster/monitor-node-health/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Tools for Monitoring Compute, Storage, and Network Resources" href="/docs/tasks/debug-application-cluster/resource-usage-monitoring/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Troubleshoot Applications" href="/docs/tasks/debug-application-cluster/debug-application/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Troubleshoot Clusters" href="/docs/tasks/debug-application-cluster/debug-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Troubleshooting" href="/docs/tasks/debug-application-cluster/troubleshooting/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Extend Kubernetes">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Configure the aggregation layer" href="/docs/tasks/access-kubernetes-api/configure-aggregation-layer/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Use Custom Resources">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Extend the Kubernetes API with CustomResourceDefinitions" href="/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Versions of CustomResourceDefinitions" href="/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definition-versioning/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Migrate a ThirdPartyResource to CustomResourceDefinition" href="/docs/tasks/access-kubernetes-api/custom-resources/migrate-third-party-resource/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Setup an extension API server" href="/docs/tasks/access-kubernetes-api/setup-extension-api-server/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use an HTTP Proxy to Access the Kubernetes API" href="/docs/tasks/access-kubernetes-api/http-proxy-access-api/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="TLS">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Certificate Rotation" href="/docs/tasks/tls/certificate-rotation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Manage TLS Certificates in a Cluster" href="/docs/tasks/tls/managing-tls-in-a-cluster/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Federation - Run an App on Multiple Clusters">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Cross-cluster Service Discovery using Federated Services" href="/docs/tasks/federation/federation-service-discovery/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up Cluster Federation with Kubefed" href="/docs/tasks/federation/set-up-cluster-federation-kubefed/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up CoreDNS as DNS provider for Cluster Federation" href="/docs/tasks/federation/set-up-coredns-provider-federation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up placement policies in Federation" href="/docs/tasks/federation/set-up-placement-policies-federation/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Manage Cluster Daemons">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Perform a Rolling Update on a DaemonSet" href="/docs/tasks/manage-daemon/update-daemon-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Performing a Rollback on a DaemonSet" href="/docs/tasks/manage-daemon/rollback-daemon-set/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Install Service Catalog">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Install Service Catalog using Helm" href="/docs/tasks/service-catalog/install-service-catalog-using-helm/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Install Service Catalog using SC" href="/docs/tasks/service-catalog/install-service-catalog-using-sc/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Federation - Run an App on Multiple Clusters">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Federated Cluster" href="/docs/tasks/administer-federation/cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated ConfigMap" href="/docs/tasks/administer-federation/configmap/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated DaemonSet" href="/docs/tasks/administer-federation/daemonset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Deployment" href="/docs/tasks/administer-federation/deployment/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Events" href="/docs/tasks/administer-federation/events/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Horizontal Pod Autoscalers (HPA)" href="/docs/tasks/administer-federation/hpa/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Ingress" href="/docs/tasks/administer-federation/ingress/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Jobs" href="/docs/tasks/administer-federation/job/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Namespaces" href="/docs/tasks/administer-federation/namespaces/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated ReplicaSets" href="/docs/tasks/administer-federation/replicaset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Secrets" href="/docs/tasks/administer-federation/secret/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Extend kubectl with plugins" href="/docs/tasks/extend-kubectl/kubectl-plugins/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Manage HugePages" href="/docs/tasks/manage-hugepages/scheduling-hugepages/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Schedule GPUs" href="/docs/tasks/manage-gpus/scheduling-gpus/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/tasks/federation/federation-service-discovery.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>Cross-cluster Service Discovery using Federated Services</h1>
+
+
+
+
+<p><strong>Note:</strong> <code>Federation V1</code>, the current Kubernetes federation API which reuses the Kubernetes API resources &lsquo;as is&rsquo;, is currently considered alpha for many of its features, and there is no clear path to evolve the API to GA. However, there is a <code>Federation V2</code> effort in progress to implement a dedicated federation API apart from the Kubernetes API. The details can be found at <a href="https://github.com/kubernetes/community/tree/master/sig-multicluster" target="_blank">sig-multicluster community page</a>.</p>
+
+<p>This guide explains how to use Kubernetes Federated Services to deploy
+a common Service across multiple Kubernetes clusters. This makes it
+easy to achieve cross-cluster service discovery and availability zone
+fault tolerance for your Kubernetes applications.</p>
+
+<p>Federated Services are created in much that same way as traditional
+<a href="/docs/concepts/services-networking/service/">Kubernetes Services</a> by making an API
+call which specifies the desired properties of your service. In the
+case of Federated Services, this API call is directed to the
+Federation API endpoint, rather than a Kubernetes cluster API
+endpoint. The API for Federated Services is 100% compatible with the
+API for traditional Kubernetes Services.</p>
+
+<p>Once created, the Federated Service automatically:</p>
+
+<ol>
+<li>Creates matching Kubernetes Services in every cluster underlying your Cluster Federation,</li>
+<li>Monitors the health of those service &ldquo;shards&rdquo; (and the clusters in which they reside), and</li>
+<li>Manages a set of DNS records in a public DNS provider (like Google Cloud DNS, or AWS Route 53), thus ensuring that clients
+of your federated service can seamlessly locate an appropriate healthy service endpoint at all times, even in the event of cluster,
+availability zone or regional outages.</li>
+</ol>
+
+<p>Clients inside your federated Kubernetes clusters (i.e. Pods) will
+automatically find the local shard of the Federated Service in their
+cluster if it exists and is healthy, or the closest healthy shard in a
+different cluster if it does not.</p>
+
+
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+<li><a href="#before-you-begin">Before you begin</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#prerequisites">Prerequisites</a></li>
+
+
+
+
+<li><a href="#hybrid-cloud-capabilities">Hybrid cloud capabilities</a></li>
+
+
+
+
+<li><a href="#creating-a-federated-service">Creating a federated service</a></li>
+
+
+
+
+<li><a href="#adding-backend-pods">Adding backend pods</a></li>
+
+
+
+
+<li><a href="#verifying-public-dns-records">Verifying public DNS records</a></li>
+
+
+
+
+<li><a href="#discovering-a-federated-service">Discovering a federated service</a></li>
+
+
+
+
+<li><a href="#handling-failures-of-backend-pods-and-whole-clusters">Handling failures of backend pods and whole clusters</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#troubleshooting">Troubleshooting</a></li>
+
+
+
+
+<li><a href="#for-more-information">For more information</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</ul>
+
+
+
+<h2 id="before-you-begin">Before you begin</h2>
+<p>You need to have a Kubernetes cluster, and the kubectl command-line tool must
+be configured to communicate with your cluster. If you do not already have a
+cluster, you can create one by using
+<a href="/docs/getting-started-guides/minikube">Minikube</a>,
+or you can use one of these Kubernetes playgrounds:</p>
+
+<ul>
+<li><a href="https://www.katacoda.com/courses/kubernetes/playground" target="_blank">Katacoda</a></li>
+<li><a href="http://labs.play-with-k8s.com/" target="_blank">Play with Kubernetes</a></li>
+</ul>
+ 
+
+<p>To check the version, enter <code>kubectl version</code>.</p>
+
+
+
+
+<h2 id="prerequisites">Prerequisites</h2>
+
+<p>This guide assumes that you have a running Kubernetes Cluster
+Federation installation. If not, then head over to the
+<a href="/docs/admin/federation/">federation admin guide</a> to learn how to
+bring up a cluster federation (or have your cluster administrator do
+this for you). Other tutorials, for example
+<a href="https://github.com/kelseyhightower/kubernetes-cluster-federation" target="_blank">this one</a>
+by Kelsey Hightower, are also available to help you.</p>
+
+<p>You are also expected to have a basic
+<a href="/docs/setup/">working knowledge of Kubernetes</a> in
+general, and <a href="/docs/concepts/services-networking/service/">Services</a> in particular.</p>
+
+<h2 id="hybrid-cloud-capabilities">Hybrid cloud capabilities</h2>
+
+<p>Federations of Kubernetes Clusters can include clusters running in
+different cloud providers (e.g. Google Cloud, AWS), and on-premises
+(e.g. on OpenStack). Simply create all of the clusters that you
+require, in the appropriate cloud providers and/or locations, and
+register each cluster&rsquo;s API endpoint and credentials with your
+Federation API Server (See the
+<a href="/docs/admin/federation/">federation admin guide</a> for details).</p>
+
+<p>Thereafter, your applications and services can span different clusters
+and cloud providers as described in more detail below.</p>
+
+<h2 id="creating-a-federated-service">Creating a federated service</h2>
+
+<p>This is done in the usual way, for example:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl --context<span style="color:#666">=</span>federation-cluster create -f services/nginx.yaml</code></pre></div>
+<p>The &lsquo;&ndash;context=federation-cluster&rsquo; flag tells kubectl to submit the
+request to the Federation API endpoint, with the appropriate
+credentials. If you have not yet configured such a context, visit the
+<a href="/docs/admin/federation/">federation admin guide</a> or one of the
+<a href="https://github.com/kelseyhightower/kubernetes-cluster-federation" target="_blank">administration tutorials</a>
+to find out how to do so.</p>
+
+<p>As described above, the Federated Service will automatically create
+and maintain matching Kubernetes services in all of the clusters
+underlying your federation.</p>
+
+<p>You can verify this by checking in each of the underlying clusters, for example:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl --context<span style="color:#666">=</span>gce-asia-east1a get services nginx
+NAME      CLUSTER-IP     EXTERNAL-IP      PORT<span style="color:#666">(</span>S<span style="color:#666">)</span>   AGE
+nginx     <span style="color:#666">10</span>.63.250.98   <span style="color:#666">104</span>.199.136.89   <span style="color:#666">80</span>/TCP    9m</code></pre></div>
+<p>The above assumes that you have a context named &lsquo;gce-asia-east1a&rsquo;
+configured in your client for your cluster in that zone. The name and
+namespace of the underlying services will automatically match those of
+the Federated Service that you created above (and if you happen to
+have had services of the same name and namespace already existing in
+any of those clusters, they will be automatically adopted by the
+Federation and updated to conform with the specification of your
+Federated Service - either way, the end result will be the same).</p>
+
+<p>The status of your Federated Service will automatically reflect the
+real-time status of the underlying Kubernetes services, for example:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#b8860b">$kubectl</span> --context<span style="color:#666">=</span>federation-cluster describe services nginx
+
+Name:                   nginx
+Namespace:              default
+Labels:                 <span style="color:#b8860b">run</span><span style="color:#666">=</span>nginx
+Annotations:            &lt;none&gt;
+Selector:               <span style="color:#b8860b">run</span><span style="color:#666">=</span>nginx
+Type:                   LoadBalancer
+IP:                     <span style="color:#666">10</span>.63.250.98
+LoadBalancer Ingress:   <span style="color:#666">104</span>.197.246.190, <span style="color:#666">130</span>.211.57.243, <span style="color:#666">104</span>.196.14.231, <span style="color:#666">104</span>.199.136.89, ...
+Port:                   http    <span style="color:#666">80</span>/TCP
+Endpoints:              &lt;none&gt;
+Session Affinity:       None
+Events:                 &lt;none&gt;</code></pre></div>
+<p>Note the &lsquo;LoadBalancer Ingress&rsquo; addresses of your Federated Service
+correspond with the &lsquo;LoadBalancer Ingress&rsquo; addresses of all of the
+underlying Kubernetes services (once these have been allocated - this
+may take a few seconds). For inter-cluster and inter-cloud-provider
+networking between service shards to work correctly, your services
+need to have an externally visible IP address. <a href="/docs/concepts/services-networking/service/#type-loadbalancer">Service Type:
+Loadbalancer</a>
+is typically used for this, although other options
+(e.g. <a href="/docs/concepts/services-networking/service/#external-ips">External IP&rsquo;s</a>) exist.</p>
+
+<p>Note also that we have not yet provisioned any backend Pods to receive
+the network traffic directed to these addresses (i.e. &lsquo;Service
+Endpoints&rsquo;), so the Federated Service does not yet consider these to
+be healthy service shards, and has accordingly not yet added their
+addresses to the DNS records for this Federated Service (more on this
+aspect later).</p>
+
+<h2 id="adding-backend-pods">Adding backend pods</h2>
+
+<p>To render the underlying service shards healthy, we need to add
+backend Pods behind them. This is currently done directly against the
+API endpoints of the underlying clusters (although in future the
+Federation server will be able to do all this for you with a single
+command, to save you the trouble). For example, to create backend Pods
+in 13 underlying clusters:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#a2f;font-weight:bold">for</span> CLUSTER in asia-east1-c asia-east1-a asia-east1-b <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>                        europe-west1-d europe-west1-c europe-west1-b <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>                        us-central1-f us-central1-a us-central1-b us-central1-c <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>                        us-east1-d us-east1-c us-east1-b
+<span style="color:#a2f;font-weight:bold">do</span>
+  kubectl --context<span style="color:#666">=</span><span style="color:#b8860b">$CLUSTER</span> run nginx --image<span style="color:#666">=</span>nginx:1.11.1-alpine --port<span style="color:#666">=</span><span style="color:#666">80</span>
+<span style="color:#a2f;font-weight:bold">done</span></code></pre></div>
+<p>Note that <code>kubectl run</code> automatically adds the <code>run=nginx</code> labels required to associate the backend pods with their services.</p>
+
+<h2 id="verifying-public-dns-records">Verifying public DNS records</h2>
+
+<p>Once the above Pods have successfully started and have begun listening
+for connections, Kubernetes will report them as healthy endpoints of
+the service in that cluster (via automatic health checks). The Cluster
+Federation will in turn consider each of these
+service &lsquo;shards&rsquo; to be healthy, and place them in serving by
+automatically configuring corresponding public DNS records. You can
+use your preferred interface to your configured DNS provider to verify
+this. For example, if your Federation is configured to use Google
+Cloud DNS, and a managed DNS domain &lsquo;example.com&rsquo;:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ gcloud dns managed-zones describe example-dot-com
+creationTime: <span style="color:#b44">&#39;2016-06-26T18:18:39.229Z&#39;</span>
+description: Example domain <span style="color:#a2f;font-weight:bold">for</span> Kubernetes Cluster Federation
+dnsName: example.com.
+id: <span style="color:#b44">&#39;3229332181334243121&#39;</span>
+kind: dns#managedZone
+name: example-dot-com
+nameServers:
+- ns-cloud-a1.googledomains.com.
+- ns-cloud-a2.googledomains.com.
+- ns-cloud-a3.googledomains.com.
+- ns-cloud-a4.googledomains.com.</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ gcloud dns record-sets list --zone example-dot-com
+NAME                                                            TYPE      TTL     DATA
+example.com.                                                    NS        <span style="color:#666">21600</span>   ns-cloud-e1.googledomains.com., ns-cloud-e2.googledomains.com.
+example.com.                                                    OA        <span style="color:#666">21600</span>   ns-cloud-e1.googledomains.com. cloud-dns-hostmaster.google.com. <span style="color:#666">1</span> <span style="color:#666">21600</span> <span style="color:#666">3600</span> <span style="color:#666">1209600</span> <span style="color:#666">300</span>
+nginx.mynamespace.myfederation.svc.example.com.                 A         <span style="color:#666">180</span>     <span style="color:#666">104</span>.197.246.190, <span style="color:#666">130</span>.211.57.243, <span style="color:#666">104</span>.196.14.231, <span style="color:#666">104</span>.199.136.89,...
+nginx.mynamespace.myfederation.svc.us-central1-a.example.com.   A         <span style="color:#666">180</span>     <span style="color:#666">104</span>.197.247.191
+nginx.mynamespace.myfederation.svc.us-central1-b.example.com.   A         <span style="color:#666">180</span>     <span style="color:#666">104</span>.197.244.180
+nginx.mynamespace.myfederation.svc.us-central1-c.example.com.   A         <span style="color:#666">180</span>     <span style="color:#666">104</span>.197.245.170
+nginx.mynamespace.myfederation.svc.us-central1-f.example.com.   CNAME     <span style="color:#666">180</span>     nginx.mynamespace.myfederation.svc.us-central1.example.com.
+nginx.mynamespace.myfederation.svc.us-central1.example.com.     A         <span style="color:#666">180</span>     <span style="color:#666">104</span>.197.247.191, <span style="color:#666">104</span>.197.244.180, <span style="color:#666">104</span>.197.245.170
+nginx.mynamespace.myfederation.svc.asia-east1-a.example.com.    A         <span style="color:#666">180</span>     <span style="color:#666">130</span>.211.57.243
+nginx.mynamespace.myfederation.svc.asia-east1-b.example.com.    CNAME     <span style="color:#666">180</span>     nginx.mynamespace.myfederation.svc.asia-east1.example.com.
+nginx.mynamespace.myfederation.svc.asia-east1-c.example.com.    A         <span style="color:#666">180</span>     <span style="color:#666">130</span>.211.56.221
+nginx.mynamespace.myfederation.svc.asia-east1.example.com.      A         <span style="color:#666">180</span>     <span style="color:#666">130</span>.211.57.243, <span style="color:#666">130</span>.211.56.221
+nginx.mynamespace.myfederation.svc.europe-west1.example.com.    CNAME     <span style="color:#666">180</span>     nginx.mynamespace.myfederation.svc.example.com.
+nginx.mynamespace.myfederation.svc.europe-west1-d.example.com.  CNAME     <span style="color:#666">180</span>     nginx.mynamespace.myfederation.svc.europe-west1.example.com.
+... etc.</code></pre></div>
+<p>Note: If your Federation is configured to use AWS Route53, you can use one of the equivalent AWS tools, for example:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ aws route53 list-hosted-zones</code></pre></div>
+<p>and</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ aws route53 list-resource-record-sets --hosted-zone-id Z3ECL0L9QLOVBX</code></pre></div>
+<p>Whatever DNS provider you use, any DNS query tool (for example &lsquo;dig&rsquo;
+or &lsquo;nslookup&rsquo;) will of course also allow you to see the records
+created by the Federation for you. Note that you should either point
+these tools directly at your DNS provider (e.g. <code>dig
+@ns-cloud-e1.googledomains.com...</code>) or expect delays in the order of
+your configured TTL (180 seconds, by default) before seeing updates,
+due to caching by intermediate DNS servers.</p>
+
+<h3 id="some-notes-about-the-above-example">Some notes about the above example</h3>
+
+<ol>
+<li>Notice that there is a normal (&lsquo;A&rsquo;) record for each service shard that has at least one healthy backend endpoint. For example, in us-central1-a, 104.197.247.191 is the external IP address of the service shard in that zone, and in asia-east1-a the address is 130.211.56.221.</li>
+<li>Similarly, there are regional &lsquo;A&rsquo; records which include all healthy shards in that region. For example, &lsquo;us-central1&rsquo;.  These regional records are useful for clients which do not have a particular zone preference, and as a building block for the automated locality and failover mechanism described below.</li>
+<li>For zones where there are currently no healthy backend endpoints, a CNAME (&lsquo;Canonical Name&rsquo;) record is used to alias (automatically redirect) those queries to the next closest healthy zone.  In the example, the service shard in us-central1-f currently has no healthy backend endpoints (i.e. Pods), so a CNAME record has been created to automatically redirect queries to other shards in that region (us-central1 in this case).</li>
+<li>Similarly, if no healthy shards exist in the enclosing region, the search progresses further afield. In the europe-west1-d availability zone, there are no healthy backends, so queries are redirected to the broader europe-west1 region (which also has no healthy backends), and onward to the global set of healthy addresses (&rsquo; nginx.mynamespace.myfederation.svc.example.com.&lsquo;).</li>
+</ol>
+
+<p>The above set of DNS records is automatically kept in sync with the
+current state of health of all service shards globally by the
+Federated Service system. DNS resolver libraries (which are invoked by
+all clients) automatically traverse the hierarchy of &lsquo;CNAME&rsquo; and &lsquo;A&rsquo;
+records to return the correct set of healthy IP addresses. Clients can
+then select any one of the returned addresses to initiate a network
+connection (and fail over automatically to one of the other equivalent
+addresses if required).</p>
+
+<h2 id="discovering-a-federated-service">Discovering a federated service</h2>
+
+<h3 id="from-pods-inside-your-federated-clusters">From pods inside your federated clusters</h3>
+
+<p>By default, Kubernetes clusters come pre-configured with a
+cluster-local DNS server (&lsquo;KubeDNS&rsquo;), as well as an intelligently
+constructed DNS search path which together ensure that DNS queries
+like &ldquo;myservice&rdquo;, &ldquo;myservice.mynamespace&rdquo;,
+&ldquo;bobsservice.othernamespace&rdquo; etc issued by your software running
+inside Pods are automatically expanded and resolved correctly to the
+appropriate service IP of services running in the local cluster.</p>
+
+<p>With the introduction of Federated Services and Cross-Cluster Service
+Discovery, this concept is extended to cover Kubernetes services
+running in any other cluster across your Cluster Federation, globally.
+To take advantage of this extended range, you use a slightly different
+DNS name of the form <code>&quot;&lt;servicename&gt;.&lt;namespace&gt;.&lt;federationname&gt;&quot;</code>
+to resolve Federated Services. For example, you might use
+<code>myservice.mynamespace.myfederation</code>. Using a different DNS name also
+avoids having your existing applications accidentally traversing
+cross-zone or cross-region networks and you incurring perhaps unwanted
+network charges or latency, without you explicitly opting in to this
+behavior.</p>
+
+<p>So, using our NGINX example service above, and the Federated Service
+DNS name form just described, let&rsquo;s consider an example: A Pod in a
+cluster in the <code>us-central1-f</code> availability zone needs to contact our
+NGINX service. Rather than use the service&rsquo;s traditional cluster-local
+DNS name (<code>&quot;nginx.mynamespace&quot;</code>, which is automatically expanded
+to <code>&quot;nginx.mynamespace.svc.cluster.local&quot;</code>) it can now use the
+service&rsquo;s Federated DNS name, which is
+<code>&quot;nginx.mynamespace.myfederation&quot;</code>. This will be automatically
+expanded and resolved to the closest healthy shard of my NGINX
+service, wherever in the world that may be. If a healthy shard exists
+in the local cluster, that service&rsquo;s cluster-local (typically
+10.x.y.z) IP address will be returned (by the cluster-local KubeDNS).
+This is almost exactly equivalent to non-federated service resolution
+(almost because KubeDNS actually returns both a CNAME and an A record
+for local federated services, but applications will be oblivious
+to this minor technical difference).</p>
+
+<p>But if the service does not exist in the local cluster (or it exists
+but has no healthy backend pods), the DNS query is automatically
+expanded to <code>&quot;nginx.mynamespace.myfederation.svc.us-central1-f.example.com&quot;</code>
+(i.e. logically &ldquo;find the external IP of one of the shards closest to
+my availability zone&rdquo;). This expansion is performed automatically by
+KubeDNS, which returns the associated CNAME record. This results in
+automatic traversal of the hierarchy of DNS records in the above
+example, and ends up at one of the external IP&rsquo;s of the Federated
+Service in the local us-central1 region (i.e. 104.197.247.191,
+104.197.244.180 or 104.197.245.170).</p>
+
+<p>It is of course possible to explicitly target service shards in
+availability zones and regions other than the ones local to a Pod by
+specifying the appropriate DNS names explicitly, and not relying on
+automatic DNS expansion. For example,
+&ldquo;nginx.mynamespace.myfederation.svc.europe-west1.example.com&rdquo; will
+resolve to all of the currently healthy service shards in Europe, even
+if the Pod issuing the lookup is located in the U.S., and irrespective
+of whether or not there are healthy shards of the service in the U.S.
+This is useful for remote monitoring and other similar applications.</p>
+
+<h3 id="from-other-clients-outside-your-federated-clusters">From other clients outside your federated clusters</h3>
+
+<p>Much of the above discussion applies equally to external clients,
+except that the automatic DNS expansion described is no longer
+possible.  So external clients need to specify one of the fully
+qualified DNS names of the Federated Service, be that a zonal,
+regional or global name. For convenience reasons, it is often a good
+idea to manually configure additional static CNAME records in your
+service, for example:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">eu.nginx.acme.com        CNAME nginx.mynamespace.myfederation.svc.europe-west1.example.com.
+us.nginx.acme.com        CNAME nginx.mynamespace.myfederation.svc.us-central1.example.com.
+nginx.acme.com           CNAME nginx.mynamespace.myfederation.svc.example.com.</code></pre></div>
+<p>That way your clients can always use the short form on the left, and
+always be automatically routed to the closest healthy shard on their
+home continent.  All of the required failover is handled for you
+automatically by Kubernetes Cluster Federation.  Future releases will
+improve upon this even further.</p>
+
+<h2 id="handling-failures-of-backend-pods-and-whole-clusters">Handling failures of backend pods and whole clusters</h2>
+
+<p>Standard Kubernetes service cluster-IP&rsquo;s already ensure that
+non-responsive individual Pod endpoints are automatically taken out of
+service with low latency (a few seconds). In addition, as alluded
+above, the Kubernetes Cluster Federation system automatically monitors
+the health of clusters and the endpoints behind all of the shards of
+your Federated Service, taking shards in and out of service as
+required (e.g. when all of the endpoints behind a service, or perhaps
+the entire cluster or availability zone go down, or conversely recover
+from an outage). Due to the latency inherent in DNS caching (the cache
+timeout, or TTL for Federated Service DNS records is configured to 3
+minutes, by default, but can be adjusted), it may take up to that long
+for all clients to completely fail over to an alternative cluster in
+the case of catastrophic failure. However, given the number of
+discrete IP addresses which can be returned for each regional service
+endpoint (see e.g. us-central1 above, which has three alternatives)
+many clients will fail over automatically to one of the alternative
+IP&rsquo;s in less time than that given appropriate configuration.</p>
+
+
+
+
+<h2 id="troubleshooting">Troubleshooting</h2>
+
+<h3 id="i-cannot-connect-to-my-cluster-federation-api">I cannot connect to my cluster federation API</h3>
+
+<p>Check that your</p>
+
+<ol>
+<li>Client (typically kubectl) is correctly configured (including API endpoints and login credentials).</li>
+<li>Cluster Federation API server is running and network-reachable.</li>
+</ol>
+
+<p>See the <a href="/docs/admin/federation/">federation admin guide</a> to learn
+how to bring up a cluster federation correctly (or have your cluster administrator do this for you), and how to correctly configure your client.</p>
+
+<h3 id="i-can-create-a-federated-service-successfully-against-the-cluster-federation-api-but-no-matching-services-are-created-in-my-underlying-clusters">I can create a federated service successfully against the cluster federation API, but no matching services are created in my underlying clusters</h3>
+
+<p>Check that:</p>
+
+<ol>
+<li>Your clusters are correctly registered in the Cluster Federation API (<code>kubectl describe clusters</code>).</li>
+<li>Your clusters are all &lsquo;Active&rsquo;. This means that the cluster Federation system was able to connect and authenticate against the clusters&rsquo; endpoints. If not, consult the logs of the federation-controller-manager pod to ascertain what the failure might be.
+  <code>
+  kubectl --namespace=federation logs $(kubectl get pods --namespace=federation -l module=federation-controller-manager -o name)
+</code></li>
+<li>That the login credentials provided to the Cluster Federation API for the clusters have the correct authorization and quota to create services in the relevant namespace in the clusters.  Again you should see associated error messages providing more detail in the above log file if this is not the case.</li>
+<li>Whether any other error is preventing the service creation operation from succeeding (look for <code>service-controller</code> errors in the output of <code>kubectl logs federation-controller-manager --namespace federation</code>).</li>
+</ol>
+
+<h3 id="i-can-create-a-federated-service-successfully-but-no-matching-dns-records-are-created-in-my-dns-provider">I can create a federated service successfully, but no matching DNS records are created in my DNS provider.</h3>
+
+<p>Check that:</p>
+
+<ol>
+<li>Your federation name, DNS provider, DNS domain name are configured correctly.  Consult the <a href="/docs/admin/federation/">federation admin guide</a> or  <a href="https://github.com/kelseyhightower/kubernetes-cluster-federation" target="_blank">tutorial</a> to learn
+how to configure your Cluster Federation system&rsquo;s DNS provider (or have your cluster administrator do this for you).</li>
+<li>Confirm that the Cluster Federation&rsquo;s service-controller is successfully connecting to and authenticating against your selected DNS provider (look for <code>service-controller</code> errors or successes in the output of <code>kubectl logs federation-controller-manager --namespace federation</code>).</li>
+<li>Confirm that the Cluster Federation&rsquo;s service-controller is successfully creating DNS records in your DNS provider (or outputting errors in its logs explaining in more detail what&rsquo;s failing).</li>
+</ol>
+
+<h3 id="matching-dns-records-are-created-in-my-dns-provider-but-clients-are-unable-to-resolve-against-those-names">Matching DNS records are created in my DNS provider, but clients are unable to resolve against those names</h3>
+
+<p>Check that:</p>
+
+<ol>
+<li>The DNS registrar that manages your federation DNS domain has been correctly configured to point to your configured DNS provider&rsquo;s nameservers.  See for example <a href="https://support.google.com/domains/answer/3290309?hl=en&amp;ref_topic=3251230" target="_blank">Google Domains Documentation</a> and <a href="https://cloud.google.com/dns/update-name-servers" target="_blank">Google Cloud DNS Documentation</a>, or equivalent guidance from your domain registrar and DNS provider.</li>
+</ol>
+
+<h3 id="this-troubleshooting-guide-did-not-help-me-solve-my-problem">This troubleshooting guide did not help me solve my problem</h3>
+
+<ol>
+<li>Please use one of our <a href="/docs/tasks/debug-application-cluster/troubleshooting/">support channels</a> to seek assistance.</li>
+</ol>
+
+<h2 id="for-more-information">For more information</h2>
+
+<ul>
+<li><a href="https://git.k8s.io/community/contributors/design-proposals/multicluster/federation.md" target="_blank">Federation proposal</a> details use cases that motivated this work.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/tasks/federation/federation-service-discovery.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/tasks\/federation\/federation-service-discovery\/",
+					"title" : "Cross-cluster Service Discovery using Federated Services",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/tasks\/federation\/federation-service-discovery\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/tasks/federation/federation-service-discovery.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

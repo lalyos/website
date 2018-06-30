@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Running Kubernetes on CenturyLink Cloud - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="Running Kubernetes on CenturyLink Cloud" />
+<meta property="og:description" content="Running Kubernetes on CenturyLink Cloud" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/setup/turnkey/clc/" />
+<meta property="og:title" content="Running Kubernetes on CenturyLink Cloud - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+<h1>Setup</h1>
+<h5></h5>
+
+
+
+
+
+
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/" class="YAH">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Setup" href="/docs/setup/"></a>
+
+	
+	
+		
+		
+	<div class="item" data-title="Bootstrapping Clusters with kubeadm">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Customizing control plane configuration with kubeadm" href="/docs/setup/independent/control-plane-flags/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Creating Highly Available Clusters with kubeadm" href="/docs/setup/independent/high-availability/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Creating a single master cluster with kubeadm" href="/docs/setup/independent/create-cluster-kubeadm/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Troubleshooting kubeadm" href="/docs/setup/independent/troubleshooting-kubeadm/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Building Large Clusters" href="/docs/setup/cluster-large/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Building from Source" href="/docs/setup/building-from-source/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configuring Kubernetes with Salt" href="/docs/setup/salt/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Creating a Custom Cluster from Scratch" href="/docs/setup/scratch/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Custom Cloud Solutions">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="CoreOS on AWS or GCE" href="/docs/setup/custom-cloud/coreos/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Installing Kubernetes On-premises/Cloud Providers with Kubespray" href="/docs/setup/custom-cloud/kubespray/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Installing Kubernetes on AWS with kops" href="/docs/setup/custom-cloud/kops/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="On-Premises VMs">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Cloudstack" href="/docs/setup/on-premises-vm/cloudstack/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes on DCOS" href="/docs/setup/on-premises-vm/dcos/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="oVirt" href="/docs/setup/on-premises-vm/ovirt/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Picking the Right Solution" href="/docs/setup/pick-right-solution/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Running Kubernetes Locally via Minikube" href="/docs/setup/minikube/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Running in Multiple Zones" href="/docs/setup/multiple-zones/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Turnkey Cloud Solutions">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Running Kubernetes on AWS EC2" href="/docs/setup/turnkey/aws/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Running Kubernetes on Alibaba Cloud" href="/docs/setup/turnkey/alibaba-cloud/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Running Kubernetes on Azure" href="/docs/setup/turnkey/azure/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Running Kubernetes on CenturyLink Cloud" href="/docs/setup/turnkey/clc/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Running Kubernetes on Google Compute Engine" href="/docs/setup/turnkey/gce/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Running Kubernetes on Multiple Clouds with Stackpoint.io" href="/docs/setup/turnkey/stackpoint/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Validate Node Setup" href="/docs/setup/node-conformance/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/setup/turnkey/clc.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>Running Kubernetes on CenturyLink Cloud</h1>
+
+
+
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#find-help">Find Help</a></li>
+<li><a href="#clusters-of-vms-or-physical-servers-your-choice">Clusters of VMs or Physical Servers, your choice.</a></li>
+<li><a href="#requirements">Requirements</a></li>
+<li><a href="#script-installation">Script Installation</a>
+<ul>
+<li>
+<ul>
+<li><a href="#script-installation-example-ubuntu-14-walkthrough">Script Installation Example: Ubuntu 14 Walkthrough</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#cluster-creation">Cluster Creation</a>
+<ul>
+<li>
+<ul>
+<li><a href="#cluster-creation-script-options">Cluster Creation: Script Options</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#cluster-expansion">Cluster Expansion</a>
+<ul>
+<li>
+<ul>
+<li><a href="#cluster-expansion-script-options">Cluster Expansion: Script Options</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#cluster-deletion">Cluster Deletion</a></li>
+<li><a href="#examples">Examples</a></li>
+<li><a href="#cluster-features-and-architecture">Cluster Features and Architecture</a></li>
+<li><a href="#optional-add-ons">Optional add-ons</a></li>
+<li><a href="#cluster-management">Cluster management</a>
+<ul>
+<li><a href="#accessing-the-cluster-programmatically">Accessing the cluster programmatically</a></li>
+<li><a href="#accessing-the-cluster-with-a-browser">Accessing the cluster with a browser</a></li>
+<li><a href="#configuration-files">Configuration files</a></li>
+</ul></li>
+<li><a href="#kubectl-usage-examples"><code>kubectl</code> usage examples</a></li>
+<li><a href="#what-kubernetes-features-do-not-work-on-centurylink-cloud">What Kubernetes features do not work on CenturyLink Cloud</a></li>
+<li><a href="#ansible-files">Ansible Files</a></li>
+<li><a href="#further-reading">Further reading</a></li>
+</ul></li>
+</ul>
+</nav>
+
+
+
+<p>{: toc}</p>
+
+<p>These scripts handle the creation, deletion and expansion of Kubernetes clusters on CenturyLink Cloud.</p>
+
+<p>You can accomplish all these tasks with a single command. We have made the Ansible playbooks used to perform these tasks available <a href="https://github.com/CenturyLinkCloud/adm-kubernetes-on-clc/blob/master/ansible/README.md" target="_blank">here</a>.</p>
+
+<h2 id="find-help">Find Help</h2>
+
+<p>If you run into any problems or want help with anything, we are here to help. Reach out to use via any of the following ways:</p>
+
+<ul>
+<li>Submit a github issue</li>
+<li>Send an email to Kubernetes AT ctl DOT io</li>
+<li>Visit <a href="http://info.ctl.io/kubernetes" target="_blank">http://info.ctl.io/kubernetes</a></li>
+</ul>
+
+<h2 id="clusters-of-vms-or-physical-servers-your-choice">Clusters of VMs or Physical Servers, your choice.</h2>
+
+<ul>
+<li>We support Kubernetes clusters on both Virtual Machines or Physical Servers. If you want to use physical servers for the worker nodes (minions), simple use the &ndash;minion_type=bareMetal flag.</li>
+<li>For more information on physical servers, visit: <a href="https://www.ctl.io/bare-metal/" target="_blank">https://www.ctl.io/bare-metal/</a></li>
+<li>Physical serves are only available in the VA1 and GB3 data centers.</li>
+<li>VMs are available in all 13 of our public cloud locations</li>
+</ul>
+
+<h2 id="requirements">Requirements</h2>
+
+<p>The requirements to run this script are:</p>
+
+<ul>
+<li>A linux administrative host (tested on ubuntu and OSX)</li>
+<li>python 2 (tested on 2.7.11)
+
+<ul>
+<li>pip (installed with python as of 2.7.9)</li>
+</ul></li>
+<li>git</li>
+<li>A CenturyLink Cloud account with rights to create new hosts</li>
+<li>An active VPN connection to the CenturyLink Cloud from your linux host</li>
+</ul>
+
+<h2 id="script-installation">Script Installation</h2>
+
+<p>After you have all the requirements met, please follow these instructions to install this script.</p>
+
+<p>1) Clone this repository and cd into it.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">git clone https://github.com/CenturyLinkCloud/adm-kubernetes-on-clc</code></pre></div>
+<p>2) Install all requirements, including</p>
+
+<ul>
+<li>Ansible</li>
+<li>CenturyLink Cloud SDK</li>
+<li>Ansible Modules</li>
+</ul>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo pip install -r ansible/requirements.txt</code></pre></div>
+<p>3) Create the credentials file from the template and use it to set your ENV variables</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cp ansible/credentials.sh.template ansible/credentials.sh
+vi ansible/credentials.sh
+<span style="color:#a2f">source</span> ansible/credentials.sh</code></pre></div>
+<p>4) Grant your machine access to the CenturyLink Cloud network by using a VM inside the network or <a href="https://www.ctl.io/knowledge-base/network/how-to-configure-client-vpn/" target="_blank"> configuring a VPN connection to the CenturyLink Cloud network.</a></p>
+
+<h4 id="script-installation-example-ubuntu-14-walkthrough">Script Installation Example: Ubuntu 14 Walkthrough</h4>
+
+<p>If you use an ubuntu 14, for your convenience we have provided a step by step
+guide to install the requirements and install the script.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#080;font-style:italic"># system
+</span><span style="color:#080;font-style:italic"></span>apt-get update
+apt-get install -y git python python-crypto
+curl -O https://bootstrap.pypa.io/get-pip.py
+python get-pip.py
+
+<span style="color:#080;font-style:italic"># installing this repository
+</span><span style="color:#080;font-style:italic"></span>mkdir -p ~home/k8s-on-clc
+<span style="color:#a2f">cd</span> ~home/k8s-on-clc
+git clone https://github.com/CenturyLinkCloud/adm-kubernetes-on-clc.git
+<span style="color:#a2f">cd</span> adm-kubernetes-on-clc/
+pip install -r requirements.txt
+
+<span style="color:#080;font-style:italic"># getting started
+</span><span style="color:#080;font-style:italic"></span><span style="color:#a2f">cd</span> ansible
+cp credentials.sh.template credentials.sh; vi credentials.sh
+<span style="color:#a2f">source</span> credentials.sh</code></pre></div>
+<h2 id="cluster-creation">Cluster Creation</h2>
+
+<p>To create a new Kubernetes cluster, simply run the <code>kube-up.sh</code> script. A complete
+list of script options and some examples are listed below.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#b8860b">CLC_CLUSTER_NAME</span><span style="color:#666">=[</span>name of kubernetes cluster<span style="color:#666">]</span>
+<span style="color:#a2f">cd</span> ./adm-kubernetes-on-clc
+bash kube-up.sh -c<span style="color:#666">=</span><span style="color:#b44">&#34;</span><span style="color:#b8860b">$CLC_CLUSTER_NAME</span><span style="color:#b44">&#34;</span></code></pre></div>
+<p>It takes about 15 minutes to create the cluster. Once the script completes, it
+will output some commands that will help you setup kubectl on your machine to
+point to the new cluster.</p>
+
+<p>When the cluster creation is complete, the configuration files for it are stored
+locally on your administrative host, in the following directory</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">&gt; <span style="color:#b8860b">CLC_CLUSTER_HOME</span><span style="color:#666">=</span><span style="color:#b8860b">$HOME</span>/.clc_kube/<span style="color:#b8860b">$CLC_CLUSTER_NAME</span>/</code></pre></div>
+<h4 id="cluster-creation-script-options">Cluster Creation: Script Options</h4>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">Usage: kube-up.sh <span style="color:#666">[</span>OPTIONS<span style="color:#666">]</span>
+Create servers in the CenturyLinkCloud environment and initialize a Kubernetes cluster
+Environment variables CLC_V2_API_USERNAME and CLC_V2_API_PASSWD must be <span style="color:#a2f">set</span> in
+order to access the CenturyLinkCloud API
+
+All options <span style="color:#666">(</span>both short and long form<span style="color:#666">)</span> require arguments, and must include <span style="color:#b44">&#34;=&#34;</span>
+between option name and option value.
+
+     -h <span style="color:#666">(</span>--help<span style="color:#666">)</span>                   display this <span style="color:#a2f">help</span> and <span style="color:#a2f">exit</span>
+     -c<span style="color:#666">=</span> <span style="color:#666">(</span>--clc_cluster_name<span style="color:#666">=)</span>     <span style="color:#a2f">set</span> the name of the cluster, as used in CLC group names
+     -t<span style="color:#666">=</span> <span style="color:#666">(</span>--minion_type<span style="color:#666">=)</span>          standard -&gt; VM <span style="color:#666">(</span>default<span style="color:#666">)</span>, bareMetal -&gt; physical<span style="color:#666">]</span>
+     -d<span style="color:#666">=</span> <span style="color:#666">(</span>--datacenter<span style="color:#666">=)</span>           VA1 <span style="color:#666">(</span>default<span style="color:#666">)</span>
+     -m<span style="color:#666">=</span> <span style="color:#666">(</span>--minion_count<span style="color:#666">=)</span>         number of kubernetes minion nodes
+     -mem<span style="color:#666">=</span> <span style="color:#666">(</span>--vm_memory<span style="color:#666">=)</span>          number of GB ram <span style="color:#a2f;font-weight:bold">for</span> each minion
+     -cpu<span style="color:#666">=</span> <span style="color:#666">(</span>--vm_cpu<span style="color:#666">=)</span>             number of virtual cps <span style="color:#a2f;font-weight:bold">for</span> each minion node
+     -phyid<span style="color:#666">=</span> <span style="color:#666">(</span>--server_conf_id<span style="color:#666">=)</span>   physical server configuration id, one of
+                                      physical_server_20_core_conf_id
+                                      physical_server_12_core_conf_id
+                                      physical_server_4_core_conf_id <span style="color:#666">(</span>default<span style="color:#666">)</span>
+     -etcd_separate_cluster<span style="color:#666">=</span>yes    create a separate cluster of three etcd nodes,
+                                   otherwise run etcd on the master node</code></pre></div>
+<h2 id="cluster-expansion">Cluster Expansion</h2>
+
+<p>To expand an existing Kubernetes cluster, run the <code>add-kube-node.sh</code>
+script. A complete list of script options and some examples are listed <a href="#cluster-expansion-script-options">below</a>.
+This script must be run from the same host that created the cluster (or a host
+that has the cluster artifact files stored in <code>~/.clc_kube/$cluster_name</code>).</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#a2f">cd</span> ./adm-kubernetes-on-clc
+bash add-kube-node.sh -c<span style="color:#666">=</span><span style="color:#b44">&#34;name_of_kubernetes_cluster&#34;</span> -m<span style="color:#666">=</span><span style="color:#666">2</span></code></pre></div>
+<h4 id="cluster-expansion-script-options">Cluster Expansion: Script Options</h4>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">Usage: add-kube-node.sh <span style="color:#666">[</span>OPTIONS<span style="color:#666">]</span>
+Create servers in the CenturyLinkCloud environment and add to an
+existing CLC kubernetes cluster
+
+Environment variables CLC_V2_API_USERNAME and CLC_V2_API_PASSWD must be <span style="color:#a2f">set</span> in
+order to access the CenturyLinkCloud API
+
+     -h <span style="color:#666">(</span>--help<span style="color:#666">)</span>                   display this <span style="color:#a2f">help</span> and <span style="color:#a2f">exit</span>
+     -c<span style="color:#666">=</span> <span style="color:#666">(</span>--clc_cluster_name<span style="color:#666">=)</span>     <span style="color:#a2f">set</span> the name of the cluster, as used in CLC group names
+     -m<span style="color:#666">=</span> <span style="color:#666">(</span>--minion_count<span style="color:#666">=)</span>         number of kubernetes minion nodes to add</code></pre></div>
+<h2 id="cluster-deletion">Cluster Deletion</h2>
+
+<p>There are two ways to delete an existing cluster:</p>
+
+<p>1) Use our python script:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">python delete_cluster.py --cluster<span style="color:#666">=</span>clc_cluster_name --datacenter<span style="color:#666">=</span>DC1</code></pre></div>
+<p>2) Use the CenturyLink Cloud UI. To delete a cluster, log into the CenturyLink
+Cloud control portal and delete the parent server group that contains the
+Kubernetes Cluster. We hope to add a scripted option to do this soon.</p>
+
+<h2 id="examples">Examples</h2>
+
+<p>Create a cluster with name of k8s_1, 1 master node and 3 worker minions (on physical machines), in VA1</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">bash kube-up.sh --clc_cluster_name<span style="color:#666">=</span>k8s_1 --minion_type<span style="color:#666">=</span>bareMetal --minion_count<span style="color:#666">=</span><span style="color:#666">3</span> --datacenter<span style="color:#666">=</span>VA1</code></pre></div>
+<p>Create a cluster with name of k8s_2, an ha etcd cluster on 3 VMs and 6 worker minions (on VMs), in VA1</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">bash kube-up.sh --clc_cluster_name<span style="color:#666">=</span>k8s_2 --minion_type<span style="color:#666">=</span>standard --minion_count<span style="color:#666">=</span><span style="color:#666">6</span> --datacenter<span style="color:#666">=</span>VA1 --etcd_separate_cluster<span style="color:#666">=</span>yes</code></pre></div>
+<p>Create a cluster with name of k8s_3, 1 master node, and 10 worker minions (on VMs) with higher mem/cpu, in UC1:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">bash kube-up.sh --clc_cluster_name<span style="color:#666">=</span>k8s_3 --minion_type<span style="color:#666">=</span>standard --minion_count<span style="color:#666">=</span><span style="color:#666">10</span> --datacenter<span style="color:#666">=</span>VA1 -mem<span style="color:#666">=</span><span style="color:#666">6</span> -cpu<span style="color:#666">=</span><span style="color:#666">4</span></code></pre></div>
+<h2 id="cluster-features-and-architecture">Cluster Features and Architecture</h2>
+
+<p>We configure the Kubernetes cluster with the following features:</p>
+
+<ul>
+<li>KubeDNS: DNS resolution and service discovery</li>
+<li>Heapster/InfluxDB: For metric collection. Needed for Grafana and auto-scaling.</li>
+<li>Grafana: Kubernetes/Docker metric dashboard</li>
+<li>KubeUI: Simple web interface to view Kubernetes state</li>
+<li>Kube Dashboard: New web interface to interact with your cluster</li>
+</ul>
+
+<p>We use the following to create the Kubernetes cluster:</p>
+
+<ul>
+<li>Kubernetes 1.1.7</li>
+<li>Ubuntu 14.04</li>
+<li>Flannel 0.5.4</li>
+<li>Docker 1.9.1-0~trusty</li>
+<li>Etcd 2.2.2</li>
+</ul>
+
+<h2 id="optional-add-ons">Optional add-ons</h2>
+
+<ul>
+<li>Logging: We offer an integrated centralized logging ELK platform so that all
+Kubernetes and docker logs get sent to the ELK stack. To install the ELK stack
+and configure Kubernetes to send logs to it, follow <a href="https://github.com/CenturyLinkCloud/adm-kubernetes-on-clc/blob/master/log_aggregration.md" target="_blank">the log
+aggregation documentation</a>. Note: We don&rsquo;t install this by default as
+the footprint isn&rsquo;t trivial.</li>
+</ul>
+
+<h2 id="cluster-management">Cluster management</h2>
+
+<p>The most widely used tool for managing a Kubernetes cluster is the command-line
+utility <code>kubectl</code>.  If you do not already have a copy of this binary on your
+administrative machine, you may run the script <code>install_kubectl.sh</code> which will
+download it and install it in <code>/usr/bin/local</code>.</p>
+
+<p>The script requires that the environment variable <code>CLC_CLUSTER_NAME</code> be defined</p>
+
+<p><code>install_kubectl.sh</code> also writes a configuration file which will embed the necessary
+authentication certificates for the particular cluster.  The configuration file is
+written to the  <code>${CLC_CLUSTER_HOME}/kube</code> directory</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#a2f">export</span> <span style="color:#b8860b">KUBECONFIG</span><span style="color:#666">=</span><span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">CLC_CLUSTER_HOME</span><span style="color:#b68;font-weight:bold">}</span>/kube/config
+kubectl version
+kubectl cluster-info</code></pre></div>
+<h3 id="accessing-the-cluster-programmatically">Accessing the cluster programmatically</h3>
+
+<p>It&rsquo;s possible to use the locally stored client certificates to access the apiserver. For example, you may want to use any of the <a href="/docs/reference/using-api/client-libraries/">Kubernetes API client libraries</a> to program against your Kubernetes cluster in the programming language of your choice.</p>
+
+<p>To demonstrate how to use these locally stored certificates, we provide the following example of using <code>curl</code> to communicate to the master apiserver via https:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">curl <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>   --cacert <span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">CLC_CLUSTER_HOME</span><span style="color:#b68;font-weight:bold">}</span>/pki/ca.crt  <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>   --key <span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">CLC_CLUSTER_HOME</span><span style="color:#b68;font-weight:bold">}</span>/pki/kubecfg.key <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>   --cert <span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">CLC_CLUSTER_HOME</span><span style="color:#b68;font-weight:bold">}</span>/pki/kubecfg.crt  https://<span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">MASTER_IP</span><span style="color:#b68;font-weight:bold">}</span>:6443</code></pre></div>
+<p>But please note, this <em>does not</em> work out of the box with the <code>curl</code> binary
+distributed with OSX.</p>
+
+<h3 id="accessing-the-cluster-with-a-browser">Accessing the cluster with a browser</h3>
+
+<p>We install <a href="/docs/tasks/web-ui-dashboard/">the kubernetes dashboard</a>. When you
+create a cluster, the script should output URLs for these interfaces like this:</p>
+
+<p>kubernetes-dashboard is running at <code>https://${MASTER_IP}:6443/api/v1/namespaces/kube-system/services/kubernetes-dashboard/proxy</code>.</p>
+
+<p>Note on Authentication to the UIs: The cluster is set up to use basic
+authentication for the user <em>admin</em>.   Hitting the url at
+<code>https://${MASTER_IP}:6443</code> will require accepting the self-signed certificate
+from the apiserver, and then presenting the admin password written to file at:</p>
+
+<p><code>&gt; _${CLC_CLUSTER_HOME}/kube/admin_password.txt_</code></p>
+
+<h3 id="configuration-files">Configuration files</h3>
+
+<p>Various configuration files are written into the home directory <em>CLC_CLUSTER_HOME</em> under
+<code>.clc_kube/${CLC_CLUSTER_NAME}</code> in several subdirectories. You can use these files
+to access the cluster from machines other than where you created the cluster from.</p>
+
+<ul>
+<li><code>config/</code>: Ansible variable files containing parameters describing the master and minion hosts</li>
+<li><code>hosts/</code>: hosts files listing access information for the ansible playbooks</li>
+<li><code>kube/</code>: <code>kubectl</code> configuration files, and the basic-authentication password for admin access to the Kubernetes API</li>
+<li><code>pki/</code>: public key infrastructure files enabling TLS communication in the cluster</li>
+<li><code>ssh/</code>: SSH keys for root access to the hosts</li>
+</ul>
+
+<h2 id="kubectl-usage-examples"><code>kubectl</code> usage examples</h2>
+
+<p>There are a great many features of <em>kubectl</em>.  Here are a few examples</p>
+
+<p>List existing nodes, pods, services and more, in all namespaces, or in just one:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl get nodes
+kubectl get --all-namespaces services
+kubectl get --namespace<span style="color:#666">=</span>kube-system replicationcontrollers</code></pre></div>
+<p>The Kubernetes API server exposes services on web URLs, which are protected by requiring
+client certificates.  If you run a kubectl proxy locally, <code>kubectl</code> will provide
+the necessary certificates and serve locally over http.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl proxy -p <span style="color:#666">8001</span></code></pre></div>
+<p>Then, you can access urls like <code>http://127.0.0.1:8001/api/v1/namespaces/kube-system/services/kubernetes-dashboard/proxy/</code> without the need for client certificates in your browser.</p>
+
+<h2 id="what-kubernetes-features-do-not-work-on-centurylink-cloud">What Kubernetes features do not work on CenturyLink Cloud</h2>
+
+<p>These are the known items that don&rsquo;t work on CenturyLink cloud but do work on other cloud providers:</p>
+
+<ul>
+<li><p>At this time, there is no support services of the type <a href="/docs/tasks/access-application-cluster/create-external-load-balancer/">LoadBalancer</a>. We are actively working on this and hope to publish the changes sometime around April 2016.</p></li>
+
+<li><p>At this time, there is no support for persistent storage volumes provided by
+CenturyLink Cloud. However, customers can bring their own persistent storage
+offering. We ourselves use Gluster.</p></li>
+</ul>
+
+<h2 id="ansible-files">Ansible Files</h2>
+
+<p>If you want more information about our Ansible files, please <a href="https://github.com/CenturyLinkCloud/adm-kubernetes-on-clc/blob/master/ansible/README.md" target="_blank">read this file</a></p>
+
+<h2 id="further-reading">Further reading</h2>
+
+<p>Please see the <a href="/docs/">Kubernetes docs</a> for more details on administering
+and using a Kubernetes cluster.</p>
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/setup/turnkey/clc.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/setup\/turnkey\/clc\/",
+					"title" : "Running Kubernetes on CenturyLink Cloud",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/setup\/turnkey\/clc\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/setup/turnkey/clc.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

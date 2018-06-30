@@ -1,0 +1,1438 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>应用资源配额和限额 - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="应用资源配额和限额" />
+<meta property="og:description" content="应用资源配额和限额" />
+
+<meta property="og:url" content="https://kubernetes.io/cn/docs/tasks/administer-cluster/apply-resource-quota-limit/" />
+<meta property="og:title" content="应用资源配额和限额 - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+             <li>
+                <a href="#">
+                    Chinese <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/">English</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+        
+        <a class="item" data-title="Home" href="/cn/docs/"></a>
+
+	
+	
+		
+		
+<a class="item" data-title="" href="/cn/docs/concepts/architecture/cloud-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="" href="/cn/docs/concepts/overview/kubernetes-api/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Admins">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Kubelet authentication/authorization" href="/cn/docs/admin/kubelet-authentication-authorization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes API访问控制" href="/cn/docs/admin/accessing-the-api/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes OpenVSwitch GRE/VxLAN 网络" href="/cn/docs/admin/ovs-networking/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="TLS bootstrapping" href="/cn/docs/admin/kubelet-tls-bootstrapping/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kube-apiserver" href="/cn/docs/admin/kube-apiserver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用启动引导令牌（Bootstrap Tokens）认证" href="/cn/docs/admin/bootstrap-tokens/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="创建大规模集群" href="/cn/docs/admin/cluster-large/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="多区域运行" href="/cn/docs/admin/multiple-zones/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="构建高可用集群">
+		<div class="container">
+		
+		
+		<a class="item" data-title="构建高可用集群" href="/cn/docs/admin/high-availability/"></a>
+		
+		
+	
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="概述">
+		<div class="container">
+		
+		
+		<a class="item" data-title="概述" href="/cn/docs/admin/authorization/"></a>
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="ABAC 模式" href="/cn/docs/admin/authorization/abac/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Webhook Mode" href="/cn/docs/admin/authorization/webhook/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="管理Service Accounts" href="/cn/docs/admin/service-accounts-admin/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="节点设置校验" href="/cn/docs/admin/node-conformance/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Cron Job" href="/cn/docs/concepts/workloads/controllers/cron-jobs/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="DNS Pod 与 Service" href="/cn/docs/concepts/services-networking/dns-pod-service/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="DaemonSet" href="/cn/docs/concepts/workloads/controllers/daemonset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Deployments" href="/cn/docs/concepts/workloads/controllers/deployment/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Docker 用户使用 kubectl 命令指南" href="/cn/docs/user-guide/docker-cli-to-kubectl/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Init 容器" href="/cn/docs/concepts/workloads/pods/init-containers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="JSONPath 支持" href="/cn/docs/user-guide/jsonpath/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes 中的代理" href="/cn/docs/concepts/cluster-administration/proxies/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes 组件" href="/cn/docs/concepts/overview/components/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes集群中使用Sysctls" href="/cn/docs/concepts/cluster-administration/sysctl-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Managing Compute Resources for Containers" href="/cn/docs/concepts/configuration/manage-compute-resources-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Master 节点通信" href="/cn/docs/concepts/architecture/master-node-communication/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Nodes" href="/cn/docs/concepts/architecture/nodes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pod Preset" href="/cn/docs/concepts/workloads/pods/podpreset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pod 安全策略" href="/cn/docs/concepts/policy/pod-security-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pod 的生命周期" href="/cn/docs/concepts/workloads/pods/pod-lifecycle/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Secret" href="/cn/docs/concepts/configuration/secret/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Service" href="/cn/docs/concepts/services-networking/service/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Tutorials">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Kubernetes 对象管理" href="/cn/docs/tutorials/object-management-kubectl/object-management/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="StatefulSet基本使用" href="/cn/docs/tutorials/stateful-application/basic-stateful-set/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Try Our Interactive Tutorials">
+		<div class="container">
+		
+		
+		<a class="item" data-title="Try Our Interactive Tutorials" href="/cn/docs/tutorials/kubernetes-basics/"></a>
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="互动教程 - 创建集群" href="/cn/docs/tutorials/kubernetes-basics/cluster-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 应用外部可见" href="/cn/docs/tutorials/kubernetes-basics/expose-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 应用程序探索" href="/cn/docs/tutorials/kubernetes-basics/explore-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 扩展您的应用程序" href="/cn/docs/tutorials/kubernetes-basics/scale-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 更新您的应用程序" href="/cn/docs/tutorials/kubernetes-basics/update-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 部署应用程序" href="/cn/docs/tutorials/kubernetes-basics/deploy-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Minikube 创建一个集群" href="/cn/docs/tutorials/kubernetes-basics/cluster-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 kubectl 创建部署" href="/cn/docs/tutorials/kubernetes-basics/deploy-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用服务发布您的应用程序" href="/cn/docs/tutorials/kubernetes-basics/expose-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="执行滚动更新" href="/cn/docs/tutorials/kubernetes-basics/update-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="查看 Pods 和节点" href="/cn/docs/tutorials/kubernetes-basics/explore-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="运行应用程序的多个实例" href="/cn/docs/tutorials/kubernetes-basics/scale-intro/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="“示例：使用 Stateful Sets 部署 Cassandra”" href="/cn/docs/tutorials/stateful-application/cassandra/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Source IP" href="/cn/docs/tutorials/services/source-ip/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用ConfigMap来配置Redis" href="/cn/docs/tutorials/configuration/configure-redis-using-configmap/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用命令式的方式管理 Kubernetes 对象" href="/cn/docs/tutorials/object-management-kubectl/imperative-object-management-command/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="基于 Persistent Volumes 搭建 WordPress 和 MySQL 应用" href="/cn/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="运行 ZooKeeper， 一个 CP 分布式系统" href="/cn/docs/tutorials/stateful-application/zookeeper/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="kubectl概述" href="/cn/docs/user-guide/kubectl-overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="为容器设置启动时要执行的命令及其入参" href="/cn/docs/tasks/inject-data-application/define-command-argument-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="为容器设置环境变量" href="/cn/docs/tasks/inject-data-application/define-environment-variable-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="云供应商" href="/cn/docs/concepts/cluster-administration/cloud-providers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Calico 来提供 NetworkPolicy" href="/cn/docs/tasks/administer-cluster/calico-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 HostAliases 向 Pod /etc/hosts 文件添加条目" href="/cn/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 PodPreset 将信息注入 Pods" href="/cn/docs/tasks/inject-data-application/podpreset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Romana 来提供 NetworkPolicy" href="/cn/docs/tasks/administer-cluster/romana-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Secret 安全地分发凭证" href="/cn/docs/tasks/inject-data-application/distribute-credentials-secure/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Service 把前端连接到后端" href="/cn/docs/tasks/access-application-cluster/connecting-frontend-backend/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Weave 网络来提供 NetworkPolicy" href="/cn/docs/tasks/administer-cluster/weave-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用Deployment运行一个无状态应用" href="/cn/docs/tasks/run-application/run-stateless-application-deployment/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="关键插件 Pod 的调度保证" href="/cn/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="同 Pod 内的容器使用共享卷通信" href="/cn/docs/tasks/access-application-cluster/communicate-containers-same-pod-shared-volume/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="在 Kubernetes 中配置私有 DNS 和上游域名服务器" href="/cn/docs/tasks/administer-cluster/dns-custom-nameservers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="垃圾收集" href="/cn/docs/concepts/workloads/controllers/garbage-collection/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="基于Replication Controller执行滚动升级" href="/cn/docs/tasks/run-application/rolling-update-replication-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="声明网络策略" href="/cn/docs/tasks/administer-cluster/declare-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="安装扩展（Addons）" href="/cn/docs/concepts/cluster-administration/addons/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="容器环境变量" href="/cn/docs/concepts/containers/container-environment-variables/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="对 DaemonSet 执行回滚" href="/cn/docs/tasks/manage-daemon/rollback-daemon-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="应用故障排查" href="/cn/docs/tasks/debug-application-cluster/debug-application/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="应用资源配额和限额" href="/cn/docs/tasks/administer-cluster/apply-resource-quota-limit/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="应用连接到 Service" href="/cn/docs/concepts/services-networking/connect-applications-service/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="弹缩StatefulSet" href="/cn/docs/tasks/run-application/scale-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="控制节点上的CPU管理策略" href="/cn/docs/tasks/administer-cluster/cpu-management-policies/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="改变默认 StorageClass" href="/cn/docs/tasks/administer-cluster/change-default-storage-class/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="更改 PersistentVolume 的回收策略" href="/cn/docs/tasks/administer-cluster/change-pv-reclaim-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="概念模板示例" href="/cn/docs/concepts/example-concept-template/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="理解 Kubernetes 对象" href="/cn/docs/concepts/overview/working-with-objects/kubernetes-objects/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="知名标签（Label）、注解（Annotation）和 Taints" href="/cn/docs/reference/labels-annotations-taints/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="管理巨页（HugePages）" href="/cn/docs/tasks/manage-hugepages/scheduling-hugepages/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="给容器分配非透明整型资源" href="/cn/docs/tasks/configure-pod-container/opaque-integer-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="网络策略" href="/cn/docs/concepts/services-networking/network-policies/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="联邦" href="/cn/docs/concepts/cluster-administration/federation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="认识 Kubernetes?" href="/cn/docs/concepts/overview/what-is-kubernetes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="认识 Kubernetes?" href="/cn/docs/whatisk8s/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="设备插件" href="/cn/docs/concepts/cluster-administration/device-plugins/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="设置 Pod CPU 和内存限制" href="/cn/docs/tasks/administer-cluster/cpu-memory-limit/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="访问集群上运行的服务" href="/cn/docs/tasks/administer-cluster/access-cluster-services/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="证书" href="/cn/docs/concepts/cluster-administration/certificates/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="证书轮换" href="/cn/docs/tasks/tls/certificate-rotation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="调度 GPU" href="/cn/docs/tasks/manage-gpus/scheduling-gpus/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="调试Pods和Replication Controllers" href="/cn/docs/tasks/debug-application-cluster/debug-pod-replication-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="调试StatefulSet" href="/cn/docs/tasks/debug-application-cluster/debug-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="资源配额" href="/cn/docs/concepts/policy/resource-quotas/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="运行一个单实例有状态应用" href="/cn/docs/tasks/run-application/run-single-instance-stateful-application/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="通过文件将Pod信息呈现给容器" href="/cn/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="通过环境变量将Pod信息呈现给容器" href="/cn/docs/tasks/inject-data-application/environment-variable-expose-pod-information/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="通过配置文件设置 Kubelet 参数" href="/cn/docs/tasks/administer-cluster/kubelet-config-file/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="配置你的云平台防火墙" href="/cn/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="配置命名空间下pod总数" href="/cn/docs/tasks/administer-cluster/quota-pod-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="配置对多集群的访问" href="/cn/docs/tasks/access-application-cluster/configure-access-multiple-clusters/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="镜像" href="/cn/docs/concepts/containers/images/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="集群故障排查" href="/cn/docs/tasks/debug-application-cluster/debug-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="集群管理" href="/cn/docs/tasks/administer-cluster/cluster-management/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="集群管理概述" href="/cn/docs/concepts/cluster-administration/cluster-administration-overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="静态Pods" href="/cn/docs/tasks/administer-cluster/static-pod/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/tasks/administer-cluster/apply-resource-quota-limit.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>应用资源配额和限额</h1>
+
+
+
+
+<p>本示例展示了在一个 namespace 中控制资源用量的典型设置。</p>
+
+<p>本文展示了以下资源的使用： <a href="/docs/admin/namespaces">Namespace</a>, <a href="/docs/concepts/policy/resource-quotas/">ResourceQuota</a> 和  <a href="/docs/tasks/configure-pod-container/limit-range/">LimitRange</a>。</p>
+
+
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+<li><a href="#before-you-begin">Before you begin</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#%e5%9c%ba%e6%99%af">场景</a></li>
+
+
+
+
+<li><a href="#%e5%88%9b%e5%bb%ba-namespace">创建 namespace</a></li>
+
+
+
+
+<li><a href="#%e5%ba%94%e7%94%a8-object-count-%e9%85%8d%e9%a2%9d%e5%88%b0-namespace">应用 object-count 配额到 namespace</a></li>
+
+
+
+
+<li><a href="#%e5%ba%94%e7%94%a8%e8%ae%a1%e7%ae%97%e8%b5%84%e6%ba%90%e9%85%8d%e9%a2%9d%e5%88%b0-namespace">应用计算资源配额到 namespace</a></li>
+
+
+
+
+<li><a href="#%e5%ba%94%e7%94%a8%e9%bb%98%e8%ae%a4%e8%b5%84%e6%ba%90%e8%af%b7%e6%b1%82%e5%92%8c%e9%99%90%e5%88%b6">应用默认资源请求和限制</a></li>
+
+
+
+
+<li><a href="#%e9%ab%98%e7%ba%a7%e9%85%8d%e9%a2%9d-scopes">高级配额 scopes</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#%e6%80%bb%e7%bb%93">总结</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</ul>
+
+
+
+<h2 id="before-you-begin">Before you begin</h2>
+<ul>
+<li><p>You need to have a Kubernetes cluster, and the kubectl command-line tool must
+be configured to communicate with your cluster. If you do not already have a
+cluster, you can create one by using
+<a href="/docs/getting-started-guides/minikube">Minikube</a>,
+or you can use one of these Kubernetes playgrounds:</p></li>
+</ul>
+
+<ul>
+<li><a href="https://www.katacoda.com/courses/kubernetes/playground" target="_blank">Katacoda</a></li>
+<li><a href="http://labs.play-with-k8s.com/" target="_blank">Play with Kubernetes</a></li>
+</ul>
+ 
+
+<p>To check the version, enter <code>kubectl version</code>.</p>
+
+
+
+
+<h2 id="场景">场景</h2>
+
+<p>集群管理员正在操作一个代表用户群体的集群，他希望控制一个特定 namespace 中可以被使用的资源总量，以达到促进对集群的公平共享及控制成本的目的。</p>
+
+<p>集群管理员有以下目标：</p>
+
+<ul>
+<li>限制运行中 pods 使用的计算资源数量</li>
+<li>限制 persistent volume claims 数量以控制对存储的访问</li>
+<li>限制 load balancers 数量以控制成本</li>
+<li>防止使用 node ports 以保留稀缺资源</li>
+<li>提供默认计算资源请求以实现更好的调度决策</li>
+</ul>
+
+<h2 id="创建-namespace">创建 namespace</h2>
+
+<p>本示例将在一个自定义的 namespace 中运行，以展示相关概念。</p>
+
+<p>让我们创建一个叫做 quota-example 的新 namespace：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl create namespace quota-example
+namespace <span style="color:#b44">&#34;quota-example&#34;</span> created
+$ kubectl get namespaces
+NAME            STATUS    AGE
+default         Active    2m
+kube-system     Active    2m
+quota-example   Active    39s</code></pre></div>
+<h2 id="应用-object-count-配额到-namespace">应用 object-count 配额到 namespace</h2>
+
+<p>集群管理员想要控制下列资源：</p>
+
+<ul>
+<li>persistent volume claims</li>
+<li>load balancers</li>
+<li>node ports</li>
+</ul>
+
+<p>我们来创建一个简单的配额，用于控制这个 namespace 中那些资源类型的对象数量。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl create -f https://k8s.io/docs/tasks/configure-pod-container/rq-object-counts.yaml --namespace<span style="color:#666">=</span>quota-example
+resourcequota <span style="color:#b44">&#34;object-counts&#34;</span> created</code></pre></div>
+<p>配额系统将察觉到有一个配额被创建，并且会计算 namespace 中的资源消耗量作为响应。这应该会很快发生。</p>
+
+<p>让我们显示一下配额来观察这个 namespace 中当前被消耗的资源：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl describe quota object-counts --namespace<span style="color:#666">=</span>quota-example
+Name:                  object-counts
+Namespace:             quota-example
+Resource               Used    Hard
+--------               ----    ----
+persistentvolumeclaims <span style="color:#666">0</span>    <span style="color:#666">2</span>
+services.loadbalancers <span style="color:#666">0</span>    <span style="color:#666">2</span>
+services.nodeports     <span style="color:#666">0</span>    <span style="color:#666">0</span></code></pre></div>
+<p>配额系统现在将阻止用户创建比各个资源指定数量更多的资源。</p>
+
+<h2 id="应用计算资源配额到-namespace">应用计算资源配额到 namespace</h2>
+
+<p>为了限制这个 namespace 可以被使用的计算资源数量，让我们创建一个跟踪计算资源的配额。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl create -f https://k8s.io/docs/tasks/configure-pod-container/rq-compute-resources.yaml --namespace<span style="color:#666">=</span>quota-example
+resourcequota <span style="color:#b44">&#34;compute-resources&#34;</span> created</code></pre></div>
+<p>让我们显示一下配额来观察这个 namespace 中当前被消耗的资源：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl describe quota compute-resources --namespace<span style="color:#666">=</span>quota-example
+Name:                  compute-resources
+Namespace:             quota-example
+Resource               Used Hard
+--------               ---- ----
+limits.cpu             <span style="color:#666">0</span>    <span style="color:#666">2</span>
+limits.memory          <span style="color:#666">0</span>    2Gi
+pods                   <span style="color:#666">0</span>    <span style="color:#666">4</span>
+requests.cpu           <span style="color:#666">0</span>    <span style="color:#666">1</span>
+requests.memory        <span style="color:#666">0</span>    1Gi</code></pre></div>
+<p>配额系统现在会防止 namespace 拥有超过 4 个没有终止的 pods。此外它还将强制 pod 中的每个容器配置一个 <code>request</code> 并为 <code>cpu</code> 和 <code>memory</code> 定义 <code>limit</code>。</p>
+
+<h2 id="应用默认资源请求和限制">应用默认资源请求和限制</h2>
+
+<p>Pod 的作者很少为它们的 pods 指定资源请求和限制。</p>
+
+<p>既然我们对项目应用了配额，我们来看一下当终端用户通过创建一个没有 cpu 和 内存限制的 pod 时会发生什么。这通过在 pod 里创建一个 nginx 容器实现。</p>
+
+<p>作为演示，让我们来创建一个运行 nginx 的 deployment：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl run nginx --image<span style="color:#666">=</span>nginx --replicas<span style="color:#666">=</span><span style="color:#666">1</span> --namespace<span style="color:#666">=</span>quota-example
+deployment <span style="color:#b44">&#34;nginx&#34;</span> created</code></pre></div>
+<p>现在我们来看一下创建的 pods。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl get pods --namespace<span style="color:#666">=</span>quota-example</code></pre></div>
+<p>发生了什么？我一个 pods 都没有！让我们 describe 这个 deployment 来看看发生了什么。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl describe deployment nginx --namespace<span style="color:#666">=</span>quota-example
+Name:                   nginx
+Namespace:              quota-example
+CreationTimestamp:      Mon, <span style="color:#666">06</span> Jun <span style="color:#666">2016</span> <span style="color:#666">16</span>:11:37 -0400
+Labels:                 <span style="color:#b8860b">run</span><span style="color:#666">=</span>nginx
+Selector:               <span style="color:#b8860b">run</span><span style="color:#666">=</span>nginx
+Replicas:               <span style="color:#666">0</span> updated | <span style="color:#666">1</span> total | <span style="color:#666">0</span> available | <span style="color:#666">1</span> unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        <span style="color:#666">0</span>
+RollingUpdateStrategy:  <span style="color:#666">1</span> max unavailable, <span style="color:#666">1</span> max surge
+OldReplicaSets:         &lt;none&gt;
+NewReplicaSet:          nginx-3137573019 <span style="color:#666">(</span><span style="color:#666">0</span>/1 replicas created<span style="color:#666">)</span>
+...</code></pre></div>
+<p>Deployment 创建了一个对应的 replica set 并尝试按照大小来创建一个 pod。</p>
+
+<p>让我们看看 replica set 的更多细节。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl describe rs nginx-3137573019 --namespace<span style="color:#666">=</span>quota-example
+Name:                   nginx-3137573019
+Namespace:              quota-example
+Image<span style="color:#666">(</span>s<span style="color:#666">)</span>:               nginx
+Selector:               pod-template-hash<span style="color:#666">=</span><span style="color:#666">3137573019</span>,run<span style="color:#666">=</span>nginx
+Labels:                 pod-template-hash<span style="color:#666">=</span><span style="color:#666">3137573019</span>
+                        <span style="color:#b8860b">run</span><span style="color:#666">=</span>nginx
+Replicas:               <span style="color:#666">0</span> current / <span style="color:#666">1</span> desired
+Pods Status:            <span style="color:#666">0</span> Running / <span style="color:#666">0</span> Waiting / <span style="color:#666">0</span> Succeeded / <span style="color:#666">0</span> Failed
+No volumes.
+Events:
+  FirstSeen    LastSeen    Count From                    SubobjectPath Type      Reason        Message
+  ---------    --------  ----- ----                    -------------    --------  ------        -------
+  4m        7s        <span style="color:#666">11</span>    <span style="color:#666">{</span>replicaset-controller <span style="color:#666">}</span>              Warning   FailedCreate  Error creating: pods <span style="color:#b44">&#34;nginx-3137573019-&#34;</span> is forbidden: Failed quota: compute-resources: must specify limits.cpu,limits.memory,requests.cpu,requests.memory</code></pre></div>
+<p>Kubernetes API server 拒绝了  replica set 创建一个 pod 的请求，因为我们的 pods 没有为 <code>cpu</code> 和 <code>memory</code> 指定 <code>requests</code> 或 <code>limits</code>。</p>
+
+<p>因此，我们来为 pod 指定它可以使用的 <code>cpu</code> 和 <code>memory</code> 默认数量。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl create -f https://k8s.io/docs/tasks/configure-pod-container/rq-limits.yaml --namespace<span style="color:#666">=</span>quota-example
+limitrange <span style="color:#b44">&#34;limits&#34;</span> created
+$ kubectl describe limits limits --namespace<span style="color:#666">=</span>quota-example
+Name:           limits
+Namespace:      quota-example
+Type      Resource  Min  Max  Default Request   Default Limit   Max Limit/Request Ratio
+----      --------  ---  ---  ---------------   -------------   -----------------------
+Container memory    -    -    256Mi             512Mi           -
+Container cpu       -    -    100m              200m            -</code></pre></div>
+<p>如果 Kubernetes API server 发现一个 namespace 中有一个创建 pod 的请求，并且 pod 中的容器没有设置任何计算资源请求时，作为准入控制的一部分，一个默认的 request 和 limit 将会被应用。</p>
+
+<p>在本例中，创建的每个 pod 都将拥有如下的计算资源限制：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl run nginx <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>  --image<span style="color:#666">=</span>nginx <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>  --replicas<span style="color:#666">=</span><span style="color:#666">1</span> <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>  --requests<span style="color:#666">=</span><span style="color:#b8860b">cpu</span><span style="color:#666">=</span>100m,memory<span style="color:#666">=</span>256Mi <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>  --limits<span style="color:#666">=</span><span style="color:#b8860b">cpu</span><span style="color:#666">=</span>200m,memory<span style="color:#666">=</span>512Mi <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>  --namespace<span style="color:#666">=</span>quota-example</code></pre></div>
+<p>由于已经为我们的 namespace 申请了默认的计算资源，我们的 replica set 应该能够创建它的 pods 了。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl get pods --namespace<span style="color:#666">=</span>quota-example
+NAME                     READY     STATUS    RESTARTS   AGE
+nginx-3137573019-fvrig   <span style="color:#666">1</span>/1       Running   <span style="color:#666">0</span>          6m</code></pre></div>
+<p>而且如果打印出我们在这个 namespace 中的配额使用情况：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl describe quota --namespace<span style="color:#666">=</span>quota-example
+Name:           compute-resources
+Namespace:      quota-example
+Resource        Used    Hard
+--------        ----    ----
+limits.cpu      200m    <span style="color:#666">2</span>
+limits.memory   512Mi   2Gi
+pods            <span style="color:#666">1</span>       <span style="color:#666">4</span>
+requests.cpu    100m    <span style="color:#666">1</span>
+requests.memory 256Mi   1Gi
+
+
+Name:                 object-counts
+Namespace:            quota-example
+Resource              Used    Hard
+--------              ----    ----
+persistentvolumeclaims <span style="color:#666">0</span>      <span style="color:#666">2</span>
+services.loadbalancers <span style="color:#666">0</span>      <span style="color:#666">2</span>
+services.nodeports     <span style="color:#666">0</span>      <span style="color:#666">0</span></code></pre></div>
+<p>就像你看到的，创建的 pod 消耗了明确的计算资源量，并且正被 Kubernetes 正确的追踪着。</p>
+
+<h2 id="高级配额-scopes">高级配额 scopes</h2>
+
+<p>让我们想象一下如果你不希望为你的 namespace 指定默认计算资源使用量。</p>
+
+<p>作为替换，你希望用户在它们的 namespace 中运行指定数量的 <code>BestEffort</code> pods，以从宽松的计算资源中获得好处。然后要求用户为需要更高质量服务的 pods 配置一个显式的资源请求。</p>
+
+<p>让我们新建一个拥有两个配额的 namespace 来演示这种行为：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl create namespace quota-scopes
+namespace <span style="color:#b44">&#34;quota-scopes&#34;</span> created
+$ kubectl create -f https://k8s.io/docs/tasks/configure-pod-container/rq-best-effort.yaml --namespace<span style="color:#666">=</span>quota-scopes
+resourcequota <span style="color:#b44">&#34;best-effort&#34;</span> created
+$ kubectl create -f https://k8s.io/docs/tasks/configure-pod-container/rq-not-best-effort.yaml --namespace<span style="color:#666">=</span>quota-scopes
+resourcequota <span style="color:#b44">&#34;not-best-effort&#34;</span> created
+$ kubectl describe quota --namespace<span style="color:#666">=</span>quota-scopes
+Name:       best-effort
+Namespace:  quota-scopes
+Scopes:     BestEffort
+ * Matches all pods that have best effort quality of service.
+Resource    Used    Hard
+--------    ----  ----
+pods        <span style="color:#666">0</span>     <span style="color:#666">10</span>
+
+
+Name:             not-best-effort
+Namespace:        quota-scopes
+Scopes:           NotBestEffort
+ * Matches all pods that <span style="color:#a2f;font-weight:bold">do</span> not have best effort quality of service.
+Resource          Used  Hard
+--------          ----  ----
+limits.cpu        <span style="color:#666">0</span>     <span style="color:#666">2</span>
+limits.memory     <span style="color:#666">0</span>     2Gi
+pods              <span style="color:#666">0</span>     <span style="color:#666">4</span>
+requests.cpu      <span style="color:#666">0</span>     <span style="color:#666">1</span>
+requests.memory   <span style="color:#666">0</span>     1Gi</code></pre></div>
+<p>在这种场景下，一个没有配置计算资源请求的 pod 将会被 <code>best-effort</code> 配额跟踪。</p>
+
+<p>而配置了计算资源请求的则会被 <code>not-best-effort</code> 配额追踪。</p>
+
+<p>让我们创建两个 deployments 作为演示：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl run best-effort-nginx --image<span style="color:#666">=</span>nginx --replicas<span style="color:#666">=</span><span style="color:#666">8</span> --namespace<span style="color:#666">=</span>quota-scopes
+deployment <span style="color:#b44">&#34;best-effort-nginx&#34;</span> created
+$ kubectl run not-best-effort-nginx <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>  --image<span style="color:#666">=</span>nginx <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>  --replicas<span style="color:#666">=</span><span style="color:#666">2</span> <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>  --requests<span style="color:#666">=</span><span style="color:#b8860b">cpu</span><span style="color:#666">=</span>100m,memory<span style="color:#666">=</span>256Mi <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>  --limits<span style="color:#666">=</span><span style="color:#b8860b">cpu</span><span style="color:#666">=</span>200m,memory<span style="color:#666">=</span>512Mi <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>  --namespace<span style="color:#666">=</span>quota-scopes
+deployment <span style="color:#b44">&#34;not-best-effort-nginx&#34;</span> created</code></pre></div>
+<p>虽然没有指定默认的 limits，<code>best-effort-nginx</code> deployment 还是会创建 8 个 pods。这是由于它被 <code>best-effort</code> 配额追踪，而 <code>not-best-effort</code> 配额将忽略它。<code>not-best-effort</code> 配额将追踪 <code>not-best-effort-nginx</code> deployment，因为它创建的 pods 具有 <code>Burstable</code> 服务质量。</p>
+
+<p>让我们列出 namespace 中的 pods：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl get pods --namespace<span style="color:#666">=</span>quota-scopes
+NAME                                     READY     STATUS    RESTARTS   AGE
+best-effort-nginx-3488455095-2qb41       <span style="color:#666">1</span>/1       Running   <span style="color:#666">0</span>          51s
+best-effort-nginx-3488455095-3go7n       <span style="color:#666">1</span>/1       Running   <span style="color:#666">0</span>          51s
+best-effort-nginx-3488455095-9o2xg       <span style="color:#666">1</span>/1       Running   <span style="color:#666">0</span>          51s
+best-effort-nginx-3488455095-eyg40       <span style="color:#666">1</span>/1       Running   <span style="color:#666">0</span>          51s
+best-effort-nginx-3488455095-gcs3v       <span style="color:#666">1</span>/1       Running   <span style="color:#666">0</span>          51s
+best-effort-nginx-3488455095-rq8p1       <span style="color:#666">1</span>/1       Running   <span style="color:#666">0</span>          51s
+best-effort-nginx-3488455095-udhhd       <span style="color:#666">1</span>/1       Running   <span style="color:#666">0</span>          51s
+best-effort-nginx-3488455095-zmk12       <span style="color:#666">1</span>/1       Running   <span style="color:#666">0</span>          51s
+not-best-effort-nginx-2204666826-7sl61   <span style="color:#666">1</span>/1       Running   <span style="color:#666">0</span>          23s
+not-best-effort-nginx-2204666826-ke746   <span style="color:#666">1</span>/1       Running   <span style="color:#666">0</span>          23s</code></pre></div>
+<p>如你看到的，所有 10 个 pods 都已经被准许创建。</p>
+
+<p>让我们 describe 这个 namespace 当前的配额使用情况：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl describe quota --namespace<span style="color:#666">=</span>quota-scopes
+Name:            best-effort
+Namespace:       quota-scopes
+Scopes:          BestEffort
+ * Matches all pods that have best effort quality of service.
+Resource         Used  Hard
+--------         ----  ----
+pods             <span style="color:#666">8</span>     <span style="color:#666">10</span>
+
+
+Name:               not-best-effort
+Namespace:          quota-scopes
+Scopes:             NotBestEffort
+ * Matches all pods that <span style="color:#a2f;font-weight:bold">do</span> not have best effort quality of service.
+Resource            Used  Hard
+--------            ----  ----
+limits.cpu          400m  <span style="color:#666">2</span>
+limits.memory       1Gi   2Gi
+pods                <span style="color:#666">2</span>     <span style="color:#666">4</span>
+requests.cpu        200m  <span style="color:#666">1</span>
+requests.memory     512Mi 1Gi</code></pre></div>
+<p>如你看到的，<code>best-effort</code> 配额追踪了我们在 <code>best-effort-nginx</code> deployment 中创建的 8 个 pods 的资源用量，而 <code>not-best-effort</code> 配额追踪了我们在 <code>not-best-effort-nginx</code> deployment 中创的两个 pods 的用量。</p>
+
+<p>Scopes 提供了一种来对任何配额文档追踪的资源集合进行细分的机制，给操作人员部署和追踪资源消耗带来更大的灵活性。</p>
+
+<p>除 <code>BestEffort</code> 和 <code>NotBestEffort</code> scopes 之外，还有用于限制长时间运行和有时限 pods 的scopes。<code>Terminating</code> scope 将匹配任何 <code>spec.activeDeadlineSeconds</code> 不为 <code>nil</code> 的 pod。<code>NotTerminating</code> scope 将匹配任何 <code>spec.activeDeadlineSeconds</code> 为 <code>nil</code> 的 pod。这些 scopes 允许你基于 pods 在你集群中 node 上的预期持久程度来为它们指定配额。</p>
+
+
+
+
+<h2 id="总结">总结</h2>
+
+<p>消耗节点 cpu 和 memory 资源的动作受到 namespace 配额定义的硬性配额限制的管制。</p>
+
+<p>任意消耗那些资源的动作能够被调整，或者获得一个 namespace 级别的默认值以符合你最终的目标。</p>
+
+<p>可以基于服务质量或者在你集群中节点上的预期持久程度来分配配额。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/tasks/administer-cluster/apply-resource-quota-limit.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/cn\/docs\/tasks\/administer-cluster\/apply-resource-quota-limit\/",
+					"title" : "应用资源配额和限额",
+					"permalink" : "https:\/\/kubernetes.io\/cn\/docs\/tasks\/administer-cluster\/apply-resource-quota-limit\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/tasks/administer-cluster/apply-resource-quota-limit.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

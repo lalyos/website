@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html id="home" lang="en" class="">
+	<head>
+	<meta name="generator" content="Hugo 0.40.3" />
+		<meta charset="utf-8">
+<title>生产级别的容器编排系统 - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="生产级别的容器编排系统" />
+<meta property="og:description" content="生产级别的容器编排系统" />
+
+<meta property="og:url" content="https://kubernetes.io/cn/" />
+<meta property="og:title" content="生产级别的容器编排系统 - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+             <li>
+                <a href="#">
+                    Chinese <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/">English</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text">
+			<main>
+				<div id="headlineWrapper">
+					<h1>生产级别的容器编排系统</h1>
+					<h5>自动化的容器部署、扩展和管理</h5>
+				</div>
+				
+
+<a href="/cn/docs/tutorials/kubernetes-basics/" id="quickstartButton" class="button">Try Our Interactive Tutorials</a>
+
+
+			</main>
+		</section>
+		
+		
+		
+<section id="oceanNodes">
+    <main>
+        <div class="image-wrapper"><img src="/images/flower.png"></div>
+        <div class="content">
+            
+            <h3><a href="/docs/concepts/overview/what-is-kubernetes/">Kubernetes</a> 是用于自动部署，扩展和管理容器化应用程序的开源系统。</h3>
+            <p>它将组成应用程序的容器组合成逻辑单元，以便于管理和服务发现，Kubernetes 构建在 <a href="http://queue.acm.org/detail.cfm?id=2898444"> Google 15 年生产环境经验</a>基础之上,并结合来自社区的最佳创意和实践。</p>
+        </div>
+    </main>
+    <main>
+        <div class="image-wrapper"><img src="/images/scalable.png"></div>
+        <div class="content">
+            
+            <h4>星际尺度</h4>
+            <p>根据同样的原则设计，允许 Google 每周运行数十亿个容器，Kubernetes 可以在不增加您的 ops 团队的情况下进行弹性扩展。</p>
+        </div>
+    </main>
+    <main>
+        <div class="image-wrapper"><img src="/images/blocks.png"></div>
+        <div class="content">
+            
+            <h4>永不过时</h4>
+            <p>无论您应用运行在本地还是运行于全球任何地域，Kubernetes 的灵活性都可以随着您的需求复杂度不断增加，还可以持续、轻松地对外提供服务。</p>
+        </div>
+    </main>
+    <main>
+        <div class="image-wrapper"><img src="/images/suitcase.png"></div>
+        <div class="content">
+            
+            <h4>随处运行</h4>
+            <p>Kubernetes 是开源的，可以让您自由地部署在企业内部，私有云、混合云或公有云基础架构，使您轻松将应用迁移至任何位置。</p>
+        </div>
+    </main>
+</section>
+<section id="video">
+    <div class="light-text">
+        
+        <h2>Kubernetes: 最后&hellip; 它是真正的云平台</h2>
+        <p>Box 的联合创始人和服务架构师 Sam Ghods 发表了热情洋溢的演讲，随着使用 Kubernetes，我们首次有一个通用接口，可以建立真正的部署工具。</p>
+        <button id="desktopShowVideoButton" onclick="kub.showVideo()">观看视频</button>
+    </div>
+    <button id="mobileShowVideoButton" onclick="kub.showVideo()"></button>
+</section>
+<section id="features">
+    <main>
+        
+        <h3 class="center">Kubernetes 特性</h3>
+        <div class="feature-box">
+            <div>
+                
+                <h4><a href="/docs/concepts/configuration/manage-compute-resources-container/">自动包装</a></h4>
+                <p>根据资源需求和其他约束自动放置容器，同时不会牺牲可用性，混合关键和最大努力的工作负载，以提高资源利用率并节省更多资源。</p>
+            </div>
+            <div>
+                
+                <h4><a href="/docs/concepts/workloads/controllers/replicationcontroller/#what-is-a-replicationcontroller">自我修复</a></h4>
+                <p>重新启动失败的容器，在节点不可用时，替换和重新编排节点上的容器，终止不对用户定义的健康检查做出响应的容器，并且不会在客户端准备投放之前将其通告给客户端。</p>
+            </div>
+        </div>
+        <div class="feature-box">
+            <div>
+                
+                <h4><a href="/docs/tasks/run-application/horizontal-pod-autoscale/">横向缩放</a></h4>
+                <p>使用简单的命令或 UI，或者根据 CPU 的使用情况自动调整应用程序副本数。</p>
+            </div>
+            <div>
+                
+                <h4><a href="/docs/concepts/services-networking/service/">服务发现和负载均衡</a></h4>
+                <p>不需要修改您的应用程序来使用不熟悉的服务发现机制，Kubernetes 为容器提供了自己的 IP 地址和一组容器的单个 DNS 名称，并可以在它们之间进行负载均衡。</p>
+            </div>
+        </div>
+        <div class="feature-box">
+            <div>
+                
+                <h4><a href="/docs/concepts/workloads/controllers/deployment/#what-is-a-deployment">自动部署和回滚</a></h4>
+                <p>Kubernetes 逐渐部署对应用程序或其配置的更改，同时监视应用程序运行状况，以确保它不会同时终止所有实例。 如果出现问题，Kubernetes会为您恢复更改，利用日益增长的部署解决方案的生态系统。</p>
+            </div>
+            <div>
+                <h4><a href="/docs/concepts/configuration/secret/">密钥</a> 和 <a href="/docs/tasks/configure-pod-container/configure-pod-configmap/">配置</a> 管理</h4>
+                <p>部署和更新密钥和应用程序配置，不会重新编译您的镜像，不会在堆栈配置中暴露密钥(secrets)。</p>
+            </div>
+        </div>
+        <div class="feature-box">
+            <div>
+                <h4><a href="/docs/concepts/storage/persistent-volumes/">存储编排</a></h4>
+                <p>自动安装您所选择的存储系统，无论是本地存储，如公有云提供商 <a href="https://cloud.google.com/storage/">GCP</a> 或 <a href="https://aws.amazon.com/products/storage/">AWS</a>, 还是网络存储系统 NFS, iSCSI,
+            Gluster, Ceph, Cinder, 或 Flocker。</p>
+        </div>
+        <div>
+            <h4><a href="/docs/concepts/workloads/controllers/jobs-run-to-completion/">批处理</a></h4>
+            <p>除了服务之外，Kubernetes还可以管理您的批处理和 CI 工作负载，如果需要，替换出现故障的容器。</p>
+        </div>
+    </div>
+</main>
+</section>
+<section id="talkToUs">
+<main>
+    
+    <h3>实例探究</h3>
+    <div id="caseStudiesWrapper">
+        <div>
+            <p>使用Kubernetes来重塑世界上最大的教育公司</p>
+            <a href="/case-studies/pearson/">阅读更多</a>
+        </div>
+        <div>
+            <p>Kubernetes at Box: 微服务的最大优势</p>
+            <a href="https://blog.box.com/blog/kubernetes-box-microservices-maximum-velocity/">阅读更多</a>
+        </div>
+        <div>
+            <p>在 eBay 内部转移到 OpenStack 上的 Kubernetes 和容器</p>
+            <a href="https://www.nextplatform.com/2015/11/12/inside-ebays-shift-to-kubernetes-and-containers-atop-openstack/">阅读更多</a>
+        </div>
+        <div>
+            <p>将本地的集群迁移至 Kubernetes</p>
+            <a href="https://www.youtube.com/watch?v=6XGUTu3WhBw">观看视频</a>
+        </div>
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h5 style="text-align: center"><a href="/case-studies/" style="color: #3371E3; font-weight: 400">探究所有的案例</a></h5>
+</main>
+</section>
+<div id="videoPlayer">
+<iframe data-url="https://www.youtube.com/embed/of45hYbkIZs?autoplay=1" frameborder="0" allowfullscreen></iframe>
+<button id="closeButton"></button>
+</div>
+
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

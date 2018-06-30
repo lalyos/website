@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html id="caseStudies" lang="en" class="">
+	<head>
+		<meta charset="utf-8">
+<title>Squarespace Case Study - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/case_study_styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style_case_studies.css">
+
+
+<meta name="description" content="Squarespace Case Study" />
+<meta property="og:description" content="Squarespace Case Study" />
+
+<meta property="og:url" content="https://kubernetes.io/case-studies/squarespace/" />
+<meta property="og:title" content="Squarespace Case Study - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+	<div class="banner1 desktop" style="background-image: url('/images/CaseStudy_squarespace_banner1.jpg')">
+  <h1> CASE STUDY:<img src="/images/squarespace_logo.png" class="header_logo"><br> <div class="subhead">Squarespace: Gaining Productivity and Resilience with Kubernetes
+</div></h1>
+
+</div>
+
+<div class="details">
+    Company &nbsp;<b>Squarespace</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Location &nbsp;<b>New York, N.Y.</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Industry &nbsp;<b>Software as a Service, Website-Building Platform</b>
+</div>
+
+<hr>
+<section class="section1">
+<div class="cols">
+  <div class="col1">
+    <h2>Challenge</h2>
+    Moving from a monolith to microservices in 2014 "solved a problem on the development side, but it pushed that problem to the infrastructure team," says Kevin Lynch, Staff Engineer on the Site Reliability team at Squarespace. "The infrastructure deployment process on our 5,000 VM hosts was slowing everyone down."
+<br>
+<h2>Solution</h2>
+The team experimented with container orchestration platforms, and found that Kubernetes "answered all the questions that we had," says Lynch. The company began running Kubernetes in its data centers in&nbsp;2016.
+
+      </div>
+
+<div class="col2">
+
+<h2>Impact</h2>
+Since Squarespace moved to Kubernetes, in conjunction with modernizing its networking stack, deployment time has been reduced by almost 85%. Before, their VM deployment would take half an hour; now, says Lynch, "someone can generate a templated application, deploy it within five minutes, and have actual instances containerized, running in our staging environment at that point." Because of that, "productivity time is the big cost saver," he adds. "When we started the Kubernetes project, we had probably a dozen microservices. Today there are twice that in the pipeline being actively worked on." Resilience has also been improved with Kubernetes: "If a node goes down, it’s rescheduled immediately and there’s no performance&nbsp;impact."
+
+</div>
+
+</div>
+</section>
+<div class="banner2">
+  <div class="banner2text">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/feQkzJkW-SA" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    <br><br>"Once you prove that Kubernetes solves one problem, everyone immediately starts solving other problems without you even having to evangelize it."
+<br style="height:25px"><span style="font-size:14px;letter-spacing:2px;text-transform:uppercase;margin-top:5% !important;"><br>— Kevin Lynch, Staff Engineer on the Site Reliability team at Squarespace</span>
+  </div>
+</div>
+<section class="section2">
+<div class="fullcol">
+  <h2>Since it was started in a dorm room in 2003, Squarespace has made it simple for millions of people to create their own websites.</h2> Behind the scenes, though, the company’s monolithic Java application was making things not so simple for its developers to keep improving the platform. So in 2014, the company decided to "go down the microservices path," says Kevin Lynch, staff engineer on Squarespace’s Site Reliability team. "But we were always deploying our applications in vCenter VMware VMs [in our own data centers]. Microservices solved a problem on the development side, but it pushed that problem to the Infrastructure team. The infrastructure deployment process on our 5,000 VM hosts was slowing everyone down."<br><br>
+  After experimenting with another container orchestration platform and "breaking it in very painful ways," Lynch says, the team began experimenting with Kubernetes in mid-2016 and found that it "answered all the questions that we had." Deploying it in the data center rather than the public cloud was their biggest challenge, and at the time, not a lot of other companies were doing that. "We had to figure out how to deploy this in our infrastructure for ourselves, and we had to integrate it with our other applications," says Lynch.<br><br>
+  At the same time, Squarespace’s Network Engineering team was modernizing its networking stack, switching from a traditional layer-two network to a layer-three spine-and-leaf network. "It mapped beautifully with what we wanted to do with Kubernetes," says Lynch. "It gives us the ability to have our servers communicate directly with the top-of-rack switches. We use Calico for <a href="https://github.com/containernetworking/cnihttps://github.com/containernetworking/cni">CNI networking for Kubernetes</a>, so we can announce all these individual Kubernetes pod IP addresses and have them integrate seamlessly with our other services that are still provisioned in the VMs."
+
+</div>
+</section>
+<div class="banner3" style="background-image: url('/images/CaseStudy_squarespace_banner3.jpg')">
+  <div class="banner3text">
+    After experimenting with another container orchestration platform and "breaking it in very painful ways," Lynch says, the team began experimenting with Kubernetes in mid-2016 and found that it "answered all the questions that we had."
+
+  </div>
+</div>
+<section class="section3">
+<div class="fullcol">
+  Within a couple months, they had a stable cluster for their internal use, and began rolling out Kubernetes for production. They also added Zipkin and CNCF projects <a href="https://prometheus.io/">Prometheus</a> and <a href="https://www.fluentd.org/">fluentd</a> to their cloud native stack. "We switched to Kubernetes, a new world, and we revamped all our other tooling as well," says Lynch. "It allowed us to streamline our process, so we can now easily create an entire microservice project from templates, generate the code and deployment pipeline for that, generate the Docker file, and then immediately just ship a workable, deployable project to Kubernetes." Deployments across Dev/QA/Stage/Prod were also "simplified drastically," Lynch adds. "Now there is little configuration variation."
+<br><br>
+  And the whole process takes only five minutes, an almost 85% reduction in time compared to their VM deployment. "From end to end that probably took half an hour, and that’s not accounting for the fact that an infrastructure engineer would be responsible for doing that, so there’s some business delay in there as well."
+<br><br>
+  With faster deployments, "productivity time is the big cost saver," says Lynch. "We had a team that was implementing a new file storage service, and they just started integrating that with our storage back end without our involvement"—which wouldn’t have been possible before Kubernetes. He adds: "When we started the Kubernetes project, we had probably a dozen microservices. Today there are twice that in the pipeline being actively worked on."
+
+
+</div>
+</section>
+<div class="banner4" style="background-image: url('/images/CaseStudy_squarespace_banner4.jpg')">
+  <div class="banner4text">
+  "We switched to Kubernetes, a new world....It allowed us to streamline our process, so we can now easily create an entire microservice project from templates," Lynch says. And the whole process takes only five minutes, an almost 85% reduction in time compared to their VM deployment.
+  </div>
+</div>
+
+<section class="section5" style="padding:0px !important">
+<div class="fullcol">
+  There’s also been a positive impact on the application’s resilience. "When we’re deploying VMs, we have to build tooling to ensure that a service is spread across racks appropriately and can withstand failure," he says. "Kubernetes just does it. If a node goes down, it’s rescheduled immediately and there’s no performance impact."
+<br><br>
+  Another big benefit is autoscaling. "It wasn’t really possible with the way we’ve been using VMware," says Lynch, "but now we can just add the appropriate autoscaling features via Kubernetes directly, and boom, it’s scaling up as demand increases. And it worked out of the box."
+<br><br>
+  For others starting out with Kubernetes, Lynch says his best advice is to "fail fast": "Once you’ve planned things out, just execute. Kubernetes has been really great for trying something out quickly and seeing if it works or not."
+
+
+</div>
+
+<div class="banner5">
+  <div class="banner5text">
+    "When we’re deploying VMs, we have to build tooling to ensure that a service is spread across racks appropriately and can withstand failure," he says. "Kubernetes just does it. If a node goes down, it’s rescheduled immediately and there’s no performance impact."
+  </div>
+</div>
+
+<div class="fullcol">
+  Lynch and his team are planning to open source some of the tools they’ve developed to extend Kubernetes and use it as an API itself. The first tool injects dependent applications as containers in a pod. "When you ship an application, usually it comes along with a whole bunch of dependent applications that need to be shipped with that, for example, fluentd for logging," he explains. With this tool, the developer doesn’t need to worry about the configurations.
+<br><br>
+  Going forward, all new services at Squarespace are going into Kubernetes, and the end goal is to convert everything it can. About a quarter of existing services have been migrated. "Our monolithic application is going to be the last one, just because it’s so big and complex," says Lynch. "But now I’m seeing other services get moved over, like the file storage service. Someone just did it and it worked—painlessly. So I believe if we tackle it, it’s probably going to be a lot easier than we fear. Maybe I should just take my own advice and fail fast!"
+
+</div>
+
+</section>
+
+
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

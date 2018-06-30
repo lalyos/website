@@ -1,0 +1,2007 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Reconfigure a Node&#39;s Kubelet in a Live Cluster - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="Reconfigure a Node&#39;s Kubelet in a Live Cluster" />
+<meta property="og:description" content="Reconfigure a Node&#39;s Kubelet in a Live Cluster" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/tasks/administer-cluster/reconfigure-kubelet/" />
+<meta property="og:title" content="Reconfigure a Node&#39;s Kubelet in a Live Cluster - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+
+
+
+
+<h1>Tasks</h1>
+<h5></h5>
+
+
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/" class="YAH">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Tasks" href="/docs/tasks/"></a>
+
+	
+	
+		
+		
+	<div class="item" data-title="Install Tools">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Install and Set Up kubectl" href="/docs/tasks/tools/install-kubectl/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Install Minikube" href="/docs/tasks/tools/install-minikube/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Installing kubeadm" href="/docs/tasks/tools/install-kubeadm/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Administer a Cluster">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+	<div class="item" data-title="Administration with kubeadm">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Upgrading kubeadm HA clusters from 1.9.x to 1.9.y" href="/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-ha/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Upgrading kubeadm clusters from 1.7 to 1.8" href="/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-1-8/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Upgrading kubeadm clusters from v1.10 to v1.11" href="/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-1-11/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Upgrading/downgrading kubeadm clusters between v1.8 to v1.9" href="/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-1-9/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Manage Memory, CPU, and API Resources">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Configure Default Memory Requests and Limits for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/memory-default-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Default CPU Requests and Limits for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/cpu-default-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Minimum and Maximum Memory Constraints for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/memory-constraint-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Minimum and Maximum CPU Constraints for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/cpu-constraint-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Memory and CPU Quotas for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/quota-memory-cpu-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod Quota for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/quota-pod-namespace/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Install a Network Policy Provider">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Use Calico for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/calico-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use Cilium for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/cilium-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use Kube-router for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/kube-router-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Romana for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/romana-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Weave Net for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/weave-network-policy/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Access Clusters Using the Kubernetes API" href="/docs/tasks/administer-cluster/access-cluster-api/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Access Services Running on Clusters" href="/docs/tasks/administer-cluster/access-cluster-services/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Advertise Extended Resources for a Node" href="/docs/tasks/administer-cluster/extended-resource-node/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Autoscale the DNS Service in a Cluster" href="/docs/tasks/administer-cluster/dns-horizontal-autoscaling/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Change the Reclaim Policy of a PersistentVolume" href="/docs/tasks/administer-cluster/change-pv-reclaim-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Change the default StorageClass" href="/docs/tasks/administer-cluster/change-default-storage-class/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Cluster Management" href="/docs/tasks/administer-cluster/cluster-management/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Multiple Schedulers" href="/docs/tasks/administer-cluster/configure-multiple-schedulers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Out Of Resource Handling" href="/docs/tasks/administer-cluster/out-of-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Quotas for API Objects" href="/docs/tasks/administer-cluster/quota-api-object/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Control CPU Management Policies on the Node" href="/docs/tasks/administer-cluster/cpu-management-policies/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Customizing DNS Service" href="/docs/tasks/administer-cluster/dns-custom-nameservers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debugging DNS Resolution" href="/docs/tasks/administer-cluster/dns-debugging-resolution/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Declare Network Policy" href="/docs/tasks/administer-cluster/declare-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Developing Cloud Controller Manager" href="/docs/tasks/administer-cluster/developing-cloud-controller-manager/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Encrypting Secret Data at Rest" href="/docs/tasks/administer-cluster/encrypt-data/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Guaranteed Scheduling For Critical Add-On Pods" href="/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="IP Masquerade Agent User Guide" href="/docs/tasks/administer-cluster/ip-masq-agent/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes Cloud Controller Manager" href="/docs/tasks/administer-cluster/running-cloud-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Limit Storage Consumption" href="/docs/tasks/administer-cluster/limit-storage-consumption/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Namespaces Walkthrough" href="/docs/tasks/administer-cluster/namespaces-walkthrough/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Operating etcd clusters for Kubernetes" href="/docs/tasks/administer-cluster/configure-upgrade-etcd/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Reconfigure a Node&#39;s Kubelet in a Live Cluster" href="/docs/tasks/administer-cluster/reconfigure-kubelet/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Reserve Compute Resources for System Daemons" href="/docs/tasks/administer-cluster/reserve-compute-resources/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Safely Drain a Node while Respecting Application SLOs" href="/docs/tasks/administer-cluster/safely-drain-node/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Securing a Cluster" href="/docs/tasks/administer-cluster/securing-a-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set Kubelet parameters via a config file" href="/docs/tasks/administer-cluster/kubelet-config-file/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up High-Availability Kubernetes Masters" href="/docs/tasks/administer-cluster/highly-available-master/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up a Highly Availabile etcd Cluster With kubeadm" href="/docs/tasks/administer-cluster/setup-ha-etcd-with-kubeadm/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Share a Cluster with Namespaces" href="/docs/tasks/administer-cluster/namespaces/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Static Pods" href="/docs/tasks/administer-cluster/static-pod/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Storage Object in Use Protection" href="/docs/tasks/administer-cluster/storage-object-in-use-protection/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using CoreDNS for Service Discovery" href="/docs/tasks/administer-cluster/coredns/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using a KMS provider for data encryption" href="/docs/tasks/administer-cluster/kms-provider/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using sysctls in a Kubernetes Cluster" href="/docs/tasks/administer-cluster/sysctl-cluster/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Configure Pods and Containers">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Assign Memory Resources to Containers and Pods" href="/docs/tasks/configure-pod-container/assign-memory-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Assign CPU Resources to Containers and Pods" href="/docs/tasks/configure-pod-container/assign-cpu-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Quality of Service for Pods" href="/docs/tasks/configure-pod-container/quality-service-pod/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Assign Extended Resources to a Container" href="/docs/tasks/configure-pod-container/extended-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod to Use a Volume for Storage" href="/docs/tasks/configure-pod-container/configure-volume-storage/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod to Use a PersistentVolume for Storage" href="/docs/tasks/configure-pod-container/configure-persistent-volume-storage/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod to Use a Projected Volume for Storage" href="/docs/tasks/configure-pod-container/configure-projected-volume-storage/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Security Context for a Pod or Container" href="/docs/tasks/configure-pod-container/security-context/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Service Accounts for Pods" href="/docs/tasks/configure-pod-container/configure-service-account/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pull an Image from a Private Registry" href="/docs/tasks/configure-pod-container/pull-image-private-registry/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Liveness and Readiness Probes" href="/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Assign Pods to Nodes" href="/docs/tasks/configure-pod-container/assign-pods-nodes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Pod Initialization" href="/docs/tasks/configure-pod-container/configure-pod-initialization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Attach Handlers to Container Lifecycle Events" href="/docs/tasks/configure-pod-container/attach-handler-lifecycle-event/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod to Use a ConfigMap" href="/docs/tasks/configure-pod-container/configure-pod-configmap/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Share Process Namespace between Containers in a Pod" href="/docs/tasks/configure-pod-container/share-process-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Translate a Docker Compose File to Kubernetes Resources" href="/docs/tasks/configure-pod-container/translate-compose-kubernetes/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Inject Data Into Applications">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Define a Command and Arguments for a Container" href="/docs/tasks/inject-data-application/define-command-argument-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Define Environment Variables for a Container" href="/docs/tasks/inject-data-application/define-environment-variable-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Expose Pod Information to Containers Through Environment Variables" href="/docs/tasks/inject-data-application/environment-variable-expose-pod-information/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Expose Pod Information to Containers Through Files" href="/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Distribute Credentials Securely Using Secrets" href="/docs/tasks/inject-data-application/distribute-credentials-secure/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Inject Information into Pods Using a PodPreset" href="/docs/tasks/inject-data-application/podpreset/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Run Applications">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Run a Stateless Application Using a Deployment" href="/docs/tasks/run-application/run-stateless-application-deployment/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Run a Single-Instance Stateful Application" href="/docs/tasks/run-application/run-single-instance-stateful-application/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Run a Replicated Stateful Application" href="/docs/tasks/run-application/run-replicated-stateful-application/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Update API Objects in Place Using kubectl patch" href="/docs/tasks/run-application/update-api-object-kubectl-patch/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Scale a StatefulSet" href="/docs/tasks/run-application/scale-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Delete a StatefulSet" href="/docs/tasks/run-application/delete-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Force Delete StatefulSet Pods" href="/docs/tasks/run-application/force-delete-stateful-set-pod/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Perform Rolling Update Using a Replication Controller" href="/docs/tasks/run-application/rolling-update-replication-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Horizontal Pod Autoscaler" href="/docs/tasks/run-application/horizontal-pod-autoscale/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Horizontal Pod Autoscaler Walkthrough" href="/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Specifying a Disruption Budget for your Application" href="/docs/tasks/run-application/configure-pdb/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Run Jobs">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Running automated tasks with cron jobs" href="/docs/tasks/job/automated-tasks-with-cron-jobs/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Parallel Processing using Expansions" href="/docs/tasks/job/parallel-processing-expansion/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Coarse Parallel Processing Using a Work Queue" href="/docs/tasks/job/coarse-parallel-processing-work-queue/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Fine Parallel Processing Using a Work Queue" href="/docs/tasks/job/fine-parallel-processing-work-queue/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Access Applications in a Cluster">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Web UI (Dashboard)" href="/docs/tasks/access-application-cluster/web-ui-dashboard/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Accessing Clusters" href="/docs/tasks/access-application-cluster/access-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Access to Multiple Clusters" href="/docs/tasks/access-application-cluster/configure-access-multiple-clusters/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use Port Forwarding to Access Applications in a Cluster" href="/docs/tasks/access-application-cluster/port-forward-access-application-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Provide Load-Balanced Access to an Application in a Cluster" href="/docs/tasks/access-application-cluster/load-balance-access-application-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use a Service to Access an Application in a Cluster" href="/docs/tasks/access-application-cluster/service-access-application-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Connect a Front End to a Back End Using a Service" href="/docs/tasks/access-application-cluster/connecting-frontend-backend/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Create an External Load Balancer" href="/docs/tasks/access-application-cluster/create-external-load-balancer/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Your Cloud Provider&#39;s Firewalls" href="/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="List All Container Images Running in a Cluster" href="/docs/tasks/access-application-cluster/list-all-running-container-images/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Communicate Between Containers in the Same Pod Using a Shared Volume" href="/docs/tasks/access-application-cluster/communicate-containers-same-pod-shared-volume/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure DNS for a Cluster" href="/docs/tasks/access-application-cluster/configure-dns-cluster/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Monitor, Log, and Debug">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Application Introspection and Debugging" href="/docs/tasks/debug-application-cluster/debug-application-introspection/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Auditing" href="/docs/tasks/debug-application-cluster/audit/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Core metrics pipeline" href="/docs/tasks/debug-application-cluster/core-metrics-pipeline/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debug Init Containers" href="/docs/tasks/debug-application-cluster/debug-init-containers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debug Pods and Replication Controllers" href="/docs/tasks/debug-application-cluster/debug-pod-replication-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debug Services" href="/docs/tasks/debug-application-cluster/debug-service/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debug a StatefulSet" href="/docs/tasks/debug-application-cluster/debug-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debugging Kubernetes nodes with crictl" href="/docs/tasks/debug-application-cluster/crictl/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Determine the Reason for Pod Failure" href="/docs/tasks/debug-application-cluster/determine-reason-pod-failure/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Developing and debugging services locally" href="/docs/tasks/debug-application-cluster/local-debugging/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Events in Stackdriver" href="/docs/tasks/debug-application-cluster/events-stackdriver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Get a Shell to a Running Container" href="/docs/tasks/debug-application-cluster/get-shell-running-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Logging Using Elasticsearch and Kibana" href="/docs/tasks/debug-application-cluster/logging-elasticsearch-kibana/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Logging Using Stackdriver" href="/docs/tasks/debug-application-cluster/logging-stackdriver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Monitor Node Health" href="/docs/tasks/debug-application-cluster/monitor-node-health/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Tools for Monitoring Compute, Storage, and Network Resources" href="/docs/tasks/debug-application-cluster/resource-usage-monitoring/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Troubleshoot Applications" href="/docs/tasks/debug-application-cluster/debug-application/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Troubleshoot Clusters" href="/docs/tasks/debug-application-cluster/debug-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Troubleshooting" href="/docs/tasks/debug-application-cluster/troubleshooting/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Extend Kubernetes">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Configure the aggregation layer" href="/docs/tasks/access-kubernetes-api/configure-aggregation-layer/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Use Custom Resources">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Extend the Kubernetes API with CustomResourceDefinitions" href="/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Versions of CustomResourceDefinitions" href="/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definition-versioning/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Migrate a ThirdPartyResource to CustomResourceDefinition" href="/docs/tasks/access-kubernetes-api/custom-resources/migrate-third-party-resource/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Setup an extension API server" href="/docs/tasks/access-kubernetes-api/setup-extension-api-server/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use an HTTP Proxy to Access the Kubernetes API" href="/docs/tasks/access-kubernetes-api/http-proxy-access-api/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="TLS">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Certificate Rotation" href="/docs/tasks/tls/certificate-rotation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Manage TLS Certificates in a Cluster" href="/docs/tasks/tls/managing-tls-in-a-cluster/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Federation - Run an App on Multiple Clusters">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Cross-cluster Service Discovery using Federated Services" href="/docs/tasks/federation/federation-service-discovery/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up Cluster Federation with Kubefed" href="/docs/tasks/federation/set-up-cluster-federation-kubefed/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up CoreDNS as DNS provider for Cluster Federation" href="/docs/tasks/federation/set-up-coredns-provider-federation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up placement policies in Federation" href="/docs/tasks/federation/set-up-placement-policies-federation/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Manage Cluster Daemons">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Perform a Rolling Update on a DaemonSet" href="/docs/tasks/manage-daemon/update-daemon-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Performing a Rollback on a DaemonSet" href="/docs/tasks/manage-daemon/rollback-daemon-set/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Install Service Catalog">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Install Service Catalog using Helm" href="/docs/tasks/service-catalog/install-service-catalog-using-helm/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Install Service Catalog using SC" href="/docs/tasks/service-catalog/install-service-catalog-using-sc/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Federation - Run an App on Multiple Clusters">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Federated Cluster" href="/docs/tasks/administer-federation/cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated ConfigMap" href="/docs/tasks/administer-federation/configmap/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated DaemonSet" href="/docs/tasks/administer-federation/daemonset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Deployment" href="/docs/tasks/administer-federation/deployment/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Events" href="/docs/tasks/administer-federation/events/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Horizontal Pod Autoscalers (HPA)" href="/docs/tasks/administer-federation/hpa/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Ingress" href="/docs/tasks/administer-federation/ingress/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Jobs" href="/docs/tasks/administer-federation/job/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Namespaces" href="/docs/tasks/administer-federation/namespaces/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated ReplicaSets" href="/docs/tasks/administer-federation/replicaset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Secrets" href="/docs/tasks/administer-federation/secret/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Extend kubectl with plugins" href="/docs/tasks/extend-kubectl/kubectl-plugins/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Manage HugePages" href="/docs/tasks/manage-hugepages/scheduling-hugepages/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Schedule GPUs" href="/docs/tasks/manage-gpus/scheduling-gpus/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/tasks/administer-cluster/reconfigure-kubelet.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>Reconfigure a Node&#39;s Kubelet in a Live Cluster</h1>
+
+
+
+
+<div style="margin-top: 10px; margin-bottom: 10px;">
+
+
+
+<b>FEATURE STATE:</b> <code>Kubernetes v1.11</code>
+
+
+
+
+    
+    
+    
+    
+    
+<a href="#" id="feature-state-dialog-link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-newwin"></span>beta</a>
+<div id="feature-state-dialog" class="ui-dialog-content" title="beta">
+This feature is currently in a <em>beta</em> state, meaning:</p>
+
+<ul>
+<li>The version names contain beta (e.g. v2beta3).</li>
+<li>Code is well tested. Enabling the feature is considered safe. Enabled by default.</li>
+<li>Support for the overall feature will not be dropped, though details may change.</li>
+<li>The schema and/or semantics of objects may change in incompatible ways in a subsequent beta or stable release. When this happens, we will provide instructions for migrating to the next version. This may require deleting, editing, and re-creating API objects. The editing process may require some thought. This may require downtime for applications that rely on the feature.</li>
+<li>Recommended for only non-business-critical uses because of potential for incompatible changes in subsequent releases. If you have multiple clusters that can be upgraded independently, you may be able to relax this restriction.</li>
+<li><strong>Please do try our beta features and give feedback on them! After they exit beta, it may not be practical for us to make more changes.</strong></li>
+</ul>
+
+</div>
+<script>
+$(function(){
+    
+    $( "#feature-state-dialog" ).dialog({
+        autoOpen: false,
+        width: "600",
+        buttons: [
+            {
+                text: "Ok",
+                click: function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        ]
+    });
+
+    
+    $( "#feature-state-dialog-link" ).click(function( event ) {
+        $( "#feature-state-dialog" ).dialog( "open" );
+        event.preventDefault();
+    });
+
+});
+</script>
+
+    
+
+</div>
+
+<p><a href="https://github.com/kubernetes/features/issues/281" target="_blank">Dynamic Kubelet Configuration</a>
+allows you to change the configuration of each Kubelet in a live Kubernetes
+cluster by deploying a ConfigMap and configuring each Node to use it.</p>
+
+<blockquote class="warning">
+  <div><strong>Warning:</strong> All Kubelet configuration parameters can be changed dynamically,
+but this is unsafe for some parameters. Before deciding to change a parameter
+dynamically, you need a strong understanding of how that change will affect your
+cluster&rsquo;s behavior. Always carefully test configuration changes on a small set
+of nodes before rolling them out cluster-wide. Advice on configuring specific
+fields is available in the inline <code>KubeletConfiguration</code>
+<a href="https://github.com/kubernetes/kubernetes/blob/release-1.11/pkg/kubelet/apis/kubeletconfig/v1beta1/types.go" target="_blank">type documentation</a>.</div>
+</blockquote>
+
+
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+<li><a href="#before-you-begin">Before you begin</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#reconfiguring-the-kubelet-on-a-live-node-in-your-cluster">Reconfiguring the Kubelet on a Live Node in your Cluster</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#kubectl-patch-example">Kubectl Patch Example</a></li>
+
+
+
+
+<li><a href="#understanding-how-the-kubelet-checkpoints-config">Understanding how the Kubelet checkpoints config</a></li>
+
+
+
+
+<li><a href="#understanding-node-status-config-error-messages">Understanding Node.Status.Config.Error messages</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</ul>
+
+
+
+<h2 id="before-you-begin">Before you begin</h2>
+<ul>
+<li>Kubernetes v1.11 or higher on both the Master and the Nodes</li>
+<li>kubectl v1.11 or higher, configured to communicate with the cluster</li>
+<li>The Kubelet&rsquo;s <code>--dynamic-config-dir</code> flag must be set to a writable
+directory on the Node.</li>
+</ul>
+
+
+
+
+<h2 id="reconfiguring-the-kubelet-on-a-live-node-in-your-cluster">Reconfiguring the Kubelet on a Live Node in your Cluster</h2>
+
+<h3 id="basic-workflow-overview">Basic Workflow Overview</h3>
+
+<p>The basic workflow for configuring a Kubelet in a live cluster is as follows:</p>
+
+<ol>
+<li>Write a YAML or JSON configuration file containing the
+Kubelet&rsquo;s configuration.</li>
+<li>Wrap this file in a ConfigMap and save it to the Kubernetes control plane.</li>
+<li>Update the Kubelet&rsquo;s corresponding Node object to use this ConfigMap.</li>
+</ol>
+
+<p>Each Kubelet watches a configuration reference on its respective Node object.
+When this reference changes, the Kubelet downloads the new configuration,
+updates a local reference to refer to the file, and exits.
+For the feature to work correctly, you must be running an OS-level service
+manager (such as systemd), which will restart the Kubelet if it exits. When the
+Kubelet is restarted, it will begin using the new configuration.</p>
+
+<p>The new configuration completely overrides configuration provided by <code>--config</code>,
+and is overridden by command-line flags. Unspecified values in the new configuration
+will receive default values appropriate to the configuration version
+(e.g. <code>kubelet.config.k8s.io/v1beta1</code>), unless overridden by flags.</p>
+
+<p>The status of the Node&rsquo;s Kubelet configuration is reported via
+<code>Node.Spec.Status.Config</code>. Once you have updated a Node to use the new
+ConfigMap, you can observe this status to confirm that the Node is using the
+intended configuration.</p>
+
+<p>This document describes editing Nodes using <code>kubectl edit</code>.
+There are other ways to modify a Node&rsquo;s spec, including <code>kubectl patch</code>, for
+example, which facilitate scripted workflows.</p>
+
+<p>This document only describes a single Node consuming each ConfigMap. Keep in
+mind that it is also valid for multiple Nodes to consume the same ConfigMap.</p>
+
+<blockquote class="warning">
+  <div><strong>Warning:</strong> While it is <em>possible</em> to change the configuration by
+updating the ConfigMap in-place, this causes all Kubelets configured with
+that ConfigMap to update simultaneously. It is much safer to treat ConfigMaps
+as immutable by convention, aided by <code>kubectl</code>&rsquo;s <code>--append-hash</code> option,
+and incrementally roll out updates to <code>Node.Spec.ConfigSource</code>.</div>
+</blockquote>
+
+<h3 id="automatic-rbac-rules-for-node-authorizer">Automatic RBAC rules for Node Authorizer</h3>
+
+<p>Previously, you were required to manually create RBAC rules
+to allow Nodes to access their assigned ConfigMaps. The Node Authorizer now
+automatically configures these rules.</p>
+
+<h3 id="generating-a-file-that-contains-the-current-configuration">Generating a file that contains the current configuration</h3>
+
+<p>The Dynamic Kubelet Configuration feature allows you to provide an override for
+the entire configuration object, rather than a per-field overlay. This is a
+simpler model that makes it easier to trace the source of configuration values
+and debug issues. The compromise, however, is that you must start with knowledge
+of the existing configuration to ensure that you only change the fields you
+intend to change.</p>
+
+<p>Ideally, the Kubelet would be bootstrapped from a file on disk
+and you could edit this file (which could also be version-controlled),
+to create the first Kubelet ConfigMap
+(see <a href="/docs/tasks/administer-cluster/kubelet-config-file">Set Kubelet parameters via a config file</a>),
+Currently, the Kubelet is bootstrapped with <strong>a combination of this file and command-line flags</strong>
+that can override the configuration in the file.
+As a workaround, you can generate a config file containing a Node&rsquo;s current
+configuration by accessing the Kubelet server&rsquo;s <code>configz</code> endpoint via the
+kubectl proxy. This endpoint, in its current implementation, is intended to be
+used only as a debugging aid. Do not rely on the behavior of this endpoint for
+production scenarios. The examples below use the <code>jq</code> command to streamline
+working with JSON. To follow the tasks as written, you need to have <code>jq</code>
+installed, but you can adapt the tasks if you prefer to extract the
+<code>kubeletconfig</code> subobject manually.</p>
+
+<h4 id="generate-the-configuration-file">Generate the configuration file</h4>
+
+<ol>
+<li>Choose a Node to reconfigure. In this example, the name of this Node is
+referred to as <code>NODE_NAME</code>.</li>
+<li>Start the kubectl proxy in the background using the following command:
+  <code>bash
+  kubectl proxy --port=8001 &amp;
+</code></li>
+
+<li><p>Run the following command to download and unpack the configuration from the
+<code>configz</code> endpoint. The command is long, so be careful when copying and
+pasting. <strong>If you use zsh</strong>, note that common zsh configurations add backslashes
+to escape the opening and closing curly braces around the variable name in the URL.
+For example: <code>${NODE_NAME}</code> will be rewritten as <code>$\{NODE_NAME\}</code> during the paste.
+You must remove the backslashes before running the command, or the command will fail.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">  <span style="color:#b8860b">NODE_NAME</span><span style="color:#666">=</span><span style="color:#b44">&#34;the-name-of-the-node-you-are-reconfiguring&#34;</span>; curl -sSL <span style="color:#b44">&#34;http://localhost:8001/api/v1/nodes/</span><span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">NODE_NAME</span><span style="color:#b68;font-weight:bold">}</span><span style="color:#b44">/proxy/configz&#34;</span> | jq <span style="color:#b44">&#39;.kubeletconfig|.kind=&#34;KubeletConfiguration&#34;|.apiVersion=&#34;kubelet.config.k8s.io/v1beta1&#34;&#39;</span> &gt; kubelet_configz_<span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">NODE_NAME</span><span style="color:#b68;font-weight:bold">}</span></code></pre></div></li>
+</ol>
+
+<blockquote class="note">
+  <div>You need to manually add the <code>kind</code> and <code>apiVersion</code> to the downloaded
+object, because they are not reported by the <code>configz</code> endpoint.</div>
+</blockquote>
+
+<h4 id="edit-the-configuration-file">Edit the configuration file</h4>
+
+<p>Using a text editor, change one of the parameters in the
+file generated by the previous procedure. For example, you
+might edit the QPS parameter <code>eventRecordQPS</code>.</p>
+
+<h4 id="push-the-configuration-file-to-the-control-plane">Push the configuration file to the control plane</h4>
+
+<p>Push the edited configuration file to the control plane with the
+following command:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">kubectl -n kube-system create configmap my-node-config --from-file<span style="color:#666">=</span><span style="color:#b8860b">kubelet</span><span style="color:#666">=</span>kubelet_configz_<span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">NODE_NAME</span><span style="color:#b68;font-weight:bold">}</span> --append-hash -o yaml</code></pre></div>
+<p>This is an example of a valid response:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-none" data-lang="none">apiVersion: v1
+data:
+  kubelet: |
+    {...}
+kind: ConfigMap
+metadata:
+  creationTimestamp: 2017-09-14T20:23:33Z
+  name: my-node-config-gkt4c2m4b2
+  namespace: kube-system
+  resourceVersion: &#34;119980&#34;
+  selfLink: /api/v1/namespaces/kube-system/configmaps/my-node-config-gkt4c2m4b2
+  uid: 946d785e-998a-11e7-a8dd-42010a800006</code></pre></div>
+<p>The ConfigMap is created in the <code>kube-system</code> namespace because this
+ConfigMap configures a Kubelet, which is Kubernetes system component.</p>
+
+<p>The <code>--append-hash</code> option appends a short checksum of the ConfigMap contents
+to the name. This is convenient for an edit-then-push workflow, because it
+automatically, yet deterministically, generates new names for new ConfigMaps.
+The name that includes this generated hash is referred to as <code>CONFIG_MAP_NAME</code>
+in the following examples.</p>
+
+<h4 id="set-the-node-to-use-the-new-configuration">Set the Node to use the new configuration</h4>
+
+<p>Edit the Node&rsquo;s reference to point to the new ConfigMap with the
+following command:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">kubectl edit node <span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">NODE_NAME</span><span style="color:#b68;font-weight:bold">}</span></code></pre></div>
+<p>In your text editor, add the following YAML under <code>spec</code>:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">configSource:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>configMap:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>name:<span style="color:#bbb"> </span>CONFIG_MAP_NAME<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>namespace:<span style="color:#bbb"> </span>kube-system<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>kubeletConfigKey:<span style="color:#bbb"> </span>kubelet</code></pre></div>
+<p>You must specify all three of <code>name</code>, <code>namespace</code>, and <code>kubeletConfigKey</code>.
+The <code>kubeletConfigKey</code> parameter shows the Kubelet which key of the ConfigMap
+contains its config.</p>
+
+<h4 id="observe-that-the-node-begins-using-the-new-configuration">Observe that the Node begins using the new configuration</h4>
+
+<p>Retrieve the Node using the <code>kubectl get node ${NODE_NAME} -o yaml</code> command and inspect
+<code>Node.Status.Config</code>. The config sources corresponding to the <code>active</code>,
+<code>assigned</code>, and <code>lastKnownGood</code> configurations are reported in the status.</p>
+
+<ul>
+<li>The <code>active</code> configuration is the version the Kubelet is currently running with.</li>
+<li>The <code>assigned</code> configuration is the latest version the Kubelet has resolved based on
+<code>Node.Spec.ConfigSource</code>.</li>
+<li>The <code>lastKnownGood</code> configuration is the version the
+Kubelet will fall back to if an invalid config is assigned in <code>Node.Spec.ConfigSource</code>.</li>
+</ul>
+
+<p>The<code>lastKnownGood</code> configuration might not be present if it is set to its default value,
+the local config deployed with the node. The status will update <code>lastKnownGood</code> to
+match a valid <code>assigned</code> config after the Kubelet becomes comfortable with the config.
+The details of how the Kubelet determines a config should become the <code>lastKnownGood</code> are
+not guaranteed by the API, but is currently implemented as a 10-minute grace period.</p>
+
+<p>You can use the following command (using <code>jq</code>) to filter down
+to the config status:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">kubectl get no <span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">NODE_NAME</span><span style="color:#b68;font-weight:bold">}</span> -o json | jq <span style="color:#b44">&#39;.status.config&#39;</span></code></pre></div>
+<p>The following is an example response:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+  <span style="color:#008000;font-weight:bold">&#34;active&#34;</span>: {
+    <span style="color:#008000;font-weight:bold">&#34;configMap&#34;</span>: {
+      <span style="color:#008000;font-weight:bold">&#34;kubeletConfigKey&#34;</span>: <span style="color:#b44">&#34;kubelet&#34;</span>,
+      <span style="color:#008000;font-weight:bold">&#34;name&#34;</span>: <span style="color:#b44">&#34;my-node-config-9mbkccg2cc&#34;</span>,
+      <span style="color:#008000;font-weight:bold">&#34;namespace&#34;</span>: <span style="color:#b44">&#34;kube-system&#34;</span>,
+      <span style="color:#008000;font-weight:bold">&#34;resourceVersion&#34;</span>: <span style="color:#b44">&#34;1326&#34;</span>,
+      <span style="color:#008000;font-weight:bold">&#34;uid&#34;</span>: <span style="color:#b44">&#34;705ab4f5-6393-11e8-b7cc-42010a800002&#34;</span>
+    }
+  },
+  <span style="color:#008000;font-weight:bold">&#34;assigned&#34;</span>: {
+    <span style="color:#008000;font-weight:bold">&#34;configMap&#34;</span>: {
+      <span style="color:#008000;font-weight:bold">&#34;kubeletConfigKey&#34;</span>: <span style="color:#b44">&#34;kubelet&#34;</span>,
+      <span style="color:#008000;font-weight:bold">&#34;name&#34;</span>: <span style="color:#b44">&#34;my-node-config-9mbkccg2cc&#34;</span>,
+      <span style="color:#008000;font-weight:bold">&#34;namespace&#34;</span>: <span style="color:#b44">&#34;kube-system&#34;</span>,
+      <span style="color:#008000;font-weight:bold">&#34;resourceVersion&#34;</span>: <span style="color:#b44">&#34;1326&#34;</span>,
+      <span style="color:#008000;font-weight:bold">&#34;uid&#34;</span>: <span style="color:#b44">&#34;705ab4f5-6393-11e8-b7cc-42010a800002&#34;</span>
+    }
+  },
+  <span style="color:#008000;font-weight:bold">&#34;lastKnownGood&#34;</span>: {
+    <span style="color:#008000;font-weight:bold">&#34;configMap&#34;</span>: {
+      <span style="color:#008000;font-weight:bold">&#34;kubeletConfigKey&#34;</span>: <span style="color:#b44">&#34;kubelet&#34;</span>,
+      <span style="color:#008000;font-weight:bold">&#34;name&#34;</span>: <span style="color:#b44">&#34;my-node-config-9mbkccg2cc&#34;</span>,
+      <span style="color:#008000;font-weight:bold">&#34;namespace&#34;</span>: <span style="color:#b44">&#34;kube-system&#34;</span>,
+      <span style="color:#008000;font-weight:bold">&#34;resourceVersion&#34;</span>: <span style="color:#b44">&#34;1326&#34;</span>,
+      <span style="color:#008000;font-weight:bold">&#34;uid&#34;</span>: <span style="color:#b44">&#34;705ab4f5-6393-11e8-b7cc-42010a800002&#34;</span>
+    }
+  }
+}</code></pre></div>
+<p>If an error occurs, the Kubelet reports it in the <code>Node.Status.Config.Error</code>
+structure. Possible errors are listed in
+<a href="#understanding-node-status-config-error-messages">Understanding Node.Status.Config.Error messages</a>.
+You can search for the identical text in the Kubelet log for additional details
+and context about the error.</p>
+
+<h4 id="make-more-changes">Make more changes</h4>
+
+<p>Follow the workflow above to make more changes and push them again. Each time
+you push a ConfigMap with new contents, the &ndash;append-hash kubectl option creates
+the ConfigMap with a new name. The safest rollout strategy is to first create a
+new ConfigMap, and then update the Node to use the new ConfigMap.</p>
+
+<h4 id="reset-the-node-to-use-its-local-default-configuration">Reset the Node to use its local default configuration</h4>
+
+<p>To reset the Node to use the configuration it was provisioned with, edit the
+Node using <code>kubectl edit node ${NODE_NAME}</code> and remove the
+<code>Node.Spec.ConfigSource</code> field.</p>
+
+<h4 id="observe-that-the-node-is-using-its-local-default-configuration">Observe that the Node is using its local default configuration</h4>
+
+<p>After removing this subfield, <code>Node.Status.Config</code> eventually becomes
+empty, since all config sources have been reset to <code>nil</code>, which indicates that
+the local default config is <code>assigned</code>, <code>active</code>, and <code>lastKnownGood</code>, and no
+error is reported.</p>
+
+
+
+
+<h2 id="kubectl-patch-example">Kubectl Patch Example</h2>
+
+<p>You can change a Node&rsquo;s configSource using several different mechanisms.
+This example uses <code>kubectl patch</code>:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">kubectl patch node <span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">NODE_NAME</span><span style="color:#b68;font-weight:bold">}</span> -p <span style="color:#b44">&#34;{\&#34;spec\&#34;:{\&#34;configSource\&#34;:{\&#34;configMap\&#34;:{\&#34;name\&#34;:\&#34;</span><span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">CONFIG_MAP_NAME</span><span style="color:#b68;font-weight:bold">}</span><span style="color:#b44">\&#34;,\&#34;namespace\&#34;:\&#34;kube-system\&#34;,\&#34;kubeletConfigKey\&#34;:\&#34;kubelet\&#34;}}}}&#34;</span></code></pre></div>
+<h2 id="understanding-how-the-kubelet-checkpoints-config">Understanding how the Kubelet checkpoints config</h2>
+
+<p>When a new config is assigned to the Node, the Kubelet downloads and unpacks the
+config payload as a set of files on the local disk. The Kubelet also records metadata
+that locally tracks the assigned and last-known-good config sources, so that the
+Kubelet knows which config to use across restarts, even if the API server becomes
+unavailable. After checkpointing a config and the relevant metadata, the Kubelet
+exits if it detects that the assigned config has changed. When the Kubelet is
+restarted by the OS-level service manager (such as <code>systemd</code>), it reads the new
+metadata and uses the new config.</p>
+
+<p>The recorded metadata is fully resolved, meaning that it contains all necessary
+information to choose a specific config version - typically a <code>UID</code> and <code>ResourceVersion</code>.
+This is in contrast to <code>Node.Spec.ConfigSource</code>, where the intended config is declared
+via the idempotent <code>namespace/name</code> that identifies the target ConfigMap; the Kubelet
+tries to use the latest version of this ConfigMap.</p>
+
+<p>When you are debugging problems on a node, you can inspect the Kubelet&rsquo;s config
+metadata and checkpoints. The structure of the Kubelet&rsquo;s checkpointing directory is:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-none" data-lang="none">- --dynamic-config-dir (root for managing dynamic config)
+| - meta
+  | - assigned (encoded kubeletconfig/v1beta1.SerializedNodeConfigSource object, indicating the assigned config)
+  | - last-known-good (encoded kubeletconfig/v1beta1.SerializedNodeConfigSource object, indicating the last-known-good config)
+| - checkpoints
+  | - uid1 (dir for versions of object identified by uid1)
+    | - resourceVersion1 (dir for unpacked files from resourceVersion1 of object with uid1)
+    | - ...
+  | - ...</code></pre></div>
+<h2 id="understanding-node-status-config-error-messages">Understanding Node.Status.Config.Error messages</h2>
+
+<p>The following table describes error messages that can occur
+when using Dynamic Kubelet Config. You can search for the identical text
+in the Kubelet log for additional details and context about the error.</p>
+
+<table>
+<table align="left">
+<tr>
+    <th>Error Message</th>
+    <th>Possible Causes</th>
+</tr>
+<tr>
+    <td><p>failed to load config, see Kubelet log for details</p></td>
+    <td><p>The Kubelet likely could not parse the downloaded config payload, or encountered a filesystem error attempting to load the payload from disk.</p></td>
+</tr>
+<tr>
+    <td><p>failed to validate config, see Kubelet log for details</p></td>
+    <td><p>The configuration in the payload, combined with any command-line flag overrides, and the sum of feature gates from flags, the config file, and the remote payload, was determined to be invalid by the Kubelet.</p></td>
+</tr>
+<tr>
+    <td><p>invalid NodeConfigSource, exactly one subfield must be non-nil, but all were nil</p></td>
+    <td><p>Since Node.Spec.ConfigSource is validated by the API server to contain at least one non-nil subfield, this likely means that the Kubelet is older than the API server and does not recognize a newer source type.</p></td>
+</tr>
+<tr>
+    <td><p>failed to sync: failed to download config, see Kubelet log for details</p></td>
+    <td><p>The Kubelet could not download the config. It is possible that Node.Spec.ConfigSource could not be resolved to a concrete API object, or that network errors disrupted the download attempt. The Kubelet will retry the download when in this error state.</p></td>
+</tr>
+<tr>
+    <td><p>failed to sync: internal failure, see Kubelet log for details</p></td>
+    <td><p>The Kubelet encountered some internal problem and failed to update its config as a result. Examples include filesystem errors and reading objects from the internal informer cache.</p></td>
+</tr>
+<tr>
+    <td><p>internal failure, see Kubelet log for details</p></td>
+    <td><p>The Kubelet encountered some internal problem while manipulating config, outside of the configuration sync loop.</p></td>
+</tr>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/tasks/administer-cluster/reconfigure-kubelet.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/tasks\/administer-cluster\/reconfigure-kubelet\/",
+					"title" : "Reconfigure a Node\x27s Kubelet in a Live Cluster",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/tasks\/administer-cluster\/reconfigure-kubelet\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/tasks/administer-cluster/reconfigure-kubelet.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

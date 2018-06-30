@@ -1,0 +1,1696 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Implementation details - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="Implementation details" />
+<meta property="og:description" content="Implementation details" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/reference/setup-tools/kubeadm/implementation-details/" />
+<meta property="og:title" content="Implementation details - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h1>Reference Documentation</h1>
+<h5></h5>
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/" class="YAH">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Reference" href="/docs/reference/"></a>
+
+	
+	
+		
+		
+<a class="item" data-title="Standardized Glossary" href="/docs/reference/glossary/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Kubernetes Issues and Security">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Kubernetes Issue Tracker" href="/docs/reference/issues-security/issues/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes Security and Disclosure Information" href="/docs/reference/issues-security/security/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Using the Kubernetes API">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Kubernetes API Overview" href="/docs/reference/using-api/api-overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes API Concepts" href="/docs/reference/using-api/api-concepts/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Client Libraries" href="/docs/reference/using-api/client-libraries/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes Deprecation Policy" href="/docs/reference/using-api/deprecation-policy/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Accessing the API">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Controlling Access to the Kubernetes API" href="/docs/reference/access-authn-authz/controlling-access/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Authenticating" href="/docs/reference/access-authn-authz/authentication/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Authenticating with Bootstrap Tokens" href="/docs/reference/access-authn-authz/bootstrap-tokens/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using Admission Controllers" href="/docs/reference/access-authn-authz/admission-controllers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Dynamic Admission Control" href="/docs/reference/access-authn-authz/extensible-admission-controllers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Managing Service Accounts" href="/docs/reference/access-authn-authz/service-accounts-admin/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Authorization Overview" href="/docs/reference/access-authn-authz/authorization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using RBAC Authorization" href="/docs/reference/access-authn-authz/rbac/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using ABAC Authorization" href="/docs/reference/access-authn-authz/abac/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using Node Authorization" href="/docs/reference/access-authn-authz/node/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Webhook Mode" href="/docs/reference/access-authn-authz/webhook/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="API Reference">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Well-Known Labels, Annotations and Taints" href="/docs/reference/kubernetes-api/labels-annotations-taints/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="v1.11" href="/docs/reference/kubernetes-api/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Federation API">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="extensions/v1beta1 Model Definitions" href="/docs/reference/federation/extensions/v1beta1/definitions/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="extensions/v1beta1 Operations" href="/docs/reference/federation/extensions/v1beta1/operations/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="v1 Model Definitions" href="/docs/reference/federation/v1/definitions/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="v1 Operations" href="/docs/reference/federation/v1/operations/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Setup tools reference">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+	<div class="item" data-title="Kubeadm">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Overview of kubeadm" href="/docs/reference/setup-tools/kubeadm/kubeadm/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm init" href="/docs/reference/setup-tools/kubeadm/kubeadm-init/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm join" href="/docs/reference/setup-tools/kubeadm/kubeadm-join/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm upgrade" href="/docs/reference/setup-tools/kubeadm/kubeadm-upgrade/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm config" href="/docs/reference/setup-tools/kubeadm/kubeadm-config/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm reset" href="/docs/reference/setup-tools/kubeadm/kubeadm-reset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm token" href="/docs/reference/setup-tools/kubeadm/kubeadm-token/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm version" href="/docs/reference/setup-tools/kubeadm/kubeadm-version/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm alpha" href="/docs/reference/setup-tools/kubeadm/kubeadm-alpha/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Implementation details" href="/docs/reference/setup-tools/kubeadm/implementation-details/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="kubefed">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="kubefed" href="/docs/reference/setup-tools/kubefed/kubefed/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubefed options" href="/docs/reference/setup-tools/kubefed/kubefed-options/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubefed init" href="/docs/reference/setup-tools/kubefed/kubefed-init/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubefed join" href="/docs/reference/setup-tools/kubefed/kubefed-join/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubefed unjoin" href="/docs/reference/setup-tools/kubefed/kubefed-unjoin/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubefed version" href="/docs/reference/setup-tools/kubefed/kubefed-version/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Command line tools reference">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Feature Gates" href="/docs/reference/command-line-tools-reference/feature-gates/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="federation-apiserver" href="/docs/reference/command-line-tools-reference/federation-apiserver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="federation-controller-manager" href="/docs/reference/command-line-tools-reference/federation-controller-manager/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubelet authentication/authorization" href="/docs/reference/command-line-tools-reference/kubelet-authentication-authorization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="TLS bootstrapping" href="/docs/reference/command-line-tools-reference/kubelet-tls-bootstrapping/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="cloud-controller-manager" href="/docs/reference/command-line-tools-reference/cloud-controller-manager/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kube-apiserver" href="/docs/reference/command-line-tools-reference/kube-apiserver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kube-controller-manager" href="/docs/reference/command-line-tools-reference/kube-controller-manager/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kube-proxy" href="/docs/reference/command-line-tools-reference/kube-proxy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kube-scheduler" href="/docs/reference/command-line-tools-reference/kube-scheduler/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubelet" href="/docs/reference/command-line-tools-reference/kubelet/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="kubectl CLI">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="JSONPath Support" href="/docs/reference/kubectl/jsonpath/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Overview of kubectl" href="/docs/reference/kubectl/overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubectl" href="/docs/reference/kubectl/kubectl/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubectl Cheat Sheet" href="/docs/reference/kubectl/cheatsheet/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubectl Commands" href="/docs/reference/kubectl/kubectl-cmds/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubectl Usage Conventions" href="/docs/reference/kubectl/conventions/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubectl for Docker Users" href="/docs/reference/kubectl/docker-cli-to-kubectl/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Tools" href="/docs/reference/tools/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/reference/setup-tools/kubeadm/implementation-details.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>Implementation details</h1>
+
+
+
+<div style="margin-top: 10px; margin-bottom: 10px;">
+
+
+
+<b>FEATURE STATE:</b> <code>Kubernetes v1.10</code>
+
+
+
+
+    
+    
+    
+    
+    
+<a href="#" id="feature-state-dialog-link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-newwin"></span>stable</a>
+<div id="feature-state-dialog" class="ui-dialog-content" title="stable">
+This feature is <em>stable</em>, meaning:</p>
+
+<ul>
+<li>The version name is vX where X is an integer.</li>
+<li>Stable versions of features will appear in released software for many subsequent versions.</li>
+</ul>
+
+</div>
+<script>
+$(function(){
+    
+    $( "#feature-state-dialog" ).dialog({
+        autoOpen: false,
+        width: "600",
+        buttons: [
+            {
+                text: "Ok",
+                click: function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        ]
+    });
+
+    
+    $( "#feature-state-dialog-link" ).click(function( event ) {
+        $( "#feature-state-dialog" ).dialog( "open" );
+        event.preventDefault();
+    });
+
+});
+</script>
+
+    
+
+</div>
+
+<p><code>kubeadm init</code> and <code>kubeadm join</code> together provides a nice user experience for creating a best-practice but bare Kubernetes cluster from scratch.
+However, it might not be obvious <em>how</em> kubeadm does that.</p>
+
+<p>This document provide additional details on what happen under the hood, with the aim of sharing knowledge on Kubernetes cluster best practices.</p>
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+<li><a href="#core-design-principles">Core design principles</a></li>
+
+
+
+
+<li><a href="#constants-and-well-known-values-and-paths">Constants and well-known values and paths</a></li>
+
+
+
+
+<li><a href="#kubeadm-init-workflow-internal-design">kubeadm init workflow internal design</a></li>
+
+
+
+
+<li><a href="#kubeadm-join-phases-internal-design">kubeadm join phases internal design</a></li>
+
+
+
+
+<li><a href="#tls-bootstrap">TLS Bootstrap</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</ul>
+
+
+<h2 id="core-design-principles">Core design principles</h2>
+
+<p>The cluster that <code>kubeadm init</code> and <code>kubeadm join</code> set up should be:</p>
+
+<ul>
+<li><strong>Secure</strong>: It should adopt latest best-practices like:
+
+<ul>
+<li>enforcing RBAC</li>
+<li>using the Node Authorizer</li>
+<li>using secure communication between the control plane components</li>
+<li>using secure communication between the API server and the kubelets</li>
+<li>lock-down the kubelet API</li>
+<li>locking down access to the API for system components like the kube-proxy and CoreDNS</li>
+<li>locking down what a Bootstrap Token can access</li>
+<li>etc.</li>
+</ul></li>
+<li><strong>Easy to use</strong>: The user should not have to run anything more than a couple of commands:
+
+<ul>
+<li><code>kubeadm init</code></li>
+<li><code>export KUBECONFIG=/etc/kubernetes/admin.conf</code></li>
+<li><code>kubectl apply -f &lt;network-of-choice.yaml&gt;</code></li>
+<li><code>kubeadm join --token &lt;token&gt; &lt;master-ip&gt;:&lt;master-port&gt;</code></li>
+</ul></li>
+<li><strong>Extendable</strong>:
+
+<ul>
+<li>It should for example <em>not</em> favor any network provider, instead configuring a network is out-of-scope</li>
+<li>Should provide the possibility to use a config file for customizing various parameters</li>
+</ul></li>
+</ul>
+
+<h2 id="constants-and-well-known-values-and-paths">Constants and well-known values and paths</h2>
+
+<p>In order to reduce complexity and to simplify development of an on-top-of-kubeadm-implemented deployment solution, kubeadm uses a
+limited set of constants values for well know-known paths and file names.</p>
+
+<p>The Kubernetes directory <code>/etc/kubernetes</code> is a constant in the application, since it is clearly the given path
+in a majority of cases, and the most intuitive location; other constants paths and file names are:</p>
+
+<ul>
+<li><code>/etc/kubernetes/manifests</code> as the path where kubelet should look for static Pod manifests. Names of static Pod manifests are:
+
+<ul>
+<li><code>etcd.yaml</code></li>
+<li><code>kube-apiserver.yaml</code></li>
+<li><code>kube-controller-manager.yaml</code></li>
+<li><code>kube-scheduler.yaml</code></li>
+</ul></li>
+<li><code>/etc/kubernetes/</code> as the path where kubeconfig files with identities for control plane components are stored. Names of kubeconfig files are:
+
+<ul>
+<li><code>kubelet.conf</code> (<code>bootstrap-kubelet.conf</code> during TLS bootstrap)</li>
+<li><code>controller-manager.conf</code></li>
+<li><code>scheduler.conf</code></li>
+<li><code>admin.conf</code> for the cluster admin and kubeadm itself</li>
+</ul></li>
+<li>Names of certificates and key files :
+
+<ul>
+<li><code>ca.crt</code>, <code>ca.key</code> for the Kubernetes certificate authority</li>
+<li><code>apiserver.crt</code>, <code>apiserver.key</code> for the API server certificate</li>
+<li><code>apiserver-kubelet-client.crt</code>, <code>apiserver-kubelet-client.key</code> for the client certificate used by the API server to connect to the kubelets securely</li>
+<li><code>sa.pub</code>, <code>sa.key</code> for the key used by the controller manager when signing ServiceAccount</li>
+<li><code>front-proxy-ca.crt</code>, <code>front-proxy-ca.key</code> for the front proxy certificate authority</li>
+<li><code>front-proxy-client.crt</code>, <code>front-proxy-client.key</code> for the front proxy client</li>
+</ul></li>
+</ul>
+
+<h2 id="kubeadm-init-workflow-internal-design">kubeadm init workflow internal design</h2>
+
+<p>The <code>kubeadm init</code> <a href="/docs/reference/setup-tools/kubeadm/kubeadm-init/#init-workflow">internal workflow</a> consists of a sequence of atomic work tasks to perform,
+as described in <code>kubeadm init</code>.</p>
+
+<p>The <a href="/docs/reference/setup-tools/kubeadm/kubeadm-alpha/"><code>kubeadm alpha phase</code></a> command allows users to invoke individually each task, and ultimately offers a reusable and composable
+API/toolbox that can be used by other Kubernetes bootstrap tools, by any IT automation tool or by advanced user
+for creating custom clusters.</p>
+
+<h3 id="preflight-checks">Preflight checks</h3>
+
+<p>Kubeadm executes a set of preflight checks before starting the init, with the aim to verify preconditions and avoid common cluster startup problems.
+In any case the user can skip specific preflight checks (or eventually all preflight checks) with the <code>--ignore-preflight-errors</code> option.</p>
+
+<ul>
+<li>[warning] If the Kubernetes version to use (specified with the <code>--kubernetes-version</code> flag) is at least one minor version higher than the kubeadm CLI version.</li>
+<li>Kubernetes system requirements:
+
+<ul>
+<li>if running on linux:</li>
+<li>[error] if not Kernel 3.10+ or 4+ with specific KernelSpec</li>
+<li>[error] if required cgroups subsystem aren&rsquo;t in set up</li>
+<li>if using docker:</li>
+<li>[warning/error] if Docker service does not  exists, if it is disabled, if it is not active.</li>
+<li>[error] if Docker endpoint does not exist or does not work</li>
+<li>[warning] if docker version &gt;17.03</li>
+<li>If using other cri engine:</li>
+<li>[error] if crictl socket does not answer</li>
+</ul></li>
+<li>[error] if user is not root</li>
+<li>[error] if the machine hostname is not a valid DNS subdomain</li>
+<li>[warning] if the host name cannot be reached via network lookup</li>
+<li>[error] if kubelet version is lower that the minimum kubelet version supported by kubeadm (current minor -1)</li>
+<li>[error] if kubelet version is at least one minor higher than the required controlplane version (unsupported version skew)</li>
+<li>[warning] if kubelet service does not exist or if it is disabled</li>
+<li>[warning] if firewalld is active</li>
+<li>[error] if API server bindPort or ports 10250/10251/10252 are used</li>
+<li>[Error] if <code>/etc/kubernetes/manifest</code> folder already exists and it is not empty</li>
+<li>[Error] if <code>/proc/sys/net/bridge/bridge-nf-call-iptables</code> file does not exist/does not contain 1</li>
+<li>[Error] if advertise address is ipv6 and <code>/proc/sys/net/bridge/bridge-nf-call-ip6tables</code> does not exist/does not contain 1.</li>
+<li>[Error] if swap is on</li>
+<li>[Error] if <code>ip</code>, <code>iptables</code>,  <code>mount</code>, <code>nsenter</code> commands are not present in the command path</li>
+<li>[warning] if <code>ebtables</code>, <code>ethtool</code>, <code>socat</code>, <code>tc</code>, <code>touch</code>, <code>crictl</code> commands are not present in the command path</li>
+<li>[warning] if extra arg flags for API server, controller manager,  scheduler contains some invalid options</li>
+<li>[warning] if connection to <a href="https://API.AdvertiseAddress:API.BindPort" target="_blank">https://API.AdvertiseAddress:API.BindPort</a> goes thought proxy</li>
+<li>[warning] if connection to services subnet goes thought proxy (only first address checked)</li>
+<li>[warning] if connection to Pods subnet goes thought proxy (only first address checked)<br /></li>
+<li>If external etcd is provided:
+
+<ul>
+<li>[Error] if etcd version less than 3.0.14</li>
+<li>[Error] if etcd certificates or keys are specified, but not provided</li>
+</ul></li>
+<li>If external etcd is NOT provided (and thus local etcd will be installed):
+
+<ul>
+<li>[Error] if ports 2379 is used</li>
+<li>[Error] if Etcd.DataDir folder already exists and it is not empty</li>
+</ul></li>
+<li>If authorization mode is ABAC:
+
+<ul>
+<li>[Error] if abac_policy.json does not exist</li>
+</ul></li>
+<li>If authorization mode is WebHook
+
+<ul>
+<li>[Error] if webhook_authz.conf does not exist</li>
+</ul></li>
+</ul>
+
+<p>Please note that:</p>
+
+<ol>
+<li>Preflight checks can be invoked individually with the <a href="/docs/reference/setup-tools/kubeadm/kubeadm-alpha/#cmd-phase-preflight"><code>kubeadm alpha phase preflight</code></a> command</li>
+</ol>
+
+<h3 id="generate-the-necessary-certificates">Generate the necessary certificates</h3>
+
+<p>Kubeadm generates certificate and private key pairs for different purposes:</p>
+
+<ul>
+<li>A self signed certificate authority for the Kubernetes cluster saved into <code>ca.crt</code> file and <code>ca.key</code> private key file</li>
+<li>A serving certificate for the API server, generated using <code>ca.crt</code> as the CA, and saved into <code>apiserver.crt</code> file with
+its private key <code>apiserver.key</code>. This certificate should contains following alternative names:
+
+<ul>
+<li>The Kubernetes service&rsquo;s internal clusterIP (the first address in the services CIDR, e.g. <code>10.96.0.1</code> if service subnet is <code>10.96.0.0/12</code>)</li>
+<li>Kubernetes DNS names, e.g.  <code>kubernetes.default.svc.cluster.local</code> if <code>--service-dns-domain</code> flag value is <code>cluster.local</code>, plus default DNS names <code>kubernetes.default.svc</code>, <code>kubernetes.default</code>, <code>kubernetes</code></li>
+<li>The node-name</li>
+<li>The <code>--apiserver-advertise-address</code></li>
+<li>Additional alternative names specified by the user</li>
+</ul></li>
+<li>A client certificate for the API server to connect to the kubelets securely, generated using <code>ca.crt</code> as the CA and saved into
+<code>apiserver-kubelet-client.crt</code> file with its private key <code>apiserver-kubelet-client.key</code>.
+This certificate should be in the <code>system:masters</code> organization</li>
+<li>A private key for signing ServiceAccount Tokens saved into <code>sa.key</code> file along with its public key <code>sa.pub</code></li>
+<li>A certificate authority for the front proxy saved into <code>front-proxy-ca.crt</code> file with its key <code>front-proxy-ca.key</code></li>
+<li>A client cert for the front proxy client, generate using <code>front-proxy-ca.crt</code> as the CA and saved into <code>front-proxy-client.crt</code> file
+with its private key<code>front-proxy-client.key</code></li>
+</ul>
+
+<p>Certificates are stored by default in <code>/etc/kubernetes/pki</code>, but this directory is configurable using the <code>--cert-dir</code> flag.</p>
+
+<p>Please note that:</p>
+
+<ol>
+<li>If a given certificate and private key pair both exist, and its content is evaluated compliant with the above specs, the existing files will
+be used and the generation phase for the given certificate skipped. This means the user can, for example, copy an existing CA to
+<code>/etc/kubernetes/pki/ca.{crt,key}</code>, and then kubeadm will use those files for signing the rest of the certs.
+See also <a href="/docs/reference/setup-tools/kubeadm/kubeadm-init/#custom-certificates">using custom certificates</a></li>
+<li>Only for the CA, it is possible to provide the <code>ca.crt</code> file but not the <code>ca.key</code> file, if all other certificates and kubeconfig files
+already are in place kubeadm recognize this condition and activates the ExternalCA , which also implies the <code>csrsigner</code>controller in
+controller-manager won&rsquo;t be started</li>
+<li>If kubeadm is running in <a href="/docs/reference/setup-tools/kubeadm/kubeadm-init/#external-ca-mode">ExternalCA mode</a>; all the certificates must be provided by the user,
+because kubeadm cannot generate them by itself</li>
+<li>In case of kubeadm is executed in the <code>--dry-run</code> mode, certificates files are written in a temporary folder</li>
+<li>Certificate generation can be invoked individually with the <a href="/docs/reference/setup-tools/kubeadm/kubeadm-alpha/#cmd-phase-certs"><code>kubeadm alpha phase certs all</code></a> command</li>
+</ol>
+
+<h3 id="generate-kubeconfig-files-for-control-plane-components">Generate kubeconfig files for control plane components</h3>
+
+<p>Kubeadm kubeconfig files with identities for control plane components:</p>
+
+<ul>
+<li>A kubeconfig file for kubelet to use, <code>/etc/kubernetes/kubelet.conf</code>; inside this file is embedded a client certificate with kubelet identity.
+This client cert should:
+
+<ul>
+<li>Be in the <code>system:nodes</code> organization, as required by the <a href="/docs/admin/authorization/node/">Node Authorization</a> module</li>
+<li>Have the CN <code>system:node:&lt;hostname-lowercased&gt;</code></li>
+</ul></li>
+<li>A kubeconfig file for controller-manager, <code>/etc/kubernetes/controller-manager.conf</code>; inside this file is embedded a client
+certificate with controller-manager identity. This client cert should have the CN <code>system:kube-controller-manager</code>, as defined
+by default <a href="/docs/admin/authorization/rbac/#core-component-roles">RBAC core components roles</a></li>
+<li>A kubeconfig file for scheduler, <code>/etc/kubernetes/scheduler.conf</code>; inside this file is embedded a client certificate with scheduler identity.
+This client cert should have the CN <code>system:kube-scheduler</code>, as defined by default <a href="/docs/admin/authorization/rbac/#core-component-roles">RBAC core components roles</a></li>
+</ul>
+
+<p>Additionally, a kubeconfig file for kubeadm to use itself and the admin is generated and save into the <code>/etc/kubernetes/admin.conf</code> file.
+The &ldquo;admin&rdquo; here is defined the actual person(s) that is administering the cluster and want to have full control (<strong>root</strong>) over the cluster.
+The embedded client certificate for admin should:
+- Be in the <code>system:masters</code> organization, as defined by default <a href="/docs/admin/authorization/rbac/#user-facing-roles">RBAC user facing role bindings</a>
+- Include a CN, but that can be anything. Kubeadm uses the <code>kubernetes-admin</code> CN</p>
+
+<p>Please note that:</p>
+
+<ol>
+<li><code>ca.crt</code> certificate is embedded in all the kubeconfig files.</li>
+<li>If a given kubeconfig file exists, and its content is evaluated compliant with the above specs, the existing file will be used and the generation phase for the given kubeconfig skipped</li>
+<li>If kubeadm is running in <a href="/docs/reference/setup-tools/kubeadm/kubeadm-init/#external-ca-mode">ExternalCA mode</a>, all the required kubeconfig must be provided by the user as well, because kubeadm cannot generate any of them by itself</li>
+<li>In case of kubeadm is executed in the <code>--dry-run</code> mode, kubeconfig files are written in a temporary folder</li>
+<li>Kubeconfig files generation can be invoked individually with the <a href="/docs/reference/setup-tools/kubeadm/kubeadm-alpha/#cmd-phase-kubeconfig"><code>kubeadm alpha phase kubeconfig all</code></a> command</li>
+</ol>
+
+<h3 id="generate-static-pod-manifests-for-control-plane-components">Generate static Pod manifests for control plane components</h3>
+
+<p>Kubeadm writes static Pod manifest files for control plane components to <code>/etc/kubernetes/manifests</code>; the kubelet watches this directory for Pods to create on startup.</p>
+
+<p>Static Pod manifest share a set of common properties:</p>
+
+<ul>
+<li>All static Pods are deployed on <code>kube-system</code> namespace</li>
+<li>All static Pods gets <code>tier:control-plane</code> and <code>component:{component-name}</code> labels</li>
+<li>All static Pods gets <code>scheduler.alpha.kubernetes.io/critical-pod</code> annotation (this will be moved over to the proper solution
+of using Pod Priority and Preemption when ready)</li>
+<li><code>hostNetwork: true</code> is set on all static Pods to allow control plane startup before a network is configured; as a consequence:
+
+<ul>
+<li>The <code>address</code> that the controller-manager and the scheduler use to refer the API server is <code>127.0.0.1</code></li>
+<li>If using a local etcd server, <code>etcd-servers</code> address  will be set to <code>127.0.0.1:2379</code></li>
+</ul></li>
+<li>Leader election is enabled for both the controller-manager and the scheduler</li>
+<li>Controller-manager and the scheduler will reference kubeconfig files with their respective, unique identities</li>
+<li>All static Pods gets any extra flags specified by the user as described in <a href="/docs/reference/setup-tools/kubeadm/kubeadm-init/#custom-args">passing custom arguments to control plane components</a></li>
+<li>All static Pods gets any extra Volumes specified by the user (Host path)</li>
+</ul>
+
+<p>Please note that:</p>
+
+<ol>
+<li>All the images, for the  <code>--kubernetes-version</code>/current architecture, will be pulled from <code>k8s.gcr.io</code>;
+In case an alternative image repository or CI image repository is specified this one will be used; In case a specific container image
+should be used for all control plane components, this one will be used. see <a href="/docs/reference/setup-tools/kubeadm/kubeadm-init/#custom-images">using custom images</a>
+for more details</li>
+<li>In case of kubeadm is executed in the <code>--dry-run</code> mode, static Pods files are written in a temporary folder</li>
+<li>Static Pod manifest generation for master components can be invoked individually with the <a href="/docs/reference/setup-tools/kubeadm/kubeadm-alpha/#cmd-phase-controlplane"><code>kubeadm alpha phase controlplane all</code></a> command</li>
+</ol>
+
+<h4 id="api-server">API server</h4>
+
+<p>The static Pod manifest for the API server is affected by following parameters provided by the users:</p>
+
+<ul>
+<li>The <code>apiserver-advertise-address</code> and <code>apiserver-bind-port</code> to bind to; if not provided, those value defaults to the IP address of
+the default network interface on the machine and port 6443</li>
+<li>The <code>service-cluster-ip-range</code> to use for services</li>
+<li>If an external etcd server is specified, the <code>etcd-servers</code> address and related TLS settings (<code>etcd-cafile</code>, <code>etcd-certfile</code>, <code>etcd-keyfile</code>);
+if an external etcd server is not be provided, a local etcd will be used (via host network)</li>
+<li>If a cloud provider is specified, the corresponding <code>--cloud-provider</code> is configured, together with  the  <code>--cloud-config</code> path
+if such file exists (this is experimental, alpha and will be removed in a future version)</li>
+<li>If kubeadm is invoked with <code>--feature-gates=HighAvailability</code>, the flag <code>--endpoint-reconciler-type=lease</code> is set, thus enabling
+automatic reconciliation of endpoints for the internal API server VIP</li>
+<li>If kubeadm is invoked with <code>--feature-gates=DynamicKubeletConfig</code>,  the corresponding feature on API server is activated
+with the <code>--feature-gates=DynamicKubeletConfig=true</code> flag</li>
+</ul>
+
+<p>Other API server flags that are set unconditionally are:</p>
+
+<ul>
+<li><code>--insecure-port=0</code> to avoid insecure connections to the api server</li>
+<li><code>--enable-bootstrap-token-auth=true</code> to enable the <code>BootstrapTokenAuthenticator</code> authentication module. see <a href="/docs/admin/kubelet-tls-bootstrapping.md">TLS Bootstrapping</a> for more details</li>
+<li><code>--allow-privileged</code> to <code>true</code> (required e.g. by kube proxy)</li>
+<li><code>--requestheader-client-ca-file</code> to <code>front-proxy-ca.crt</code></li>
+<li><code>--enable-admission-plugins</code> to:
+
+<ul>
+<li><a href="/docs/admin/admission-controllers/#initializers-alpha"><code>Initializers</code></a> to enable <a href="/docs/admin/extensible-admission-controllers/">Dynamic Admission Control</a>.</li>
+<li><a href="/docs/admin/admission-controllers/#namespacelifecycle"><code>NamespaceLifecycle</code></a> e.g. to avoid deletion of
+system reserved namespaces</li>
+<li><a href="/docs/admin/admission-controllers/#limitranger"><code>LimitRanger</code></a> and <a href="/docs/admin/admission-controllers/#resourcequota"><code>ResourceQuota</code></a> to enforce limits on namespaces</li>
+<li><a href="/docs/admin/admission-controllers/#serviceaccount"><code>ServiceAccount</code></a> to enforce service account automation</li>
+<li><a href="/docs/admin/admission-controllers/#persistentvolumelabel"><code>PersistentVolumeLabel</code></a> attaches region or zone labels to
+PersistentVolumes as defined by the cloud provider (This admission controller is deprecated and will be removed in a future version.
+It is not deployed by kubeadm by default with v1.9 onwards when not explicitly opting into using <code>gce</code> or <code>aws</code> as cloud providers)</li>
+<li><a href="/docs/admin/admission-controllers/#defaultstorageclass"><code>DefaultStorageClass</code></a> to enforce default storage class on <code>PersistentVolumeClaim</code> objects</li>
+<li><a href="/docs/admin/admission-controllers/#defaulttolerationseconds"><code>DefaultTolerationSeconds</code></a></li>
+<li><a href="/docs/admin/admission-controllers/#noderestriction"><code>NodeRestriction</code></a> to limit what a kubelet can modify
+(e.g. only pods on this node)</li>
+</ul></li>
+<li><code>--kubelet-preferred-address-types</code> to <code>InternalIP,ExternalIP,Hostname;</code> this makes <code>kubectl logs</code> and other API server-kubelet
+communication work in environments where the hostnames of the nodes aren&rsquo;t resolvable</li>
+<li>Flags for using certificates generated in previous steps:
+
+<ul>
+<li><code>--client-ca-file</code> to <code>ca.crt</code></li>
+<li><code>--tls-cert-file</code> to <code>apiserver.crt</code></li>
+<li><code>--tls-private-key-file</code> to <code>apiserver.key</code></li>
+<li><code>--kubelet-client-certificate</code> to <code>apiserver-kubelet-client.crt</code></li>
+<li><code>--kubelet-client-key</code> to <code>apiserver-kubelet-client.key</code></li>
+<li><code>--service-account-key-file</code> to <code>sa.pub</code></li>
+<li><code>--requestheader-client-ca-file</code> to<code>front-proxy-ca.crt</code></li>
+<li><code>--proxy-client-cert-file</code> to <code>front-proxy-client.crt</code></li>
+<li><code>--proxy-client-key-file</code> to <code>front-proxy-client.key</code></li>
+</ul></li>
+<li>Other flags for securing the front proxy (<a href="https://github.com/kubernetes/community/blob/master/contributors/design-proposals/api-machinery/aggregated-api-servers.md" target="_blank">API Aggregation</a>) communications:
+
+<ul>
+<li><code>--requestheader-username-headers=X-Remote-User</code></li>
+<li><code>--requestheader-group-headers=X-Remote-Group</code></li>
+<li><code>--requestheader-extra-headers-prefix=X-Remote-Extra-</code></li>
+<li><code>--requestheader-allowed-names=front-proxy-client</code></li>
+</ul></li>
+</ul>
+
+<h4 id="controller-manager">Controller manager</h4>
+
+<p>The static Pod manifest for the API server is affected by following parameters provided by the users:</p>
+
+<ul>
+<li>If kubeadm is invoked specifying a <code>--pod-network-cidr</code>, the subnet manager feature required for some CNI network plugins is enabled by
+setting:
+
+<ul>
+<li><code>--allocate-node-cidrs=true</code></li>
+<li><code>--cluster-cidr</code> and <code>--node-cidr-mask-size</code> flags according to the given CIDR</li>
+<li>If a cloud provider is specified, the corresponding <code>--cloud-provider</code> is specified, together with  the  <code>--cloud-config</code> path
+if such configuration file exists (this is experimental, alpha and will be removed in a future version)</li>
+</ul></li>
+</ul>
+
+<p>Other flags that are set unconditionally are:</p>
+
+<ul>
+<li><code>--controllers</code> enabling all the default controllers plus <code>BootstrapSigner</code> and <code>TokenCleaner</code> controllers for TLS bootstrap.
+see <a href="/docs/admin/kubelet-tls-bootstrapping.md">TLS Bootstrapping</a> for more details</li>
+<li><code>--use-service-account-credentials</code> to <code>true</code></li>
+<li>Flags for using certificates generated in previous steps:
+
+<ul>
+<li><code>--root-ca-file</code> to <code>ca.crt</code></li>
+<li><code>--cluster-signing-cert-file</code> to <code>ca.crt</code>, if External CA mode is disabled, otherwise to <code>&quot;&quot;</code></li>
+<li><code>--cluster-signing-key-file</code> to <code>ca.key</code>, if External CA mode is disabled, otherwise to <code>&quot;&quot;</code></li>
+<li><code>--service-account-private-key-file</code> to <code>sa.key</code></li>
+</ul></li>
+</ul>
+
+<h4 id="scheduler">Scheduler</h4>
+
+<p>The static Pod manifest for the scheduler is not affected by parameters provided by the users.</p>
+
+<h3 id="generate-static-pod-manifest-for-local-etcd">Generate static Pod manifest for local etcd</h3>
+
+<p>If the user specified an external etcd this step will be skipped, otherwise kubeadm generates a static Pod manifest file for creating
+a local etcd instance running in a Pod with following attributes:</p>
+
+<ul>
+<li>listen on <code>localhost:2379</code> and use <code>HostNetwork=true</code></li>
+<li>make a <code>hostPath</code> mount out from the <code>dataDir</code> to the host&rsquo;s filesystem</li>
+<li>Any extra flags specified by the user</li>
+</ul>
+
+<p>Please note that:</p>
+
+<ol>
+<li>The etcd image will be pulled from <code>k8s.gcr.io</code>. In case an alternative image repository is specified this one will be used;
+In case an alternative image name is specified, this one will be used. see <a href="/docs/reference/setup-tools/kubeadm/kubeadm-init/#custom-images">using custom images</a> for more details</li>
+<li>in case of kubeadm is executed in the <code>--dry-run</code> mode, the etcd static Pod manifest is written in a temporary folder</li>
+<li>Static Pod manifest generation for local etcd can be invoked individually with the <a href="/docs/reference/setup-tools/kubeadm/kubeadm-alpha/#cmd-phase-etcd"><code>kubeadm alpha phase etcd local</code></a> command</li>
+</ol>
+
+<h3 id="optional-and-alpha-in-v1-9-write-init-kubelet-configuration">(optional and alpha in v1.9) Write init kubelet configuration</h3>
+
+<p>If kubeadm is invoked with <code>--feature-gates=DynamicKubeletConfig</code>, it writes the kubelet init configuration
+into <code>/var/lib/kubelet/config/init/kubelet</code> file.</p>
+
+<p>The init configuration is used for starting the kubelet on this specific node, providing an alternative for the kubelet drop-in file;
+such configuration will be replaced by the kubelet base configuration as described in following steps.
+See <a href="/docs/tasks/administer-cluster/kubelet-config-file.md">set Kubelet parameters via a config file</a> for additional info.</p>
+
+<p>Please note that:</p>
+
+<ol>
+<li>To make dynamic kubelet configuration work, flag <code>--dynamic-config-dir=/var/lib/kubelet/config/dynamic</code> should be specified
+in <code>/etc/systemd/system/kubelet.service.d/10-kubeadm.conf</code></li>
+<li>Kubelet init configuration can be changed by using kubeadm MasterConfiguration file by setting <code>.kubeletConfiguration.baseConfig</code>.
+See <a href="/docs/reference/setup-tools/kubeadm/kubeadm-init/#config-file">using kubeadm init with a configuration file</a> for more detail</li>
+</ol>
+
+<h3 id="wait-for-the-control-plane-to-come-up">Wait for the control plane to come up</h3>
+
+<p>This is a critical moment in time for kubeadm clusters.
+kubeadm waits until <code>localhost:6443/healthz</code> returns <code>ok</code>, however in order to detect deadlock conditions, kubeadm fails fast
+if <code>localhost:10255/healthz</code> (kubelet liveness) or <code>localhost:10255/healthz/syncloop</code> (kubelet readiness) don&rsquo;t return <code>ok</code>,
+respectively after 40 and 60 second.</p>
+
+<p>kubeadm relies on the kubelet to pull the control plane images and run them properly as static Pods.
+After the control plane is up, kubeadm completes a the tasks described in following paragraphs.</p>
+
+<h3 id="optional-and-alpha-in-v1-9-write-base-kubelet-configuration">(optional and alpha in v1.9) Write base kubelet configuration</h3>
+
+<p>If kubeadm is invoked with <code>--feature-gates=DynamicKubeletConfig</code>:</p>
+
+<ol>
+<li>Write the kubelet base configuration into the <code>kubelet-base-config-v1.9</code> ConfigMap in the <code>kube-system</code> namespace</li>
+<li>Creates RBAC rules for granting read access to that ConfigMap to all bootstrap tokens and all kubelet instances
+(that is <code>system:bootstrappers:kubeadm:default-node-token</code> and <code>system:nodes</code> groups)</li>
+<li>Enable the dynamic kubelet configuration feature for the initial master node by pointing <code>Node.spec.configSource</code> to the newly-created ConfigMap</li>
+</ol>
+
+<h3 id="save-kubeadm-masterconfiguration-in-a-configmap-for-later-reference">Save kubeadm MasterConfiguration in a ConfigMap for later reference</h3>
+
+<p>kubeadm saves the configuration passed to <code>kubeadm init</code>, either via flags or the config file, in a ConfigMap
+named <code>kubeadm-config</code> under <code>kube-system</code> namespace.</p>
+
+<p>This will ensure that kubeadm actions executed in future (e.g <code>kubeadm upgrade</code>) will be able to determine the actual/current cluster
+state and make new decisions based on that data.</p>
+
+<p>Please note that:</p>
+
+<ol>
+<li>Before uploading, sensitive information like e.g. the token are stripped from the configuration</li>
+<li>Upload of master configuration can be invoked individually with the <a href="/docs/reference/setup-tools/kubeadm/kubeadm-alpha/#cmd-phase-upload-config"><code>kubeadm alpha phase upload-config</code></a> command</li>
+<li>If you initialized your cluster using kubeadm v1.7.x or lower, you must create manually the master configuration ConfigMap
+before <code>kubeadm upgrade</code> to v1.8 . In order to facilitate this task, the <a href="/docs/reference/setup-tools/kubeadm/kubeadm-config/"><code>kubeadm config upload (from-flags|from-file)</code></a>
+was implemented</li>
+</ol>
+
+<h3 id="mark-master">Mark master</h3>
+
+<p>As soon as the control plane is available, kubeadm executes following actions:</p>
+
+<ul>
+<li>Label the master with <code>node-role.kubernetes.io/master=&quot;&quot;</code></li>
+<li>Taints the master with <code>node-role.kubernetes.io/master:NoSchedule</code></li>
+</ul>
+
+<p>Please note that:</p>
+
+<ol>
+<li>Mark master phase can be invoked individually with the <a href="/docs/reference/setup-tools/kubeadm/kubeadm-alpha/#cmd-phase-mark-master"><code>kubeadm alpha phase mark-master</code></a> command</li>
+</ol>
+
+<h3 id="configure-tls-bootstrapping-for-node-joining">Configure TLS-Bootstrapping for node joining</h3>
+
+<p>Kubeadm uses <a href="/docs/admin/bootstrap-tokens/">Authenticating with Bootstrap Tokens</a> for joining new nodes to an
+existing cluster; for more details see also <a href="https://github.com/kubernetes/community/blob/master/contributors/design-proposals/cluster-lifecycle/bootstrap-discovery.md" target="_blank">design proposal</a>.</p>
+
+<p><code>kubeadm init</code> ensures that everything is properly configured for this process, and this includes following steps as well as
+setting API server and controller flags as already described in previous paragraphs.
+Please note that:</p>
+
+<ol>
+<li>TLS bootstrapping for nodes can be configured with the <a href="/docs/reference/setup-tools/kubeadm/kubeadm-alpha/#cmd-phase-bootstrap-token"><code>kubeadm alpha phase bootstrap-token all</code></a><br />
+command, executing all the configuration steps described in following paragraphs; alternatively, each step can be invoked individually</li>
+</ol>
+
+<h4 id="create-a-bootstrap-token">Create a bootstrap token</h4>
+
+<p><code>kubeadm init</code> create a first bootstrap token, either generated automatically or provided by the user with the <code>--token</code> flag; as documented
+in bootstrap token specification, token should be saved as secrets with name <code>bootstrap-token-&lt;token-id&gt;</code> under <code>kube-system</code> namespace.
+Please note that:</p>
+
+<ol>
+<li>The default token created by <code>kubeadm init</code> will be used to validate temporary user during TLS bootstrap process; those users will
+be member of  <code>system:bootstrappers:kubeadm:default-node-token</code> group</li>
+<li>The token has a limited validity, default 24 hours (the interval may be changed with the <code>—token-ttl</code> flag)</li>
+<li>Additional tokens can be created with the <a href="/docs/reference/setup-tools/kubeadm/kubeadm-token/"><code>kubeadm token</code></a> command, that provide as well other useful functions
+for token management</li>
+</ol>
+
+<h4 id="allow-joining-nodes-to-call-csr-api">Allow joining nodes to call CSR API</h4>
+
+<p>Kubeadm ensure that users in  <code>system:bootstrappers:kubeadm:default-node-token</code> group are able to access the certificate signing API.</p>
+
+<p>This is implemented by creating a ClusterRoleBinding named <code>kubeadm:kubelet-bootstrap</code> between the group above and the default
+RBAC role <code>system:node-bootstrapper</code>.</p>
+
+<h4 id="setup-auto-approval-for-new-bootstrap-tokens">Setup auto approval for new bootstrap tokens</h4>
+
+<p>Kubeadm ensures that the Bootstrap Token will get its CSR request automatically approved by the csrapprover controller.</p>
+
+<p>This is implemented by creating ClusterRoleBinding named <code>kubeadm:node-autoapprove-bootstrap</code> between
+the  <code>system:bootstrappers:kubeadm:default-node-token</code> group and the default role <code>system:certificates.k8s.io:certificatesigningrequests:nodeclient</code>.</p>
+
+<p>The role <code>system:certificates.k8s.io:certificatesigningrequests:nodeclient</code> should be created as well, granting
+POST permission to <code>/apis/certificates.k8s.io/certificatesigningrequests/nodeclient</code>.</p>
+
+<h4 id="setup-nodes-certificate-rotation-with-auto-approval">Setup nodes certificate rotation with auto approval</h4>
+
+<p>Kubeadm ensures that certificate rotation is enabled for nodes, and that new certificate request for nodes will get its CSR request
+automatically approved by the csrapprover controller.</p>
+
+<p>This is implemented by creating ClusterRoleBinding named <code>kubeadm:node-autoapprove-certificate-rotation</code> between the  <code>system:nodes</code> group
+and the default role <code>system:certificates.k8s.io:certificatesigningrequests:selfnodeclient</code>.</p>
+
+<h4 id="create-the-public-cluster-info-configmap">Create the public cluster-info ConfigMap</h4>
+
+<p>This phase creates the <code>cluster-info</code> ConfigMap in the <code>kube-public</code> namespace.</p>
+
+<p>Additionally it is created a role and a RoleBinding granting access to the ConfigMap for unauthenticated users
+(i.e. users in RBAC group <code>system:unauthenticated</code>)</p>
+
+<p>Please note that:</p>
+
+<ol>
+<li>The access to the <code>cluster-info</code> ConfigMap <em>is not</em> rate-limited. This may or may not be a problem if you expose your master
+to the internet; worst-case scenario here is a DoS attack where an attacker uses all the in-flight requests the kube-apiserver
+can handle to serving the <code>cluster-info</code> ConfigMap.</li>
+</ol>
+
+<h3 id="install-addons">Install addons</h3>
+
+<p>Kubeadm installs the internal DNS server and the kube-proxy addon components via the API server.
+Please note that:</p>
+
+<ol>
+<li>This phase can be invoked individually with the <a href="/docs/reference/setup-tools/kubeadm/kubeadm-alpha/#cmd-phase-addon"><code>kubeadm alpha phase addon all</code></a> command.</li>
+</ol>
+
+<h4 id="proxy">proxy</h4>
+
+<p>A ServiceAccount for <code>kube-proxy</code> is created in the <code>kube-system</code> namespace; then kube-proxy is deployed as a DaemonSet:</p>
+
+<ul>
+<li>The credentials (<code>ca.crt</code> and <code>token</code>) to the master come from the ServiceAccount</li>
+<li>The location of the master comes from a ConfigMap</li>
+<li>The <code>kube-proxy</code> ServiceAccount is bound to the privileges in the <code>system:node-proxier</code> ClusterRole</li>
+</ul>
+
+<h4 id="dns">DNS</h4>
+
+<p>Note that:</p>
+
+<ul>
+<li>The CoreDNS service is named <code>kube-dns</code>. This is done to prevent any interruption
+in service when the user is switching the cluster DNS from kube-dns to CoreDNS or vice-versa</li>
+<li>In Kubernetes version 1.11 and later, CoreDNS is the default DNS server and you must
+invoke kubeadm with <code>--feature-gates=CoreDNS=false</code> to install kube-dns instead</li>
+<li>In Kubernetes version 1.10 and earlier, you must enable CoreDNS with <code>--feature-gates=CoreDNS=true</code></li>
+</ul>
+
+<p>A ServiceAccount for CoreDNS/kube-dns is created in the <code>kube-system</code> namespace.</p>
+
+<p>Deploy the <code>kube-dns</code> Deployment and Service:</p>
+
+<ul>
+<li>It&rsquo;s the upstream CoreDNS deployment relatively unmodified</li>
+<li>The <code>kube-dns</code> ServiceAccount is bound to the privileges in the <code>system:kube-dns</code> ClusterRole</li>
+</ul>
+
+<h3 id="optional-and-alpha-in-v1-9-self-hosting">(Optional and alpha in v1.9) self-hosting</h3>
+
+<p>This phase is performed only if <code>kubeadm init</code> is invoked with <code>—features-gates=selfHosting</code></p>
+
+<p>The self hosting phase basically replaces static Pods for control plane components with DaemonSets; this is achieved by executing
+following procedure for API server, scheduler and controller manager static Pods:</p>
+
+<ul>
+<li>Load the static Pod specification from disk</li>
+<li>Extract the PodSpec from static Pod manifest file</li>
+<li>Mutate the PodSpec to be compatible with self-hosting, and more in detail:
+
+<ul>
+<li>Add node selector attribute targeting nodes with <code>node-role.kubernetes.io/master=&quot;&quot;</code> label,</li>
+<li>Add a toleration for <code>node-role.kubernetes.io/master:NoSchedule</code> taint,</li>
+<li>Set <code>spec.DNSPolicy</code> to <code>ClusterFirstWithHostNet</code></li>
+</ul></li>
+<li>Build a new DaemonSet object for the self-hosted component in question. Use the above mentioned PodSpec</li>
+<li>Create the DaemonSet resource in <code>kube-system</code> namespace. Wait until the Pods are running.</li>
+<li>Remove the static Pod manifest file. The kubelet will stop the original static Pod-hosted component that was running</li>
+</ul>
+
+<p>Please note that:</p>
+
+<ol>
+<li><p>Self hosting is not yet resilient to node restarts; this can be fixed with external checkpointing or with kubelet checkpointing
+for the control plane Pods. See <a href="/docs/reference/setup-tools/kubeadm/kubeadm-init/#self-hosting">self-hosting</a> for more details.</p></li>
+
+<li><p>If invoked with <code>—features-gates=StoreCertsInSecrets</code>  following additional steps will be executed</p>
+
+<ul>
+<li>Creation of <code>ca</code>,  <code>apiserver</code>,  <code>apiserver-kubelet-client</code>, <code>sa</code>, <code>front-proxy-ca</code>, <code>front-proxy-client</code> TLS secrets
+in <code>kube-system</code> namespace with respective certificates and keys.
+Important! storing the CA key in a Secret might have security implications</li>
+<li>Creation of <code>schedler.conf</code> and <code>controller-manager.conf</code> secrets in<code>kube-system</code> namespace with respective kubeconfig files</li>
+<li>Mutation of all the Pod specs by replacing host path volumes with projected volumes from the secrets above</li>
+</ul></li>
+
+<li><p>This phase can be invoked individually with the <a href="/docs/reference/setup-tools/kubeadm/kubeadm-alpha/#cmd-phase-self-hosting"><code>kubeadm alpha phase selfhosting convert-from-staticpods</code></a> command.</p></li>
+</ol>
+
+<h2 id="kubeadm-join-phases-internal-design">kubeadm join phases internal design</h2>
+
+<p>Similarly to <code>kubeadm init</code>, also <code>kubeadm join</code> internal workflow consists of a sequence of atomic work tasks to perform.</p>
+
+<p>This is split into discovery (having the Node trust the Kubernetes Master) and TLS bootstrap (having the Kubernetes Master trust the Node).</p>
+
+<p>see <a href="/docs/admin/bootstrap-tokens/">Authenticating with Bootstrap Tokens</a> or the corresponding <a href="https://github.com/kubernetes/community/blob/master/contributors/design-proposals/cluster-lifecycle/bootstrap-discovery.md" target="_blank">design proposal</a>.</p>
+
+<h3 id="preflight-checks-1">Preflight checks</h3>
+
+<p><code>kubeadm</code> executes a set of preflight checks before starting the join, with the aim to verify preconditions and avoid common
+cluster startup problems.</p>
+
+<p>Please note that:</p>
+
+<ol>
+<li><code>kubeadm join</code> preflight checks are basically a subset <code>kubeadm init</code> preflight checks</li>
+<li>Starting from 1.9, kubeadm provides better support for CRI-generic functionality; in that case, docker specific controls
+are skipped or replaced by similar controls for crictl.</li>
+<li>Starting from 1.9, kubeadm provides support for joining nodes running on Windows; in that case, linux specific controls are skipped.</li>
+<li>In any case the user can skip specific preflight checks (or eventually all preflight checks) with the <code>--ignore-preflight-errors</code> option.</li>
+</ol>
+
+<h3 id="discovery-cluster-info">Discovery cluster-info</h3>
+
+<p>There are 2 main schemes for discovery. The first is to use a shared token along with the IP address of the API server.
+The second is to provide a file (that is a subset of the standard kubeconfig file).</p>
+
+<h4 id="shared-token-discovery">Shared token discovery</h4>
+
+<p>If <code>kubeadm join</code> is invoked with <code>--discovery-token</code>, token discovery is used; in this case the node basically retrieves
+the cluster CA certificates from the  <code>cluster-info</code> ConfigMap in the <code>kube-public</code> namespace.</p>
+
+<p>In order to prevent &ldquo;man in the middle&rdquo; attacks, several steps are taken:</p>
+
+<ul>
+<li>First, the CA certificate is retrieved via insecure connection (this is possible because <code>kubeadm init</code> granted access to  <code>cluster-info</code> users for <code>system:unauthenticated</code> )</li>
+<li>Then the CA certificate goes trough following validation steps:
+
+<ul>
+<li>Basic validation: using the token ID against a JWT signature</li>
+<li>Pub key validation: using provided <code>--discovery-token-ca-cert-hash</code>. This value is available in the output of <code>kubeadm init</code> or can
+be calculated using standard tools (the hash is calculated over the bytes of the Subject Public Key Info (SPKI) object as in RFC7469).
+The <code>--discovery-token-ca-cert-hash flag</code> may be repeated multiple times to allow more than one public key.</li>
+<li>As a additional validation, the CA certificate is retrieved via secure connection and then compared with the CA retrieved initially</li>
+</ul></li>
+</ul>
+
+<p>Please note that:</p>
+
+<ol>
+<li>Pub key validation can be skipped passing <code>--discovery-token-unsafe-skip-ca-verification</code> flag; This weakens the kubeadm security
+model since others can potentially impersonate the Kubernetes Master.</li>
+</ol>
+
+<h4 id="file-https-discovery">File/https discovery</h4>
+
+<p>If <code>kubeadm join</code> is invoked with <code>--discovery-file</code>, file discovery is used; this file can be a local file or downloaded via an HTTPS URL; in case of HTTPS, the host installed CA bundle is used to verify the connection.</p>
+
+<p>With file discovery, the cluster CA certificates is provided into the file itself; in fact, the discovery file is a kubeconfig
+file with only <code>server</code> and <code>certificate-authority-data</code> attributes set, as described in <a href="/docs/reference/setup-tools/kubeadm/kubeadm-join/#file-or-https-based-discovery"><code>kubeadm join</code></a> reference doc;
+when the connection with the cluster is established, kubeadm try to access the <code>cluster-info</code> ConfigMap, and if available, uses it.</p>
+
+<h2 id="tls-bootstrap">TLS Bootstrap</h2>
+
+<p>Once the cluster info are known, the file <code>bootstrap-kubelet.conf</code> is written, thus allowing kubelet to do TLS Bootstrapping
+(conversely until v.1.7 TLS bootstrapping were managed by kubeadm).</p>
+
+<p>The TLS bootstrap mechanism uses the shared token to temporarily authenticate with the Kubernetes Master to submit a certificate
+signing request (CSR) for a locally created key pair.</p>
+
+<p>The request is then automatically approved and the operation completes saving <code>ca.crt</code> file and <code>kubelet.conf</code> file to be used
+by kubelet for joining the cluster, while<code>bootstrap-kubelet.conf</code> is deleted.</p>
+
+<p>Please note that:</p>
+
+<ul>
+<li>The temporary authentication is validated against the token saved during the <code>kubeadm init</code> process (or with additional tokens
+created with <code>kubeadm token</code>)</li>
+<li>The temporary authentication resolve to a user member of  <code>system:bootstrappers:kubeadm:default-node-token</code> group which was granted
+access to CSR api during the <code>kubeadm init</code> process</li>
+<li>The automatic CSR approval is managed by the csrapprover controller, according with configuration done the <code>kubeadm init</code> process</li>
+</ul>
+
+<h3 id="optional-and-alpha-in-v1-9-write-init-kubelet-configuration-1">(optional and alpha in v1.9) Write init kubelet configuration</h3>
+
+<p>If kubeadm is invoked with <code>--feature-gates=DynamicKubeletConfig</code>:</p>
+
+<ol>
+<li>Read the kubelet base configuration from the <code>kubelet-base-config-v1.9</code> ConfigMap in the <code>kube-system</code> namespace  using the
+Bootstrap Token credentials, and write it to disk as kubelet init configuration file  <code>/var/lib/kubelet/config/init/kubelet</code></li>
+<li>As soon as kubelet starts with the Node&rsquo;s own credential (<code>/etc/kubernetes/kubelet.conf</code>), update current node configuration
+specifying that the source for the node/kubelet configuration is the above ConfigMap.</li>
+</ol>
+
+<p>Please note that:</p>
+
+<ol>
+<li>To make dynamic kubelet configuration work, flag <code>--dynamic-config-dir=/var/lib/kubelet/config/dynamic</code> should be specified in <code>/etc/systemd/system/kubelet.service.d/10-kubeadm.conf</code></li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/reference/setup-tools/kubeadm/implementation-details.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/reference\/setup-tools\/kubeadm\/implementation-details\/",
+					"title" : "Implementation details",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/reference\/setup-tools\/kubeadm\/implementation-details\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/reference/setup-tools/kubeadm/implementation-details.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

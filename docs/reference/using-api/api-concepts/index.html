@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Kubernetes API Concepts - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="Kubernetes API Concepts" />
+<meta property="og:description" content="Kubernetes API Concepts" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/reference/using-api/api-concepts/" />
+<meta property="og:title" content="Kubernetes API Concepts - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h1>Reference Documentation</h1>
+<h5></h5>
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/" class="YAH">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Reference" href="/docs/reference/"></a>
+
+	
+	
+		
+		
+<a class="item" data-title="Standardized Glossary" href="/docs/reference/glossary/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Kubernetes Issues and Security">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Kubernetes Issue Tracker" href="/docs/reference/issues-security/issues/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes Security and Disclosure Information" href="/docs/reference/issues-security/security/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Using the Kubernetes API">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Kubernetes API Overview" href="/docs/reference/using-api/api-overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes API Concepts" href="/docs/reference/using-api/api-concepts/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Client Libraries" href="/docs/reference/using-api/client-libraries/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes Deprecation Policy" href="/docs/reference/using-api/deprecation-policy/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Accessing the API">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Controlling Access to the Kubernetes API" href="/docs/reference/access-authn-authz/controlling-access/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Authenticating" href="/docs/reference/access-authn-authz/authentication/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Authenticating with Bootstrap Tokens" href="/docs/reference/access-authn-authz/bootstrap-tokens/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using Admission Controllers" href="/docs/reference/access-authn-authz/admission-controllers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Dynamic Admission Control" href="/docs/reference/access-authn-authz/extensible-admission-controllers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Managing Service Accounts" href="/docs/reference/access-authn-authz/service-accounts-admin/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Authorization Overview" href="/docs/reference/access-authn-authz/authorization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using RBAC Authorization" href="/docs/reference/access-authn-authz/rbac/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using ABAC Authorization" href="/docs/reference/access-authn-authz/abac/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using Node Authorization" href="/docs/reference/access-authn-authz/node/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Webhook Mode" href="/docs/reference/access-authn-authz/webhook/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="API Reference">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Well-Known Labels, Annotations and Taints" href="/docs/reference/kubernetes-api/labels-annotations-taints/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="v1.11" href="/docs/reference/kubernetes-api/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Federation API">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="extensions/v1beta1 Model Definitions" href="/docs/reference/federation/extensions/v1beta1/definitions/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="extensions/v1beta1 Operations" href="/docs/reference/federation/extensions/v1beta1/operations/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="v1 Model Definitions" href="/docs/reference/federation/v1/definitions/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="v1 Operations" href="/docs/reference/federation/v1/operations/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Setup tools reference">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+	<div class="item" data-title="Kubeadm">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Overview of kubeadm" href="/docs/reference/setup-tools/kubeadm/kubeadm/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm init" href="/docs/reference/setup-tools/kubeadm/kubeadm-init/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm join" href="/docs/reference/setup-tools/kubeadm/kubeadm-join/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm upgrade" href="/docs/reference/setup-tools/kubeadm/kubeadm-upgrade/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm config" href="/docs/reference/setup-tools/kubeadm/kubeadm-config/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm reset" href="/docs/reference/setup-tools/kubeadm/kubeadm-reset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm token" href="/docs/reference/setup-tools/kubeadm/kubeadm-token/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm version" href="/docs/reference/setup-tools/kubeadm/kubeadm-version/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm alpha" href="/docs/reference/setup-tools/kubeadm/kubeadm-alpha/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Implementation details" href="/docs/reference/setup-tools/kubeadm/implementation-details/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="kubefed">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="kubefed" href="/docs/reference/setup-tools/kubefed/kubefed/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubefed options" href="/docs/reference/setup-tools/kubefed/kubefed-options/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubefed init" href="/docs/reference/setup-tools/kubefed/kubefed-init/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubefed join" href="/docs/reference/setup-tools/kubefed/kubefed-join/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubefed unjoin" href="/docs/reference/setup-tools/kubefed/kubefed-unjoin/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubefed version" href="/docs/reference/setup-tools/kubefed/kubefed-version/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Command line tools reference">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Feature Gates" href="/docs/reference/command-line-tools-reference/feature-gates/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="federation-apiserver" href="/docs/reference/command-line-tools-reference/federation-apiserver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="federation-controller-manager" href="/docs/reference/command-line-tools-reference/federation-controller-manager/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubelet authentication/authorization" href="/docs/reference/command-line-tools-reference/kubelet-authentication-authorization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="TLS bootstrapping" href="/docs/reference/command-line-tools-reference/kubelet-tls-bootstrapping/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="cloud-controller-manager" href="/docs/reference/command-line-tools-reference/cloud-controller-manager/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kube-apiserver" href="/docs/reference/command-line-tools-reference/kube-apiserver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kube-controller-manager" href="/docs/reference/command-line-tools-reference/kube-controller-manager/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kube-proxy" href="/docs/reference/command-line-tools-reference/kube-proxy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kube-scheduler" href="/docs/reference/command-line-tools-reference/kube-scheduler/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubelet" href="/docs/reference/command-line-tools-reference/kubelet/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="kubectl CLI">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="JSONPath Support" href="/docs/reference/kubectl/jsonpath/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Overview of kubectl" href="/docs/reference/kubectl/overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubectl" href="/docs/reference/kubectl/kubectl/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubectl Cheat Sheet" href="/docs/reference/kubectl/cheatsheet/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubectl Commands" href="/docs/reference/kubectl/kubectl-cmds/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubectl Usage Conventions" href="/docs/reference/kubectl/conventions/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubectl for Docker Users" href="/docs/reference/kubectl/docker-cli-to-kubectl/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Tools" href="/docs/reference/tools/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/reference/using-api/api-concepts.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>Kubernetes API Concepts</h1>
+
+
+
+<p>This page describes common concepts in the Kubernetes API.</p>
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+<li><a href="#standard-api-terminology">Standard API terminology</a></li>
+
+
+
+
+<li><a href="#efficient-detection-of-changes">Efficient detection of changes</a></li>
+
+
+
+
+<li><a href="#retrieving-large-results-sets-in-chunks">Retrieving large results sets in chunks</a></li>
+
+
+
+
+<li><a href="#receiving-resources-as-tables">Receiving resources as Tables</a></li>
+
+
+
+
+<li><a href="#alternate-representations-of-resources">Alternate representations of resources</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</ul>
+
+
+<p>The Kubernetes API is a resource-based (RESTful) programmatic interface provided via HTTP. It supports retrieving, creating,
+updating, and deleting primary resources via the standard HTTP verbs (POST, PUT, PATCH, DELETE, GET), includes additional subresources for many objects that allow fine grained authorization (such as binding a pod to a node), and can accept and serve those resources in different representations for convenience or efficiency. It also supports efficient change notifications on resources via &ldquo;watches&rdquo; and consistent lists to allow other components to effectively cache and synchronize the state of resources.</p>
+
+<h2 id="standard-api-terminology">Standard API terminology</h2>
+
+<p>Most Kubernetes API resource types are &ldquo;objects&rdquo; - they represent a concrete instance of a concept on the cluster, like a pod or namespace. A smaller number of API resource types are &ldquo;virtual&rdquo; - they often represent operations rather than objects, such as a permission check (use a POST with a JSON-encoded body of <code>SubjectAccessReview</code> to the <code>subjectaccessreviews</code> resource). All objects will have a unique name to allow idempotent creation and retrieval, but virtual resource types may not have unique names if they are not retrievable or do not rely on idempotency.</p>
+
+<p>Kubernetes generally leverages standard RESTful terminology to describe the API concepts:</p>
+
+<ul>
+<li>A <strong>resource type</strong> is the name used in the URL (<code>pods</code>, <code>namespaces</code>, <code>services</code>)</li>
+<li>All resource types have a concrete representation in JSON (their object schema) which is called a <strong>kind</strong></li>
+<li>A list of instances of a resource type is known as a <strong>collection</strong></li>
+<li>A single instance of the resource type is called a <strong>resource</strong></li>
+</ul>
+
+<p>All resource types are either scoped by the cluster (<code>/apis/GROUP/VERSION/*</code>) or to a namespace (<code>/apis/GROUP/VERSION/namespaces/NAMESPACE/*</code>). A namespace-scoped resource type will be deleted when its namespace is deleted and access to that resource type is controlled by authorization checks on the namespace scope. The following paths are used to retrieve collections and resources:</p>
+
+<ul>
+<li>Cluster-scoped resources:
+
+<ul>
+<li><code>GET /apis/GROUP/VERSION/RESOURCETYPE</code> - return the collection of resources of the resource type</li>
+<li><code>GET /apis/GROUP/VERSION/RESOURCETYPE/NAME</code> - return the resource with NAME under the resource type</li>
+</ul></li>
+<li>Namespace-scoped resources:
+
+<ul>
+<li><code>GET /apis/GROUP/VERSION/RESOURCETYPE</code> - return the collection of all instances of the resource type across all namespaces</li>
+<li><code>GET /apis/GROUP/VERSION/namespaces/NAMESPACE/RESOURCETYPE</code> - return collection of all instances of the resource type in NAMESPACE</li>
+<li><code>GET /apis/GROUP/VERSION/namespaces/NAMESPACE/RESOURCETYPE/NAME</code> - return the instance of the resource type with NAME in NAMESPACE</li>
+</ul></li>
+</ul>
+
+<p>Since a namespace is a cluster-scoped resource type, you can retrieve the list of all namespaces with <code>GET /api/v1/namespaces</code> and details about a particular namespace with <code>GET /api/v1/namespaces/NAME</code>.</p>
+
+<p>Almost all object resource types support the standard HTTP verbs - GET, POST, PUT, PATCH, and DELETE. Kubernetes uses the term <strong>list</strong> to describe returning a collection of resources to distinguish from retrieving a single resource which is usually called a <strong>get</strong>.</p>
+
+<p>Some resource types will have one or more sub-resources, represented as sub paths below the resource:</p>
+
+<ul>
+<li>Cluster-scoped subresource: <code>GET /apis/GROUP/VERSION/RESOURCETYPE/NAME/SUBRESOURCE</code></li>
+<li>Namespace-scoped subresource: <code>GET /apis/GROUP/VERSION/namespaces/NAMESPACE/RESOURCETYPE/NAME/SUBRESOURCE</code></li>
+</ul>
+
+<p>The verbs supported for each subresource will differ depending on the object - see the API documentation more information. It is not possible to access sub-resources across multiple resources - generally a new virtual resource type would be used if that becomes necessary.</p>
+
+<h2 id="efficient-detection-of-changes">Efficient detection of changes</h2>
+
+<p>To enable clients to build a model of the current state of a cluster, all Kubernetes object resource types are required to support consistent lists and an incremental change notification feed called a <strong>watch</strong>.  Every Kubernetes object has a <code>resourceVersion</code> field representing the version of that resource as stored in the underlying database. When retrieving a collection of resources (either namespace or cluster scoped), the response from the server will contain a <code>resourceVersion</code> value that can be used to initiate a watch against the server. The server will return all changes (creates, deletes, and updates) that occur after the supplied <code>resourceVersion</code>. This allows a client to fetch the current state and then watch for changes without missing any updates. If the client watch is disconnected they can restart a new watch from the last returned <code>resourceVersion</code>, or perform a new collection request and begin again.</p>
+
+<p>For example:</p>
+
+<ol>
+<li><p>List all of the pods in a given namespace.</p>
+
+<pre><code>GET /api/v1/namespaces/test/pods
+---
+200 OK
+Content-Type: application/json
+{
+  &quot;kind&quot;: &quot;PodList&quot;,
+  &quot;apiVersion&quot;: &quot;v1&quot;,
+  &quot;metadata&quot;: {&quot;resourceVersion&quot;:&quot;10245&quot;},
+  &quot;items&quot;: [...]
+}
+</code></pre></li>
+
+<li><p>Starting from resource version 10245, receive notifications of any creates, deletes, or updates as individual JSON objects.</p>
+
+<pre><code>GET /api/v1/namespaces/test/pods?watch=1&amp;resourceVersion=10245
+---
+200 OK
+Transfer-Encoding: chunked
+Content-Type: application/json
+{
+  &quot;type&quot;: &quot;ADDED&quot;,
+  &quot;object&quot;: {&quot;kind&quot;: &quot;Pod&quot;, &quot;apiVersion&quot;: &quot;v1&quot;, &quot;metadata&quot;: {&quot;resourceVersion&quot;: &quot;10596&quot;, ...}, ...}
+}
+{
+  &quot;type&quot;: &quot;MODIFIED&quot;,
+  &quot;object&quot;: {&quot;kind&quot;: &quot;Pod&quot;, &quot;apiVersion&quot;: &quot;v1&quot;, &quot;metadata&quot;: {&quot;resourceVersion&quot;: &quot;11020&quot;, ...}, ...}
+}
+...
+</code></pre></li>
+</ol>
+
+<p>A given Kubernetes server will only preserve a historical list of changes for a limited time. Older clusters using etcd2 preserve a maximum of 1000 changes. Newer clusters using etcd3 preserve changes in the last 5 minutes by default.  When the requested watch operations fail because the historical version of that resource is not available, clients must handle the case by recognizing the status code <code>410 Gone</code>, clearing their local cache, performing a list operation, and starting the watch from the <code>resourceVersion</code> returned by that new list operation. Most client libraries offer some form of standard tool for this logic. (In Go this is called a <code>Reflector</code> and is located in the <code>k8s.io/client-go/cache</code> package.)</p>
+
+<h2 id="retrieving-large-results-sets-in-chunks">Retrieving large results sets in chunks</h2>
+
+<p>On large clusters, retrieving the collection of some resource types may result in very large responses that can impact the server and client. For instance, a cluster may have tens of thousands of pods, each of which is 1-2kb of encoded JSON. Retrieving all pods across all namespaces may result in a very large response (10-20MB) and consume a large amount of server resources. Starting in Kubernetes 1.9 the server supports the ability to break a single large collection request into many smaller chunks while preserving the consistency of the total request. Each chunk can be returned sequentially which reduces both the total size of the request and allows user-oriented clients to display results incrementally to improve responsiveness.</p>
+
+<p>To retrieve a single list in chunks, two new parameters <code>limit</code> and <code>continue</code> are supported on collection requests and a new field <code>continue</code> is returned from all list operations in the list <code>metadata</code> field. A client should specify the maximum results they wish to receive in each chunk with <code>limit</code> and the server will return up to <code>limit</code> resources in the result and include a <code>continue</code> value if there are more resources in the collection. The client can then pass this <code>continue</code> value to the server on the next request to instruct the server to return the next chunk of results. By continuing until the server returns an empty <code>continue</code> value the client can consume the full set of results.</p>
+
+<p>Like a watch operation, a <code>continue</code> token will expire after a short amount of time (by default 5 minutes) and return a <code>410 Gone</code> if more results cannot be returned. In this case, the client will need to start from the beginning or omit the <code>limit</code> parameter.</p>
+
+<p>For example, if there are 1,253 pods on the cluster and the client wants to receive chunks of 500 pods at a time, they would request those chunks as follows:</p>
+
+<ol>
+<li><p>List all of the pods on a cluster, retrieving up to 500 pods each time.</p>
+
+<pre><code>GET /api/v1/pods?limit=500
+---
+200 OK
+Content-Type: application/json
+{
+  &quot;kind&quot;: &quot;PodList&quot;,
+  &quot;apiVersion&quot;: &quot;v1&quot;,
+  &quot;metadata&quot;: {
+    &quot;resourceVersion&quot;:&quot;10245&quot;,
+    &quot;continue&quot;: &quot;ENCODED_CONTINUE_TOKEN&quot;,
+    ...
+  },
+  &quot;items&quot;: [...] // returns pods 1-500
+}
+</code></pre></li>
+
+<li><p>Continue the previous call, retrieving the next set of 500 pods.</p>
+
+<pre><code>GET /api/v1/pods?limit=500&amp;continue=ENCODED_CONTINUE_TOKEN
+---
+200 OK
+Content-Type: application/json
+{
+  &quot;kind&quot;: &quot;PodList&quot;,
+  &quot;apiVersion&quot;: &quot;v1&quot;,
+  &quot;metadata&quot;: {
+    &quot;resourceVersion&quot;:&quot;10245&quot;,
+    &quot;continue&quot;: &quot;ENCODED_CONTINUE_TOKEN_2&quot;,
+    ...
+  },
+  &quot;items&quot;: [...] // returns pods 501-1000
+}
+</code></pre></li>
+
+<li><p>Continue the previous call, retrieving the last 253 pods.</p>
+
+<pre><code>GET /api/v1/pods?limit=500&amp;continue=ENCODED_CONTINUE_TOKEN_2
+---
+200 OK
+Content-Type: application/json
+{
+  &quot;kind&quot;: &quot;PodList&quot;,
+  &quot;apiVersion&quot;: &quot;v1&quot;,
+  &quot;metadata&quot;: {
+    &quot;resourceVersion&quot;:&quot;10245&quot;,
+    &quot;continue&quot;: &quot;&quot;, // continue token is empty because we have reached the end of the list
+    ...
+  },
+  &quot;items&quot;: [...] // returns pods 1001-1253
+}
+</code></pre></li>
+</ol>
+
+<p>Note that the <code>resourceVersion</code> of the list remains constant across each request, indicating the server is showing us a consistent snapshot of the pods. Pods that are created, updated, or deleted after version <code>10245</code> would not be shown unless the user makes a list request without the <code>continue</code> token.  This allows clients to break large requests into smaller chunks and then perform a watch operation on the full set without missing any updates.</p>
+
+<h2 id="receiving-resources-as-tables">Receiving resources as Tables</h2>
+
+<p><code>kubectl get</code> is a simple tabular representation of one or more instances of a particular resource type. In the past, clients were required to reproduce the tabular and describe output implemented in <code>kubectl</code> to perform simple lists of objects.
+A few limitations of that approach include non-trivial logic when dealing with certain objects. Additionally, types provided by API aggregation or third party rersources are not known at compile time. This means that generic implementations had to be in place for types unrecognized by a client.</p>
+
+<p>In order to avoid potential limitations as described above, clients may request the Table representation of objects, delegating specific details of printing to the server. The Kubernetes API implements standard HTTP content type negotiation: passing an <code>Accept</code> header containing a value of <code>application/json;as=Table;g=meta.k8s.io;v=v1beta1</code> with a <code>GET</code> call will request that the server return objects in the Table content type.</p>
+
+<p>For example:</p>
+
+<ol>
+<li><p>List all of the pods on a cluster in the Table format.</p>
+
+<pre><code>GET /api/v1/pods
+Accept: application/json;as=Table;v=meta.k8s.io;g=v1beta1
+---
+200 OK
+Content-Type: application/json
+{
+    &quot;kind&quot;: &quot;Table&quot;,
+    &quot;apiVersion&quot;: &quot;meta.k8s.io/v1beta1&quot;,
+    ...
+    &quot;columnDefinitions&quot;: [
+        ...
+    ]
+}
+</code></pre></li>
+</ol>
+
+<p>For API resource types that do not have a custom Table definition on the server, a default Table response is returned by the server, consisting of the resource&rsquo;s <code>name</code> and <code>creationTimestamp</code> fields.</p>
+
+<pre><code>    GET /apis/crd.example.com/v1alpha1/namespaces/default/resources
+    ---
+    200 OK
+    Content-Type: application/json
+    ...
+    {
+        &quot;kind&quot;: &quot;Table&quot;,
+        &quot;apiVersion&quot;: &quot;meta.k8s.io/v1beta1&quot;,
+        ...
+        &quot;columnDefinitions&quot;: [
+            {
+                &quot;name&quot;: &quot;Name&quot;,
+                &quot;type&quot;: &quot;string&quot;,
+                ...
+            },
+            {
+                &quot;name&quot;: &quot;Created At&quot;,
+                &quot;type&quot;: &quot;date&quot;,
+                ...
+            }
+        ]
+    }
+</code></pre>
+
+<p>Table responses are available beginning in version 1.10 of the kube-apiserver. As such, not all API resource types will support a Table response, specifically when using a client against older clusters. Clients that must work against all resource types, or can potentially deal with older clusters, should specify multiple content types in their <code>Accept</code> header to support fallback to non-Tabular JSON:</p>
+
+<pre><code>Accept: application/json;as=Table;v=meta.k8s.io;g=v1beta1, application/json
+</code></pre>
+
+<h2 id="alternate-representations-of-resources">Alternate representations of resources</h2>
+
+<p>By default Kubernetes returns objects serialized to JSON with content type <code>application/json</code>. This is the default serialization format for the API. However, clients may request the more efficient Protobuf representation of these objects for better performance at scale. The Kubernetes API implements standard HTTP content type negotiation: passing an <code>Accept</code> header with a <code>GET</code> call will request that the server return objects in the provided content type, while sending an object in Protobuf to the server for a <code>PUT</code> or <code>POST</code> call takes the <code>Content-Type</code> header. The server will return a <code>Content-Type</code> header if the requested format is supported, or the <code>406 Not acceptable</code> error if an invalid content type is provided.</p>
+
+<p>See the API documentation for a list of supported content types for each API.</p>
+
+<p>For example:</p>
+
+<ol>
+<li><p>List all of the pods on a cluster in Protobuf format.</p>
+
+<pre><code>GET /api/v1/pods
+Accept: application/vnd.kubernetes.protobuf
+---
+200 OK
+Content-Type: application/vnd.kubernetes.protobuf
+... binary encoded PodList object
+</code></pre></li>
+
+<li><p>Create a pod by sending Protobuf encoded data to the server, but request a response in JSON.</p>
+
+<pre><code>POST /api/v1/namespaces/test/pods
+Content-Type: application/vnd.kubernetes.protobuf
+Accept: application/json
+... binary encoded Pod object
+---
+200 OK
+Content-Type: application/json
+{
+  &quot;kind&quot;: &quot;Pod&quot;,
+  &quot;apiVersion&quot;: &quot;v1&quot;,
+  ...
+}
+</code></pre></li>
+</ol>
+
+<p>Not all API resource types will support Protobuf, specifically those defined via Custom Resource Definitions or those that are API extensions. Clients that must work against all resource types should specify multiple content types in their <code>Accept</code> header to support fallback to JSON:</p>
+
+<pre><code>Accept: application/vnd.kubernetes.protobuf, application/json
+</code></pre>
+
+<h3 id="protobuf-encoding">Protobuf encoding</h3>
+
+<p>Kubernetes uses an envelope wrapper to encode Protobuf responses. That wrapper starts with a 4 byte magic number to help identify content in disk or in etcd as Protobuf (as opposed to JSON), and then is followed by a Protobuf encoded wrapper message, which describes the encoding and type of the underlying object and then contains the object.</p>
+
+<p>The wrapper format is:</p>
+
+<pre><code>A four byte magic number prefix:
+  Bytes 0-3: &quot;k8s\x00&quot; [0x6b, 0x38, 0x73, 0x00]
+
+An encoded Protobuf message with the following IDL:
+  message Unknown {
+    // typeMeta should have the string values for &quot;kind&quot; and &quot;apiVersion&quot; as set on the JSON object
+    optional TypeMeta typeMeta = 1;
+
+    // raw will hold the complete serialized object in protobuf. See the protobuf definitions in the client libraries for a given kind.
+    optional bytes raw = 2;
+
+    // contentEncoding is encoding used for the raw data. Unspecified means no encoding.
+    optional string contentEncoding = 3;
+
+    // contentType is the serialization method used to serialize 'raw'. Unspecified means application/vnd.kubernetes.protobuf and is usually
+    // omitted.
+    optional string contentType = 4;
+  }
+
+  message TypeMeta {
+    // apiVersion is the group/version for this type
+    optional string apiVersion = 1;
+    // kind is the name of the object schema. A protobuf definition should exist for this object.
+    optional string kind = 2;
+  }
+</code></pre>
+
+<p>Clients that receive a response in <code>application/vnd.kubernetes.protobuf</code> that does not match the expected prefix should reject the response, as future versions may need to alter the serialization format in an incompatible way and will do so by changing the prefix.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/reference/using-api/api-concepts.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/reference\/using-api\/api-concepts\/",
+					"title" : "Kubernetes API Concepts",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/reference\/using-api\/api-concepts\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/reference/using-api/api-concepts.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

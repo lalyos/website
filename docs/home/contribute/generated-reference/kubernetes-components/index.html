@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Generating Reference Pages for Kubernetes Components and Tools - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="Generating Reference Pages for Kubernetes Components and Tools" />
+<meta property="og:description" content="Generating Reference Pages for Kubernetes Components and Tools" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/home/contribute/generated-reference/kubernetes-components/" />
+<meta property="og:title" content="Generating Reference Pages for Kubernetes Components and Tools - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+<h1></h1>
+<h5></h5>
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/" class="YAH">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Documentation" href="/docs/home/"></a>
+
+	
+	
+		
+		
+	<div class="item" data-title="Contributing to the Kubernetes Docs">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Content Organization" href="/docs/home/contribute/content-organization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Creating a Documentation Pull Request" href="/docs/home/contribute/create-pull-request/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Custom Hugo Shortcodes" href="/docs/home/contribute/includes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Documentation Style Guide" href="/docs/home/contribute/style-guide/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Generating Reference Documentation for Kubernetes Federation API" href="/docs/home/contribute/generated-reference/federation-api/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Generating Reference Documentation for kubectl Commands" href="/docs/home/contribute/generated-reference/kubectl/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Generating Reference Documentation for the Kubernetes API" href="/docs/home/contribute/generated-reference/kubernetes-api/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Generating Reference Pages for Kubernetes Components and Tools" href="/docs/home/contribute/generated-reference/kubernetes-components/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Localizing Kubernetes Documentation" href="/docs/home/contribute/localization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Participating in SIG-DOCS" href="/docs/home/contribute/participating/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Reviewing Documentation Issues" href="/docs/home/contribute/review-issues/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using Page Templates" href="/docs/home/contribute/page-templates/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Writing a Blog Post" href="/docs/home/contribute/blog-post/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Writing a New Topic" href="/docs/home/contribute/write-new-topic/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Supported Versions of the Kubernetes Documentation" href="/docs/home/supported-doc-versions/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/home/contribute/generated-reference/kubernetes-components.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>Generating Reference Pages for Kubernetes Components and Tools</h1>
+
+
+
+
+<p>This page shows how to use the <code>update-imported-docs</code> tool to generate
+reference documentation for tools and components in the
+<a href="https://github.com/kubernetes/kubernetes" target="_blank">Kubernetes</a> and
+<a href="https://github.com/kubernetes/federation" target="_blank">Federation</a> repositories.</p>
+
+
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+<li><a href="#before-you-begin">Before you begin</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#getting-two-repositories">Getting two repositories</a></li>
+
+
+
+
+<li><a href="#editing-the-kubernetes-source-code">Editing the Kubernetes source code</a></li>
+
+
+
+
+<li><a href="#cherry-picking-your-change-into-a-release-branch">Cherry picking your change into a release branch</a></li>
+
+
+
+
+<li><a href="#overview-of-update-imported-docs">Overview of update-imported-docs</a></li>
+
+
+
+
+<li><a href="#setting-the-branch">Setting the branch</a></li>
+
+
+
+
+<li><a href="#setting-sources-and-destinations">Setting sources and destinations</a></li>
+
+
+
+
+<li><a href="#running-the-update-imported-docs-tool">Running the update-imported-docs tool</a></li>
+
+
+
+
+<li><a href="#adding-and-committing-changes-in-kubernetes-website">Adding and committing changes in kubernetes/website</a></li>
+
+
+
+
+<li><a href="#creating-a-pull-request">Creating a pull request</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#what-s-next">What's next</a></li>
+
+
+
+</ul>
+
+
+
+<h2 id="before-you-begin">Before you begin</h2>
+<ul>
+<li><p>You need a machine that is running Linux or MacOS.</p></li>
+
+<li><p>You need to have this software installed:</p>
+
+<ul>
+<li><p><a href="https://git-scm.com/book/en/v2/Getting-Started-Installing-Git" target="_blank">Git</a></p></li>
+
+<li><p><a href="https://golang.org/doc/install" target="_blank">Golang</a> version 1.9 or later</p></li>
+
+<li><p><a href="https://www.gnu.org/software/make/" target="_blank">make</a></p></li>
+
+<li><p><a href="https://gcc.gnu.org/" target="_blank">gcc compiler/linker</a></p></li>
+</ul></li>
+
+<li><p>Your <code>$GOPATH</code> environment variable must be set.</p></li>
+
+<li><p>You need to know how to create a pull request to a GitHub repository.
+Typically, this involves creating a fork of the repository. For more
+information, see
+<a href="/docs/home/contribute/create-pull-request/">Creating a Documentation Pull Request</a>.</p></li>
+</ul>
+
+
+
+
+<h2 id="getting-two-repositories">Getting two repositories</h2>
+
+<p>If you don&rsquo;t already have the <code>kubernetes/website</code> repository, get it now:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mkdir <span style="color:#b8860b">$GOPATH</span>/src
+<span style="color:#a2f">cd</span> <span style="color:#b8860b">$GOPATH</span>/src
+go get github.com/kubernetes/website</code></pre></div>
+<p>Determine the base directory of your clone of the
+<a href="https://github.com/kubernetes/website" target="_blank">kubernetes/website</a> repository.
+For example, if you followed the preceding step to get the repository,
+your base directory is <code>$GOPATH/src/github.com/kubernetes/website.</code>
+The remaining steps refer to your base directory as <code>&lt;web-base&gt;</code>.</p>
+
+<p>If you plan on making changes to the ref docs, and if you don&rsquo;t already have
+the <code>kubernetes/kubernetes</code> repository, get it now:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mkdir <span style="color:#b8860b">$GOPATH</span>/src
+<span style="color:#a2f">cd</span> <span style="color:#b8860b">$GOPATH</span>/src
+go get github.com/kubernetes/kubernetes</code></pre></div>
+<p>Determine the base directory of your clone of the
+<a href="https://github.com/kubernetes/kubernetes" target="_blank">kubernetes/kubernetes</a> repository.
+For example, if you followed the preceding step to get the repository,
+your base directory is <code>$GOPATH/src/github.com/kubernetes/kubernetes.</code>
+The remaining steps refer to your base directory as <code>&lt;k8s-base&gt;</code>.</p>
+
+<blockquote class="note">
+  <div><strong>Note:</strong>
+If you only need to generate, but not change, the reference docs, you don&rsquo;t need to
+manually get the <code>kubernetes/kubernetes</code> repository. When you run the <code>update-imported-docs</code>
+tool, it automatically clones the <code>kubernetes/kubernetes</code> repository.</div>
+</blockquote>
+
+<h2 id="editing-the-kubernetes-source-code">Editing the Kubernetes source code</h2>
+
+<p>The reference documentation for the Kubernetes components and tools is automatically
+generated from the Kubernetes source code. If you want to change the reference documentation,
+the first step is to change one or more comments in the Kubernetes source code. Make the
+change in your local kubernetes/kubernetes repository, and then submit a pull request to
+the master branch of
+<a href="https://github.com/kubernetes/kubernetes" target="_blank">github.com/kubernetes/kubernetes</a>.</p>
+
+<p><a href="https://github.com/kubernetes/kubernetes/pull/56942" target="_blank">PR 56942</a>
+is an example of a pull request that makes changes to comments in the Kubernetes
+source code.</p>
+
+<p>Monitor your pull request, and respond to reviewer comments. Continue to monitor
+your pull request until it is merged into the master branch of the
+<code>kubernetes/kubernetes</code> repository.</p>
+
+<h2 id="cherry-picking-your-change-into-a-release-branch">Cherry picking your change into a release branch</h2>
+
+<p>Your change is now in the master branch, which is used for development of the next
+Kubernetes release. If you want your change to appear in the docs for a Kubernetes
+version that has already been released, you need to propose that your change be cherry
+picked into the release branch.</p>
+
+<p>For example, suppose the master branch is being used to develop Kubernetes 1.10, and
+you want to backport your change to the release-1.9 branch. For instructions on how
+to do this, see
+<a href="https://github.com/kubernetes/community/blob/master/contributors/devel/cherry-picks.md" target="_blank">Propose a Cherry Pick</a>.</p>
+
+<p>Monitor your cherry-pick pull request until it is merged into the release branch.</p>
+
+<blockquote class="note">
+  <div><strong>Note:</strong> Proposing a cherry pick requires that you have permission to set a label
+and a milestone in your pull request. If you don’t have those permissions, you will
+need to work with someone who can set the label and milestone for you.</div>
+</blockquote>
+
+<h2 id="overview-of-update-imported-docs">Overview of update-imported-docs</h2>
+
+<p>The <code>update-imported-docs</code> tool performs these steps:</p>
+
+<ol>
+<li>Clone the <code>kubernetes/kubernetes</code> repository.</li>
+<li>Run several scripts under <code>kubernetes/kubernetes/hack</code>. These scripts
+generate Markdown files and place the files under <code>kubernetes/kubernetes/docs</code>.</li>
+<li>Copy the generated Markdown files to a local clone of the <code>kubernetes/website</code>
+repository under <code>kubernetes/website/docs/reference/generated</code>.</li>
+<li>Clone the <code>kubernetes/federation</code> repository.</li>
+<li>Run several scripts under <code>kubernetes/federation/hack</code>. These scripts
+generate Markdown files and place the files under <code>kubernetes/federation/docs</code>.</li>
+<li>Copy the generated Markdown files to a local clone of the <code>kubernetes/website</code>
+repository under <code>kubernetes/website/docs/reference/generated</code>.</li>
+</ol>
+
+<p>After the Markdown files are in your local clone of the <code>kubernetes/website</code>
+repository, you can submit them in a
+<a href="https://kubernetes.io/docs/home/contribute/create-pull-request/" target="_blank">pull request</a>
+to <code>kubernetes/website</code>.</p>
+
+<h2 id="setting-the-branch">Setting the branch</h2>
+
+<p>Open <code>&lt;web-base&gt;/update-imported-docs/config.yaml</code> for editing.</p>
+
+<p>Set the value of <code>branch</code> to the Kubernetes release that you want to document.
+For example, if you want to generate docs for the Kubernetes 1.9 release,
+set <code>branch</code> to <code>release-1.9</code>.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">repos:
+- name: kubernetes
+  remote: https://github.com/kubernetes/kubernetes.git
+  branch: release-1.9</code></pre></div>
+<h2 id="setting-sources-and-destinations">Setting sources and destinations</h2>
+
+<p>The <code>update-imported-docs</code> tool uses <code>src</code> and <code>dst</code> fields
+in <code>config.yaml</code> to know which files to copy from the <code>kubernetes/kubernetes</code>
+repository and where to place those files in the <code>kubernetes/website</code>
+repository.</p>
+
+<p>For example, suppose you want the tool to copy the <code>kube-apiserver.md</code> file
+from the <code>docs/admin</code> directory of the <code>kubernetes/kubernetes</code> repository
+to the <code>docs/reference/generated/</code> directory of the <code>kubernetes/website</code>
+repository. Then you would include a <code>src</code> and <code>dst</code> in your <code>config.yaml</code>
+file like this:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">repos:
+- name: kubernetes
+  remote: https://github.com/kubernetes/kubernetes.git
+  branch: release-1.9
+  files:
+  - src: docs/admin/kube-apiserver.md
+    dst: docs/reference/generated/kube-apiserver.md
+  ...</code></pre></div>
+<p>The configuration is similar for files in the <code>kubernetes/federation</code>
+repository. Here&rsquo;s an example that configures the tool to copy <code>kubefed_init.md</code>
+from the <code>docs/admin</code> directory of the <code>kubernetes/federation</code> repository
+to the <code>docs/reference/generated</code> directory of the <code>kubernetes/website</code> repository:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">- name: federation
+  remote: https://github.com/kubernetes/federation.git
+<span style="color:#080;font-style:italic">#  # Change this to a release branch when federation has release branches.
+</span><span style="color:#080;font-style:italic"></span>  branch: master
+  files:
+  - src: docs/admin/kubefed_init.md
+    dst: docs/reference/generated/kubefed_init.md
+  ...</code></pre></div>
+<p>Here&rsquo;s an example a <code>config.yaml</code> file that shows the sources and
+destinations of all the Markdown files that were generated and copied
+by the <code>update-imported-docs</code> tool at the beginning of the Kubernetes
+1.9 release.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">repos:
+- name: kubernetes
+  remote: https://github.com/kubernetes/kubernetes.git
+  branch: release-1.9
+  files:
+  - src: docs/admin/cloud-controller-manager.md
+    dst: docs/reference/generated/cloud-controller-manager.md
+  - src: docs/admin/kube-apiserver.md
+    dst: docs/reference/generated/kube-apiserver.md
+  - src: docs/admin/kube-controller-manager.md
+    dst: docs/reference/generated/kube-controller-manager.md
+  - src: docs/admin/kubelet.md
+    dst: docs/reference/generated/kubelet.md
+  - src: docs/admin/kube-proxy.md
+    dst: docs/reference/generated/kube-proxy.md
+  - src: docs/admin/kube-scheduler.md
+    dst: docs/reference/generated/kube-scheduler.md
+  - src: docs/user-guide/kubectl/kubectl.md
+    dst: docs/reference/generated/kubectl/kubectl.md
+- name: federation
+  remote: https://github.com/kubernetes/federation.git
+<span style="color:#080;font-style:italic">#  # Change this to a release branch when federation has release branches.
+</span><span style="color:#080;font-style:italic"></span>  branch: master
+  files:
+  - src: docs/admin/federation-apiserver.md
+    dst: docs/reference/generated/federation-apiserver.md
+  - src: docs/admin/federation-controller-manager.md
+    dst: docs/reference/generated/federation-controller-manager.md
+  - src: docs/admin/kubefed_init.md
+    dst: docs/reference/generated/kubefed_init.md
+  - src: docs/admin/kubefed_join.md
+    dst: docs/reference/generated/kubefed_join.md
+  - src: docs/admin/kubefed.md
+    dst: docs/reference/generated/kubefed.md
+  - src: docs/admin/kubefed_options.md
+    dst: docs/reference/generated/kubefed_options.md
+  - src: docs/admin/kubefed_unjoin.md
+    dst: docs/reference/generated/kubefed_unjoin.md
+  - src: docs/admin/kubefed_version.md
+    dst: docs/reference/generated/kubefed_version.md</code></pre></div>
+<h2 id="running-the-update-imported-docs-tool">Running the update-imported-docs tool</h2>
+
+<p>Now that your <code>config.yaml</code> file contains your sources and destinations,
+you can run the <code>update-imported-docs</code> tool:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#a2f">cd</span> &lt;web-base&gt;
+go get ./update-imported-docs
+go run update-imported-docs/update-imported-docs.go</code></pre></div>
+<h2 id="adding-and-committing-changes-in-kubernetes-website">Adding and committing changes in kubernetes/website</h2>
+
+<p>List the files that were generated and copied to the <code>kubernetes/website</code>
+repository:</p>
+
+<pre><code>cd &lt;web-base&gt;
+git status
+</code></pre>
+
+<p>The output shows the new and modified files. For example, the output
+might look like this:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">...
+    modified:   docs/reference/generated/cloud-controller-manager.md
+    modified:   docs/reference/generated/federation-apiserver.md
+    modified:   docs/reference/generated/federation-controller-manager.md
+    modified:   docs/reference/generated/kube-apiserver.md
+    modified:   docs/reference/generated/kube-controller-manager.md
+    modified:   docs/reference/generated/kube-proxy.md
+    modified:   docs/reference/generated/kube-scheduler.md
+    modified:   docs/reference/generated/kubectl/kubectl.md
+    modified:   docs/reference/generated/kubefed.md
+    modified:   docs/reference/generated/kubefed_init.md
+    modified:   docs/reference/generated/kubefed_join.md
+    modified:   docs/reference/generated/kubefed_options.md
+    modified:   docs/reference/generated/kubefed_unjoin.md
+    modified:   docs/reference/generated/kubefed_version.md
+    modified:   docs/reference/generated/kubelet.md</code></pre></div>
+<p>Run <code>git add</code> and <code>git commit</code> to commit the files.</p>
+
+<h2 id="creating-a-pull-request">Creating a pull request</h2>
+
+<p>Create a pull request to the <code>kubernetes/website</code> repository. Monitor your
+pull request, and respond to review comments as needed. Continue to monitor
+your pull request until it is merged.</p>
+
+<p>A few minutes after your pull request is merged, your updated reference
+topics will be visible in the
+<a href="/docs/home/">published documentation</a>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="what-s-next">What&#39;s next</h2>
+<ul>
+<li><a href="/docs/home/contribute/generated-reference/kubectl/">Generating Reference Documentation for kubectl Commands</a></li>
+<li><a href="/docs/home/contribute/generated-reference/kubernetes-api/">Generating Reference Documentation for the Kubernetes API</a></li>
+<li><a href="/docs/home/contribute/generated-reference/federation-api/">Generating Reference Documentation for the Kubernetes Federation API</a></li>
+</ul>
+
+
+
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/home/contribute/generated-reference/kubernetes-components.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/home\/contribute\/generated-reference\/kubernetes-components\/",
+					"title" : "Generating Reference Pages for Kubernetes Components and Tools",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/home\/contribute\/generated-reference\/kubernetes-components\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/home/contribute/generated-reference/kubernetes-components.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

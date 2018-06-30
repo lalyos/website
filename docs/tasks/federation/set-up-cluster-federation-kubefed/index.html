@@ -1,0 +1,2094 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Set up Cluster Federation with Kubefed - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="Set up Cluster Federation with Kubefed" />
+<meta property="og:description" content="Set up Cluster Federation with Kubefed" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/tasks/federation/set-up-cluster-federation-kubefed/" />
+<meta property="og:title" content="Set up Cluster Federation with Kubefed - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+
+
+
+
+<h1>Tasks</h1>
+<h5></h5>
+
+
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/" class="YAH">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Tasks" href="/docs/tasks/"></a>
+
+	
+	
+		
+		
+	<div class="item" data-title="Install Tools">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Install and Set Up kubectl" href="/docs/tasks/tools/install-kubectl/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Install Minikube" href="/docs/tasks/tools/install-minikube/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Installing kubeadm" href="/docs/tasks/tools/install-kubeadm/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Administer a Cluster">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+	<div class="item" data-title="Administration with kubeadm">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Upgrading kubeadm HA clusters from 1.9.x to 1.9.y" href="/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-ha/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Upgrading kubeadm clusters from 1.7 to 1.8" href="/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-1-8/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Upgrading kubeadm clusters from v1.10 to v1.11" href="/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-1-11/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Upgrading/downgrading kubeadm clusters between v1.8 to v1.9" href="/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-1-9/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Manage Memory, CPU, and API Resources">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Configure Default Memory Requests and Limits for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/memory-default-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Default CPU Requests and Limits for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/cpu-default-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Minimum and Maximum Memory Constraints for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/memory-constraint-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Minimum and Maximum CPU Constraints for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/cpu-constraint-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Memory and CPU Quotas for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/quota-memory-cpu-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod Quota for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/quota-pod-namespace/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Install a Network Policy Provider">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Use Calico for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/calico-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use Cilium for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/cilium-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use Kube-router for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/kube-router-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Romana for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/romana-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Weave Net for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/weave-network-policy/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Access Clusters Using the Kubernetes API" href="/docs/tasks/administer-cluster/access-cluster-api/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Access Services Running on Clusters" href="/docs/tasks/administer-cluster/access-cluster-services/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Advertise Extended Resources for a Node" href="/docs/tasks/administer-cluster/extended-resource-node/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Autoscale the DNS Service in a Cluster" href="/docs/tasks/administer-cluster/dns-horizontal-autoscaling/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Change the Reclaim Policy of a PersistentVolume" href="/docs/tasks/administer-cluster/change-pv-reclaim-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Change the default StorageClass" href="/docs/tasks/administer-cluster/change-default-storage-class/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Cluster Management" href="/docs/tasks/administer-cluster/cluster-management/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Multiple Schedulers" href="/docs/tasks/administer-cluster/configure-multiple-schedulers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Out Of Resource Handling" href="/docs/tasks/administer-cluster/out-of-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Quotas for API Objects" href="/docs/tasks/administer-cluster/quota-api-object/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Control CPU Management Policies on the Node" href="/docs/tasks/administer-cluster/cpu-management-policies/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Customizing DNS Service" href="/docs/tasks/administer-cluster/dns-custom-nameservers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debugging DNS Resolution" href="/docs/tasks/administer-cluster/dns-debugging-resolution/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Declare Network Policy" href="/docs/tasks/administer-cluster/declare-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Developing Cloud Controller Manager" href="/docs/tasks/administer-cluster/developing-cloud-controller-manager/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Encrypting Secret Data at Rest" href="/docs/tasks/administer-cluster/encrypt-data/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Guaranteed Scheduling For Critical Add-On Pods" href="/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="IP Masquerade Agent User Guide" href="/docs/tasks/administer-cluster/ip-masq-agent/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes Cloud Controller Manager" href="/docs/tasks/administer-cluster/running-cloud-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Limit Storage Consumption" href="/docs/tasks/administer-cluster/limit-storage-consumption/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Namespaces Walkthrough" href="/docs/tasks/administer-cluster/namespaces-walkthrough/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Operating etcd clusters for Kubernetes" href="/docs/tasks/administer-cluster/configure-upgrade-etcd/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Reconfigure a Node&#39;s Kubelet in a Live Cluster" href="/docs/tasks/administer-cluster/reconfigure-kubelet/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Reserve Compute Resources for System Daemons" href="/docs/tasks/administer-cluster/reserve-compute-resources/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Safely Drain a Node while Respecting Application SLOs" href="/docs/tasks/administer-cluster/safely-drain-node/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Securing a Cluster" href="/docs/tasks/administer-cluster/securing-a-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set Kubelet parameters via a config file" href="/docs/tasks/administer-cluster/kubelet-config-file/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up High-Availability Kubernetes Masters" href="/docs/tasks/administer-cluster/highly-available-master/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up a Highly Availabile etcd Cluster With kubeadm" href="/docs/tasks/administer-cluster/setup-ha-etcd-with-kubeadm/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Share a Cluster with Namespaces" href="/docs/tasks/administer-cluster/namespaces/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Static Pods" href="/docs/tasks/administer-cluster/static-pod/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Storage Object in Use Protection" href="/docs/tasks/administer-cluster/storage-object-in-use-protection/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using CoreDNS for Service Discovery" href="/docs/tasks/administer-cluster/coredns/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using a KMS provider for data encryption" href="/docs/tasks/administer-cluster/kms-provider/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using sysctls in a Kubernetes Cluster" href="/docs/tasks/administer-cluster/sysctl-cluster/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Configure Pods and Containers">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Assign Memory Resources to Containers and Pods" href="/docs/tasks/configure-pod-container/assign-memory-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Assign CPU Resources to Containers and Pods" href="/docs/tasks/configure-pod-container/assign-cpu-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Quality of Service for Pods" href="/docs/tasks/configure-pod-container/quality-service-pod/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Assign Extended Resources to a Container" href="/docs/tasks/configure-pod-container/extended-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod to Use a Volume for Storage" href="/docs/tasks/configure-pod-container/configure-volume-storage/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod to Use a PersistentVolume for Storage" href="/docs/tasks/configure-pod-container/configure-persistent-volume-storage/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod to Use a Projected Volume for Storage" href="/docs/tasks/configure-pod-container/configure-projected-volume-storage/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Security Context for a Pod or Container" href="/docs/tasks/configure-pod-container/security-context/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Service Accounts for Pods" href="/docs/tasks/configure-pod-container/configure-service-account/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pull an Image from a Private Registry" href="/docs/tasks/configure-pod-container/pull-image-private-registry/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Liveness and Readiness Probes" href="/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Assign Pods to Nodes" href="/docs/tasks/configure-pod-container/assign-pods-nodes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Pod Initialization" href="/docs/tasks/configure-pod-container/configure-pod-initialization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Attach Handlers to Container Lifecycle Events" href="/docs/tasks/configure-pod-container/attach-handler-lifecycle-event/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod to Use a ConfigMap" href="/docs/tasks/configure-pod-container/configure-pod-configmap/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Share Process Namespace between Containers in a Pod" href="/docs/tasks/configure-pod-container/share-process-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Translate a Docker Compose File to Kubernetes Resources" href="/docs/tasks/configure-pod-container/translate-compose-kubernetes/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Inject Data Into Applications">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Define a Command and Arguments for a Container" href="/docs/tasks/inject-data-application/define-command-argument-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Define Environment Variables for a Container" href="/docs/tasks/inject-data-application/define-environment-variable-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Expose Pod Information to Containers Through Environment Variables" href="/docs/tasks/inject-data-application/environment-variable-expose-pod-information/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Expose Pod Information to Containers Through Files" href="/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Distribute Credentials Securely Using Secrets" href="/docs/tasks/inject-data-application/distribute-credentials-secure/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Inject Information into Pods Using a PodPreset" href="/docs/tasks/inject-data-application/podpreset/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Run Applications">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Run a Stateless Application Using a Deployment" href="/docs/tasks/run-application/run-stateless-application-deployment/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Run a Single-Instance Stateful Application" href="/docs/tasks/run-application/run-single-instance-stateful-application/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Run a Replicated Stateful Application" href="/docs/tasks/run-application/run-replicated-stateful-application/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Update API Objects in Place Using kubectl patch" href="/docs/tasks/run-application/update-api-object-kubectl-patch/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Scale a StatefulSet" href="/docs/tasks/run-application/scale-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Delete a StatefulSet" href="/docs/tasks/run-application/delete-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Force Delete StatefulSet Pods" href="/docs/tasks/run-application/force-delete-stateful-set-pod/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Perform Rolling Update Using a Replication Controller" href="/docs/tasks/run-application/rolling-update-replication-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Horizontal Pod Autoscaler" href="/docs/tasks/run-application/horizontal-pod-autoscale/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Horizontal Pod Autoscaler Walkthrough" href="/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Specifying a Disruption Budget for your Application" href="/docs/tasks/run-application/configure-pdb/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Run Jobs">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Running automated tasks with cron jobs" href="/docs/tasks/job/automated-tasks-with-cron-jobs/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Parallel Processing using Expansions" href="/docs/tasks/job/parallel-processing-expansion/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Coarse Parallel Processing Using a Work Queue" href="/docs/tasks/job/coarse-parallel-processing-work-queue/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Fine Parallel Processing Using a Work Queue" href="/docs/tasks/job/fine-parallel-processing-work-queue/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Access Applications in a Cluster">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Web UI (Dashboard)" href="/docs/tasks/access-application-cluster/web-ui-dashboard/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Accessing Clusters" href="/docs/tasks/access-application-cluster/access-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Access to Multiple Clusters" href="/docs/tasks/access-application-cluster/configure-access-multiple-clusters/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use Port Forwarding to Access Applications in a Cluster" href="/docs/tasks/access-application-cluster/port-forward-access-application-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Provide Load-Balanced Access to an Application in a Cluster" href="/docs/tasks/access-application-cluster/load-balance-access-application-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use a Service to Access an Application in a Cluster" href="/docs/tasks/access-application-cluster/service-access-application-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Connect a Front End to a Back End Using a Service" href="/docs/tasks/access-application-cluster/connecting-frontend-backend/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Create an External Load Balancer" href="/docs/tasks/access-application-cluster/create-external-load-balancer/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Your Cloud Provider&#39;s Firewalls" href="/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="List All Container Images Running in a Cluster" href="/docs/tasks/access-application-cluster/list-all-running-container-images/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Communicate Between Containers in the Same Pod Using a Shared Volume" href="/docs/tasks/access-application-cluster/communicate-containers-same-pod-shared-volume/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure DNS for a Cluster" href="/docs/tasks/access-application-cluster/configure-dns-cluster/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Monitor, Log, and Debug">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Application Introspection and Debugging" href="/docs/tasks/debug-application-cluster/debug-application-introspection/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Auditing" href="/docs/tasks/debug-application-cluster/audit/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Core metrics pipeline" href="/docs/tasks/debug-application-cluster/core-metrics-pipeline/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debug Init Containers" href="/docs/tasks/debug-application-cluster/debug-init-containers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debug Pods and Replication Controllers" href="/docs/tasks/debug-application-cluster/debug-pod-replication-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debug Services" href="/docs/tasks/debug-application-cluster/debug-service/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debug a StatefulSet" href="/docs/tasks/debug-application-cluster/debug-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debugging Kubernetes nodes with crictl" href="/docs/tasks/debug-application-cluster/crictl/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Determine the Reason for Pod Failure" href="/docs/tasks/debug-application-cluster/determine-reason-pod-failure/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Developing and debugging services locally" href="/docs/tasks/debug-application-cluster/local-debugging/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Events in Stackdriver" href="/docs/tasks/debug-application-cluster/events-stackdriver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Get a Shell to a Running Container" href="/docs/tasks/debug-application-cluster/get-shell-running-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Logging Using Elasticsearch and Kibana" href="/docs/tasks/debug-application-cluster/logging-elasticsearch-kibana/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Logging Using Stackdriver" href="/docs/tasks/debug-application-cluster/logging-stackdriver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Monitor Node Health" href="/docs/tasks/debug-application-cluster/monitor-node-health/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Tools for Monitoring Compute, Storage, and Network Resources" href="/docs/tasks/debug-application-cluster/resource-usage-monitoring/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Troubleshoot Applications" href="/docs/tasks/debug-application-cluster/debug-application/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Troubleshoot Clusters" href="/docs/tasks/debug-application-cluster/debug-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Troubleshooting" href="/docs/tasks/debug-application-cluster/troubleshooting/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Extend Kubernetes">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Configure the aggregation layer" href="/docs/tasks/access-kubernetes-api/configure-aggregation-layer/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Use Custom Resources">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Extend the Kubernetes API with CustomResourceDefinitions" href="/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Versions of CustomResourceDefinitions" href="/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definition-versioning/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Migrate a ThirdPartyResource to CustomResourceDefinition" href="/docs/tasks/access-kubernetes-api/custom-resources/migrate-third-party-resource/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Setup an extension API server" href="/docs/tasks/access-kubernetes-api/setup-extension-api-server/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use an HTTP Proxy to Access the Kubernetes API" href="/docs/tasks/access-kubernetes-api/http-proxy-access-api/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="TLS">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Certificate Rotation" href="/docs/tasks/tls/certificate-rotation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Manage TLS Certificates in a Cluster" href="/docs/tasks/tls/managing-tls-in-a-cluster/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Federation - Run an App on Multiple Clusters">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Cross-cluster Service Discovery using Federated Services" href="/docs/tasks/federation/federation-service-discovery/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up Cluster Federation with Kubefed" href="/docs/tasks/federation/set-up-cluster-federation-kubefed/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up CoreDNS as DNS provider for Cluster Federation" href="/docs/tasks/federation/set-up-coredns-provider-federation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up placement policies in Federation" href="/docs/tasks/federation/set-up-placement-policies-federation/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Manage Cluster Daemons">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Perform a Rolling Update on a DaemonSet" href="/docs/tasks/manage-daemon/update-daemon-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Performing a Rollback on a DaemonSet" href="/docs/tasks/manage-daemon/rollback-daemon-set/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Install Service Catalog">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Install Service Catalog using Helm" href="/docs/tasks/service-catalog/install-service-catalog-using-helm/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Install Service Catalog using SC" href="/docs/tasks/service-catalog/install-service-catalog-using-sc/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Federation - Run an App on Multiple Clusters">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Federated Cluster" href="/docs/tasks/administer-federation/cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated ConfigMap" href="/docs/tasks/administer-federation/configmap/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated DaemonSet" href="/docs/tasks/administer-federation/daemonset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Deployment" href="/docs/tasks/administer-federation/deployment/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Events" href="/docs/tasks/administer-federation/events/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Horizontal Pod Autoscalers (HPA)" href="/docs/tasks/administer-federation/hpa/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Ingress" href="/docs/tasks/administer-federation/ingress/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Jobs" href="/docs/tasks/administer-federation/job/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Namespaces" href="/docs/tasks/administer-federation/namespaces/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated ReplicaSets" href="/docs/tasks/administer-federation/replicaset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Secrets" href="/docs/tasks/administer-federation/secret/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Extend kubectl with plugins" href="/docs/tasks/extend-kubectl/kubectl-plugins/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Manage HugePages" href="/docs/tasks/manage-hugepages/scheduling-hugepages/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Schedule GPUs" href="/docs/tasks/manage-gpus/scheduling-gpus/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/tasks/federation/set-up-cluster-federation-kubefed.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>Set up Cluster Federation with Kubefed</h1>
+
+
+
+
+<p><strong>Note:</strong> <code>Federation V1</code>, the current Kubernetes federation API which reuses the Kubernetes API resources &lsquo;as is&rsquo;, is currently considered alpha for many of its features, and there is no clear path to evolve the API to GA. However, there is a <code>Federation V2</code> effort in progress to implement a dedicated federation API apart from the Kubernetes API. The details can be found at <a href="https://github.com/kubernetes/community/tree/master/sig-multicluster" target="_blank">sig-multicluster community page</a>.</p>
+
+<p>Kubernetes version 1.5 and above includes a new command line tool called
+<a href="/docs/admin/kubefed/"><code>kubefed</code></a> to help you administrate your federated
+clusters. <code>kubefed</code> helps you to deploy a new Kubernetes cluster federation
+control plane, and to add clusters to or remove clusters from an existing
+federation control plane.</p>
+
+<p>This guide explains how to administer a Kubernetes Cluster Federation
+using <code>kubefed</code>.</p>
+
+<blockquote>
+<p>Note: <code>kubefed</code> is a beta feature in Kubernetes 1.6.</p>
+</blockquote>
+
+
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+<li><a href="#before-you-begin">Before you begin</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#prerequisites">Prerequisites</a></li>
+
+
+
+
+<li><a href="#getting-kubefed">Getting <code>kubefed</code></a></li>
+
+
+
+
+<li><a href="#choosing-a-host-cluster">Choosing a host cluster.</a></li>
+
+
+
+
+<li><a href="#deploying-a-federation-control-plane">Deploying a federation control plane</a></li>
+
+
+
+
+<li><a href="#adding-a-cluster-to-a-federation">Adding a cluster to a federation</a></li>
+
+
+
+
+<li><a href="#removing-a-cluster-from-a-federation">Removing a cluster from a federation</a></li>
+
+
+
+
+<li><a href="#turning-down-the-federation-control-plane">Turning down the federation control plane</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</ul>
+
+
+
+<h2 id="before-you-begin">Before you begin</h2>
+<p>You need to have a Kubernetes cluster, and the kubectl command-line tool must
+be configured to communicate with your cluster. If you do not already have a
+cluster, you can create one by using
+<a href="/docs/getting-started-guides/minikube">Minikube</a>,
+or you can use one of these Kubernetes playgrounds:</p>
+
+<ul>
+<li><a href="https://www.katacoda.com/courses/kubernetes/playground" target="_blank">Katacoda</a></li>
+<li><a href="http://labs.play-with-k8s.com/" target="_blank">Play with Kubernetes</a></li>
+</ul>
+ 
+
+<p>To check the version, enter <code>kubectl version</code>.</p>
+
+
+
+
+<h2 id="prerequisites">Prerequisites</h2>
+
+<p>This guide assumes that you have a running Kubernetes cluster. Please
+see one of the <a href="/docs/setup/">getting started</a> guides
+for installation instructions for your platform.</p>
+
+<h2 id="getting-kubefed">Getting <code>kubefed</code></h2>
+
+<p>Download the client tarball corresponding to the particular release and
+extract the binaries in the tarball:</p>
+
+<blockquote>
+<p>Note that until kubernetes versions <code>1.8.x</code> the federation project was
+maintained as part of <a href="https://github.com/kubernetes/kubernetes" target="_blank">core kubernetes repo</a>.
+At some point between kubernetes releases <code>1.8.0</code> and <code>1.9.0</code>, it moved into
+a separate <a href="https://github.com/kubernetes/federation" target="_blank">federation repo</a> and is
+now maintained there. After this move, the federation release information is
+available at the release page <a href="https://github.com/kubernetes/federation/releases" target="_blank">here</a>.</p>
+</blockquote>
+
+<h3 id="for-k8s-versions-1-8-x-and-earlier">For k8s versions 1.8.x and earlier:</h3>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">curl -LO https://storage.googleapis.com/kubernetes-release/release/<span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">RELEASE</span>-VERSION<span style="color:#b68;font-weight:bold">}</span>/kubernetes-client-linux-amd64.tar.gz
+tar -xzvf kubernetes-client-linux-amd64.tar.gz</code></pre></div>
+<blockquote>
+<p>Note that the variable <code>RELEASE-VERSION</code> should be either appropriately
+set to or replaced with the actual version needed.</p>
+</blockquote>
+
+<p>Copy the extracted binary to one of the directories in your <code>$PATH</code>
+and set the executable permission on the binary.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo cp kubernetes/client/bin/kubefed /usr/local/bin
+sudo chmod +x /usr/local/bin/kubefed</code></pre></div>
+<h3 id="for-k8s-versions-1-9-x-and-above">For k8s versions 1.9.x and above:</h3>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">curl -LO https://storage.cloud.google.com/kubernetes-federation-release/release/<span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">RELEASE</span>-VERSION<span style="color:#b68;font-weight:bold">}</span>/federation-client-linux-amd64.tar.gz
+tar -xzvf federation-client-linux-amd64.tar.gz</code></pre></div>
+<blockquote>
+<p>Note that the variable <code>RELEASE-VERSION</code> should be replaced with one of the
+release versions available at <a href="https://github.com/kubernetes/federation/releases" target="_blank">federation release page</a>.</p>
+</blockquote>
+
+<p>Copy the extracted binary to one of the directories in your <code>$PATH</code>
+and set the executable permission on the binary.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo cp federation/client/bin/kubefed /usr/local/bin
+sudo chmod +x /usr/local/bin/kubefed</code></pre></div>
+<h3 id="install-kubectl">Install kubectl</h3>
+
+<p>You can install a matching version of kubectl using the instructions on
+the  <a href="https://kubernetes.io/docs/tasks/tools/install-kubectl/" target="_blank">kubectl install page</a>.</p>
+
+<h2 id="choosing-a-host-cluster">Choosing a host cluster.</h2>
+
+<p>You&rsquo;ll need to choose one of your Kubernetes clusters to be the
+<em>host cluster</em>. The host cluster hosts the components that make up
+your federation control plane. Ensure that you have a <code>kubeconfig</code>
+entry in your local <code>kubeconfig</code> that corresponds to the host cluster.
+You can verify that you have the required <code>kubeconfig</code> entry by
+running:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl config get-contexts</code></pre></div>
+<p>The output should contain an entry corresponding to your host cluster,
+similar to the following:</p>
+
+<pre><code>CURRENT   NAME                                          CLUSTER                                       AUTHINFO                                      NAMESPACE
+*         gke_myproject_asia-east1-b_gce-asia-east1     gke_myproject_asia-east1-b_gce-asia-east1     gke_myproject_asia-east1-b_gce-asia-east1
+</code></pre>
+
+<p>You&rsquo;ll need to provide the <code>kubeconfig</code> context (called name in the
+entry above) for your host cluster when you deploy your federation
+control plane.</p>
+
+<h2 id="deploying-a-federation-control-plane">Deploying a federation control plane</h2>
+
+<p>To deploy a federation control plane on your host cluster, run
+<a href="/docs/admin/kubefed_init/"><code>kubefed init</code></a> command. When you use
+<code>kubefed init</code>, you must provide the following:</p>
+
+<ul>
+<li>Federation name</li>
+<li><code>--host-cluster-context</code>, the <code>kubeconfig</code> context for the host cluster</li>
+<li><code>--dns-provider</code>, one of <code>'google-clouddns'</code>, <code>aws-route53</code> or <code>coredns</code></li>
+<li><code>--dns-zone-name</code>, a domain name suffix for your federated services</li>
+</ul>
+
+<p>If your host cluster is running in a non-cloud environment or an
+environment that doesn&rsquo;t support common cloud primitives such as
+load balancers, you might need additional flags. Please see the
+<a href="#on-premises-host-clusters">on-premises host clusters</a> section below.</p>
+
+<p>The following example command deploys a federation control plane with
+the name <code>fellowship</code>, a host cluster context <code>rivendell</code>, and the
+domain suffix <code>example.com.</code>:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubefed init fellowship <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>    --host-cluster-context<span style="color:#666">=</span>rivendell <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>    --dns-provider<span style="color:#666">=</span><span style="color:#b44">&#34;google-clouddns&#34;</span> <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>    --dns-zone-name<span style="color:#666">=</span><span style="color:#b44">&#34;example.com.&#34;</span></code></pre></div>
+<p>The domain suffix specified in <code>--dns-zone-name</code> must be an existing
+domain that you control, and that is programmable by your DNS provider.
+It must also end with a trailing dot.</p>
+
+<p>Once the federation control plane is initialized, query the namespaces:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl get namespace --context<span style="color:#666">=</span>fellowship</code></pre></div>
+<p>If you do not see the <code>default</code> namespace listed (this is due to a
+<a href="https://github.com/kubernetes/kubernetes/issues/33292" target="_blank">bug</a>). Create it
+yourself with the following command:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl create namespace default --context<span style="color:#666">=</span>fellowship</code></pre></div>
+<p>The machines in your host cluster must have the appropriate permissions
+to program the DNS service that you are using. For example, if your
+cluster is running on Google Compute Engine, you must enable the
+Google Cloud DNS API for your project.</p>
+
+<p>The machines in Google Kubernetes Engine clusters are created
+without the Google Cloud DNS API scope by default. If you want to use a
+Google Kubernetes Engine cluster as a Federation host, you must create it using the <code>gcloud</code>
+command with the appropriate value in the <code>--scopes</code> field. You cannot
+modify a Google Kubernetes Engine cluster directly to add this scope, but you can create a
+new node pool for your cluster and delete the old one. <em>Note that this
+will cause pods in the cluster to be rescheduled.</em></p>
+
+<p>To add the new node pool, run:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#b8860b">scopes</span><span style="color:#666">=</span><span style="color:#b44">&#34;</span><span style="color:#a2f;font-weight:bold">$(</span>gcloud container node-pools describe --cluster<span style="color:#666">=</span>gke-cluster default-pool --format<span style="color:#666">=</span><span style="color:#b44">&#39;value[delimiter=&#34;,&#34;](config.oauthScopes)&#39;</span><span style="color:#a2f;font-weight:bold">)</span><span style="color:#b44">&#34;</span>
+gcloud container node-pools create new-np <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>    --cluster<span style="color:#666">=</span>gke-cluster <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>    --scopes<span style="color:#666">=</span><span style="color:#b44">&#34;</span><span style="color:#b68;font-weight:bold">${</span><span style="color:#b8860b">scopes</span><span style="color:#b68;font-weight:bold">}</span><span style="color:#b44">,https://www.googleapis.com/auth/ndev.clouddns.readwrite&#34;</span></code></pre></div>
+<p>To delete the old node pool, run:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">gcloud container node-pools delete default-pool --cluster gke-cluster</code></pre></div>
+<p><code>kubefed init</code> sets up the federation control plane in the host
+cluster and also adds an entry for the federation API server in your
+local kubeconfig. Note that in the beta release in Kubernetes 1.6,
+<code>kubefed init</code> does not automatically set the current context to the
+newly deployed federation. You can set the current context manually by
+running:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl config use-context fellowship</code></pre></div>
+<p>where <code>fellowship</code> is the name of your federation.</p>
+
+<h3 id="basic-and-token-authentication-support">Basic and token authentication support</h3>
+
+<p><code>kubefed init</code> by default only generates TLS certificates and keys
+to authenticate with the federation API server and writes them to
+your local kubeconfig file. If you wish to enable basic authentication
+or token authentication for debugging purposes, you can enable them by
+passing the <code>--apiserver-enable-basic-auth</code> flag or the
+<code>--apiserver-enable-token-auth</code> flag.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubefed init fellowship <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>    --host-cluster-context<span style="color:#666">=</span>rivendell <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>    --dns-provider<span style="color:#666">=</span><span style="color:#b44">&#34;google-clouddns&#34;</span> <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>    --dns-zone-name<span style="color:#666">=</span><span style="color:#b44">&#34;example.com.&#34;</span> <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>    --apiserver-enable-basic-auth<span style="color:#666">=</span><span style="color:#a2f">true</span> <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>    --apiserver-enable-token-auth<span style="color:#666">=</span>true</code></pre></div>
+<h3 id="passing-command-line-arguments-to-federation-components">Passing command line arguments to federation components</h3>
+
+<p><code>kubefed init</code> bootstraps a federation control plane with default
+arguments to federation API server and federation controller manager.
+Some of these arguments are derived from <code>kubefed init</code>&rsquo;s flags.
+However, you can override these command line arguments by passing
+them via the appropriate override flags.</p>
+
+<p>You can override the federation API server arguments by passing them
+to <code>--apiserver-arg-overrides</code> and override the federation controller
+manager arguments by passing them to
+<code>--controllermanager-arg-overrides</code>.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubefed init fellowship <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>    --host-cluster-context<span style="color:#666">=</span>rivendell <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>    --dns-provider<span style="color:#666">=</span><span style="color:#b44">&#34;google-clouddns&#34;</span> <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>    --dns-zone-name<span style="color:#666">=</span><span style="color:#b44">&#34;example.com.&#34;</span> <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>    --apiserver-arg-overrides<span style="color:#666">=</span><span style="color:#b44">&#34;--anonymous-auth=false,--v=4&#34;</span> <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>    --controllermanager-arg-overrides<span style="color:#666">=</span><span style="color:#b44">&#34;--controllers=services=false&#34;</span></code></pre></div>
+<h3 id="configuring-a-dns-provider">Configuring a DNS provider</h3>
+
+<p>The Federated service controller programs a DNS provider to expose
+federated services via DNS names. Certain cloud providers
+automatically provide the configuration required to program the
+DNS provider if the host cluster&rsquo;s cloud provider is same as the DNS
+provider. In all other cases, you have to provide the DNS provider
+configuration to your federation controller manager which will in-turn
+be passed to the federated service controller. You can provide this
+configuration to federation controller manager by storing it in a file
+and passing the file&rsquo;s local filesystem path to <code>kubefed init</code>&rsquo;s
+<code>--dns-provider-config</code> flag. For example, save the config below in
+<code>$HOME/coredns-provider.conf</code>.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ini" data-lang="ini"><span style="color:#a2f;font-weight:bold">[Global]</span>
+<span style="color:#b44">etcd-endpoints</span> <span style="color:#666">=</span> <span style="color:#b44">http://etcd-cluster.ns:2379</span>
+<span style="color:#b44">zones</span> <span style="color:#666">=</span> <span style="color:#b44">example.com.</span></code></pre></div>
+<p>And then pass this file to <code>kubefed init</code>:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubefed init fellowship <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>    --host-cluster-context<span style="color:#666">=</span>rivendell <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>    --dns-provider<span style="color:#666">=</span><span style="color:#b44">&#34;coredns&#34;</span> <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>    --dns-zone-name<span style="color:#666">=</span><span style="color:#b44">&#34;example.com.&#34;</span> <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>    --dns-provider-config<span style="color:#666">=</span><span style="color:#b44">&#34;</span><span style="color:#b8860b">$HOME</span><span style="color:#b44">/coredns-provider.conf&#34;</span></code></pre></div>
+<h3 id="on-premises-host-clusters">On-premises host clusters</h3>
+
+<h4 id="api-server-service-type">API server service type</h4>
+
+<p><code>kubefed init</code> exposes the federation API server as a Kubernetes
+<a href="/docs/concepts/services-networking/service/">service</a> on the host cluster. By default,
+this service is exposed as a
+<a href="/docs/concepts/services-networking/service/#type-loadbalancer">load balanced service</a>.
+Most on-premises and bare-metal environments, and some cloud
+environments lack support for load balanced services. <code>kubefed init</code>
+allows exposing the federation API server as a
+<a href="/docs/concepts/services-networking/service/#type-nodeport"><code>NodePort</code> service</a> on
+such environments. This can be accomplished by passing
+the <code>--api-server-service-type=NodePort</code> flag. You can also specify
+the preferred address to advertise the federation API server by
+passing the <code>--api-server-advertise-address=&lt;IP-address&gt;</code>
+flag. Otherwise, one of the host cluster&rsquo;s node address is chosen as
+the default.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubefed init fellowship <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>    --host-cluster-context<span style="color:#666">=</span>rivendell <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>    --dns-provider<span style="color:#666">=</span><span style="color:#b44">&#34;google-clouddns&#34;</span> <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>    --dns-zone-name<span style="color:#666">=</span><span style="color:#b44">&#34;example.com.&#34;</span> <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>    --api-server-service-type<span style="color:#666">=</span><span style="color:#b44">&#34;NodePort&#34;</span> <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>    --api-server-advertise-address<span style="color:#666">=</span><span style="color:#b44">&#34;10.0.10.20&#34;</span></code></pre></div>
+<h4 id="provisioning-storage-for-etcd">Provisioning storage for etcd</h4>
+
+<p>Federation control plane stores its state in
+<a href="https://coreos.com/etcd/docs/latest/" target="_blank"><code>etcd</code></a>.
+<a href="https://coreos.com/etcd/docs/latest/" target="_blank"><code>etcd</code></a> data must be stored in
+a persistent storage volume to ensure correct operation across
+federation control plane restarts. On host clusters that support
+<a href="/docs/concepts/storage/persistent-volumes/#dynamic">dynamic provisioning of storage volumes</a>,
+<code>kubefed init</code> dynamically provisions a
+<a href="/docs/concepts/storage/persistent-volumes/#persistent-volumes"><code>PersistentVolume</code></a>
+and binds it to a
+<a href="/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims"><code>PersistentVolumeClaim</code></a>
+to store <a href="https://coreos.com/etcd/docs/latest/" target="_blank"><code>etcd</code></a> data. If your
+host cluster doesn&rsquo;t support dynamic provisioning, you can also
+statically provision a
+<a href="/docs/concepts/storage/persistent-volumes/#persistent-volumes"><code>PersistentVolume</code></a>.
+<code>kubefed init</code> creates a
+<a href="/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims"><code>PersistentVolumeClaim</code></a>
+that has the following configuration:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>PersistentVolumeClaim<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>annotations:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>volume.alpha.kubernetes.io/storage-class:<span style="color:#bbb"> </span><span style="color:#b44">&#34;yes&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>labels:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>app:<span style="color:#bbb"> </span>federated-cluster<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>fellowship-federation-apiserver-etcd-claim<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>namespace:<span style="color:#bbb"> </span>federation-system<span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>accessModes:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>ReadWriteOnce<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>resources:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>requests:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>storage:<span style="color:#bbb"> </span>10Gi</code></pre></div>
+<p>To statically provision a
+<a href="/docs/concepts/storage/persistent-volumes/#persistent-volumes"><code>PersistentVolume</code></a>,
+you must ensure that the
+<a href="/docs/concepts/storage/persistent-volumes/#persistent-volumes"><code>PersistentVolume</code></a>
+that you create has the matching storage class, access mode and
+at least as much capacity as the requested
+<a href="/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims"><code>PersistentVolumeClaim</code></a>.</p>
+
+<p>Alternatively, you can disable persistent storage completely
+by passing <code>--etcd-persistent-storage=false</code> to <code>kubefed init</code>.
+However, we do not recommended this because your federation control
+plane cannot survive restarts in this mode.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubefed init fellowship <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>    --host-cluster-context<span style="color:#666">=</span>rivendell <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>    --dns-provider<span style="color:#666">=</span><span style="color:#b44">&#34;google-clouddns&#34;</span> <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>    --dns-zone-name<span style="color:#666">=</span><span style="color:#b44">&#34;example.com.&#34;</span> <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>    --etcd-persistent-storage<span style="color:#666">=</span>false</code></pre></div>
+<p><code>kubefed init</code> still doesn&rsquo;t support attaching an existing
+<a href="/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims"><code>PersistentVolumeClaim</code></a>
+to the federation control plane that it bootstraps. We are planning to
+support this in a future version of <code>kubefed</code>.</p>
+
+<h4 id="coredns-support">CoreDNS support</h4>
+
+<p>Federated services now support <a href="https://coredns.io/" target="_blank">CoreDNS</a> as one
+of the DNS providers. If you are running your clusters and federation
+in an environment that does not have access to cloud-based DNS
+providers, then you can run your own <a href="https://coredns.io/" target="_blank">CoreDNS</a>
+instance and publish the federated service DNS names to that server.</p>
+
+<p>You can configure your federation to use
+<a href="https://coredns.io/" target="_blank">CoreDNS</a>, by passing appropriate values to
+<code>kubefed init</code>&rsquo;s <code>--dns-provider</code> and <code>--dns-provider-config</code> flags.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubefed init fellowship <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>    --host-cluster-context<span style="color:#666">=</span>rivendell <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>    --dns-provider<span style="color:#666">=</span><span style="color:#b44">&#34;coredns&#34;</span> <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>    --dns-zone-name<span style="color:#666">=</span><span style="color:#b44">&#34;example.com.&#34;</span> <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>    --dns-provider-config<span style="color:#666">=</span><span style="color:#b44">&#34;</span><span style="color:#b8860b">$HOME</span><span style="color:#b44">/coredns-provider.conf&#34;</span></code></pre></div>
+<p>For more information see
+<a href="/docs/tasks/federation/set-up-coredns-provider-federation/">Setting up CoreDNS as DNS provider for Cluster Federation</a>.</p>
+
+<h4 id="aws-route53-support">AWS Route53 support</h4>
+
+<p>It is possible to utilize AWS Route53 as a cloud DNS provider when the
+federation controller-manager is run on-premise. The controller-manager
+Deployment must be configured with AWS credentials since it cannot implicitly
+gather them from a VM running on AWS.</p>
+
+<p>Currently, <code>kubefed init</code> does not read AWS Route53 credentials from the
+<code>--dns-provider-config</code> flag, so a patch must be applied.</p>
+
+<p>Specify AWS Route53 as your DNS provider when initializing your on-premise
+federation controller-manager by passing the flag <code>--dns-provider=&quot;aws-route53&quot;</code>
+to <code>kubefed init</code>.</p>
+
+<p>Create a patch file with your AWS credentials:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>template:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>containers:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>controller-manager<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>env:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>AWS_ACCESS_KEY_ID<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>value:<span style="color:#bbb"> </span><span style="color:#b44">&#34;ABCDEFG1234567890&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>AWS_SECRET_ACCESS_KEY<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>value:<span style="color:#bbb"> </span><span style="color:#b44">&#34;ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890&#34;</span></code></pre></div>
+<p>Patch the Deployment:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl -n federation-system patch deployment controller-manager --patch <span style="color:#b44">&#34;</span><span style="color:#a2f;font-weight:bold">$(</span>cat &lt;patch-file-name&gt;.yml<span style="color:#a2f;font-weight:bold">)</span><span style="color:#b44">&#34;</span></code></pre></div>
+<p>Where <code>&lt;patch-file-name&gt;</code> is the name of the file you created above.</p>
+
+<h2 id="adding-a-cluster-to-a-federation">Adding a cluster to a federation</h2>
+
+<p>After you&rsquo;ve deployed a federation control plane, you&rsquo;ll need to make that control plane aware of the clusters it should manage.</p>
+
+<p>To join clusters into the federation:</p>
+
+<ol>
+<li><p>Change the context:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl config use-context fellowship</code></pre></div></li>
+
+<li><p>If you are using a managed cluster service, allow the service to access the cluster. To do this, create a <code>clusterrolebinding</code> for the account associated with your cluster service:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl create clusterrolebinding &lt;your_user&gt;-cluster-admin-binding --clusterrole<span style="color:#666">=</span>cluster-admin --user<span style="color:#666">=</span>&lt;your_user&gt;@example.org --context<span style="color:#666">=</span>&lt;joining_cluster_context&gt;</code></pre></div></li>
+
+<li><p>Join the cluster to the federation, using <code>kubefed join</code>, and make sure you provide the following:</p>
+
+<ul>
+<li>The name of the cluster that you are joining to the federation</li>
+<li><code>--host-cluster-context</code>, the kubeconfig context for the host cluster</li>
+</ul>
+
+<p>For example, this command adds the cluster <code>gondor</code> to the federation running on host cluster <code>rivendell</code>:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubefed join gondor --host-cluster-context<span style="color:#666">=</span>rivendell</code></pre></div></li>
+</ol>
+
+<p>A new context has now been added to your kubeconfig named <code>fellowship</code> (after the name of your federation).</p>
+
+<blockquote>
+<p>Note: The name that you provide to the <code>join</code> command is used as the joining cluster&rsquo;s identity in federation. If this name adheres to the rules described in the <a href="/docs/concepts/overview/working-with-objects/names/">identifiers doc</a>. If the context
+corresponding to your joining cluster conforms to these rules then you can use the same name in the join command. Otherwise, you will have to choose a different name for your cluster&rsquo;s identity.</p>
+</blockquote>
+
+<h3 id="naming-rules-and-customization">Naming rules and customization</h3>
+
+<p>The cluster name you supply to <code>kubefed join</code> must be a valid
+<a href="https://www.ietf.org/rfc/rfc1035.txt" target="_blank">RFC 1035</a> label and are
+enumerated in the <a href="/docs/concepts/overview/working-with-objects/names/">Identifiers doc</a>.</p>
+
+<p>Furthermore, federation control plane requires credentials of the
+joined clusters to operate on them. These credentials are obtained
+from the local kubeconfig. <code>kubefed join</code> uses the cluster name
+specified as the argument to look for the cluster&rsquo;s context in the
+local kubeconfig. If it fails to find a matching context, it exits
+with an error.</p>
+
+<p>This might cause issues in cases where context names for each cluster
+in the federation don&rsquo;t follow
+<a href="https://www.ietf.org/rfc/rfc1035.txt" target="_blank">RFC 1035</a> label naming rules.
+In such cases, you can specify a cluster name that conforms to the
+<a href="https://www.ietf.org/rfc/rfc1035.txt" target="_blank">RFC 1035</a> label naming rules
+and specify the cluster context using the <code>--cluster-context</code> flag.
+For example, if context of the cluster you are joining is
+<code>gondor_needs-no_king</code>, then you can join the cluster by running:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubefed join gondor --host-cluster-context<span style="color:#666">=</span>rivendell --cluster-context<span style="color:#666">=</span>gondor_needs-no_king</code></pre></div>
+<h4 id="secret-name">Secret name</h4>
+
+<p>Cluster credentials required by the federation control plane as
+described above are stored as a secret in the host cluster. The name
+of the secret is also derived from the cluster name.</p>
+
+<p>However, the name of a secret object in Kubernetes should conform
+to the DNS subdomain name specification described in
+<a href="https://tools.ietf.org/html/rfc1123" target="_blank">RFC 1123</a>. If this isn&rsquo;t the
+case, you can pass the secret name to <code>kubefed join</code> using the
+<code>--secret-name</code> flag. For example, if the cluster name is <code>noldor</code> and
+the secret name is <code>11kingdom</code>, you can join the cluster by
+running:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubefed join noldor --host-cluster-context<span style="color:#666">=</span>rivendell --secret-name<span style="color:#666">=</span>11kingdom</code></pre></div>
+<p>Note: If your cluster name does not conform to the DNS subdomain name
+specification, all you need to do is supply the secret name via the
+<code>--secret-name</code> flag. <code>kubefed join</code> automatically creates the secret
+for you.</p>
+
+<h3 id="kube-dns-configuration"><code>kube-dns</code> configuration</h3>
+
+<p><code>kube-dns</code> configuration must be updated in each joining cluster to
+enable federated service discovery. If the joining Kubernetes cluster
+is version 1.5 or newer and your <code>kubefed</code> is version 1.6 or newer,
+then this configuration is automatically managed for you when the
+clusters are joined or unjoined using <code>kubefed join</code> or <code>unjoin</code>
+commands.</p>
+
+<p>In all other cases, you must update <code>kube-dns</code> configuration manually
+as described in the
+<a href="/docs/admin/federation/">Updating KubeDNS section of the admin guide</a>.</p>
+
+<h2 id="removing-a-cluster-from-a-federation">Removing a cluster from a federation</h2>
+
+<p>To remove a cluster from a federation, run the <a href="/docs/admin/kubefed_unjoin/"><code>kubefed unjoin</code></a>
+command with the cluster name and the federation&rsquo;s
+<code>--host-cluster-context</code>:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubefed unjoin gondor --host-cluster-context<span style="color:#666">=</span>rivendell</code></pre></div>
+<h2 id="turning-down-the-federation-control-plane">Turning down the federation control plane</h2>
+
+<p>Proper cleanup of federation control plane is not fully implemented in
+this beta release of <code>kubefed</code>. However, for the time being, deleting
+the federation system namespace should remove all the resources except
+the persistent storage volume dynamically provisioned for the
+federation control plane&rsquo;s etcd. You can delete the federation
+namespace by running the following command:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl delete ns federation-system --context<span style="color:#666">=</span>rivendell</code></pre></div>
+<p>Note that <code>rivendell</code> is the host cluster name, replace that with the
+appropriate name in your configuration.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/tasks/federation/set-up-cluster-federation-kubefed.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/tasks\/federation\/set-up-cluster-federation-kubefed\/",
+					"title" : "Set up Cluster Federation with Kubefed",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/tasks\/federation\/set-up-cluster-federation-kubefed\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/tasks/federation/set-up-cluster-federation-kubefed.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>使用启动引导令牌（Bootstrap Tokens）认证 - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="使用启动引导令牌（Bootstrap Tokens）认证" />
+<meta property="og:description" content="使用启动引导令牌（Bootstrap Tokens）认证" />
+
+<meta property="og:url" content="https://kubernetes.io/cn/docs/admin/bootstrap-tokens/" />
+<meta property="og:title" content="使用启动引导令牌（Bootstrap Tokens）认证 - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+             <li>
+                <a href="#">
+                    Chinese <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/">English</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Admins" href="/cn/docs/admin/"></a>
+
+	
+	
+		
+		
+<a class="item" data-title="Kubelet authentication/authorization" href="/cn/docs/admin/kubelet-authentication-authorization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes API访问控制" href="/cn/docs/admin/accessing-the-api/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes OpenVSwitch GRE/VxLAN 网络" href="/cn/docs/admin/ovs-networking/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="TLS bootstrapping" href="/cn/docs/admin/kubelet-tls-bootstrapping/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kube-apiserver" href="/cn/docs/admin/kube-apiserver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用启动引导令牌（Bootstrap Tokens）认证" href="/cn/docs/admin/bootstrap-tokens/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="创建大规模集群" href="/cn/docs/admin/cluster-large/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="多区域运行" href="/cn/docs/admin/multiple-zones/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="构建高可用集群">
+		<div class="container">
+		
+		
+		<a class="item" data-title="构建高可用集群" href="/cn/docs/admin/high-availability/"></a>
+		
+		
+	
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="概述">
+		<div class="container">
+		
+		
+		<a class="item" data-title="概述" href="/cn/docs/admin/authorization/"></a>
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="ABAC 模式" href="/cn/docs/admin/authorization/abac/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Webhook Mode" href="/cn/docs/admin/authorization/webhook/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="管理Service Accounts" href="/cn/docs/admin/service-accounts-admin/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="节点设置校验" href="/cn/docs/admin/node-conformance/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/admin/bootstrap-tokens.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>使用启动引导令牌（Bootstrap Tokens）认证</h1>
+
+
+
+
+
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#概述">概述</a></li>
+<li><a href="#令牌格式">令牌格式</a></li>
+<li><a href="#启用启动引导令牌">启用启动引导令牌</a></li>
+<li><a href="#启动引导令牌的密文格式">启动引导令牌的密文格式</a></li>
+<li><a href="#使用-kubeadm-管理令牌">使用 <code>kubeadm</code> 管理令牌</a>
+<ul>
+<li><a href="#configmap签名">ConfigMap签名</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+
+<h2 id="概述">概述</h2>
+
+<p>启动引导令牌是一种简单的持有者令牌（Bearer Token），这种令牌是在新建集群或者在现有集群中添加新节点时使用的。
+它被设计成能够支持 <a href="/docs/admin/kubeadm/"><code>kubeadm</code></a>，但是也可以被用在其他的案例中以便用户在
+不使用 <code>kubeadm</code> 的情况下启动集群。它也被设计成可以通过 RBAC 策略，结合 <a href="/docs/admin/kubelet-tls-bootstrapping/">Kubelet TLS
+Bootstrapping</a> 系统进行工作。</p>
+
+<p>启动引导令牌被定义成一个特定类型的 secrets(<code>bootstrap.kubernetes.io/token</code>)，并存在于
+<code>kube-system</code> 命名空间中。然后这些 secrets 会被 API 服务器上的启动引导的认证器读取。
+控制器管理器中的控制器TokenCleaner能够删除过期的令牌。在节点发现的过程中Kubernetes会使用特殊的ConfigMap对象。
+控制器管理器中的BootstrapSigner控制器也会使用启动引导令牌为这类对象生成签名信息。</p>
+
+<p>目前，启动引导令牌处于 <strong>alpha</strong> 阶段，但是预期也不会有大的突破性变化。</p>
+
+<h2 id="令牌格式">令牌格式</h2>
+
+<p>启动引导令牌使用 <code>abcdef.0123456789abcdef</code> 的形式。
+更加规范地说，它们必须符合正则表达式 <code>[a-z0-9]{6}\.[a-z0-9]{16}</code>。</p>
+
+<p>令牌的第一部分是 &ldquo;Token ID&rdquo; ，它是公共信息。用于引用某个令牌，并确保不会泄露认证所使用的秘密信息。
+第二部分是 &ldquo;令牌秘密（Token Secret）&rdquo;，它应该被共享给收信的第三方。</p>
+
+<h2 id="启用启动引导令牌">启用启动引导令牌</h2>
+
+<p>所有与启动引导令牌相关的特性在 Kubernetes v1.6 版本中默认都是禁用的。</p>
+
+<p>你可以在 API 服务器上通过 <code>--experimental-bootstrap-token-auth</code> 参数启用启动引导令牌。
+你可以设置控制管理器的 <code>--controllers</code> 参数来启用启动引导令牌相关的控制器，例如 <code>--controllers=*,tokencleaner,bootstrapsigner</code> 。
+在使用 <code>kubeadm</code> 时，这是自动完成的。</p>
+
+<p>HTTPS 调用中的令牌是这样使用的：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="">Authorization: Bearer 07401b.f395accd246ae52d</span></code></pre></div>
+<h2 id="启动引导令牌的密文格式">启动引导令牌的密文格式</h2>
+
+<p>每个合法的令牌背后对应着 <code>kube-system</code> 命名空间中的某个 Secret 对象。
+你可以从 <a href="https://git.k8s.io/community/contributors/design-proposals/bootstrap-discovery.md" target="_blank">这里</a> 找到完整设计文档。</p>
+
+<p>这是 secret 看起来的样子。注意，<code>base64(string)</code> 表示应该通过 base64 对值进行编码。
+这里使用的是未解码的版本以便于阅读。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Secret<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>bootstrap-token-07401b<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>namespace:<span style="color:#bbb"> </span>kube-system<span style="color:#bbb">
+</span><span style="color:#bbb"></span>type:<span style="color:#bbb"> </span>bootstrap.kubernetes.io/token<span style="color:#bbb">
+</span><span style="color:#bbb"></span>data:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>description:<span style="color:#bbb"> </span>base64(The<span style="color:#bbb"> </span>default<span style="color:#bbb"> </span>bootstrap<span style="color:#bbb"> </span>token<span style="color:#bbb"> </span>generated<span style="color:#bbb"> </span>by<span style="color:#bbb"> </span><span style="color:#b44">&#39;kubeadm init&#39;</span>.)<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>token-id:<span style="color:#bbb"> </span>base64(07401b)<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>token-secret:<span style="color:#bbb"> </span>base64(f395accd246ae52d)<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>expiration:<span style="color:#bbb"> </span>base64(2017-03-10T03:22:11Z)<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>usage-bootstrap-authentication:<span style="color:#bbb"> </span>base64(<span style="color:#a2f;font-weight:bold">true</span>)<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>usage-bootstrap-signing:<span style="color:#bbb"> </span>base64(<span style="color:#a2f;font-weight:bold">true</span>)</code></pre></div>
+<p>secret 的类型必须是 <code>bootstrap.kubernetes.io/token</code> ，而且名字必须是 <code>bootstrap-token-&lt;token id&gt;</code>。
+<code>description</code> 是人类可读的描述，而不应该是机器可读的信息。令牌 ID 和 Secret 是包含在数据字典中的。</p>
+
+<p><code>usage-bootstrap-*</code> 成员表示这个 secret 的用途。启用时，值必须设置为 <code>true</code>。</p>
+
+<p><code>usage-bootstrap-authentication</code> 表示令牌可以用于 API 服务器的认证。认证器会以
+<code>system:bootstrap:&lt;Token ID&gt;</code> 认证。它被包含在 <code>system:bootstrappers</code> 组中。
+命名和组是故意受限制的，以防止用户在启动引导后再使用这些令牌。</p>
+
+<p><code>usage-bootstrap-signing</code> 表示令牌应该被用于 <code>cluster-info</code> ConfigMap 的签名，就像下面描述的那样。</p>
+
+<p><code>expiration</code> 数据成员显示了令牌在失效后到现在的时间。这是遵循 RFC3339 进行编码的 UTC 时间。
+TokenCleaner 控制器会删除过期的令牌。</p>
+
+<h2 id="使用-kubeadm-管理令牌">使用 <code>kubeadm</code> 管理令牌</h2>
+
+<p>你可以使用 <code>kubeadm</code> 工具管理正在运行集群的令牌。它会从 <code>kubeadm</code> 创建的集群(<code>/etc/kubernetes/admin.conf</code>)
+自动抓取默认管理员密码。你可以通过参数 <code>--kubeconfig</code> 对下面命令指定一个另外的 kubeconfig 文件抓取密码。</p>
+
+<ul>
+<li><code>kubeadm token list</code> 列举了令牌，同时显示了它们的过期时间和用途。</li>
+<li><code>kubeadm token create</code> 创建一个新令牌。
+
+<ul>
+<li><code>--description</code> 设置新令牌的描述。</li>
+<li><code>--ttl duration</code> 设置令牌从 &ldquo;现在&rdquo; 起到过期时间的差值。
+默认是 0 ，也就是不过期。</li>
+<li><code>--usages</code> 设置令牌被使用的方式。默认是 <code>signing,authentication</code>。用途在上面已经描述。</li>
+</ul></li>
+<li><code>kubeadm token delete &lt;token id&gt;|&lt;token id&gt;.&lt;token secret&gt;</code> 删除令牌。
+令牌可以只用 ID 来确认，也可以用整个令牌的值。如果只用 ID 的情况下，密文不匹配的令牌也会被删除。</li>
+</ul>
+
+<h3 id="configmap签名">ConfigMap签名</h3>
+
+<p>除了认证之外，令牌可以用于签名 ConfigMap。这在集群启动过程的早期，在客户端信任 API 服务器之前被使用。
+被签名的 ConfigMap 可以通过共享令牌被认证。</p>
+
+<p>被签名的 ConfigMap 是 <code>cluster-info</code>，存在于 <code>kube-public</code> 命名空间中。
+典型的工作流中，客户端在未经认证和忽略 TLS 报错的状态下读取这个 ConfigMap。
+通过 ConfigMap 中嵌入的签名校验 ConfigMap 的载荷。</p>
+
+<p>ConfigMap 会是这个样子的：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>ConfigMap<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>cluster-info<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>namespace:<span style="color:#bbb"> </span>kube-public<span style="color:#bbb">
+</span><span style="color:#bbb"></span>data:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>jws-kubeconfig-07401b:<span style="color:#bbb"> </span>eyJhbGciOiJIUzI1NiIsImtpZCI6IjA3NDAxYiJ9..tYEfbo6zDNo40MQE07aZcQX2m3EB2rO3NuXtxVMYm9U<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>kubeconfig:<span style="color:#bbb"> </span><span style="color:#b44;font-style:italic">|
+</span><span style="color:#b44;font-style:italic">    apiVersion: v1
+</span><span style="color:#b44;font-style:italic">    clusters:
+</span><span style="color:#b44;font-style:italic">    - cluster:
+</span><span style="color:#b44;font-style:italic">        certificate-authority-data: &lt;really long certificate data&gt;
+</span><span style="color:#b44;font-style:italic">        server: https://10.138.0.2:6443
+</span><span style="color:#b44;font-style:italic">      name: &#34;&#34;
+</span><span style="color:#b44;font-style:italic">    contexts: []
+</span><span style="color:#b44;font-style:italic">    current-context: &#34;&#34;
+</span><span style="color:#b44;font-style:italic">    kind: Config
+</span><span style="color:#b44;font-style:italic">    preferences: {}
+</span><span style="color:#b44;font-style:italic">    users: []</span></code></pre></div>
+<p>ConfigMap 的 <code>kubeconfig</code> 成员是一个填好了集群信息的配置文件。
+这里主要交换的信息是 <code>certificate-authority-data</code>。在将来可能会有扩展。</p>
+
+<p>签名是一个 JWS 签名，使用了 &ldquo;detached&rdquo; 模式。为了检验签名，用户应该按照 JWS 规则
+(base64 编码而忽略结尾的 <code>=</code>)对 <code>kubeconfig</code> 的载荷进行编码。完成编码的载荷会被通过插入 JWS 并存在于两个点的中间
+，用于形成一个完整的 JWS。可以使用令牌的完整信息（比如 <code>07401b.f395accd246ae52d</code>）作为共享密钥，
+通过 <code>HS256</code> 方式 (HMAC-SHA256) 对 JWS 进行校验。 用户 <em>必须</em> 确保使用了 HS256。</p>
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/admin/bootstrap-tokens.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/cn\/docs\/admin\/bootstrap-tokens\/",
+					"title" : "使用启动引导令牌（Bootstrap Tokens）认证",
+					"permalink" : "https:\/\/kubernetes.io\/cn\/docs\/admin\/bootstrap-tokens\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/admin/bootstrap-tokens.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

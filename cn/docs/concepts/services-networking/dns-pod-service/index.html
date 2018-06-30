@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>DNS Pod 与 Service - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="DNS Pod 与 Service" />
+<meta property="og:description" content="DNS Pod 与 Service" />
+
+<meta property="og:url" content="https://kubernetes.io/cn/docs/concepts/services-networking/dns-pod-service/" />
+<meta property="og:title" content="DNS Pod 与 Service - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+             <li>
+                <a href="#">
+                    Chinese <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/">English</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+        
+        <a class="item" data-title="Home" href="/cn/docs/"></a>
+
+	
+	
+		
+		
+<a class="item" data-title="" href="/cn/docs/concepts/architecture/cloud-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="" href="/cn/docs/concepts/overview/kubernetes-api/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Admins">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Kubelet authentication/authorization" href="/cn/docs/admin/kubelet-authentication-authorization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes API访问控制" href="/cn/docs/admin/accessing-the-api/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes OpenVSwitch GRE/VxLAN 网络" href="/cn/docs/admin/ovs-networking/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="TLS bootstrapping" href="/cn/docs/admin/kubelet-tls-bootstrapping/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kube-apiserver" href="/cn/docs/admin/kube-apiserver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用启动引导令牌（Bootstrap Tokens）认证" href="/cn/docs/admin/bootstrap-tokens/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="创建大规模集群" href="/cn/docs/admin/cluster-large/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="多区域运行" href="/cn/docs/admin/multiple-zones/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="构建高可用集群">
+		<div class="container">
+		
+		
+		<a class="item" data-title="构建高可用集群" href="/cn/docs/admin/high-availability/"></a>
+		
+		
+	
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="概述">
+		<div class="container">
+		
+		
+		<a class="item" data-title="概述" href="/cn/docs/admin/authorization/"></a>
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="ABAC 模式" href="/cn/docs/admin/authorization/abac/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Webhook Mode" href="/cn/docs/admin/authorization/webhook/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="管理Service Accounts" href="/cn/docs/admin/service-accounts-admin/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="节点设置校验" href="/cn/docs/admin/node-conformance/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Cron Job" href="/cn/docs/concepts/workloads/controllers/cron-jobs/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="DNS Pod 与 Service" href="/cn/docs/concepts/services-networking/dns-pod-service/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="DaemonSet" href="/cn/docs/concepts/workloads/controllers/daemonset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Deployments" href="/cn/docs/concepts/workloads/controllers/deployment/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Docker 用户使用 kubectl 命令指南" href="/cn/docs/user-guide/docker-cli-to-kubectl/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Init 容器" href="/cn/docs/concepts/workloads/pods/init-containers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="JSONPath 支持" href="/cn/docs/user-guide/jsonpath/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes 中的代理" href="/cn/docs/concepts/cluster-administration/proxies/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes 组件" href="/cn/docs/concepts/overview/components/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes集群中使用Sysctls" href="/cn/docs/concepts/cluster-administration/sysctl-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Managing Compute Resources for Containers" href="/cn/docs/concepts/configuration/manage-compute-resources-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Master 节点通信" href="/cn/docs/concepts/architecture/master-node-communication/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Nodes" href="/cn/docs/concepts/architecture/nodes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pod Preset" href="/cn/docs/concepts/workloads/pods/podpreset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pod 安全策略" href="/cn/docs/concepts/policy/pod-security-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pod 的生命周期" href="/cn/docs/concepts/workloads/pods/pod-lifecycle/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Secret" href="/cn/docs/concepts/configuration/secret/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Service" href="/cn/docs/concepts/services-networking/service/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Tutorials">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Kubernetes 对象管理" href="/cn/docs/tutorials/object-management-kubectl/object-management/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="StatefulSet基本使用" href="/cn/docs/tutorials/stateful-application/basic-stateful-set/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Try Our Interactive Tutorials">
+		<div class="container">
+		
+		
+		<a class="item" data-title="Try Our Interactive Tutorials" href="/cn/docs/tutorials/kubernetes-basics/"></a>
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="互动教程 - 创建集群" href="/cn/docs/tutorials/kubernetes-basics/cluster-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 应用外部可见" href="/cn/docs/tutorials/kubernetes-basics/expose-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 应用程序探索" href="/cn/docs/tutorials/kubernetes-basics/explore-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 扩展您的应用程序" href="/cn/docs/tutorials/kubernetes-basics/scale-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 更新您的应用程序" href="/cn/docs/tutorials/kubernetes-basics/update-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 部署应用程序" href="/cn/docs/tutorials/kubernetes-basics/deploy-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Minikube 创建一个集群" href="/cn/docs/tutorials/kubernetes-basics/cluster-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 kubectl 创建部署" href="/cn/docs/tutorials/kubernetes-basics/deploy-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用服务发布您的应用程序" href="/cn/docs/tutorials/kubernetes-basics/expose-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="执行滚动更新" href="/cn/docs/tutorials/kubernetes-basics/update-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="查看 Pods 和节点" href="/cn/docs/tutorials/kubernetes-basics/explore-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="运行应用程序的多个实例" href="/cn/docs/tutorials/kubernetes-basics/scale-intro/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="“示例：使用 Stateful Sets 部署 Cassandra”" href="/cn/docs/tutorials/stateful-application/cassandra/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Source IP" href="/cn/docs/tutorials/services/source-ip/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用ConfigMap来配置Redis" href="/cn/docs/tutorials/configuration/configure-redis-using-configmap/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用命令式的方式管理 Kubernetes 对象" href="/cn/docs/tutorials/object-management-kubectl/imperative-object-management-command/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="基于 Persistent Volumes 搭建 WordPress 和 MySQL 应用" href="/cn/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="运行 ZooKeeper， 一个 CP 分布式系统" href="/cn/docs/tutorials/stateful-application/zookeeper/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="kubectl概述" href="/cn/docs/user-guide/kubectl-overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="为容器设置启动时要执行的命令及其入参" href="/cn/docs/tasks/inject-data-application/define-command-argument-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="为容器设置环境变量" href="/cn/docs/tasks/inject-data-application/define-environment-variable-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="云供应商" href="/cn/docs/concepts/cluster-administration/cloud-providers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Calico 来提供 NetworkPolicy" href="/cn/docs/tasks/administer-cluster/calico-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 HostAliases 向 Pod /etc/hosts 文件添加条目" href="/cn/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 PodPreset 将信息注入 Pods" href="/cn/docs/tasks/inject-data-application/podpreset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Romana 来提供 NetworkPolicy" href="/cn/docs/tasks/administer-cluster/romana-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Secret 安全地分发凭证" href="/cn/docs/tasks/inject-data-application/distribute-credentials-secure/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Service 把前端连接到后端" href="/cn/docs/tasks/access-application-cluster/connecting-frontend-backend/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Weave 网络来提供 NetworkPolicy" href="/cn/docs/tasks/administer-cluster/weave-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用Deployment运行一个无状态应用" href="/cn/docs/tasks/run-application/run-stateless-application-deployment/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="关键插件 Pod 的调度保证" href="/cn/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="同 Pod 内的容器使用共享卷通信" href="/cn/docs/tasks/access-application-cluster/communicate-containers-same-pod-shared-volume/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="在 Kubernetes 中配置私有 DNS 和上游域名服务器" href="/cn/docs/tasks/administer-cluster/dns-custom-nameservers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="垃圾收集" href="/cn/docs/concepts/workloads/controllers/garbage-collection/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="基于Replication Controller执行滚动升级" href="/cn/docs/tasks/run-application/rolling-update-replication-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="声明网络策略" href="/cn/docs/tasks/administer-cluster/declare-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="安装扩展（Addons）" href="/cn/docs/concepts/cluster-administration/addons/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="容器环境变量" href="/cn/docs/concepts/containers/container-environment-variables/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="对 DaemonSet 执行回滚" href="/cn/docs/tasks/manage-daemon/rollback-daemon-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="应用故障排查" href="/cn/docs/tasks/debug-application-cluster/debug-application/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="应用资源配额和限额" href="/cn/docs/tasks/administer-cluster/apply-resource-quota-limit/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="应用连接到 Service" href="/cn/docs/concepts/services-networking/connect-applications-service/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="弹缩StatefulSet" href="/cn/docs/tasks/run-application/scale-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="控制节点上的CPU管理策略" href="/cn/docs/tasks/administer-cluster/cpu-management-policies/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="改变默认 StorageClass" href="/cn/docs/tasks/administer-cluster/change-default-storage-class/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="更改 PersistentVolume 的回收策略" href="/cn/docs/tasks/administer-cluster/change-pv-reclaim-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="概念模板示例" href="/cn/docs/concepts/example-concept-template/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="理解 Kubernetes 对象" href="/cn/docs/concepts/overview/working-with-objects/kubernetes-objects/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="知名标签（Label）、注解（Annotation）和 Taints" href="/cn/docs/reference/labels-annotations-taints/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="管理巨页（HugePages）" href="/cn/docs/tasks/manage-hugepages/scheduling-hugepages/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="给容器分配非透明整型资源" href="/cn/docs/tasks/configure-pod-container/opaque-integer-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="网络策略" href="/cn/docs/concepts/services-networking/network-policies/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="联邦" href="/cn/docs/concepts/cluster-administration/federation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="认识 Kubernetes?" href="/cn/docs/concepts/overview/what-is-kubernetes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="认识 Kubernetes?" href="/cn/docs/whatisk8s/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="设备插件" href="/cn/docs/concepts/cluster-administration/device-plugins/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="设置 Pod CPU 和内存限制" href="/cn/docs/tasks/administer-cluster/cpu-memory-limit/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="访问集群上运行的服务" href="/cn/docs/tasks/administer-cluster/access-cluster-services/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="证书" href="/cn/docs/concepts/cluster-administration/certificates/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="证书轮换" href="/cn/docs/tasks/tls/certificate-rotation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="调度 GPU" href="/cn/docs/tasks/manage-gpus/scheduling-gpus/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="调试Pods和Replication Controllers" href="/cn/docs/tasks/debug-application-cluster/debug-pod-replication-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="调试StatefulSet" href="/cn/docs/tasks/debug-application-cluster/debug-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="资源配额" href="/cn/docs/concepts/policy/resource-quotas/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="运行一个单实例有状态应用" href="/cn/docs/tasks/run-application/run-single-instance-stateful-application/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="通过文件将Pod信息呈现给容器" href="/cn/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="通过环境变量将Pod信息呈现给容器" href="/cn/docs/tasks/inject-data-application/environment-variable-expose-pod-information/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="通过配置文件设置 Kubelet 参数" href="/cn/docs/tasks/administer-cluster/kubelet-config-file/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="配置你的云平台防火墙" href="/cn/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="配置命名空间下pod总数" href="/cn/docs/tasks/administer-cluster/quota-pod-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="配置对多集群的访问" href="/cn/docs/tasks/access-application-cluster/configure-access-multiple-clusters/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="镜像" href="/cn/docs/concepts/containers/images/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="集群故障排查" href="/cn/docs/tasks/debug-application-cluster/debug-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="集群管理" href="/cn/docs/tasks/administer-cluster/cluster-management/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="集群管理概述" href="/cn/docs/concepts/cluster-administration/cluster-administration-overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="静态Pods" href="/cn/docs/tasks/administer-cluster/static-pod/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/concepts/services-networking/dns-pod-service.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>DNS Pod 与 Service</h1>
+
+
+
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#介绍">介绍</a></li>
+<li><a href="#怎样获取-dns-名字">怎样获取 DNS 名字?</a></li>
+<li><a href="#支持的-dns-模式">支持的 DNS 模式</a>
+<ul>
+<li><a href="#service">Service</a>
+<ul>
+<li><a href="#a-记录">A 记录</a></li>
+<li><a href="#srv-记录">SRV 记录</a></li>
+<li><a href="#后向兼容性">后向兼容性</a></li>
+</ul></li>
+<li><a href="#pod">Pod</a>
+<ul>
+<li><a href="#a-记录-1">A 记录</a></li>
+<li><a href="#基于-pod-hostname-subdomain-字段的-a-记录和主机名">基于 Pod hostname、subdomain 字段的 A 记录和主机名</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#如何测试它是否可以使用">如何测试它是否可以使用?</a>
+<ul>
+<li><a href="#创建一个简单的-pod-作为测试环境">创建一个简单的 Pod 作为测试环境</a></li>
+<li><a href="#等待这个-pod-变成运行状态">等待这个 Pod 变成运行状态</a></li>
+<li><a href="#验证-dns-已经生效">验证 DNS 已经生效</a></li>
+<li><a href="#问题排查技巧">问题排查技巧</a>
+<ul>
+<li><a href="#先检查本地-dns-配置">先检查本地 DNS 配置</a></li>
+<li><a href="#快速诊断">快速诊断</a></li>
+<li><a href="#检查是否-dns-pod-正在运行">检查是否 DNS Pod 正在运行</a></li>
+<li><a href="#检查-dns-pod-中的错误信息">检查 DNS Pod 中的错误信息</a></li>
+<li><a href="#dns-服务是否运行">DNS 服务是否运行?</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#kubernetes-federation-多-zone-支持">Kubernetes Federation（多 Zone 支持)</a></li>
+<li><a href="#工作原理">工作原理</a></li>
+<li><a href="#从-node-继承-dns">从 Node 继承 DNS</a></li>
+<li><a href="#已知问题">已知问题</a></li>
+<li><a href="#参考">参考</a></li>
+<li><a href="#下一步">下一步</a></li>
+</ul></li>
+</ul>
+</nav>
+
+
+
+<h2 id="介绍">介绍</h2>
+
+<p>Kubernetes 从 1.3 版本起， DNS 是内置的服务，通过插件管理器 <a href="http://releases.k8s.io/master/cluster/addons/README.md" target="_blank">集群插件</a> 自动被启动。</p>
+
+<p>Kubernetes DNS 在集群中调度 DNS Pod 和 Service ，配置 kubelet 以通知个别容器使用 DNS Service 的 IP 解析 DNS 名字。</p>
+
+<h2 id="怎样获取-dns-名字">怎样获取 DNS 名字?</h2>
+
+<p>在集群中定义的每个 Service（包括 DNS 服务器自身）都会被指派一个 DNS 名称。
+默认，一个客户端 Pod 的 DNS 搜索列表将包含该 Pod 自己的 Namespace 和集群默认域。
+通过如下示例可以很好地说明：</p>
+
+<p>假设在 Kubernetes 集群的 Namespace <code>bar</code> 中，定义了一个Service <code>foo</code>。
+运行在Namespace <code>bar</code> 中的一个 Pod，可以简单地通过 DNS 查询 <code>foo</code> 来找到该 Service。
+运行在 Namespace <code>quux</code> 中的一个 Pod 可以通过 DNS 查询 <code>foo.bar</code> 找到该 Service。</p>
+
+<h2 id="支持的-dns-模式">支持的 DNS 模式</h2>
+
+<p>下面各段详细说明支持的记录类型和布局。
+如果任何其它的布局、名称或查询，碰巧也能够使用，这就需要研究下它们的实现细节，以免后续修改它们又不能使用了。</p>
+
+<h3 id="service">Service</h3>
+
+<h4 id="a-记录">A 记录</h4>
+
+<p>“正常” Service（除了 Headless Service）会以 <code>my-svc.my-namespace.svc.cluster.local</code> 这种名字的形式被指派一个 DNS A 记录。这会解析成该 Service 的 Cluster IP。</p>
+
+<p>“Headless” Service（没有Cluster IP）也会以 <code>my-svc.my-namespace.svc.cluster.local</code> 这种名字的形式被指派一个 DNS A 记录。
+不像正常 Service，它会解析成该 Service 选择的一组 Pod 的 IP。
+希望客户端能够使用这一组 IP，否则就使用标准的 round-robin 策略从这一组 IP 中进行选择。</p>
+
+<h4 id="srv-记录">SRV 记录</h4>
+
+<p>命名端口需要创建 SRV 记录，这些端口是正常 Service或 <a href="/docs/concepts/services-networking/service/#headless-services">Headless
+Services</a> 的一部分。
+对每个命名端口，SRV 记录具有 <code>_my-port-name._my-port-protocol.my-svc.my-namespace.svc.cluster.local</code> 这种形式。
+对普通 Service，这会被解析成端口号和 CNAME：<code>my-svc.my-namespace.svc.cluster.local</code>。
+对 Headless Service，这会被解析成多个结果，Service 对应的每个 backend Pod 各一个，包含 <code>auto-generated-name.my-svc.my-namespace.svc.cluster.local</code> 这种形式 Pod 的端口号和 CNAME。</p>
+
+<h4 id="后向兼容性">后向兼容性</h4>
+
+<p>上一版本的 kube-dns 使用 <code>my-svc.my-namespace.cluster.local</code> 这种形式的名字（后续会增加 &lsquo;svc&rsquo; 这一级），以后这将不再被支持。</p>
+
+<h3 id="pod">Pod</h3>
+
+<h4 id="a-记录-1">A 记录</h4>
+
+<p>如果启用，Pod 会以 <code>pod-ip-address.my-namespace.pod.cluster.local</code> 这种形式被指派一个 DNS A 记录。</p>
+
+<p>例如，<code>default</code> Namespace 具有 DNS 名字  <code>cluster.local</code>，在该 Namespace 中一个 IP 为 <code>1.2.3.4</code> 的 Pod 将具有一个条目：<code>1-2-3-4.default.pod.cluster.local</code>。</p>
+
+<h4 id="基于-pod-hostname-subdomain-字段的-a-记录和主机名">基于 Pod hostname、subdomain 字段的 A 记录和主机名</h4>
+
+<p>当前，创建 Pod 后，它的主机名是该 Pod 的 <code>metadata.name</code> 值。</p>
+
+<p>在 v1.2 版本中，用户可以配置 Pod annotation， 通过 <code>pod.beta.kubernetes.io/hostname</code> 来设置 Pod 的主机名。
+如果为 Pod 配置了 annotation，会优先使用 Pod 的名称作为主机名。
+例如，给定一个 Pod，它具有 annotation <code>pod.beta.kubernetes.io/hostname: my-pod-name</code>，该 Pod 的主机名被设置为 “my-pod-name”。</p>
+
+<p>在 v1.3 版本中，PodSpec 具有 <code>hostname</code> 字段，可以用来指定 Pod 的主机名。这个字段的值优先于 annotation <code>pod.beta.kubernetes.io/hostname</code>。
+在 v1.2 版本中引入了 beta 特性，用户可以为 Pod 指定 annotation，其中 <code>pod.beta.kubernetes.io/subdomain</code> 指定了 Pod 的子域名。
+最终的域名将是 “<hostname>.<subdomain>.<pod namespace>.svc.<cluster domain>”。
+举个例子，Pod 的主机名 annotation 设置为 “foo”，子域名 annotation 设置为 “bar”，在 Namespace “my-namespace” 中对应的 FQDN 为 “foo.bar.my-namespace.svc.cluster.local”。</p>
+
+<p>在 v1.3 版本中，PodSpec 具有 <code>subdomain</code> 字段，可以用来指定 Pod 的子域名。
+这个字段的值优先于 annotation <code>pod.beta.kubernetes.io/subdomain</code> 的值。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Service<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>default-subdomain<span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>selector:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>name:<span style="color:#bbb"> </span>busybox<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>clusterIP:<span style="color:#bbb"> </span>None<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>ports:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>foo<span style="color:#bbb"> </span><span style="color:#080;font-style:italic"># Actually, no port is needed.</span><span style="color:#bbb">
+</span><span style="color:#bbb">      </span>port:<span style="color:#bbb"> </span><span style="color:#666">1234</span><span style="color:#bbb"> 
+</span><span style="color:#bbb">      </span>targetPort:<span style="color:#bbb"> </span><span style="color:#666">1234</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>---<span style="color:#bbb">
+</span><span style="color:#bbb"></span>apiVersion:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Pod<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>busybox1<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>labels:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>name:<span style="color:#bbb"> </span>busybox<span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>hostname:<span style="color:#bbb"> </span>busybox-<span style="color:#666">1</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>subdomain:<span style="color:#bbb"> </span>default-subdomain<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>containers:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>image:<span style="color:#bbb"> </span>busybox<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>command:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>-<span style="color:#bbb"> </span>sleep<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>-<span style="color:#bbb"> </span><span style="color:#b44">&#34;3600&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>name:<span style="color:#bbb"> </span>busybox<span style="color:#bbb">
+</span><span style="color:#bbb"></span>---<span style="color:#bbb">
+</span><span style="color:#bbb"></span>apiVersion:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Pod<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>busybox2<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>labels:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>name:<span style="color:#bbb"> </span>busybox<span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>hostname:<span style="color:#bbb"> </span>busybox-<span style="color:#666">2</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>subdomain:<span style="color:#bbb"> </span>default-subdomain<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>containers:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>image:<span style="color:#bbb"> </span>busybox<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>command:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>-<span style="color:#bbb"> </span>sleep<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>-<span style="color:#bbb"> </span><span style="color:#b44">&#34;3600&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>name:<span style="color:#bbb"> </span>busybox</code></pre></div>
+<p>如果 Headless Service 与 Pod 在同一个 Namespace 中，它们具有相同的子域名，集群的 KubeDNS 服务器也会为该 Pod 的完整合法主机名返回 A 记录。
+在同一个 Namespace 中，给定一个主机名为 “busybox-1” 的 Pod，子域名设置为 “default-subdomain”，名称为 “default-subdomain” 的 Headless Service ，Pod 将看到自己的 FQDN 为 “busybox-1.default-subdomain.my-namespace.svc.cluster.local”。
+DNS 会为那个名字提供一个 A 记录，指向该 Pod 的 IP。
+“busybox1” 和 “busybox2” 这两个 Pod 分别具有它们自己的 A 记录。</p>
+
+<p>在Kubernetes v1.2 版本中，<code>Endpoints</code> 对象也具有 annotation <code>endpoints.beta.kubernetes.io/hostnames-map</code>。
+它的值是 map[string(IP)][endpoints.HostRecord] 的 JSON 格式，例如： &lsquo;{&ldquo;10.245.1.6&rdquo;:{HostName: &ldquo;my-webserver&rdquo;}}&lsquo;。</p>
+
+<p>如果是 Headless Service 的 <code>Endpoints</code>，会以  <hostname>.<service name>.<pod namespace>.svc.<cluster domain> 的格式创建 A 记录。
+对示例中的 JSON 字符串，如果 <code>Endpoints</code> 是为名称为 “bar” 的 Headless Service 而创建的，其中一个 <code>Endpoints</code>  的 IP 是 “10.245.1.6”，则会创建一个名称为 “my-webserver.bar.my-namespace.svc.cluster.local” 的 A 记录，该 A 记录查询将返回 “10.245.1.6”。</p>
+
+<p><code>Endpoints</code> annotation 通常没必要由最终用户指定，但可以被内部的 Service Controller 用来提供上述功能。</p>
+
+<p>在 v1.3 版本中，<code>Endpoints</code> 对象可以为任何 endpoint 指定 <code>hostname</code> 和 IP。
+<code>hostname</code> 字段优先于通过 <code>endpoints.beta.kubernetes.io/hostnames-map</code> annotation 指定的主机名。</p>
+
+<p>在 v1.3 版本中，下面的 annotation 是过时的：<code>pod.beta.kubernetes.io/hostname</code>、<code>pod.beta.kubernetes.io/subdomain</code>、<code>endpoints.beta.kubernetes.io/hostnames-map</code>。</p>
+
+<h2 id="如何测试它是否可以使用">如何测试它是否可以使用?</h2>
+
+<h3 id="创建一个简单的-pod-作为测试环境">创建一个简单的 Pod 作为测试环境</h3>
+
+<p>创建 <code>busybox.yaml</code> 文件，内容如下：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Pod<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>busybox<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>namespace:<span style="color:#bbb"> </span>default<span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>containers:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>image:<span style="color:#bbb"> </span>busybox<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>command:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>-<span style="color:#bbb"> </span>sleep<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>-<span style="color:#bbb"> </span><span style="color:#b44">&#34;3600&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>imagePullPolicy:<span style="color:#bbb"> </span>IfNotPresent<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>name:<span style="color:#bbb"> </span>busybox<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>restartPolicy:<span style="color:#bbb"> </span>Always</code></pre></div>
+<p>然后，用该文件创建一个 Pod：</p>
+
+<pre><code>kubectl create -f busybox.yaml
+</code></pre>
+
+<h3 id="等待这个-pod-变成运行状态">等待这个 Pod 变成运行状态</h3>
+
+<p>获取它的状态，执行如下命令：</p>
+
+<pre><code>kubectl get pods busybox
+</code></pre>
+
+<p>可以看到如下内容：</p>
+
+<pre><code>NAME      READY     STATUS    RESTARTS   AGE
+busybox   1/1       Running   0          &lt;some-time&gt;
+</code></pre>
+
+<h3 id="验证-dns-已经生效">验证 DNS 已经生效</h3>
+
+<p>一旦 Pod 处于运行中状态，可以在测试环境中执行如下 nslookup 查询：</p>
+
+<pre><code>kubectl exec -ti busybox -- nslookup kubernetes.default
+</code></pre>
+
+<p>可以看到类似如下的内容：</p>
+
+<pre><code>Server:    10.0.0.10
+Address 1: 10.0.0.10
+
+Name:      kubernetes.default
+Address 1: 10.0.0.1
+</code></pre>
+
+<p>如果看到了，说明 DNS 已经可以正确工作了。</p>
+
+<h3 id="问题排查技巧">问题排查技巧</h3>
+
+<p>如果执行 nslookup 命令失败，检查如下内容：</p>
+
+<h4 id="先检查本地-dns-配置">先检查本地 DNS 配置</h4>
+
+<p>查看配置文件 resolv.conf。（关于更多信息，参考下面的 “从 Node 继承 DNS” 和 “已知问题”。）</p>
+
+<pre><code>kubectl exec busybox cat /etc/resolv.conf
+</code></pre>
+
+<p>按照如下方法（注意搜索路径可能会因为云提供商不同而变化）验证搜索路径和 Name Server 的建立：</p>
+
+<pre><code>search default.svc.cluster.local svc.cluster.local cluster.local google.internal c.gce_project_id.internal
+nameserver 10.0.0.10
+options ndots:5
+</code></pre>
+
+<h4 id="快速诊断">快速诊断</h4>
+
+<p>出现类似如下指示的错误，说明 kube-dns 插件或相关 Service 存在问题：</p>
+
+<pre><code>$ kubectl exec -ti busybox -- nslookup kubernetes.default
+Server:    10.0.0.10
+Address 1: 10.0.0.10
+
+nslookup: can't resolve 'kubernetes.default'
+</code></pre>
+
+<p>或者</p>
+
+<pre><code>$ kubectl exec -ti busybox -- nslookup kubernetes.default
+Server:    10.0.0.10
+Address 1: 10.0.0.10 kube-dns.kube-system.svc.cluster.local
+
+nslookup: can't resolve 'kubernetes.default'
+</code></pre>
+
+<h4 id="检查是否-dns-pod-正在运行">检查是否 DNS Pod 正在运行</h4>
+
+<p>使用 <code>kubectl get pods</code> 命令验证 DNS Pod 正在运行：</p>
+
+<pre><code>kubectl get pods --namespace=kube-system -l k8s-app=kube-dns
+</code></pre>
+
+<p>应该能够看到类似如下信息：</p>
+
+<pre><code>NAME                                                       READY     STATUS    RESTARTS   AGE
+...
+kube-dns-v19-ezo1y                                         3/3       Running   0           1h
+...
+</code></pre>
+
+<p>如果看到没有 Pod 运行，或 Pod 失败/结束，DNS 插件不能默认部署到当前的环境，必须手动部署。</p>
+
+<h4 id="检查-dns-pod-中的错误信息">检查 DNS Pod 中的错误信息</h4>
+
+<p>使用 <code>kubectl logs</code> 命令查看 DNS 后台进程的日志：</p>
+
+<pre><code>kubectl logs --namespace=kube-system $(kubectl get pods --namespace=kube-system -l k8s-app=kube-dns -o name) -c kubedns
+kubectl logs --namespace=kube-system $(kubectl get pods --namespace=kube-system -l k8s-app=kube-dns -o name) -c dnsmasq
+kubectl logs --namespace=kube-system $(kubectl get pods --namespace=kube-system -l k8s-app=kube-dns -o name) -c healthz
+</code></pre>
+
+<p>查看是否有任何可疑的日志。在行开头的字母 W、E、F 分别表示 警告、错误、失败。请搜索具有这些日志级别的日志行，通过  <a href="https://github.com/kubernetes/kubernetes/issues" target="_blank">Kubernetes 问题</a> 报告意外的错误。</p>
+
+<h4 id="dns-服务是否运行">DNS 服务是否运行?</h4>
+
+<p>通过使用 <code>kubectl get service</code> 命令，验证 DNS 服务是否运行：</p>
+
+<pre><code>kubectl get svc --namespace=kube-system
+</code></pre>
+
+<p>应该能够看到：</p>
+
+<pre><code>NAME                    CLUSTER-IP     EXTERNAL-IP   PORT(S)             AGE
+...
+kube-dns                10.0.0.10      &lt;none&gt;        53/UDP,53/TCP        1h
+...
+</code></pre>
+
+<p>如果服务已经创建，或在这个例子中默认被创建，但是并没有看到，可以查看 <a href="/docs/tasks/debug-application-cluster/debug-service/">调试 Service 页面</a> 获取更多信息。</p>
+
+<pre><code>kubectl get ep kube-dns --namespace=kube-system
+</code></pre>
+
+<p>应该能够看到类似如下信息：</p>
+
+<pre><code>NAME       ENDPOINTS                       AGE
+kube-dns   10.180.3.17:53,10.180.3.17:53    1h
+</code></pre>
+
+<p>如果没有看到 Endpoint，查看 <a href="/docs/tasks/debug-application-cluster/debug-service/">调试 Service 文档</a> 中的 Endpoint 段内容。</p>
+
+<p>关于更多 Kubernetes DNS 的示例，参考 Kubernetes GitHub 仓库中 <a href="https://git.k8s.io/kubernetes/examples/cluster-dns" target="_blank">集群 DNS 示例</a>。</p>
+
+<h2 id="kubernetes-federation-多-zone-支持">Kubernetes Federation（多 Zone 支持)</h2>
+
+<p>在1.3 发行版本中，为多站点 Kubernetes 安装引入了集群 Federation 支持。这需要对 Kubernetes 集群 DNS 服务器处理 DNS 查询的方式，做出一些微小（后向兼容）改变，从而便利了对联合 Service 的查询（跨多个 Kubernetes 集群）。参考 <a href="/docs/concepts/cluster-administration/federation/">集群 Federation 管理员指南</a> 获取更多关于集群 Federation 和多站点支持的细节。</p>
+
+<h2 id="工作原理">工作原理</h2>
+
+<p>运行的 Kubernetes DNS Pod 包含 3 个容器 —— kubedns、dnsmasq 和负责健康检查的 healthz。
+kubedns 进程监视 Kubernetes master 对 Service 和 Endpoint 操作的变更，并维护一个内存查询结构去处理 DNS 请求。dnsmasq 容器增加了一个 DNS 缓存来改善性能。为执行对 dnsmasq 和 kubedns 的健康检查，healthz 容器提供了一个单独的健康检查 Endpoint。</p>
+
+<p>DNS Pod 通过一个静态 IP 暴露为一个 Service。一旦 IP 被分配，kubelet 会通过 <code>--cluster-dns=10.0.0.10</code> 标志将配置的 DNS 传递给每一个容器。</p>
+
+<p>DNS 名字也需要域名，本地域名是可配置的，在 kubelet 中使用 <code>--cluster-domain=&lt;default local domain&gt;</code> 标志。</p>
+
+<p>Kubernetes 集群 DNS 服务器（根据 <a href="https://github.com/skynetservices/skydns" target="_blank">SkyDNS</a> 库）支持正向查询（A 记录），Service 查询（SRV 记录）和反向 IP 地址查询（PTR 记录）。</p>
+
+<h2 id="从-node-继承-dns">从 Node 继承 DNS</h2>
+
+<p>当运行 Pod 时，kubelet 将集群 DNS 服务器和搜索路径追加到 Node 自己的 DNS 设置中。如果 Node 能够在大型环境中解析 DNS 名字，Pod 也应该没问题。参考下面 &ldquo;已知问题” 中给出的更多说明。</p>
+
+<p>如果不想这样，或者希望 Pod 有一个不同的 DNS 配置，可以使用 kubelet 的 <code>--resolv-conf</code> 标志。设置为 &ldquo;&rdquo; 表示 Pod 将不继承自 DNS。设置为一个合法的文件路径，表示 kubelet 将使用这个文件而不是 <code>/etc/resolv.conf</code> 。</p>
+
+<h2 id="已知问题">已知问题</h2>
+
+<p>Kubernetes 安装但并不配置 Node 的 resolv.conf 文件，而是默认使用集群 DNS的，因为那个过程本质上就是和特定的发行版本相关的。最终应该会被实现。</p>
+
+<p>Linux libc 在限制为3个 DNS <code>nameserver</code> 记录和3个 DNS <code>search</code> 记录是不可能卡住的（<a href="https://bugzilla.redhat.com/show_bug.cgi?id=168253" target="_blank">查看 2005 年的一个 Bug</a>）。Kubernetes 需要使用1个  <code>nameserver</code>  记录和3个 <code>search</code> 记录。这意味着如果本地安装已经使用了3个 <code>nameserver</code> 或使用了3个以上 <code>search</code>，那些设置将会丢失。作为部分解决方法， Node 可以运行 <code>dnsmasq</code> ，它能提供更多 <code>nameserver</code> 条目，但不能运行更多 <code>search</code> 条目。可以使用 kubelet 的 <code>--resolv-conf</code> 标志。</p>
+
+<p>如果使用 3.3 版本的 Alpine 或更早版本作为 base 镜像，由于 Alpine 的一个已知问题，DNS 可能不会正确工作。查看 <a href="https://github.com/kubernetes/kubernetes/issues/30215" target="_blank">这里</a> 获取更多信息。</p>
+
+<h2 id="参考">参考</h2>
+
+<ul>
+<li><a href="http://releases.k8s.io/master/cluster/addons/dns/README.md" target="_blank">DNS 集群插件文档</a></li>
+</ul>
+
+<h2 id="下一步">下一步</h2>
+
+<ul>
+<li><a href="/docs/tasks/administer-cluster/dns-horizontal-autoscaling/">集群中 DNS Service 自动伸缩</a></li>
+</ul>
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/concepts/services-networking/dns-pod-service.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/cn\/docs\/concepts\/services-networking\/dns-pod-service\/",
+					"title" : "DNS Pod 与 Service",
+					"permalink" : "https:\/\/kubernetes.io\/cn\/docs\/concepts\/services-networking\/dns-pod-service\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/concepts/services-networking/dns-pod-service.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

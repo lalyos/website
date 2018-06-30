@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>kubectl for Docker Users - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="kubectl for Docker Users" />
+<meta property="og:description" content="kubectl for Docker Users" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/reference/kubectl/docker-cli-to-kubectl/" />
+<meta property="og:title" content="kubectl for Docker Users - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h1>Reference Documentation</h1>
+<h5></h5>
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/" class="YAH">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Reference" href="/docs/reference/"></a>
+
+	
+	
+		
+		
+<a class="item" data-title="Standardized Glossary" href="/docs/reference/glossary/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Kubernetes Issues and Security">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Kubernetes Issue Tracker" href="/docs/reference/issues-security/issues/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes Security and Disclosure Information" href="/docs/reference/issues-security/security/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Using the Kubernetes API">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Kubernetes API Overview" href="/docs/reference/using-api/api-overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes API Concepts" href="/docs/reference/using-api/api-concepts/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Client Libraries" href="/docs/reference/using-api/client-libraries/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes Deprecation Policy" href="/docs/reference/using-api/deprecation-policy/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Accessing the API">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Controlling Access to the Kubernetes API" href="/docs/reference/access-authn-authz/controlling-access/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Authenticating" href="/docs/reference/access-authn-authz/authentication/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Authenticating with Bootstrap Tokens" href="/docs/reference/access-authn-authz/bootstrap-tokens/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using Admission Controllers" href="/docs/reference/access-authn-authz/admission-controllers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Dynamic Admission Control" href="/docs/reference/access-authn-authz/extensible-admission-controllers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Managing Service Accounts" href="/docs/reference/access-authn-authz/service-accounts-admin/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Authorization Overview" href="/docs/reference/access-authn-authz/authorization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using RBAC Authorization" href="/docs/reference/access-authn-authz/rbac/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using ABAC Authorization" href="/docs/reference/access-authn-authz/abac/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using Node Authorization" href="/docs/reference/access-authn-authz/node/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Webhook Mode" href="/docs/reference/access-authn-authz/webhook/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="API Reference">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Well-Known Labels, Annotations and Taints" href="/docs/reference/kubernetes-api/labels-annotations-taints/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="v1.11" href="/docs/reference/kubernetes-api/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Federation API">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="extensions/v1beta1 Model Definitions" href="/docs/reference/federation/extensions/v1beta1/definitions/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="extensions/v1beta1 Operations" href="/docs/reference/federation/extensions/v1beta1/operations/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="v1 Model Definitions" href="/docs/reference/federation/v1/definitions/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="v1 Operations" href="/docs/reference/federation/v1/operations/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Setup tools reference">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+	<div class="item" data-title="Kubeadm">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Overview of kubeadm" href="/docs/reference/setup-tools/kubeadm/kubeadm/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm init" href="/docs/reference/setup-tools/kubeadm/kubeadm-init/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm join" href="/docs/reference/setup-tools/kubeadm/kubeadm-join/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm upgrade" href="/docs/reference/setup-tools/kubeadm/kubeadm-upgrade/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm config" href="/docs/reference/setup-tools/kubeadm/kubeadm-config/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm reset" href="/docs/reference/setup-tools/kubeadm/kubeadm-reset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm token" href="/docs/reference/setup-tools/kubeadm/kubeadm-token/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm version" href="/docs/reference/setup-tools/kubeadm/kubeadm-version/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm alpha" href="/docs/reference/setup-tools/kubeadm/kubeadm-alpha/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Implementation details" href="/docs/reference/setup-tools/kubeadm/implementation-details/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="kubefed">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="kubefed" href="/docs/reference/setup-tools/kubefed/kubefed/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubefed options" href="/docs/reference/setup-tools/kubefed/kubefed-options/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubefed init" href="/docs/reference/setup-tools/kubefed/kubefed-init/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubefed join" href="/docs/reference/setup-tools/kubefed/kubefed-join/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubefed unjoin" href="/docs/reference/setup-tools/kubefed/kubefed-unjoin/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubefed version" href="/docs/reference/setup-tools/kubefed/kubefed-version/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Command line tools reference">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Feature Gates" href="/docs/reference/command-line-tools-reference/feature-gates/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="federation-apiserver" href="/docs/reference/command-line-tools-reference/federation-apiserver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="federation-controller-manager" href="/docs/reference/command-line-tools-reference/federation-controller-manager/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubelet authentication/authorization" href="/docs/reference/command-line-tools-reference/kubelet-authentication-authorization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="TLS bootstrapping" href="/docs/reference/command-line-tools-reference/kubelet-tls-bootstrapping/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="cloud-controller-manager" href="/docs/reference/command-line-tools-reference/cloud-controller-manager/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kube-apiserver" href="/docs/reference/command-line-tools-reference/kube-apiserver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kube-controller-manager" href="/docs/reference/command-line-tools-reference/kube-controller-manager/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kube-proxy" href="/docs/reference/command-line-tools-reference/kube-proxy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kube-scheduler" href="/docs/reference/command-line-tools-reference/kube-scheduler/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubelet" href="/docs/reference/command-line-tools-reference/kubelet/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="kubectl CLI">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="JSONPath Support" href="/docs/reference/kubectl/jsonpath/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Overview of kubectl" href="/docs/reference/kubectl/overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubectl" href="/docs/reference/kubectl/kubectl/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubectl Cheat Sheet" href="/docs/reference/kubectl/cheatsheet/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubectl Commands" href="/docs/reference/kubectl/kubectl-cmds/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubectl Usage Conventions" href="/docs/reference/kubectl/conventions/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubectl for Docker Users" href="/docs/reference/kubectl/docker-cli-to-kubectl/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Tools" href="/docs/reference/tools/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/reference/kubectl/docker-cli-to-kubectl.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>kubectl for Docker Users</h1>
+
+
+
+
+
+<p>You can use the Kubernetes command line tool kubectl to interact with the api. You can use kubectl if you are familiar with docker-cli. However, there are a few differences in the docker-cli commands and the kubectl commands. Each of the following section details a docker subcommand and explains the kubectl equivalent.</p>
+
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#docker-run">docker run</a></li>
+<li><a href="#docker-ps">docker ps</a></li>
+<li><a href="#docker-attach">docker attach</a></li>
+<li><a href="#docker-exec">docker exec</a></li>
+<li><a href="#docker-logs">docker logs</a></li>
+<li><a href="#docker-stop-and-docker-rm">docker stop and docker rm</a></li>
+<li><a href="#docker-login">docker login</a></li>
+<li><a href="#docker-version">docker version</a></li>
+<li><a href="#docker-info">docker info</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+
+<h4 id="docker-run">docker run</h4>
+
+<p>To run an nginx Deployment and expose the Deployment, see <a href="/docs/reference/generated/kubectl/kubectl-commands/#run">kubectl run</a>.</p>
+
+<p>docker:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ docker run -d --restart<span style="color:#666">=</span>always -e <span style="color:#b8860b">DOMAIN</span><span style="color:#666">=</span>cluster --name nginx-app -p <span style="color:#666">80</span>:80 nginx
+55c103fa129692154a7652490236fee9be47d70a8dd562281ae7d2f9a339a6db
+
+$ docker ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                NAMES
+55c103fa1296        nginx               <span style="color:#b44">&#34;nginx -g &#39;daemon of…&#34;</span>   <span style="color:#666">9</span> seconds ago       Up <span style="color:#666">9</span> seconds        <span style="color:#666">0</span>.0.0.0:80-&gt;80/tcp   nginx-app</code></pre></div>
+<p>kubectl:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#080;font-style:italic"># start the pod running nginx
+</span><span style="color:#080;font-style:italic"></span>$ kubectl run --image<span style="color:#666">=</span>nginx nginx-app --port<span style="color:#666">=</span><span style="color:#666">80</span> --env<span style="color:#666">=</span><span style="color:#b44">&#34;DOMAIN=cluster&#34;</span>
+deployment <span style="color:#b44">&#34;nginx-app&#34;</span> created</code></pre></div>
+<blockquote class="note">
+  <div><strong>Note:</strong> <code>kubectl</code> commands print the type and name of the resource created or mutated, which can then be used in subsequent commands. You can expose a new Service after a Deployment is created.</div>
+</blockquote>
+
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#080;font-style:italic"># expose a port through with a service
+</span><span style="color:#080;font-style:italic"></span>$ kubectl expose deployment nginx-app --port<span style="color:#666">=</span><span style="color:#666">80</span> --name<span style="color:#666">=</span>nginx-http
+service <span style="color:#b44">&#34;nginx-http&#34;</span> exposed</code></pre></div>
+<p>By using kubectl, you can create a <a href="/docs/concepts/workloads/controllers/deployment/">Deployment</a> to ensure that N pods are running nginx, where N is the number of replicas stated in the spec and defaults to 1. You can also create a <a href="/docs/concepts/services-networking/service/">service</a> with a selector that matches the pod labels. For more information, see <a href="/docs/tasks/access-application-cluster/service-access-application-cluster">Use a Service to Access an Application in a Cluster</a>.</p>
+
+<p>By default images run in the background, similar to <code>docker run -d ...</code>. To run things in the foreground, use:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl run <span style="color:#666">[</span>-i<span style="color:#666">]</span> <span style="color:#666">[</span>--tty<span style="color:#666">]</span> --attach &lt;name&gt; --image<span style="color:#666">=</span>&lt;image&gt;</code></pre></div>
+<p>Unlike <code>docker run ...</code>, if you specify <code>--attach</code>, then you attach <code>stdin</code>, <code>stdout</code> and <code>stderr</code>. You cannot control which streams are attached (<code>docker -a ...</code>).
+To detach from the container, you can type the escape sequence Ctrl+P followed by Ctrl+Q.</p>
+
+<p>Because the kubectl run command starts a Deployment for the container, the Deployment restarts if you terminate the attached process by using Ctrl+C, unlike <code>docker run -it</code>.
+To destroy the Deployment and its pods you need to run <code>kubectl delete deployment &lt;name&gt;</code>.</p>
+
+<h4 id="docker-ps">docker ps</h4>
+
+<p>To list what is currently running, see <a href="/docs/reference/generated/kubectl/kubectl-commands/#get">kubectl get</a>.</p>
+
+<p>docker:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ docker ps -a
+CONTAINER ID        IMAGE               COMMAND                  CREATED              STATUS                     PORTS                NAMES
+14636241935f        ubuntu:16.04        <span style="color:#b44">&#34;echo test&#34;</span>              <span style="color:#666">5</span> seconds ago        Exited <span style="color:#666">(</span><span style="color:#666">0</span><span style="color:#666">)</span> <span style="color:#666">5</span> seconds ago                        cocky_fermi
+55c103fa1296        nginx               <span style="color:#b44">&#34;nginx -g &#39;daemon of…&#34;</span>   About a minute ago   Up About a minute          <span style="color:#666">0</span>.0.0.0:80-&gt;80/tcp   nginx-app</code></pre></div>
+<p>kubectl:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl get po -a
+NAME                        READY     STATUS      RESTARTS   AGE
+nginx-app-8df569cb7-4gd89   <span style="color:#666">1</span>/1       Running     <span style="color:#666">0</span>          3m
+ubuntu                      <span style="color:#666">0</span>/1       Completed   <span style="color:#666">0</span>          20s</code></pre></div>
+<h4 id="docker-attach">docker attach</h4>
+
+<p>To attach a process that is already running in a container, see <a href="/docs/reference/generated/kubectl/kubectl-commands/#attach">kubectl attach</a>.</p>
+
+<p>docker:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ docker ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                NAMES
+55c103fa1296        nginx               <span style="color:#b44">&#34;nginx -g &#39;daemon of…&#34;</span>   <span style="color:#666">5</span> minutes ago       Up <span style="color:#666">5</span> minutes        <span style="color:#666">0</span>.0.0.0:80-&gt;80/tcp   nginx-app
+
+$ docker attach 55c103fa1296
+...</code></pre></div>
+<p>kubectl:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl get pods
+NAME              READY     STATUS    RESTARTS   AGE
+nginx-app-5jyvm   <span style="color:#666">1</span>/1       Running   <span style="color:#666">0</span>          10m
+
+$ kubectl attach -it nginx-app-5jyvm
+...</code></pre></div>
+<p>To detach from the container, you can type the escape sequence Ctrl+P followed by Ctrl+Q.</p>
+
+<h4 id="docker-exec">docker exec</h4>
+
+<p>To execute a command in a container, see <a href="/docs/reference/generated/kubectl/kubectl-commands/#exec">kubectl exec</a>.</p>
+
+<p>docker:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ docker ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                NAMES
+55c103fa1296        nginx               <span style="color:#b44">&#34;nginx -g &#39;daemon of…&#34;</span>   <span style="color:#666">6</span> minutes ago       Up <span style="color:#666">6</span> minutes        <span style="color:#666">0</span>.0.0.0:80-&gt;80/tcp   nginx-app
+
+$ docker <span style="color:#a2f">exec</span> 55c103fa1296 cat /etc/hostname
+55c103fa1296</code></pre></div>
+<p>kubectl:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl get po
+NAME              READY     STATUS    RESTARTS   AGE
+nginx-app-5jyvm   <span style="color:#666">1</span>/1       Running   <span style="color:#666">0</span>          10m
+
+$ kubectl <span style="color:#a2f">exec</span> nginx-app-5jyvm -- cat /etc/hostname
+nginx-app-5jyvm</code></pre></div>
+<p>To use interactive commands.</p>
+
+<p>docker:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ docker <span style="color:#a2f">exec</span> -ti 55c103fa1296 /bin/sh
+# exit</code></pre></div>
+<p>kubectl:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl <span style="color:#a2f">exec</span> -ti nginx-app-5jyvm -- /bin/sh      
+# exit</code></pre></div>
+<p>For more information, see <a href="/docs/tasks/debug-application-cluster/get-shell-running-container/">Get a Shell to a Running Container</a>.</p>
+
+<h4 id="docker-logs">docker logs</h4>
+
+<p>To follow stdout/stderr of a process that is running, see <a href="/docs/reference/generated/kubectl/kubectl-commands/#logs">kubectl logs</a>.</p>
+
+<p>docker:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ docker logs -f a9e
+<span style="color:#666">192</span>.168.9.1 - - <span style="color:#666">[</span><span style="color:#666">14</span>/Jul/2015:01:04:02 +0000<span style="color:#666">]</span> <span style="color:#b44">&#34;GET / HTTP/1.1&#34;</span> <span style="color:#666">200</span> <span style="color:#666">612</span> <span style="color:#b44">&#34;-&#34;</span> <span style="color:#b44">&#34;curl/7.35.0&#34;</span> <span style="color:#b44">&#34;-&#34;</span>
+<span style="color:#666">192</span>.168.9.1 - - <span style="color:#666">[</span><span style="color:#666">14</span>/Jul/2015:01:04:03 +0000<span style="color:#666">]</span> <span style="color:#b44">&#34;GET / HTTP/1.1&#34;</span> <span style="color:#666">200</span> <span style="color:#666">612</span> <span style="color:#b44">&#34;-&#34;</span> <span style="color:#b44">&#34;curl/7.35.0&#34;</span> <span style="color:#b44">&#34;-&#34;</span></code></pre></div>
+<p>kubectl:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl logs -f nginx-app-zibvs
+<span style="color:#666">10</span>.240.63.110 - - <span style="color:#666">[</span><span style="color:#666">14</span>/Jul/2015:01:09:01 +0000<span style="color:#666">]</span> <span style="color:#b44">&#34;GET / HTTP/1.1&#34;</span> <span style="color:#666">200</span> <span style="color:#666">612</span> <span style="color:#b44">&#34;-&#34;</span> <span style="color:#b44">&#34;curl/7.26.0&#34;</span> <span style="color:#b44">&#34;-&#34;</span>
+<span style="color:#666">10</span>.240.63.110 - - <span style="color:#666">[</span><span style="color:#666">14</span>/Jul/2015:01:09:02 +0000<span style="color:#666">]</span> <span style="color:#b44">&#34;GET / HTTP/1.1&#34;</span> <span style="color:#666">200</span> <span style="color:#666">612</span> <span style="color:#b44">&#34;-&#34;</span> <span style="color:#b44">&#34;curl/7.26.0&#34;</span> <span style="color:#b44">&#34;-&#34;</span></code></pre></div>
+<p>There is a slight difference between pods and containers; by default pods do not terminate if their processes exit. Instead the pods restart the process. This is similar to the docker run option <code>--restart=always</code> with one major difference. In docker, the output for each invocation of the process is concatenated, but for Kubernetes, each invocation is separate. To see the output from a previous run in Kubernetes, do this:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl logs --previous nginx-app-zibvs
+<span style="color:#666">10</span>.240.63.110 - - <span style="color:#666">[</span><span style="color:#666">14</span>/Jul/2015:01:09:01 +0000<span style="color:#666">]</span> <span style="color:#b44">&#34;GET / HTTP/1.1&#34;</span> <span style="color:#666">200</span> <span style="color:#666">612</span> <span style="color:#b44">&#34;-&#34;</span> <span style="color:#b44">&#34;curl/7.26.0&#34;</span> <span style="color:#b44">&#34;-&#34;</span>
+<span style="color:#666">10</span>.240.63.110 - - <span style="color:#666">[</span><span style="color:#666">14</span>/Jul/2015:01:09:02 +0000<span style="color:#666">]</span> <span style="color:#b44">&#34;GET / HTTP/1.1&#34;</span> <span style="color:#666">200</span> <span style="color:#666">612</span> <span style="color:#b44">&#34;-&#34;</span> <span style="color:#b44">&#34;curl/7.26.0&#34;</span> <span style="color:#b44">&#34;-&#34;</span></code></pre></div>
+<p>For more information, see <a href="/docs/concepts/cluster-administration/logging/">Logging Architecture</a>.</p>
+
+<h4 id="docker-stop-and-docker-rm">docker stop and docker rm</h4>
+
+<p>To stop and delete a running process, see <a href="/docs/reference/generated/kubectl/kubectl-commands/#delete">kubectl delete</a>.</p>
+
+<p>docker:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ docker ps
+CONTAINER ID        IMAGE               COMMAND                CREATED             STATUS              PORTS                         NAMES
+a9ec34d98787        nginx               <span style="color:#b44">&#34;nginx -g &#39;daemon of&#34;</span>  <span style="color:#666">22</span> hours ago        Up <span style="color:#666">22</span> hours         <span style="color:#666">0</span>.0.0.0:80-&gt;80/tcp, <span style="color:#666">443</span>/tcp   nginx-app
+
+$ docker stop a9ec34d98787
+a9ec34d98787
+
+$ docker rm a9ec34d98787
+a9ec34d98787</code></pre></div>
+<p>kubectl:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl get deployment nginx-app
+NAME        DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+nginx-app   <span style="color:#666">1</span>         <span style="color:#666">1</span>         <span style="color:#666">1</span>            <span style="color:#666">1</span>           2m
+
+$ kubectl get po -l <span style="color:#b8860b">run</span><span style="color:#666">=</span>nginx-app
+NAME                         READY     STATUS    RESTARTS   AGE
+nginx-app-2883164633-aklf7   <span style="color:#666">1</span>/1       Running   <span style="color:#666">0</span>          2m
+
+$ kubectl delete deployment nginx-app
+deployment <span style="color:#b44">&#34;nginx-app&#34;</span> deleted
+
+$ kubectl get po -l <span style="color:#b8860b">run</span><span style="color:#666">=</span>nginx-app
+# Return nothing</code></pre></div>
+<blockquote class="note">
+  <div><strong>Note:</strong> When you use kubectl, you don&rsquo;t delete the pod directly.You have to fiirst delete the Deployment that owns the pod. If you delete the pod directly, the Deployment recreates the pod.</div>
+</blockquote>
+
+
+<h4 id="docker-login">docker login</h4>
+
+<p>There is no direct analog of <code>docker login</code> in kubectl. If you are interested in using Kubernetes with a private registry, see <a href="/docs/concepts/containers/images/#using-a-private-registry">Using a Private Registry</a>.</p>
+
+<h4 id="docker-version">docker version</h4>
+
+<p>To get the version of client and server, see <a href="/docs/reference/generated/kubectl/kubectl-commands/#version">kubectl version</a>.</p>
+
+<p>docker:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ docker version
+Client version: <span style="color:#666">1</span>.7.0
+Client API version: <span style="color:#666">1</span>.19
+Go version <span style="color:#666">(</span>client<span style="color:#666">)</span>: go1.4.2
+Git commit <span style="color:#666">(</span>client<span style="color:#666">)</span>: 0baf609
+OS/Arch <span style="color:#666">(</span>client<span style="color:#666">)</span>: linux/amd64
+Server version: <span style="color:#666">1</span>.7.0
+Server API version: <span style="color:#666">1</span>.19
+Go version <span style="color:#666">(</span>server<span style="color:#666">)</span>: go1.4.2
+Git commit <span style="color:#666">(</span>server<span style="color:#666">)</span>: 0baf609
+OS/Arch <span style="color:#666">(</span>server<span style="color:#666">)</span>: linux/amd64</code></pre></div>
+<p>kubectl:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl version
+Client Version: version.Info<span style="color:#666">{</span>Major:<span style="color:#b44">&#34;1&#34;</span>, Minor:<span style="color:#b44">&#34;6&#34;</span>, GitVersion:<span style="color:#b44">&#34;v1.6.9+a3d1dfa6f4335&#34;</span>, GitCommit:<span style="color:#b44">&#34;9b77fed11a9843ce3780f70dd251e92901c43072&#34;</span>, GitTreeState:<span style="color:#b44">&#34;dirty&#34;</span>, BuildDate:<span style="color:#b44">&#34;2017-08-29T20:32:58Z&#34;</span>, OpenPaasKubernetesVersion:<span style="color:#b44">&#34;v1.03.02&#34;</span>, GoVersion:<span style="color:#b44">&#34;go1.7.5&#34;</span>, Compiler:<span style="color:#b44">&#34;gc&#34;</span>, Platform:<span style="color:#b44">&#34;linux/amd64&#34;</span><span style="color:#666">}</span>
+Server Version: version.Info<span style="color:#666">{</span>Major:<span style="color:#b44">&#34;1&#34;</span>, Minor:<span style="color:#b44">&#34;6&#34;</span>, GitVersion:<span style="color:#b44">&#34;v1.6.9+a3d1dfa6f4335&#34;</span>, GitCommit:<span style="color:#b44">&#34;9b77fed11a9843ce3780f70dd251e92901c43072&#34;</span>, GitTreeState:<span style="color:#b44">&#34;dirty&#34;</span>, BuildDate:<span style="color:#b44">&#34;2017-08-29T20:32:58Z&#34;</span>, OpenPaasKubernetesVersion:<span style="color:#b44">&#34;v1.03.02&#34;</span>, GoVersion:<span style="color:#b44">&#34;go1.7.5&#34;</span>, Compiler:<span style="color:#b44">&#34;gc&#34;</span>, Platform:<span style="color:#b44">&#34;linux/amd64&#34;</span><span style="color:#666">}</span></code></pre></div>
+<h4 id="docker-info">docker info</h4>
+
+<p>To get miscellaneous information about the environment and configuration, see <a href="/docs/reference/generated/kubectl/kubectl-commands/#cluster-info">kubectl cluster-info</a>.</p>
+
+<p>docker:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ docker info
+Containers: <span style="color:#666">40</span>
+Images: <span style="color:#666">168</span>
+Storage Driver: aufs
+ Root Dir: /usr/local/google/docker/aufs
+ Backing Filesystem: extfs
+ Dirs: <span style="color:#666">248</span>
+ Dirperm1 Supported: <span style="color:#a2f">false</span>
+Execution Driver: native-0.2
+Logging Driver: json-file
+Kernel Version: <span style="color:#666">3</span>.13.0-53-generic
+Operating System: Ubuntu <span style="color:#666">14</span>.04.2 LTS
+CPUs: <span style="color:#666">12</span>
+Total Memory: <span style="color:#666">31</span>.32 GiB
+Name: k8s-is-fun.mtv.corp.google.com
+ID: ADUV:GCYR:B3VJ:HMPO:LNPQ:KD5S:YKFQ:76VN:IANZ:7TFV:ZBF4:BYJO
+WARNING: No swap limit support</code></pre></div>
+<p>kubectl:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl cluster-info
+Kubernetes master is running at https://108.59.85.141
+KubeDNS is running at https://108.59.85.141/api/v1/namespaces/kube-system/services/kube-dns/proxy
+kubernetes-dashboard is running at https://108.59.85.141/api/v1/namespaces/kube-system/services/kubernetes-dashboard/proxy
+Grafana is running at https://108.59.85.141/api/v1/namespaces/kube-system/services/monitoring-grafana/proxy
+Heapster is running at https://108.59.85.141/api/v1/namespaces/kube-system/services/monitoring-heapster/proxy
+InfluxDB is running at https://108.59.85.141/api/v1/namespaces/kube-system/services/monitoring-influxdb/proxy</code></pre></div>
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/reference/kubectl/docker-cli-to-kubectl.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/reference\/kubectl\/docker-cli-to-kubectl\/",
+					"title" : "kubectl for Docker Users",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/reference\/kubectl\/docker-cli-to-kubectl\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/reference/kubectl/docker-cli-to-kubectl.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

@@ -1,0 +1,1948 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Accessing Clusters - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="Accessing Clusters" />
+<meta property="og:description" content="Accessing Clusters" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/tasks/access-application-cluster/access-cluster/" />
+<meta property="og:title" content="Accessing Clusters - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+
+
+
+
+<h1>Tasks</h1>
+<h5></h5>
+
+
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/" class="YAH">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Tasks" href="/docs/tasks/"></a>
+
+	
+	
+		
+		
+	<div class="item" data-title="Install Tools">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Install and Set Up kubectl" href="/docs/tasks/tools/install-kubectl/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Install Minikube" href="/docs/tasks/tools/install-minikube/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Installing kubeadm" href="/docs/tasks/tools/install-kubeadm/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Administer a Cluster">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+	<div class="item" data-title="Administration with kubeadm">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Upgrading kubeadm HA clusters from 1.9.x to 1.9.y" href="/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-ha/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Upgrading kubeadm clusters from 1.7 to 1.8" href="/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-1-8/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Upgrading kubeadm clusters from v1.10 to v1.11" href="/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-1-11/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Upgrading/downgrading kubeadm clusters between v1.8 to v1.9" href="/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-1-9/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Manage Memory, CPU, and API Resources">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Configure Default Memory Requests and Limits for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/memory-default-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Default CPU Requests and Limits for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/cpu-default-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Minimum and Maximum Memory Constraints for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/memory-constraint-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Minimum and Maximum CPU Constraints for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/cpu-constraint-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Memory and CPU Quotas for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/quota-memory-cpu-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod Quota for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/quota-pod-namespace/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Install a Network Policy Provider">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Use Calico for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/calico-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use Cilium for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/cilium-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use Kube-router for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/kube-router-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Romana for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/romana-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Weave Net for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/weave-network-policy/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Access Clusters Using the Kubernetes API" href="/docs/tasks/administer-cluster/access-cluster-api/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Access Services Running on Clusters" href="/docs/tasks/administer-cluster/access-cluster-services/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Advertise Extended Resources for a Node" href="/docs/tasks/administer-cluster/extended-resource-node/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Autoscale the DNS Service in a Cluster" href="/docs/tasks/administer-cluster/dns-horizontal-autoscaling/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Change the Reclaim Policy of a PersistentVolume" href="/docs/tasks/administer-cluster/change-pv-reclaim-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Change the default StorageClass" href="/docs/tasks/administer-cluster/change-default-storage-class/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Cluster Management" href="/docs/tasks/administer-cluster/cluster-management/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Multiple Schedulers" href="/docs/tasks/administer-cluster/configure-multiple-schedulers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Out Of Resource Handling" href="/docs/tasks/administer-cluster/out-of-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Quotas for API Objects" href="/docs/tasks/administer-cluster/quota-api-object/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Control CPU Management Policies on the Node" href="/docs/tasks/administer-cluster/cpu-management-policies/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Customizing DNS Service" href="/docs/tasks/administer-cluster/dns-custom-nameservers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debugging DNS Resolution" href="/docs/tasks/administer-cluster/dns-debugging-resolution/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Declare Network Policy" href="/docs/tasks/administer-cluster/declare-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Developing Cloud Controller Manager" href="/docs/tasks/administer-cluster/developing-cloud-controller-manager/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Encrypting Secret Data at Rest" href="/docs/tasks/administer-cluster/encrypt-data/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Guaranteed Scheduling For Critical Add-On Pods" href="/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="IP Masquerade Agent User Guide" href="/docs/tasks/administer-cluster/ip-masq-agent/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes Cloud Controller Manager" href="/docs/tasks/administer-cluster/running-cloud-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Limit Storage Consumption" href="/docs/tasks/administer-cluster/limit-storage-consumption/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Namespaces Walkthrough" href="/docs/tasks/administer-cluster/namespaces-walkthrough/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Operating etcd clusters for Kubernetes" href="/docs/tasks/administer-cluster/configure-upgrade-etcd/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Reconfigure a Node&#39;s Kubelet in a Live Cluster" href="/docs/tasks/administer-cluster/reconfigure-kubelet/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Reserve Compute Resources for System Daemons" href="/docs/tasks/administer-cluster/reserve-compute-resources/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Safely Drain a Node while Respecting Application SLOs" href="/docs/tasks/administer-cluster/safely-drain-node/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Securing a Cluster" href="/docs/tasks/administer-cluster/securing-a-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set Kubelet parameters via a config file" href="/docs/tasks/administer-cluster/kubelet-config-file/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up High-Availability Kubernetes Masters" href="/docs/tasks/administer-cluster/highly-available-master/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up a Highly Availabile etcd Cluster With kubeadm" href="/docs/tasks/administer-cluster/setup-ha-etcd-with-kubeadm/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Share a Cluster with Namespaces" href="/docs/tasks/administer-cluster/namespaces/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Static Pods" href="/docs/tasks/administer-cluster/static-pod/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Storage Object in Use Protection" href="/docs/tasks/administer-cluster/storage-object-in-use-protection/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using CoreDNS for Service Discovery" href="/docs/tasks/administer-cluster/coredns/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using a KMS provider for data encryption" href="/docs/tasks/administer-cluster/kms-provider/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using sysctls in a Kubernetes Cluster" href="/docs/tasks/administer-cluster/sysctl-cluster/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Configure Pods and Containers">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Assign Memory Resources to Containers and Pods" href="/docs/tasks/configure-pod-container/assign-memory-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Assign CPU Resources to Containers and Pods" href="/docs/tasks/configure-pod-container/assign-cpu-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Quality of Service for Pods" href="/docs/tasks/configure-pod-container/quality-service-pod/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Assign Extended Resources to a Container" href="/docs/tasks/configure-pod-container/extended-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod to Use a Volume for Storage" href="/docs/tasks/configure-pod-container/configure-volume-storage/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod to Use a PersistentVolume for Storage" href="/docs/tasks/configure-pod-container/configure-persistent-volume-storage/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod to Use a Projected Volume for Storage" href="/docs/tasks/configure-pod-container/configure-projected-volume-storage/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Security Context for a Pod or Container" href="/docs/tasks/configure-pod-container/security-context/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Service Accounts for Pods" href="/docs/tasks/configure-pod-container/configure-service-account/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pull an Image from a Private Registry" href="/docs/tasks/configure-pod-container/pull-image-private-registry/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Liveness and Readiness Probes" href="/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Assign Pods to Nodes" href="/docs/tasks/configure-pod-container/assign-pods-nodes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Pod Initialization" href="/docs/tasks/configure-pod-container/configure-pod-initialization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Attach Handlers to Container Lifecycle Events" href="/docs/tasks/configure-pod-container/attach-handler-lifecycle-event/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod to Use a ConfigMap" href="/docs/tasks/configure-pod-container/configure-pod-configmap/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Share Process Namespace between Containers in a Pod" href="/docs/tasks/configure-pod-container/share-process-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Translate a Docker Compose File to Kubernetes Resources" href="/docs/tasks/configure-pod-container/translate-compose-kubernetes/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Inject Data Into Applications">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Define a Command and Arguments for a Container" href="/docs/tasks/inject-data-application/define-command-argument-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Define Environment Variables for a Container" href="/docs/tasks/inject-data-application/define-environment-variable-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Expose Pod Information to Containers Through Environment Variables" href="/docs/tasks/inject-data-application/environment-variable-expose-pod-information/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Expose Pod Information to Containers Through Files" href="/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Distribute Credentials Securely Using Secrets" href="/docs/tasks/inject-data-application/distribute-credentials-secure/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Inject Information into Pods Using a PodPreset" href="/docs/tasks/inject-data-application/podpreset/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Run Applications">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Run a Stateless Application Using a Deployment" href="/docs/tasks/run-application/run-stateless-application-deployment/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Run a Single-Instance Stateful Application" href="/docs/tasks/run-application/run-single-instance-stateful-application/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Run a Replicated Stateful Application" href="/docs/tasks/run-application/run-replicated-stateful-application/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Update API Objects in Place Using kubectl patch" href="/docs/tasks/run-application/update-api-object-kubectl-patch/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Scale a StatefulSet" href="/docs/tasks/run-application/scale-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Delete a StatefulSet" href="/docs/tasks/run-application/delete-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Force Delete StatefulSet Pods" href="/docs/tasks/run-application/force-delete-stateful-set-pod/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Perform Rolling Update Using a Replication Controller" href="/docs/tasks/run-application/rolling-update-replication-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Horizontal Pod Autoscaler" href="/docs/tasks/run-application/horizontal-pod-autoscale/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Horizontal Pod Autoscaler Walkthrough" href="/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Specifying a Disruption Budget for your Application" href="/docs/tasks/run-application/configure-pdb/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Run Jobs">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Running automated tasks with cron jobs" href="/docs/tasks/job/automated-tasks-with-cron-jobs/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Parallel Processing using Expansions" href="/docs/tasks/job/parallel-processing-expansion/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Coarse Parallel Processing Using a Work Queue" href="/docs/tasks/job/coarse-parallel-processing-work-queue/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Fine Parallel Processing Using a Work Queue" href="/docs/tasks/job/fine-parallel-processing-work-queue/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Access Applications in a Cluster">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Web UI (Dashboard)" href="/docs/tasks/access-application-cluster/web-ui-dashboard/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Accessing Clusters" href="/docs/tasks/access-application-cluster/access-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Access to Multiple Clusters" href="/docs/tasks/access-application-cluster/configure-access-multiple-clusters/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use Port Forwarding to Access Applications in a Cluster" href="/docs/tasks/access-application-cluster/port-forward-access-application-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Provide Load-Balanced Access to an Application in a Cluster" href="/docs/tasks/access-application-cluster/load-balance-access-application-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use a Service to Access an Application in a Cluster" href="/docs/tasks/access-application-cluster/service-access-application-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Connect a Front End to a Back End Using a Service" href="/docs/tasks/access-application-cluster/connecting-frontend-backend/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Create an External Load Balancer" href="/docs/tasks/access-application-cluster/create-external-load-balancer/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Your Cloud Provider&#39;s Firewalls" href="/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="List All Container Images Running in a Cluster" href="/docs/tasks/access-application-cluster/list-all-running-container-images/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Communicate Between Containers in the Same Pod Using a Shared Volume" href="/docs/tasks/access-application-cluster/communicate-containers-same-pod-shared-volume/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure DNS for a Cluster" href="/docs/tasks/access-application-cluster/configure-dns-cluster/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Monitor, Log, and Debug">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Application Introspection and Debugging" href="/docs/tasks/debug-application-cluster/debug-application-introspection/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Auditing" href="/docs/tasks/debug-application-cluster/audit/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Core metrics pipeline" href="/docs/tasks/debug-application-cluster/core-metrics-pipeline/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debug Init Containers" href="/docs/tasks/debug-application-cluster/debug-init-containers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debug Pods and Replication Controllers" href="/docs/tasks/debug-application-cluster/debug-pod-replication-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debug Services" href="/docs/tasks/debug-application-cluster/debug-service/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debug a StatefulSet" href="/docs/tasks/debug-application-cluster/debug-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debugging Kubernetes nodes with crictl" href="/docs/tasks/debug-application-cluster/crictl/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Determine the Reason for Pod Failure" href="/docs/tasks/debug-application-cluster/determine-reason-pod-failure/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Developing and debugging services locally" href="/docs/tasks/debug-application-cluster/local-debugging/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Events in Stackdriver" href="/docs/tasks/debug-application-cluster/events-stackdriver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Get a Shell to a Running Container" href="/docs/tasks/debug-application-cluster/get-shell-running-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Logging Using Elasticsearch and Kibana" href="/docs/tasks/debug-application-cluster/logging-elasticsearch-kibana/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Logging Using Stackdriver" href="/docs/tasks/debug-application-cluster/logging-stackdriver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Monitor Node Health" href="/docs/tasks/debug-application-cluster/monitor-node-health/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Tools for Monitoring Compute, Storage, and Network Resources" href="/docs/tasks/debug-application-cluster/resource-usage-monitoring/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Troubleshoot Applications" href="/docs/tasks/debug-application-cluster/debug-application/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Troubleshoot Clusters" href="/docs/tasks/debug-application-cluster/debug-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Troubleshooting" href="/docs/tasks/debug-application-cluster/troubleshooting/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Extend Kubernetes">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Configure the aggregation layer" href="/docs/tasks/access-kubernetes-api/configure-aggregation-layer/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Use Custom Resources">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Extend the Kubernetes API with CustomResourceDefinitions" href="/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Versions of CustomResourceDefinitions" href="/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definition-versioning/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Migrate a ThirdPartyResource to CustomResourceDefinition" href="/docs/tasks/access-kubernetes-api/custom-resources/migrate-third-party-resource/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Setup an extension API server" href="/docs/tasks/access-kubernetes-api/setup-extension-api-server/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use an HTTP Proxy to Access the Kubernetes API" href="/docs/tasks/access-kubernetes-api/http-proxy-access-api/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="TLS">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Certificate Rotation" href="/docs/tasks/tls/certificate-rotation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Manage TLS Certificates in a Cluster" href="/docs/tasks/tls/managing-tls-in-a-cluster/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Federation - Run an App on Multiple Clusters">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Cross-cluster Service Discovery using Federated Services" href="/docs/tasks/federation/federation-service-discovery/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up Cluster Federation with Kubefed" href="/docs/tasks/federation/set-up-cluster-federation-kubefed/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up CoreDNS as DNS provider for Cluster Federation" href="/docs/tasks/federation/set-up-coredns-provider-federation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up placement policies in Federation" href="/docs/tasks/federation/set-up-placement-policies-federation/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Manage Cluster Daemons">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Perform a Rolling Update on a DaemonSet" href="/docs/tasks/manage-daemon/update-daemon-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Performing a Rollback on a DaemonSet" href="/docs/tasks/manage-daemon/rollback-daemon-set/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Install Service Catalog">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Install Service Catalog using Helm" href="/docs/tasks/service-catalog/install-service-catalog-using-helm/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Install Service Catalog using SC" href="/docs/tasks/service-catalog/install-service-catalog-using-sc/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Federation - Run an App on Multiple Clusters">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Federated Cluster" href="/docs/tasks/administer-federation/cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated ConfigMap" href="/docs/tasks/administer-federation/configmap/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated DaemonSet" href="/docs/tasks/administer-federation/daemonset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Deployment" href="/docs/tasks/administer-federation/deployment/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Events" href="/docs/tasks/administer-federation/events/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Horizontal Pod Autoscalers (HPA)" href="/docs/tasks/administer-federation/hpa/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Ingress" href="/docs/tasks/administer-federation/ingress/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Jobs" href="/docs/tasks/administer-federation/job/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Namespaces" href="/docs/tasks/administer-federation/namespaces/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated ReplicaSets" href="/docs/tasks/administer-federation/replicaset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Secrets" href="/docs/tasks/administer-federation/secret/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Extend kubectl with plugins" href="/docs/tasks/extend-kubectl/kubectl-plugins/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Manage HugePages" href="/docs/tasks/manage-hugepages/scheduling-hugepages/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Schedule GPUs" href="/docs/tasks/manage-gpus/scheduling-gpus/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/tasks/access-application-cluster/access-cluster.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>Accessing Clusters</h1>
+
+
+
+<p>This topic discusses multiple ways to interact with clusters.</p>
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+<li><a href="#accessing-for-the-first-time-with-kubectl">Accessing for the first time with kubectl</a></li>
+
+
+
+
+<li><a href="#directly-accessing-the-rest-api">Directly accessing the REST API</a></li>
+
+
+
+
+<li><a href="#programmatic-access-to-the-api">Programmatic access to the API</a></li>
+
+
+
+
+<li><a href="#accessing-the-api-from-a-pod">Accessing the API from a Pod</a></li>
+
+
+
+
+<li><a href="#accessing-services-running-on-the-cluster">Accessing services running on the cluster</a></li>
+
+
+
+
+<li><a href="#requesting-redirects">Requesting redirects</a></li>
+
+
+
+
+<li><a href="#so-many-proxies">So Many Proxies</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</ul>
+
+
+<h2 id="accessing-for-the-first-time-with-kubectl">Accessing for the first time with kubectl</h2>
+
+<p>When accessing the Kubernetes API for the first time, we suggest using the
+Kubernetes CLI, <code>kubectl</code>.</p>
+
+<p>To access a cluster, you need to know the location of the cluster and have credentials
+to access it.  Typically, this is automatically set-up when you work through
+a <a href="/docs/setup/">Getting started guide</a>,
+or someone else setup the cluster and provided you with credentials and a location.</p>
+
+<p>Check the location and credentials that kubectl knows about with this command:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl config view</code></pre></div>
+<p>Many of the <a href="/docs/user-guide/kubectl-cheatsheet">examples</a> provide an introduction to using
+kubectl and complete documentation is found in the <a href="/docs/user-guide/kubectl-overview">kubectl manual</a>.</p>
+
+<h2 id="directly-accessing-the-rest-api">Directly accessing the REST API</h2>
+
+<p>Kubectl handles locating and authenticating to the apiserver.
+If you want to directly access the REST API with an http client like
+curl or wget, or a browser, there are several ways to locate and authenticate:</p>
+
+<ul>
+<li>Run kubectl in proxy mode.
+
+<ul>
+<li>Recommended approach.</li>
+<li>Uses stored apiserver location.</li>
+<li>Verifies identity of apiserver using self-signed cert.  No MITM possible.</li>
+<li>Authenticates to apiserver.</li>
+<li>In future, may do intelligent client-side load-balancing and failover.</li>
+</ul></li>
+<li>Provide the location and credentials directly to the http client.
+
+<ul>
+<li>Alternate approach.</li>
+<li>Works with some types of client code that are confused by using a proxy.</li>
+<li>Need to import a root cert into your browser to protect against MITM.</li>
+</ul></li>
+</ul>
+
+<h3 id="using-kubectl-proxy">Using kubectl proxy</h3>
+
+<p>The following command runs kubectl in a mode where it acts as a reverse proxy.  It handles
+locating the apiserver and authenticating.
+Run it like this:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl proxy --port<span style="color:#666">=</span><span style="color:#666">8080</span> &amp;</code></pre></div>
+<p>See <a href="/docs/reference/generated/kubectl/kubectl-commands/#proxy">kubectl proxy</a> for more details.</p>
+
+<p>Then you can explore the API with curl, wget, or a browser, replacing localhost
+with [::1] for IPv6, like so:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ curl http://localhost:8080/api/
+<span style="color:#666">{</span>
+  <span style="color:#b44">&#34;versions&#34;</span>: <span style="color:#666">[</span>
+    <span style="color:#b44">&#34;v1&#34;</span>
+  <span style="color:#666">]</span>
+<span style="color:#666">}</span></code></pre></div>
+<h3 id="without-kubectl-proxy">Without kubectl proxy</h3>
+
+<p>In Kubernetes version 1.3 or later, <code>kubectl config view</code> no longer displays the token. Use <code>kubectl describe secret...</code> to get the token for the default service account, like this:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ <span style="color:#b8860b">APISERVER</span><span style="color:#666">=</span><span style="color:#a2f;font-weight:bold">$(</span>kubectl config view | grep server | cut -f <span style="color:#666">2</span>- -d <span style="color:#b44">&#34;:&#34;</span> | tr -d <span style="color:#b44">&#34; &#34;</span><span style="color:#a2f;font-weight:bold">)</span>
+$ <span style="color:#b8860b">TOKEN</span><span style="color:#666">=</span><span style="color:#a2f;font-weight:bold">$(</span>kubectl describe secret <span style="color:#a2f;font-weight:bold">$(</span>kubectl get secrets | grep default | cut -f1 -d <span style="color:#b44">&#39; &#39;</span><span style="color:#a2f;font-weight:bold">)</span> | grep -E <span style="color:#b44">&#39;^token&#39;</span> | cut -f2 -d<span style="color:#b44">&#39;:&#39;</span> | tr -d <span style="color:#b44">&#39;\t&#39;</span><span style="color:#a2f;font-weight:bold">)</span>
+$ curl <span style="color:#b8860b">$APISERVER</span>/api --header <span style="color:#b44">&#34;Authorization: Bearer </span><span style="color:#b8860b">$TOKEN</span><span style="color:#b44">&#34;</span> --insecure
+<span style="color:#666">{</span>
+  <span style="color:#b44">&#34;kind&#34;</span>: <span style="color:#b44">&#34;APIVersions&#34;</span>,
+  <span style="color:#b44">&#34;versions&#34;</span>: <span style="color:#666">[</span>
+    <span style="color:#b44">&#34;v1&#34;</span>
+  <span style="color:#666">]</span>,
+  <span style="color:#b44">&#34;serverAddressByClientCIDRs&#34;</span>: <span style="color:#666">[</span>
+    <span style="color:#666">{</span>
+      <span style="color:#b44">&#34;clientCIDR&#34;</span>: <span style="color:#b44">&#34;0.0.0.0/0&#34;</span>,
+      <span style="color:#b44">&#34;serverAddress&#34;</span>: <span style="color:#b44">&#34;10.0.1.149:443&#34;</span>
+    <span style="color:#666">}</span>
+  <span style="color:#666">]</span>
+<span style="color:#666">}</span></code></pre></div>
+<p>The above examples use the <code>--insecure</code> flag.  This leaves it subject to MITM
+attacks.  When kubectl accesses the cluster it uses a stored root certificate
+and client certificates to access the server.  (These are installed in the
+<code>~/.kube</code> directory).  Since cluster certificates are typically self-signed, it
+may take special configuration to get your http client to use root
+certificate.</p>
+
+<p>On some clusters, the apiserver does not require authentication; it may serve
+on localhost, or be protected by a firewall.  There is not a standard
+for this.  <a href="/docs/admin/accessing-the-api">Configuring Access to the API</a>
+describes how a cluster admin can configure this.  Such approaches may conflict
+with future high-availability support.</p>
+
+<h2 id="programmatic-access-to-the-api">Programmatic access to the API</h2>
+
+<p>Kubernetes officially supports <a href="#go-client">Go</a> and <a href="#python-client">Python</a>
+client libraries.</p>
+
+<h3 id="go-client">Go client</h3>
+
+<ul>
+<li>To get the library, run the following command: <code>go get k8s.io/client-go/&lt;version number&gt;/kubernetes</code>. See <a href="https://github.com/kubernetes/client-go" target="_blank">https://github.com/kubernetes/client-go</a> to see which versions are supported.</li>
+<li>Write an application atop of the client-go clients. Note that client-go defines its own API objects, so if needed, please import API definitions from client-go rather than from the main repository, e.g., <code>import &quot;k8s.io/client-go/1.4/pkg/api/v1&quot;</code> is correct.</li>
+</ul>
+
+<p>The Go client can use the same <a href="/docs/concepts/cluster-administration/authenticate-across-clusters-kubeconfig/">kubeconfig file</a>
+as the kubectl CLI does to locate and authenticate to the apiserver. See this <a href="https://git.k8s.io/client-go/examples/out-of-cluster-client-configuration/main.go" target="_blank">example</a>.</p>
+
+<p>If the application is deployed as a Pod in the cluster, please refer to the <a href="#accessing-the-api-from-a-pod">next section</a>.</p>
+
+<h3 id="python-client">Python client</h3>
+
+<p>To use <a href="https://github.com/kubernetes-client/python" target="_blank">Python client</a>, run the following command: <code>pip install kubernetes</code>. See <a href="https://github.com/kubernetes-client/python" target="_blank">Python Client Library page</a> for more installation options.</p>
+
+<p>The Python client can use the same <a href="/docs/concepts/cluster-administration/authenticate-across-clusters-kubeconfig/">kubeconfig file</a>
+as the kubectl CLI does to locate and authenticate to the apiserver. See this <a href="https://github.com/kubernetes-client/python/tree/master/examples/example1.py" target="_blank">example</a>.</p>
+
+<h3 id="other-languages">Other languages</h3>
+
+<p>There are <a href="/docs/reference/using-api/client-libraries/">client libraries</a> for accessing the API from other languages.
+See documentation for other libraries for how they authenticate.</p>
+
+<h2 id="accessing-the-api-from-a-pod">Accessing the API from a Pod</h2>
+
+<p>When accessing the API from a pod, locating and authenticating
+to the apiserver are somewhat different.</p>
+
+<p>The recommended way to locate the apiserver within the pod is with
+the <code>kubernetes.default.svc</code> DNS name, which resolves to a Service IP which in turn
+will be routed to an apiserver.</p>
+
+<p>The recommended way to authenticate to the apiserver is with a
+<a href="/docs/tasks/configure-pod-container/configure-service-account/">service account</a> credential. By kube-system, a pod
+is associated with a service account, and a credential (token) for that
+service account is placed into the filesystem tree of each container in that pod,
+at <code>/var/run/secrets/kubernetes.io/serviceaccount/token</code>.</p>
+
+<p>If available, a certificate bundle is placed into the filesystem tree of each
+container at <code>/var/run/secrets/kubernetes.io/serviceaccount/ca.crt</code>, and should be
+used to verify the serving certificate of the apiserver.</p>
+
+<p>Finally, the default namespace to be used for namespaced API operations is placed in a file
+at <code>/var/run/secrets/kubernetes.io/serviceaccount/namespace</code> in each container.</p>
+
+<p>From within a pod the recommended ways to connect to API are:</p>
+
+<ul>
+<li>run <code>kubectl proxy</code> in a sidecar container in the pod, or as a background
+process within the container. This proxies the
+Kubernetes API to the localhost interface of the pod, so that other processes
+in any container of the pod can access it.</li>
+<li>use the Go client library, and create a client using the <code>rest.InClusterConfig()</code> and <code>kubernetes.NewForConfig()</code> functions.
+They handle locating and authenticating to the apiserver. <a href="https://git.k8s.io/client-go/examples/in-cluster-client-configuration/main.go" target="_blank">example</a></li>
+</ul>
+
+<p>In each case, the credentials of the pod are used to communicate securely with the apiserver.</p>
+
+<h2 id="accessing-services-running-on-the-cluster">Accessing services running on the cluster</h2>
+
+<p>The previous section was about connecting the Kubernetes API server.  This section is about
+connecting to other services running on Kubernetes cluster.  In Kubernetes, the
+<a href="/docs/admin/node">nodes</a>, <a href="/docs/user-guide/pods">pods</a> and <a href="/docs/user-guide/services">services</a> all have
+their own IPs.  In many cases, the node IPs, pod IPs, and some service IPs on a cluster will not be
+routable, so they will not be reachable from a machine outside the cluster,
+such as your desktop machine.</p>
+
+<h3 id="ways-to-connect">Ways to connect</h3>
+
+<p>You have several options for connecting to nodes, pods and services from outside the cluster:</p>
+
+<ul>
+<li>Access services through public IPs.
+
+<ul>
+<li>Use a service with type <code>NodePort</code> or <code>LoadBalancer</code> to make the service reachable outside
+the cluster.  See the <a href="/docs/user-guide/services">services</a> and
+<a href="/docs/reference/generated/kubectl/kubectl-commands/#expose">kubectl expose</a> documentation.</li>
+<li>Depending on your cluster environment, this may just expose the service to your corporate network,
+or it may expose it to the internet.  Think about whether the service being exposed is secure.
+Does it do its own authentication?</li>
+<li>Place pods behind services.  To access one specific pod from a set of replicas, such as for debugging,
+place a unique label on the pod and create a new service which selects this label.</li>
+<li>In most cases, it should not be necessary for application developer to directly access
+nodes via their nodeIPs.</li>
+</ul></li>
+<li>Access services, nodes, or pods using the Proxy Verb.
+
+<ul>
+<li>Does apiserver authentication and authorization prior to accessing the remote service.
+Use this if the services are not secure enough to expose to the internet, or to gain
+access to ports on the node IP, or for debugging.</li>
+<li>Proxies may cause problems for some web applications.</li>
+<li>Only works for HTTP/HTTPS.</li>
+<li>Described <a href="#manually-constructing-apiserver-proxy-urls">here</a>.</li>
+</ul></li>
+<li>Access from a node or pod in the cluster.
+
+<ul>
+<li>Run a pod, and then connect to a shell in it using <a href="/docs/reference/generated/kubectl/kubectl-commands/#exec">kubectl exec</a>.
+Connect to other nodes, pods, and services from that shell.</li>
+<li>Some clusters may allow you to ssh to a node in the cluster.  From there you may be able to
+access cluster services.  This is a non-standard method, and will work on some clusters but
+not others.  Browsers and other tools may or may not be installed.  Cluster DNS may not work.</li>
+</ul></li>
+</ul>
+
+<h3 id="discovering-builtin-services">Discovering builtin services</h3>
+
+<p>Typically, there are several services which are started on a cluster by kube-system. Get a list of these
+with the <code>kubectl cluster-info</code> command:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl cluster-info
+
+  Kubernetes master is running at https://104.197.5.247
+  elasticsearch-logging is running at https://104.197.5.247/api/v1/namespaces/kube-system/services/elasticsearch-logging/proxy
+  kibana-logging is running at https://104.197.5.247/api/v1/namespaces/kube-system/services/kibana-logging/proxy
+  kube-dns is running at https://104.197.5.247/api/v1/namespaces/kube-system/services/kube-dns/proxy
+  grafana is running at https://104.197.5.247/api/v1/namespaces/kube-system/services/monitoring-grafana/proxy
+  heapster is running at https://104.197.5.247/api/v1/namespaces/kube-system/services/monitoring-heapster/proxy</code></pre></div>
+<p>This shows the proxy-verb URL for accessing each service.
+For example, this cluster has cluster-level logging enabled (using Elasticsearch), which can be reached
+at <code>https://104.197.5.247/api/v1/namespaces/kube-system/services/elasticsearch-logging/proxy/</code> if suitable credentials are passed.  Logging can also be reached through a kubectl proxy, for example at:
+<code>http://localhost:8080/api/v1/namespaces/kube-system/services/elasticsearch-logging/proxy/</code>.
+(See <a href="#accessing-the-cluster-api">above</a> for how to pass credentials or use kubectl proxy.)</p>
+
+<h4 id="manually-constructing-apiserver-proxy-urls">Manually constructing apiserver proxy URLs</h4>
+
+<p>As mentioned above, you use the <code>kubectl cluster-info</code> command to retrieve the service&rsquo;s proxy URL. To create proxy URLs that include service endpoints, suffixes, and parameters, you simply append to the service&rsquo;s proxy URL:
+<code>http://</code><em><code>kubernetes_master_address</code></em><code>/api/v1/namespaces/</code><em><code>namespace_name</code></em><code>/services/</code><em><code>service_name[:port_name]</code></em><code>/proxy</code></p>
+
+<p>If you haven&rsquo;t specified a name for your port, you don&rsquo;t have to specify <em>port_name</em> in the URL.</p>
+
+<p>By default, the API server proxies to your service using http. To use https, prefix the service name with <code>https:</code>:
+<code>http://</code><em><code>kubernetes_master_address</code></em><code>/api/v1/namespaces/</code><em><code>namespace_name</code></em><code>/services/</code><em><code>https:service_name:[port_name]</code></em><code>/proxy</code></p>
+
+<p>The supported formats for the name segment of the URL are:</p>
+
+<ul>
+<li><code>&lt;service_name&gt;</code> - proxies to the default or unnamed port using http</li>
+<li><code>&lt;service_name&gt;:&lt;port_name&gt;</code> - proxies to the specified port using http</li>
+<li><code>https:&lt;service_name&gt;:</code> - proxies to the default or unnamed port using https (note the trailing colon)</li>
+<li><code>https:&lt;service_name&gt;:&lt;port_name&gt;</code> - proxies to the specified port using https</li>
+</ul>
+
+<h5 id="examples">Examples</h5>
+
+<ul>
+<li>To access the Elasticsearch service endpoint <code>_search?q=user:kimchy</code>, you would use:   <code>http://104.197.5.247/api/v1/namespaces/kube-system/services/elasticsearch-logging/proxy/_search?q=user:kimchy</code></li>
+<li>To access the Elasticsearch cluster health information <code>_cluster/health?pretty=true</code>, you would use:   <code>https://104.197.5.247/api/v1/namespaces/kube-system/services/elasticsearch-logging/proxy/_cluster/health?pretty=true</code></li>
+</ul>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">  {
+    <span style="color:#008000;font-weight:bold">&#34;cluster_name&#34;</span> : <span style="color:#b44">&#34;kubernetes_logging&#34;</span>,
+    <span style="color:#008000;font-weight:bold">&#34;status&#34;</span> : <span style="color:#b44">&#34;yellow&#34;</span>,
+    <span style="color:#008000;font-weight:bold">&#34;timed_out&#34;</span> : <span style="color:#a2f;font-weight:bold">false</span>,
+    <span style="color:#008000;font-weight:bold">&#34;number_of_nodes&#34;</span> : <span style="color:#666">1</span>,
+    <span style="color:#008000;font-weight:bold">&#34;number_of_data_nodes&#34;</span> : <span style="color:#666">1</span>,
+    <span style="color:#008000;font-weight:bold">&#34;active_primary_shards&#34;</span> : <span style="color:#666">5</span>,
+    <span style="color:#008000;font-weight:bold">&#34;active_shards&#34;</span> : <span style="color:#666">5</span>,
+    <span style="color:#008000;font-weight:bold">&#34;relocating_shards&#34;</span> : <span style="color:#666">0</span>,
+    <span style="color:#008000;font-weight:bold">&#34;initializing_shards&#34;</span> : <span style="color:#666">0</span>,
+    <span style="color:#008000;font-weight:bold">&#34;unassigned_shards&#34;</span> : <span style="color:#666">5</span>
+  }</code></pre></div>
+<h3 id="using-web-browsers-to-access-services-running-on-the-cluster">Using web browsers to access services running on the cluster</h3>
+
+<p>You may be able to put an apiserver proxy url into the address bar of a browser. However:</p>
+
+<ul>
+<li>Web browsers cannot usually pass tokens, so you may need to use basic (password) auth.  Apiserver can be configured to accept basic auth,
+but your cluster may not be configured to accept basic auth.</li>
+<li>Some web apps may not work, particularly those with client side javascript that construct urls in a
+way that is unaware of the proxy path prefix.</li>
+</ul>
+
+<h2 id="requesting-redirects">Requesting redirects</h2>
+
+<p>The redirect capabilities have been deprecated and removed.  Please use a proxy (see below) instead.</p>
+
+<h2 id="so-many-proxies">So Many Proxies</h2>
+
+<p>There are several different proxies you may encounter when using Kubernetes:</p>
+
+<ol>
+<li><p>The <a href="#directly-accessing-the-rest-api">kubectl proxy</a>:</p>
+
+<ul>
+<li>runs on a user&rsquo;s desktop or in a pod</li>
+<li>proxies from a localhost address to the Kubernetes apiserver</li>
+<li>client to proxy uses HTTP</li>
+<li>proxy to apiserver uses HTTPS</li>
+<li>locates apiserver</li>
+<li>adds authentication headers
+<br /></li>
+</ul></li>
+
+<li><p>The <a href="#discovering-builtin-services">apiserver proxy</a>:</p>
+
+<ul>
+<li>is a bastion built into the apiserver</li>
+<li>connects a user outside of the cluster to cluster IPs which otherwise might not be reachable</li>
+<li>runs in the apiserver processes</li>
+<li>client to proxy uses HTTPS (or http if apiserver so configured)</li>
+<li>proxy to target may use HTTP or HTTPS as chosen by proxy using available information</li>
+<li>can be used to reach a Node, Pod, or Service</li>
+<li>does load balancing when used to reach a Service
+<br /></li>
+</ul></li>
+
+<li><p>The <a href="/docs/concepts/services-networking/service/#ips-and-vips">kube proxy</a>:</p>
+
+<ul>
+<li>runs on each node</li>
+<li>proxies UDP and TCP</li>
+<li>does not understand HTTP</li>
+<li>provides load balancing</li>
+<li>is just used to reach services
+<br /></li>
+</ul></li>
+
+<li><p>A Proxy/Load-balancer in front of apiserver(s):</p>
+
+<ul>
+<li>existence and implementation varies from cluster to cluster (e.g. nginx)</li>
+<li>sits between all clients and one or more apiservers</li>
+<li>acts as load balancer if there are several apiservers.
+<br /></li>
+</ul></li>
+
+<li><p>Cloud Load Balancers on external services:</p>
+
+<ul>
+<li>are provided by some cloud providers (e.g. AWS ELB, Google Cloud Load Balancer)</li>
+<li>are created automatically when the Kubernetes service has type <code>LoadBalancer</code></li>
+<li>use UDP/TCP only</li>
+<li>implementation varies by cloud provider.</li>
+</ul></li>
+</ol>
+
+<p>Kubernetes users will typically not need to worry about anything other than the first two types.  The cluster admin
+will typically ensure that the latter types are setup correctly.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/tasks/access-application-cluster/access-cluster.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/tasks\/access-application-cluster\/access-cluster\/",
+					"title" : "Accessing Clusters",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/tasks\/access-application-cluster\/access-cluster\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/tasks/access-application-cluster/access-cluster.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

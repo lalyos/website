@@ -1,0 +1,2123 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Auditing - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="Auditing" />
+<meta property="og:description" content="Auditing" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/tasks/debug-application-cluster/audit/" />
+<meta property="og:title" content="Auditing - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+
+
+
+
+<h1>Tasks</h1>
+<h5></h5>
+
+
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/" class="YAH">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Tasks" href="/docs/tasks/"></a>
+
+	
+	
+		
+		
+	<div class="item" data-title="Install Tools">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Install and Set Up kubectl" href="/docs/tasks/tools/install-kubectl/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Install Minikube" href="/docs/tasks/tools/install-minikube/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Installing kubeadm" href="/docs/tasks/tools/install-kubeadm/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Administer a Cluster">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+	<div class="item" data-title="Administration with kubeadm">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Upgrading kubeadm HA clusters from 1.9.x to 1.9.y" href="/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-ha/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Upgrading kubeadm clusters from 1.7 to 1.8" href="/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-1-8/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Upgrading kubeadm clusters from v1.10 to v1.11" href="/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-1-11/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Upgrading/downgrading kubeadm clusters between v1.8 to v1.9" href="/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-1-9/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Manage Memory, CPU, and API Resources">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Configure Default Memory Requests and Limits for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/memory-default-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Default CPU Requests and Limits for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/cpu-default-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Minimum and Maximum Memory Constraints for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/memory-constraint-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Minimum and Maximum CPU Constraints for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/cpu-constraint-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Memory and CPU Quotas for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/quota-memory-cpu-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod Quota for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/quota-pod-namespace/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Install a Network Policy Provider">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Use Calico for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/calico-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use Cilium for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/cilium-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use Kube-router for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/kube-router-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Romana for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/romana-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Weave Net for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/weave-network-policy/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Access Clusters Using the Kubernetes API" href="/docs/tasks/administer-cluster/access-cluster-api/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Access Services Running on Clusters" href="/docs/tasks/administer-cluster/access-cluster-services/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Advertise Extended Resources for a Node" href="/docs/tasks/administer-cluster/extended-resource-node/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Autoscale the DNS Service in a Cluster" href="/docs/tasks/administer-cluster/dns-horizontal-autoscaling/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Change the Reclaim Policy of a PersistentVolume" href="/docs/tasks/administer-cluster/change-pv-reclaim-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Change the default StorageClass" href="/docs/tasks/administer-cluster/change-default-storage-class/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Cluster Management" href="/docs/tasks/administer-cluster/cluster-management/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Multiple Schedulers" href="/docs/tasks/administer-cluster/configure-multiple-schedulers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Out Of Resource Handling" href="/docs/tasks/administer-cluster/out-of-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Quotas for API Objects" href="/docs/tasks/administer-cluster/quota-api-object/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Control CPU Management Policies on the Node" href="/docs/tasks/administer-cluster/cpu-management-policies/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Customizing DNS Service" href="/docs/tasks/administer-cluster/dns-custom-nameservers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debugging DNS Resolution" href="/docs/tasks/administer-cluster/dns-debugging-resolution/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Declare Network Policy" href="/docs/tasks/administer-cluster/declare-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Developing Cloud Controller Manager" href="/docs/tasks/administer-cluster/developing-cloud-controller-manager/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Encrypting Secret Data at Rest" href="/docs/tasks/administer-cluster/encrypt-data/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Guaranteed Scheduling For Critical Add-On Pods" href="/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="IP Masquerade Agent User Guide" href="/docs/tasks/administer-cluster/ip-masq-agent/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes Cloud Controller Manager" href="/docs/tasks/administer-cluster/running-cloud-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Limit Storage Consumption" href="/docs/tasks/administer-cluster/limit-storage-consumption/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Namespaces Walkthrough" href="/docs/tasks/administer-cluster/namespaces-walkthrough/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Operating etcd clusters for Kubernetes" href="/docs/tasks/administer-cluster/configure-upgrade-etcd/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Reconfigure a Node&#39;s Kubelet in a Live Cluster" href="/docs/tasks/administer-cluster/reconfigure-kubelet/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Reserve Compute Resources for System Daemons" href="/docs/tasks/administer-cluster/reserve-compute-resources/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Safely Drain a Node while Respecting Application SLOs" href="/docs/tasks/administer-cluster/safely-drain-node/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Securing a Cluster" href="/docs/tasks/administer-cluster/securing-a-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set Kubelet parameters via a config file" href="/docs/tasks/administer-cluster/kubelet-config-file/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up High-Availability Kubernetes Masters" href="/docs/tasks/administer-cluster/highly-available-master/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up a Highly Availabile etcd Cluster With kubeadm" href="/docs/tasks/administer-cluster/setup-ha-etcd-with-kubeadm/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Share a Cluster with Namespaces" href="/docs/tasks/administer-cluster/namespaces/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Static Pods" href="/docs/tasks/administer-cluster/static-pod/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Storage Object in Use Protection" href="/docs/tasks/administer-cluster/storage-object-in-use-protection/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using CoreDNS for Service Discovery" href="/docs/tasks/administer-cluster/coredns/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using a KMS provider for data encryption" href="/docs/tasks/administer-cluster/kms-provider/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using sysctls in a Kubernetes Cluster" href="/docs/tasks/administer-cluster/sysctl-cluster/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Configure Pods and Containers">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Assign Memory Resources to Containers and Pods" href="/docs/tasks/configure-pod-container/assign-memory-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Assign CPU Resources to Containers and Pods" href="/docs/tasks/configure-pod-container/assign-cpu-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Quality of Service for Pods" href="/docs/tasks/configure-pod-container/quality-service-pod/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Assign Extended Resources to a Container" href="/docs/tasks/configure-pod-container/extended-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod to Use a Volume for Storage" href="/docs/tasks/configure-pod-container/configure-volume-storage/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod to Use a PersistentVolume for Storage" href="/docs/tasks/configure-pod-container/configure-persistent-volume-storage/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod to Use a Projected Volume for Storage" href="/docs/tasks/configure-pod-container/configure-projected-volume-storage/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Security Context for a Pod or Container" href="/docs/tasks/configure-pod-container/security-context/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Service Accounts for Pods" href="/docs/tasks/configure-pod-container/configure-service-account/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pull an Image from a Private Registry" href="/docs/tasks/configure-pod-container/pull-image-private-registry/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Liveness and Readiness Probes" href="/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Assign Pods to Nodes" href="/docs/tasks/configure-pod-container/assign-pods-nodes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Pod Initialization" href="/docs/tasks/configure-pod-container/configure-pod-initialization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Attach Handlers to Container Lifecycle Events" href="/docs/tasks/configure-pod-container/attach-handler-lifecycle-event/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod to Use a ConfigMap" href="/docs/tasks/configure-pod-container/configure-pod-configmap/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Share Process Namespace between Containers in a Pod" href="/docs/tasks/configure-pod-container/share-process-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Translate a Docker Compose File to Kubernetes Resources" href="/docs/tasks/configure-pod-container/translate-compose-kubernetes/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Inject Data Into Applications">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Define a Command and Arguments for a Container" href="/docs/tasks/inject-data-application/define-command-argument-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Define Environment Variables for a Container" href="/docs/tasks/inject-data-application/define-environment-variable-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Expose Pod Information to Containers Through Environment Variables" href="/docs/tasks/inject-data-application/environment-variable-expose-pod-information/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Expose Pod Information to Containers Through Files" href="/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Distribute Credentials Securely Using Secrets" href="/docs/tasks/inject-data-application/distribute-credentials-secure/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Inject Information into Pods Using a PodPreset" href="/docs/tasks/inject-data-application/podpreset/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Run Applications">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Run a Stateless Application Using a Deployment" href="/docs/tasks/run-application/run-stateless-application-deployment/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Run a Single-Instance Stateful Application" href="/docs/tasks/run-application/run-single-instance-stateful-application/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Run a Replicated Stateful Application" href="/docs/tasks/run-application/run-replicated-stateful-application/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Update API Objects in Place Using kubectl patch" href="/docs/tasks/run-application/update-api-object-kubectl-patch/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Scale a StatefulSet" href="/docs/tasks/run-application/scale-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Delete a StatefulSet" href="/docs/tasks/run-application/delete-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Force Delete StatefulSet Pods" href="/docs/tasks/run-application/force-delete-stateful-set-pod/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Perform Rolling Update Using a Replication Controller" href="/docs/tasks/run-application/rolling-update-replication-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Horizontal Pod Autoscaler" href="/docs/tasks/run-application/horizontal-pod-autoscale/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Horizontal Pod Autoscaler Walkthrough" href="/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Specifying a Disruption Budget for your Application" href="/docs/tasks/run-application/configure-pdb/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Run Jobs">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Running automated tasks with cron jobs" href="/docs/tasks/job/automated-tasks-with-cron-jobs/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Parallel Processing using Expansions" href="/docs/tasks/job/parallel-processing-expansion/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Coarse Parallel Processing Using a Work Queue" href="/docs/tasks/job/coarse-parallel-processing-work-queue/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Fine Parallel Processing Using a Work Queue" href="/docs/tasks/job/fine-parallel-processing-work-queue/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Access Applications in a Cluster">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Web UI (Dashboard)" href="/docs/tasks/access-application-cluster/web-ui-dashboard/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Accessing Clusters" href="/docs/tasks/access-application-cluster/access-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Access to Multiple Clusters" href="/docs/tasks/access-application-cluster/configure-access-multiple-clusters/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use Port Forwarding to Access Applications in a Cluster" href="/docs/tasks/access-application-cluster/port-forward-access-application-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Provide Load-Balanced Access to an Application in a Cluster" href="/docs/tasks/access-application-cluster/load-balance-access-application-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use a Service to Access an Application in a Cluster" href="/docs/tasks/access-application-cluster/service-access-application-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Connect a Front End to a Back End Using a Service" href="/docs/tasks/access-application-cluster/connecting-frontend-backend/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Create an External Load Balancer" href="/docs/tasks/access-application-cluster/create-external-load-balancer/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Your Cloud Provider&#39;s Firewalls" href="/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="List All Container Images Running in a Cluster" href="/docs/tasks/access-application-cluster/list-all-running-container-images/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Communicate Between Containers in the Same Pod Using a Shared Volume" href="/docs/tasks/access-application-cluster/communicate-containers-same-pod-shared-volume/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure DNS for a Cluster" href="/docs/tasks/access-application-cluster/configure-dns-cluster/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Monitor, Log, and Debug">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Application Introspection and Debugging" href="/docs/tasks/debug-application-cluster/debug-application-introspection/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Auditing" href="/docs/tasks/debug-application-cluster/audit/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Core metrics pipeline" href="/docs/tasks/debug-application-cluster/core-metrics-pipeline/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debug Init Containers" href="/docs/tasks/debug-application-cluster/debug-init-containers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debug Pods and Replication Controllers" href="/docs/tasks/debug-application-cluster/debug-pod-replication-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debug Services" href="/docs/tasks/debug-application-cluster/debug-service/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debug a StatefulSet" href="/docs/tasks/debug-application-cluster/debug-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debugging Kubernetes nodes with crictl" href="/docs/tasks/debug-application-cluster/crictl/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Determine the Reason for Pod Failure" href="/docs/tasks/debug-application-cluster/determine-reason-pod-failure/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Developing and debugging services locally" href="/docs/tasks/debug-application-cluster/local-debugging/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Events in Stackdriver" href="/docs/tasks/debug-application-cluster/events-stackdriver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Get a Shell to a Running Container" href="/docs/tasks/debug-application-cluster/get-shell-running-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Logging Using Elasticsearch and Kibana" href="/docs/tasks/debug-application-cluster/logging-elasticsearch-kibana/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Logging Using Stackdriver" href="/docs/tasks/debug-application-cluster/logging-stackdriver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Monitor Node Health" href="/docs/tasks/debug-application-cluster/monitor-node-health/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Tools for Monitoring Compute, Storage, and Network Resources" href="/docs/tasks/debug-application-cluster/resource-usage-monitoring/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Troubleshoot Applications" href="/docs/tasks/debug-application-cluster/debug-application/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Troubleshoot Clusters" href="/docs/tasks/debug-application-cluster/debug-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Troubleshooting" href="/docs/tasks/debug-application-cluster/troubleshooting/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Extend Kubernetes">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Configure the aggregation layer" href="/docs/tasks/access-kubernetes-api/configure-aggregation-layer/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Use Custom Resources">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Extend the Kubernetes API with CustomResourceDefinitions" href="/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Versions of CustomResourceDefinitions" href="/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definition-versioning/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Migrate a ThirdPartyResource to CustomResourceDefinition" href="/docs/tasks/access-kubernetes-api/custom-resources/migrate-third-party-resource/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Setup an extension API server" href="/docs/tasks/access-kubernetes-api/setup-extension-api-server/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use an HTTP Proxy to Access the Kubernetes API" href="/docs/tasks/access-kubernetes-api/http-proxy-access-api/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="TLS">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Certificate Rotation" href="/docs/tasks/tls/certificate-rotation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Manage TLS Certificates in a Cluster" href="/docs/tasks/tls/managing-tls-in-a-cluster/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Federation - Run an App on Multiple Clusters">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Cross-cluster Service Discovery using Federated Services" href="/docs/tasks/federation/federation-service-discovery/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up Cluster Federation with Kubefed" href="/docs/tasks/federation/set-up-cluster-federation-kubefed/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up CoreDNS as DNS provider for Cluster Federation" href="/docs/tasks/federation/set-up-coredns-provider-federation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up placement policies in Federation" href="/docs/tasks/federation/set-up-placement-policies-federation/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Manage Cluster Daemons">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Perform a Rolling Update on a DaemonSet" href="/docs/tasks/manage-daemon/update-daemon-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Performing a Rollback on a DaemonSet" href="/docs/tasks/manage-daemon/rollback-daemon-set/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Install Service Catalog">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Install Service Catalog using Helm" href="/docs/tasks/service-catalog/install-service-catalog-using-helm/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Install Service Catalog using SC" href="/docs/tasks/service-catalog/install-service-catalog-using-sc/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Federation - Run an App on Multiple Clusters">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Federated Cluster" href="/docs/tasks/administer-federation/cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated ConfigMap" href="/docs/tasks/administer-federation/configmap/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated DaemonSet" href="/docs/tasks/administer-federation/daemonset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Deployment" href="/docs/tasks/administer-federation/deployment/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Events" href="/docs/tasks/administer-federation/events/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Horizontal Pod Autoscalers (HPA)" href="/docs/tasks/administer-federation/hpa/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Ingress" href="/docs/tasks/administer-federation/ingress/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Jobs" href="/docs/tasks/administer-federation/job/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Namespaces" href="/docs/tasks/administer-federation/namespaces/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated ReplicaSets" href="/docs/tasks/administer-federation/replicaset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Secrets" href="/docs/tasks/administer-federation/secret/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Extend kubectl with plugins" href="/docs/tasks/extend-kubectl/kubectl-plugins/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Manage HugePages" href="/docs/tasks/manage-hugepages/scheduling-hugepages/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Schedule GPUs" href="/docs/tasks/manage-gpus/scheduling-gpus/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/tasks/debug-application-cluster/audit.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>Auditing</h1>
+
+
+
+<div style="margin-top: 10px; margin-bottom: 10px;">
+
+
+
+<b>FEATURE STATE:</b> <code>Kubernetes v1.11</code>
+
+
+
+
+    
+    
+    
+    
+    
+<a href="#" id="feature-state-dialog-link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-newwin"></span>beta</a>
+<div id="feature-state-dialog" class="ui-dialog-content" title="beta">
+This feature is currently in a <em>beta</em> state, meaning:</p>
+
+<ul>
+<li>The version names contain beta (e.g. v2beta3).</li>
+<li>Code is well tested. Enabling the feature is considered safe. Enabled by default.</li>
+<li>Support for the overall feature will not be dropped, though details may change.</li>
+<li>The schema and/or semantics of objects may change in incompatible ways in a subsequent beta or stable release. When this happens, we will provide instructions for migrating to the next version. This may require deleting, editing, and re-creating API objects. The editing process may require some thought. This may require downtime for applications that rely on the feature.</li>
+<li>Recommended for only non-business-critical uses because of potential for incompatible changes in subsequent releases. If you have multiple clusters that can be upgraded independently, you may be able to relax this restriction.</li>
+<li><strong>Please do try our beta features and give feedback on them! After they exit beta, it may not be practical for us to make more changes.</strong></li>
+</ul>
+
+</div>
+<script>
+$(function(){
+    
+    $( "#feature-state-dialog" ).dialog({
+        autoOpen: false,
+        width: "600",
+        buttons: [
+            {
+                text: "Ok",
+                click: function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        ]
+    });
+
+    
+    $( "#feature-state-dialog-link" ).click(function( event ) {
+        $( "#feature-state-dialog" ).dialog( "open" );
+        event.preventDefault();
+    });
+
+});
+</script>
+
+    
+
+</div>
+
+<p>Kubernetes auditing provides a security-relevant chronological set of records documenting
+the sequence of activities that have affected system by individual users, administrators
+or other components of the system. It allows cluster administrator to
+answer the following questions:</p>
+
+<ul>
+<li>what happened?</li>
+<li>when did it happen?</li>
+<li>who initiated it?</li>
+<li>on what did it happen?</li>
+<li>where was it observed?</li>
+<li>from where was it initiated?</li>
+<li>to where was it going?</li>
+</ul>
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+<li><a href="#audit-policy">Audit Policy</a></li>
+
+
+
+
+<li><a href="#audit-backends">Audit backends</a></li>
+
+
+
+
+<li><a href="#multi-cluster-setup">Multi-cluster setup</a></li>
+
+
+
+
+<li><a href="#log-collector-examples">Log Collector Examples</a></li>
+
+
+
+
+<li><a href="#legacy-audit">Legacy Audit</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</ul>
+
+
+<p><a href="/docs/admin/kube-apiserver">Kube-apiserver</a> performs auditing. Each request on each stage
+of its execution generates an event, which is then pre-processed according to
+a certain policy and written to a backend. The policy determines what&rsquo;s recorded
+and the backends persist the records. The current backend implementations
+include logs files and webhooks.</p>
+
+<p>Each request can be recorded with an associated &ldquo;stage&rdquo;. The known stages are:</p>
+
+<ul>
+<li><code>RequestReceived</code> - The stage for events generated as soon as the audit
+handler receives the request, and before it is delegated down the handler
+chain.</li>
+<li><code>ResponseStarted</code> - Once the response headers are sent, but before the
+response body is sent. This stage is only generated for long-running requests
+(e.g. watch).</li>
+<li><code>ResponseComplete</code> - The response body has been completed and no more bytes
+will be sent.</li>
+<li><code>Panic</code> - Events generated when a panic occurred.</li>
+</ul>
+
+<blockquote class="note">
+  <div><strong>Note</strong> The audit logging feature increases the memory consumption of the API
+server because some context required for auditing is stored for each request.
+Additionally, memory consumption depends on the audit logging configuration.</div>
+</blockquote>
+
+<h2 id="audit-policy">Audit Policy</h2>
+
+<p>Audit policy defines rules about what events should be recorded and what data
+they should include. The audit policy object structure is defined in the
+<a href="https://github.com/kubernetes/kubernetes/blob/master/staging/src/k8s.io/apiserver/pkg/apis/audit/v1beta1/types.go" target="_blank"><code>audit.k8s.io</code> API group</a>. When an event is processed, it&rsquo;s
+compared against the list of rules in order. The first matching rule sets the
+&ldquo;audit level&rdquo; of the event. The known audit levels are:</p>
+
+<ul>
+<li><code>None</code> - don&rsquo;t log events that match this rule.</li>
+<li><code>Metadata</code> - log request metadata (requesting user, timestamp, resource,
+verb, etc.) but not request or response body.</li>
+<li><code>Request</code> - log event metadata and request body but not response body.
+This does not apply for non-resource requests.</li>
+<li><code>RequestResponse</code> - log event metadata, request and response bodies.
+This does not apply for non-resource requests.</li>
+</ul>
+
+<p>You can pass a file with the policy to <a href="/docs/admin/kube-apiserver">kube-apiserver</a>
+using the <code>--audit-policy-file</code> flag. If the flag is omitted, no events are logged.
+Note that the <code>rules</code> field <strong>must</strong> be provided in the audit policy file.
+A policy with no (0) rules is treated as illegal.</p>
+
+<p>Below is an example audit policy file:</p>
+
+<table class="includecode" id="audit-policy-yaml">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://github.com/kubernetes/website/blob/master/content/en/docs/tasks/debug-application-cluster/audit-policy.yaml" download="audit-policy.yaml">
+                    <code>audit-policy.yaml docs/tasks/debug-application-cluster</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('audit-policy-yaml')" title="Copy audit-policy.yaml to clipboard">
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>audit.k8s.io/v1beta1<span style="color:#bbb"> </span><span style="color:#080;font-style:italic"># This is required.</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Policy<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#080;font-style:italic"># Don&#39;t generate audit events for all requests in RequestReceived stage.</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>omitStages:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span><span style="color:#b44">&#34;RequestReceived&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>rules:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#080;font-style:italic"># Log pod changes at RequestResponse level</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>level:<span style="color:#bbb"> </span>RequestResponse<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>resources:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>-<span style="color:#bbb"> </span>group:<span style="color:#bbb"> </span><span style="color:#b44">&#34;&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#080;font-style:italic"># Resource &#34;pods&#34; doesn&#39;t match requests to any subresource of pods,</span><span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#080;font-style:italic"># which is consistent with the RBAC policy.</span><span style="color:#bbb">
+</span><span style="color:#bbb">      </span>resources:<span style="color:#bbb"> </span>[<span style="color:#b44">&#34;pods&#34;</span>]<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#080;font-style:italic"># Log &#34;pods/log&#34;, &#34;pods/status&#34; at Metadata level</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>level:<span style="color:#bbb"> </span>Metadata<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>resources:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>-<span style="color:#bbb"> </span>group:<span style="color:#bbb"> </span><span style="color:#b44">&#34;&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">      </span>resources:<span style="color:#bbb"> </span>[<span style="color:#b44">&#34;pods/log&#34;</span>,<span style="color:#bbb"> </span><span style="color:#b44">&#34;pods/status&#34;</span>]<span style="color:#bbb">
+</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#080;font-style:italic"># Don&#39;t log requests to a configmap called &#34;controller-leader&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>level:<span style="color:#bbb"> </span>None<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>resources:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>-<span style="color:#bbb"> </span>group:<span style="color:#bbb"> </span><span style="color:#b44">&#34;&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">      </span>resources:<span style="color:#bbb"> </span>[<span style="color:#b44">&#34;configmaps&#34;</span>]<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>resourceNames:<span style="color:#bbb"> </span>[<span style="color:#b44">&#34;controller-leader&#34;</span>]<span style="color:#bbb">
+</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#080;font-style:italic"># Don&#39;t log watch requests by the &#34;system:kube-proxy&#34; on endpoints or services</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>level:<span style="color:#bbb"> </span>None<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>users:<span style="color:#bbb"> </span>[<span style="color:#b44">&#34;system:kube-proxy&#34;</span>]<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>verbs:<span style="color:#bbb"> </span>[<span style="color:#b44">&#34;watch&#34;</span>]<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>resources:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>-<span style="color:#bbb"> </span>group:<span style="color:#bbb"> </span><span style="color:#b44">&#34;&#34;</span><span style="color:#bbb"> </span><span style="color:#080;font-style:italic"># core API group</span><span style="color:#bbb">
+</span><span style="color:#bbb">      </span>resources:<span style="color:#bbb"> </span>[<span style="color:#b44">&#34;endpoints&#34;</span>,<span style="color:#bbb"> </span><span style="color:#b44">&#34;services&#34;</span>]<span style="color:#bbb">
+</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#080;font-style:italic"># Don&#39;t log authenticated requests to certain non-resource URL paths.</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>level:<span style="color:#bbb"> </span>None<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>userGroups:<span style="color:#bbb"> </span>[<span style="color:#b44">&#34;system:authenticated&#34;</span>]<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>nonResourceURLs:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>-<span style="color:#bbb"> </span><span style="color:#b44">&#34;/api*&#34;</span><span style="color:#bbb"> </span><span style="color:#080;font-style:italic"># Wildcard matching.</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>-<span style="color:#bbb"> </span><span style="color:#b44">&#34;/version&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#080;font-style:italic"># Log the request body of configmap changes in kube-system.</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>level:<span style="color:#bbb"> </span>Request<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>resources:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>-<span style="color:#bbb"> </span>group:<span style="color:#bbb"> </span><span style="color:#b44">&#34;&#34;</span><span style="color:#bbb"> </span><span style="color:#080;font-style:italic"># core API group</span><span style="color:#bbb">
+</span><span style="color:#bbb">      </span>resources:<span style="color:#bbb"> </span>[<span style="color:#b44">&#34;configmaps&#34;</span>]<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#080;font-style:italic"># This rule only applies to resources in the &#34;kube-system&#34; namespace.</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#080;font-style:italic"># The empty string &#34;&#34; can be used to select non-namespaced resources.</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>namespaces:<span style="color:#bbb"> </span>[<span style="color:#b44">&#34;kube-system&#34;</span>]<span style="color:#bbb">
+</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#080;font-style:italic"># Log configmap and secret changes in all other namespaces at the Metadata level.</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>level:<span style="color:#bbb"> </span>Metadata<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>resources:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>-<span style="color:#bbb"> </span>group:<span style="color:#bbb"> </span><span style="color:#b44">&#34;&#34;</span><span style="color:#bbb"> </span><span style="color:#080;font-style:italic"># core API group</span><span style="color:#bbb">
+</span><span style="color:#bbb">      </span>resources:<span style="color:#bbb"> </span>[<span style="color:#b44">&#34;secrets&#34;</span>,<span style="color:#bbb"> </span><span style="color:#b44">&#34;configmaps&#34;</span>]<span style="color:#bbb">
+</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#080;font-style:italic"># Log all other resources in core and extensions at the Request level.</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>level:<span style="color:#bbb"> </span>Request<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>resources:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>-<span style="color:#bbb"> </span>group:<span style="color:#bbb"> </span><span style="color:#b44">&#34;&#34;</span><span style="color:#bbb"> </span><span style="color:#080;font-style:italic"># core API group</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>-<span style="color:#bbb"> </span>group:<span style="color:#bbb"> </span><span style="color:#b44">&#34;extensions&#34;</span><span style="color:#bbb"> </span><span style="color:#080;font-style:italic"># Version of group should NOT be included.</span><span style="color:#bbb">
+</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#080;font-style:italic"># A catch-all rule to log all other requests at the Metadata level.</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>level:<span style="color:#bbb"> </span>Metadata<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#080;font-style:italic"># Long-running requests like watches that fall under this rule will not</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#080;font-style:italic"># generate an audit event in RequestReceived.</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>omitStages:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>-<span style="color:#bbb"> </span><span style="color:#b44">&#34;RequestReceived&#34;</span></code></pre></div>  </td>
+        </tr>
+    </tbody>
+</table>
+
+<p>You can use a minimal audit policy file to log all requests at the <code>Metadata</code> level:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#080;font-style:italic"># Log all requests at the Metadata level.</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>apiVersion:<span style="color:#bbb"> </span>audit.k8s.io/v1beta1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Policy<span style="color:#bbb">
+</span><span style="color:#bbb"></span>rules:<span style="color:#bbb">
+</span><span style="color:#bbb"></span>-<span style="color:#bbb"> </span>level:<span style="color:#bbb"> </span>Metadata</code></pre></div>
+<p>The <a href="https://github.com/kubernetes/kubernetes/blob/master/cluster/gce/gci/configure-helper.sh#L735" target="_blank">audit profile used by GCE</a> should be used as reference by
+admins constructing their own audit profiles.</p>
+
+<h2 id="audit-backends">Audit backends</h2>
+
+<p>Audit backends persist audit events to an external storage.
+<a href="/docs/admin/kube-apiserver">Kube-apiserver</a> out of the box provides two backends:</p>
+
+<ul>
+<li>Log backend, which writes events to a disk</li>
+<li>Webhook backend, which sends events to an external API</li>
+</ul>
+
+<p>In both cases, audit events structure is defined by the API in the
+<code>audit.k8s.io</code> API group. The current version of the API is
+<a href="https://github.com/kubernetes/kubernetes/blob/master/staging/src/k8s.io/apiserver/pkg/apis/audit/v1beta1/types.go" target="_blank"><code>v1beta1</code></a>.</p>
+
+<blockquote class="note">
+  <div><p><strong>Note:</strong> In case of patches, request body is a JSON array with patch operations, not a JSON object
+with an appropriate Kubernetes API object. For example, the following request body is a valid patch
+request to <code>/apis/batch/v1/namespaces/some-namespace/jobs/some-job-name</code>.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">[
+  {
+    <span style="color:#008000;font-weight:bold">&#34;op&#34;</span>: <span style="color:#b44">&#34;replace&#34;</span>,
+    <span style="color:#008000;font-weight:bold">&#34;path&#34;</span>: <span style="color:#b44">&#34;/spec/parallelism&#34;</span>,
+    <span style="color:#008000;font-weight:bold">&#34;value&#34;</span>: <span style="color:#666">0</span>
+  },
+  {
+    <span style="color:#008000;font-weight:bold">&#34;op&#34;</span>: <span style="color:#b44">&#34;remove&#34;</span>,
+    <span style="color:#008000;font-weight:bold">&#34;path&#34;</span>: <span style="color:#b44">&#34;/spec/template/spec/containers/0/terminationMessagePolicy&#34;</span>
+  }
+]</code></pre></div></div>
+</blockquote>
+
+<h3 id="log-backend">Log backend</h3>
+
+<p>Log backend writes audit events to a file in JSON format. You can configure
+log audit backend using the following <a href="/docs/admin/kube-apiserver">kube-apiserver</a> flags:</p>
+
+<ul>
+<li><code>--audit-log-path</code> specifies the log file path that log backend uses to write
+audit events. Not specifying this flag disables log backend. <code>-</code> means standard out</li>
+<li><code>--audit-log-maxage</code> defined the maximum number of days to retain old audit log files</li>
+<li><code>--audit-log-maxbackup</code> defines the maximum number of audit log files to retain</li>
+<li><code>--audit-log-maxsize</code> defines the maximum size in megabytes of the audit log file before it gets rotated</li>
+</ul>
+
+<h3 id="webhook-backend">Webhook backend</h3>
+
+<p>Webhook backend sends audit events to a remote API, which is assumed to be the
+same API as <a href="/docs/admin/kube-apiserver">kube-apiserver</a> exposes. You can configure webhook
+audit backend using the following kube-apiserver flags:</p>
+
+<ul>
+<li><code>--audit-webhook-config-file</code> specifies the path to a file with a webhook
+configuration. Webhook configuration is effectively a <a href="https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/" target="_blank">kubeconfig</a>.</li>
+<li><code>--audit-webhook-initial-backoff</code> specifies the amount of time to wait after the first failed
+request before retrying. Subsequent requests are retried with exponential backoff.</li>
+</ul>
+
+<p>The webhook config file uses the kubeconfig format to specify the remote address of
+the service and credentials used to connect to it.</p>
+
+<h3 id="batching">Batching</h3>
+
+<p>Both log and webhook backends support batching. Using webhook as an example, here&rsquo;s the list of
+available flags. To get the same flag for log backend, replace <code>webhook</code> with <code>log</code> in the flag
+name. By default, batching is enabled in <code>webhook</code> and disabled in <code>log</code>. Similarly, by default
+throttling is enabled in <code>webhook</code> and disabled in <code>log</code>.</p>
+
+<ul>
+<li><code>--audit-webhook-mode</code> defines the buffering strategy. One of the following:
+
+<ul>
+<li><code>batch</code> - buffer events and asynchronously process them in batches. This is the default.</li>
+<li><code>blocking</code> - block API server responses on processing each individual event.</li>
+</ul></li>
+</ul>
+
+<p>The following flags are used only in the <code>batch</code> mode.</p>
+
+<ul>
+<li><code>--audit-webhook-batch-buffer-size</code> defines the number of events to buffer before batching.
+If the rate of incoming events overflows the buffer, events are dropped.</li>
+<li><code>--audit-webhook-batch-max-size</code> defines the maximum number of events in one batch.</li>
+<li><code>--audit-webhook-batch-max-wait</code> defines the maximum amount of time to wait before unconditionally
+batching events in the queue.</li>
+<li><code>--audit-webhook-batch-throttle-qps</code> defines the maximum average number of batches generated
+per second.</li>
+<li><code>--audit-webhook-batch-throttle-burst</code> defines the maximum number of batches generated at the same
+moment if the allowed QPS was underutilized previously.</li>
+</ul>
+
+<h4 id="parameter-tuning">Parameter tuning</h4>
+
+<p>Parameters should be set to accommodate the load on the apiserver.</p>
+
+<p>For example, if kube-apiserver receives 100 requests each second, and each request is audited only
+on <code>ResponseStarted</code> and <code>ResponseComplete</code> stages, you should account for ~200 audit
+events being generated each second. Assuming that there are up to 100 events in a batch,
+you should set throttling level at least 2 QPS. Assuming that the backend can take up to
+5 seconds to write events, you should set the buffer size to hold up to 5 seconds of events, i.e.
+10 batches, i.e. 1000 events.</p>
+
+<p>In most cases however, the default parameters should be sufficient and you don&rsquo;t have to worry about
+setting them manually. You can look at the following Prometheus metrics exposed by kube-apiserver
+and in the logs to monitor the state of the auditing subsystem.</p>
+
+<ul>
+<li><code>apiserver_audit_event_total</code> metric contains the total number of audit events exported.</li>
+<li><code>apiserver_audit_error_total</code> metric contains the total number of events dropped due to an error
+during exporting.</li>
+</ul>
+
+<h2 id="multi-cluster-setup">Multi-cluster setup</h2>
+
+<p>If you&rsquo;re extending the Kubernetes API with the <a href="/docs/concepts/api-extension/apiserver-aggregation">aggregation layer</a>, you can also
+set up audit logging for the aggregated apiserver. To do this, pass the configuration options in the
+same format as described above to the aggregated apiserver and set up the log ingesting pipeline
+to pick up audit logs. Different apiservers can have different audit configurations and different
+audit policies.</p>
+
+<h2 id="log-collector-examples">Log Collector Examples</h2>
+
+<h3 id="use-fluentd-to-collect-and-distribute-audit-events-from-log-file">Use fluentd to collect and distribute audit events from log file</h3>
+
+<p><a href="http://www.fluentd.org/" target="_blank">Fluentd</a> is an open source data collector for unified logging layer.
+In this example, we will use fluentd to split audit events by different namespaces.</p>
+
+<ol>
+<li>install <a href="http://docs.fluentd.org/v0.12/articles/quickstart#step1-installing-fluentd" target="_blank">fluentd, fluent-plugin-forest and fluent-plugin-rewrite-tag-filter</a> in the kube-apiserver node</li>
+<li>create a config file for fluentd</li>
+</ol>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-none" data-lang="none">   $ cat &lt;&lt;EOF &gt; /etc/fluentd/config
+   # fluentd conf runs in the same host with kube-apiserver
+   &lt;source&gt;
+       @type tail
+       # audit log path of kube-apiserver
+       path /var/log/audit
+       pos_file /var/log/audit.pos
+       format json
+       time_key time
+       time_format %Y-%m-%dT%H:%M:%S.%N%z
+       tag audit
+   &lt;/source&gt;
+
+   &lt;filter audit&gt;
+       #https://github.com/fluent/fluent-plugin-rewrite-tag-filter/issues/13
+       type record_transformer
+       enable_ruby
+       &lt;record&gt;
+        namespace ${record[&#34;objectRef&#34;].nil? ? &#34;none&#34;:(record[&#34;objectRef&#34;][&#34;namespace&#34;].nil? ?  &#34;none&#34;:record[&#34;objectRef&#34;][&#34;namespace&#34;])}
+       &lt;/record&gt;
+   &lt;/filter&gt;
+
+   &lt;match audit&gt;
+       # route audit according to namespace element in context
+       @type rewrite_tag_filter
+       rewriterule1 namespace ^(.+) ${tag}.$1
+   &lt;/match&gt;
+
+   &lt;filter audit.**&gt;
+      @type record_transformer
+      remove_keys namespace
+   &lt;/filter&gt;
+
+   &lt;match audit.**&gt;
+       @type forest
+       subtype file
+       remove_prefix audit
+       &lt;template&gt;
+           time_slice_format %Y%m%d%H
+           compress gz
+           path /var/log/audit-${tag}.*.log
+           format json
+           include_time_key true
+       &lt;/template&gt;
+   &lt;/match&gt;</code></pre></div>
+<ol>
+<li>start fluentd</li>
+</ol>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">   $ fluentd -c /etc/fluentd/config  -vv</code></pre></div>
+<ol>
+<li>start kube-apiserver with the following options:</li>
+</ol>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">   --audit-policy-file<span style="color:#666">=</span>/etc/kubernetes/audit-policy.yaml --audit-log-path<span style="color:#666">=</span>/var/log/kube-audit --audit-log-format<span style="color:#666">=</span>json</code></pre></div>
+<ol>
+<li>check audits for different namespaces in <code>/var/log/audit-*.log</code></li>
+</ol>
+
+<h3 id="use-logstash-to-collect-and-distribute-audit-events-from-webhook-backend">Use logstash to collect and distribute audit events from webhook backend</h3>
+
+<p><a href="https://www.elastic.co/products/logstash" target="_blank">Logstash</a> is an open source, server-side data processing tool. In this example,
+we will use logstash to collect audit events from webhook backend, and save events of
+different users into different files.</p>
+
+<ol>
+<li>install <a href="https://www.elastic.co/guide/en/logstash/current/installing-logstash.html" target="_blank">logstash</a></li>
+<li>create config file for logstash</li>
+</ol>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-none" data-lang="none">   $ cat &lt;&lt;EOF &gt; /etc/logstash/config
+   input{
+       http{
+           #TODO, figure out a way to use kubeconfig file to authenticate to logstash
+           #https://www.elastic.co/guide/en/logstash/current/plugins-inputs-http.html#plugins-inputs-http-ssl
+           port=&gt;8888
+       }
+   }
+   filter{
+       split{
+           # Webhook audit backend sends several events together with EventList
+           # split each event here.
+           field=&gt;[items]
+           # We only need event subelement, remove others.
+           remove_field=&gt;[headers, metadata, apiVersion, &#34;@timestamp&#34;, kind, &#34;@version&#34;, host]
+       }
+       mutate{
+           rename =&gt; {items=&gt;event}
+       }
+   }
+   output{
+       file{
+           # Audit events from different users will be saved into different files.
+           path=&gt;&#34;/var/log/kube-audit-%{[event][user][username]}/audit&#34;
+       }
+   }</code></pre></div>
+<ol>
+<li>start logstash</li>
+</ol>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">   $ bin/logstash -f /etc/logstash/config --path.settings /etc/logstash/</code></pre></div>
+<ol>
+<li>create a <a href="/docs/tasks/access-application-cluster/authenticate-across-clusters-kubeconfig/">kubeconfig file</a> for kube-apiserver webhook audit backend</li>
+</ol>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-none" data-lang="none">   $ cat &lt;&lt;EOF &gt; /etc/kubernetes/audit-webhook-kubeconfig
+   apiVersion: v1
+   clusters:
+   - cluster:
+       server: http://&lt;ip_of_logstash&gt;:8888
+     name: logstash
+   contexts:
+   - context:
+       cluster: logstash
+       user: &#34;&#34;
+     name: default-context
+   current-context: default-context
+   kind: Config
+   preferences: {}
+   users: []
+   EOF</code></pre></div>
+<ol>
+<li>start kube-apiserver with the following options:</li>
+</ol>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">   --audit-policy-file<span style="color:#666">=</span>/etc/kubernetes/audit-policy.yaml --audit-webhook-config-file<span style="color:#666">=</span>/etc/kubernetes/audit-webhook-kubeconfig</code></pre></div>
+<ol>
+<li>check audits in logstash node&rsquo;s directories <code>/var/log/kube-audit-*/audit</code></li>
+</ol>
+
+<p>Note that in addition to file output plugin, logstash has a variety of outputs that
+let users route data where they want. For example, users can emit audit events to elasticsearch
+plugin which supports full-text search and analytics.</p>
+
+<h2 id="legacy-audit">Legacy Audit</h2>
+
+<p><strong>Note:</strong> Legacy Audit is deprecated and is disabled by default since 1.8 and
+will be removed in 1.12. To fallback to this legacy audit, disable the advanced
+auditing feature using the <code>AdvancedAuditing</code> feature gate in <a href="/docs/admin/kube-apiserver">kube-apiserver</a>:</p>
+
+<pre><code>--feature-gates=AdvancedAuditing=false
+</code></pre>
+
+<p>In legacy format, each audit log entry contains two lines:</p>
+
+<ol>
+<li>The request line containing a unique ID to match the response and request
+metadata, such as the source IP, requesting user, impersonation information,
+resource being requested, etc.</li>
+<li>The response line containing a unique ID matching the request line and the response code.</li>
+</ol>
+
+<p>Example output for <code>admin</code> user listing pods in the <code>default</code> namespace:</p>
+
+<pre><code>2017-03-21T03:57:09.106841886-04:00 AUDIT: id=&quot;c939d2a7-1c37-4ef1-b2f7-4ba9b1e43b53&quot; ip=&quot;127.0.0.1&quot; method=&quot;GET&quot; user=&quot;admin&quot; groups=&quot;\&quot;system:masters\&quot;,\&quot;system:authenticated\&quot;&quot; as=&quot;&lt;self&gt;&quot; asgroups=&quot;&lt;lookup&gt;&quot; namespace=&quot;default&quot; uri=&quot;/api/v1/namespaces/default/pods&quot;
+2017-03-21T03:57:09.108403639-04:00 AUDIT: id=&quot;c939d2a7-1c37-4ef1-b2f7-4ba9b1e43b53&quot; response=&quot;200&quot;
+</code></pre>
+
+<h3 id="configuration">Configuration</h3>
+
+<p><a href="/docs/admin/kube-apiserver">Kube-apiserver</a> provides the following options which are responsible
+for configuring where and how audit logs are handled:</p>
+
+<ul>
+<li><code>audit-log-path</code> - enables the audit log pointing to a file where the requests are being logged to, &lsquo;-&rsquo; means standard out.</li>
+<li><code>audit-log-maxage</code> - specifies maximum number of days to retain old audit log files based on the timestamp encoded in their filename.</li>
+<li><code>audit-log-maxbackup</code> - specifies maximum number of old audit log files to retain.</li>
+<li><code>audit-log-maxsize</code> - specifies maximum size in megabytes of the audit log file before it gets rotated. Defaults to 100MB.</li>
+</ul>
+
+<p>If an audit log file already exists, Kubernetes appends new audit logs to that file.
+Otherwise, Kubernetes creates an audit log file at the location you specified in
+<code>audit-log-path</code>. If the audit log file exceeds the size you specify in <code>audit-log-maxsize</code>,
+Kubernetes will rename the current log file by appending the current timestamp on
+the file name (before the file extension) and create a new audit log file.
+Kubernetes may delete old log files when creating a new log file; you can configure
+how many files are retained and how old they can be by specifying the <code>audit-log-maxbackup</code>
+and <code>audit-log-maxage</code> options.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/tasks/debug-application-cluster/audit.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/tasks\/debug-application-cluster\/audit\/",
+					"title" : "Auditing",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/tasks\/debug-application-cluster\/audit\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/tasks/debug-application-cluster/audit.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

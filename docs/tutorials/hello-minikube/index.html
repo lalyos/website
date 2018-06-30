@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Hello Minikube - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="Hello Minikube" />
+<meta property="og:description" content="Hello Minikube" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/tutorials/hello-minikube/" />
+<meta property="og:title" content="Hello Minikube - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h1>Tutorials</h1>
+<h5></h5>
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/" class="YAH">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Tutorials" href="/docs/tutorials/"></a>
+
+	
+	
+		
+		
+<a class="item" data-title="Hello Minikube" href="/docs/tutorials/hello-minikube/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Kubernetes Basics">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Overview" href="/docs/tutorials/kubernetes-basics/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Create a Cluster">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Using Minikube to Create a Cluster" href="/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Interactive Tutorial - Creating a Cluster" href="/docs/tutorials/kubernetes-basics/create-cluster/cluster-interactive/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Deploy an App">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Using kubectl to Create a Deployment" href="/docs/tutorials/kubernetes-basics/deploy-app/deploy-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Interactive Tutorial - Deploying an App" href="/docs/tutorials/kubernetes-basics/deploy-app/deploy-interactive/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Explore Your App">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Viewing Pods and Nodes" href="/docs/tutorials/kubernetes-basics/explore/explore-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Interactive Tutorial - Exploring Your App" href="/docs/tutorials/kubernetes-basics/explore/explore-interactive/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Expose Your App Publicly">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Using a Service to Expose Your App" href="/docs/tutorials/kubernetes-basics/expose/expose-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Interactive Tutorial - Exposing Your App" href="/docs/tutorials/kubernetes-basics/expose/expose-interactive/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Scale Your App">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Running Multiple Instances of Your App" href="/docs/tutorials/kubernetes-basics/scale/scale-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Interactive Tutorial - Scaling Your App" href="/docs/tutorials/kubernetes-basics/scale/scale-interactive/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Update Your App">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Performing a Rolling Update" href="/docs/tutorials/kubernetes-basics/update/update-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Interactive Tutorial - Updating Your App" href="/docs/tutorials/kubernetes-basics/update/update-interactive/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Online Training Courses">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Overview of Kubernetes Online Training" href="/docs/tutorials/online-training/overview/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Configuration">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Configuring Redis using a ConfigMap" href="/docs/tutorials/configuration/configure-redis-using-configmap/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Stateless Applications">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Exposing an External IP Address to Access an Application in a Cluster" href="/docs/tutorials/stateless-application/expose-external-ip-address/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Example: Deploying PHP Guestbook application with Redis" href="/docs/tutorials/stateless-application/guestbook/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Stateful Applications">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="StatefulSet Basics" href="/docs/tutorials/stateful-application/basic-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Example: Deploying WordPress and MySQL with Persistent Volumes" href="/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Example: Deploying Cassandra with Stateful Sets" href="/docs/tutorials/stateful-application/cassandra/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Running ZooKeeper, A Distributed System Coordinator" href="/docs/tutorials/stateful-application/zookeeper/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Clusters">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="AppArmor" href="/docs/tutorials/clusters/apparmor/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Services">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Using Source IP" href="/docs/tutorials/services/source-ip/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes 101" href="/docs/tutorials/k8s101/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes 201" href="/docs/tutorials/k8s201/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/tutorials/hello-minikube.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>Hello Minikube</h1>
+
+
+
+<p>The goal of this tutorial is for you to turn a simple Hello World Node.js app
+into an application running on Kubernetes. The tutorial shows you how to
+take code that you have developed on your machine, turn it into a Docker
+container image and then run that image on <a href="/docs/getting-started-guides/minikube">Minikube</a>.
+Minikube provides a simple way of running Kubernetes on your local machine for free.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+<li><a href="#objectives">Objectives</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#before-you-begin">Before you begin</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#create-a-minikube-cluster">Create a Minikube cluster</a></li>
+
+
+
+
+<li><a href="#create-your-node-js-application">Create your Node.js application</a></li>
+
+
+
+
+<li><a href="#create-a-docker-container-image">Create a Docker container image</a></li>
+
+
+
+
+<li><a href="#create-a-deployment">Create a Deployment</a></li>
+
+
+
+
+<li><a href="#create-a-service">Create a Service</a></li>
+
+
+
+
+<li><a href="#update-your-app">Update your app</a></li>
+
+
+
+
+<li><a href="#enable-addons">Enable addons</a></li>
+
+
+
+
+<li><a href="#clean-up">Clean up</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#what-s-next">What's next</a></li>
+
+
+
+</ul>
+
+
+
+<h2 id="objectives">Objectives</h2>
+<ul>
+<li>Run a hello world Node.js application.</li>
+<li>Deploy the application to Minikube.</li>
+<li>View application logs.</li>
+<li>Update the application image.</li>
+</ul>
+
+
+
+
+
+<h2 id="before-you-begin">Before you begin</h2>
+<ul>
+<li>For OS X, you need <a href="https://brew.sh" target="_blank">Homebrew</a> to install the <code>xhyve</code> driver.</li>
+</ul>
+
+<p><blockquote class="note">
+  <div><p><strong>Note:</strong> If you see the following Homebrew error when you run <code>brew update</code> after you update your computer to MacOS 10.13:</p></p>
+
+<pre><code>  Error: /usr/local is not writable. You should change the ownership
+  and permissions of /usr/local back to your user account:
+  sudo chown -R $(whoami) /usr/local
+</code></pre>
+
+<p>You can resolve the issue by reinstalling Homebrew:</p>
+
+<p><pre><code>  /usr/bin/ruby -e &quot;$(curl -fsSL <a href="https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;" target="_blank">https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</a>
+</code></pre>
+</div>
+</blockquote></p>
+
+<ul>
+<li><p><a href="https://nodejs.org/en/" target="_blank">NodeJS</a> is required to run the sample application.</p></li>
+
+<li><p>Install Docker. On OS X, we recommend
+<a href="https://docs.docker.com/engine/installation/mac/" target="_blank">Docker for Mac</a>.</p></li>
+</ul>
+
+
+
+
+<h2 id="create-a-minikube-cluster">Create a Minikube cluster</h2>
+
+<p>This tutorial uses <a href="https://github.com/kubernetes/minikube" target="_blank">Minikube</a> to
+create a local cluster. This tutorial also assumes you are using
+<a href="https://docs.docker.com/engine/installation/mac/" target="_blank">Docker for Mac</a>
+on OS X. If you are on a different platform like Linux, or using VirtualBox
+instead of Docker for Mac, the instructions to install Minikube may be
+slightly different. For general Minikube installation instructions, see
+the <a href="/docs/getting-started-guides/minikube/">Minikube installation guide</a>.</p>
+
+<p>Use <code>curl</code> to download and install the latest Minikube release:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-darwin-amd64 <span style="color:#666">&amp;&amp;</span> <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>  chmod +x minikube <span style="color:#666">&amp;&amp;</span> <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>  sudo mv minikube /usr/local/bin/</code></pre></div>
+<p>Use Homebrew to install the xhyve driver and set its permissions:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">brew install docker-machine-driver-xhyve
+sudo chown root:wheel <span style="color:#a2f;font-weight:bold">$(</span>brew --prefix<span style="color:#a2f;font-weight:bold">)</span>/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
+sudo chmod u+s <span style="color:#a2f;font-weight:bold">$(</span>brew --prefix<span style="color:#a2f;font-weight:bold">)</span>/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve</code></pre></div>
+<p>Use Homebrew to download the <code>kubectl</code> command-line tool, which you can
+use to interact with Kubernetes clusters:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">brew install kubectl</code></pre></div>
+<p>Determine whether you can access sites like <a href="https://cloud.google.com/container-registry/" target="_blank">https://cloud.google.com/container-registry/</a> directly without a proxy, by opening a new terminal and using</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">curl --proxy <span style="color:#b44">&#34;&#34;</span> https://cloud.google.com/container-registry/</code></pre></div>
+<p>Make sure that the Docker daemon is started. You can determine if docker is running by using a command such as:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker images</code></pre></div>
+<p>If NO proxy is required, start the Minikube cluster:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">minikube start --vm-driver<span style="color:#666">=</span>xhyve</code></pre></div>
+<p>If a proxy server is required, use the following method to start Minikube cluster with proxy setting:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">minikube start --vm-driver<span style="color:#666">=</span>xhyve --docker-env <span style="color:#b8860b">HTTP_PROXY</span><span style="color:#666">=</span>http://your-http-proxy-host:your-http-proxy-port  --docker-env <span style="color:#b8860b">HTTPS_PROXY</span><span style="color:#666">=</span>http<span style="color:#666">(</span>s<span style="color:#666">)</span>://your-https-proxy-host:your-https-proxy-port</code></pre></div>
+<p>The <code>--vm-driver=xhyve</code> flag specifies that you are using Docker for Mac. The
+default VM driver is VirtualBox.</p>
+
+<p>Note if <code>minikube start --vm-driver=xhyve</code> is unsuccessful due to the error:</p>
+
+<pre><code>Error creating machine: Error in driver during machine creation: Could not convert the UUID to MAC address: exit status 1
+</code></pre>
+
+<p>Then the following may resolve the <code>minikube start --vm-driver=xhyve</code> issue:</p>
+
+<pre><code>rm -rf ~/.minikube
+sudo chown root:wheel $(brew --prefix)/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
+sudo chmod u+s $(brew --prefix)/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
+</code></pre>
+
+<p>Now set the Minikube context. The context is what determines which cluster
+<code>kubectl</code> is interacting with. You can see all your available contexts in the
+<code>~/.kube/config</code> file.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl config use-context minikube</code></pre></div>
+<p>Verify that <code>kubectl</code> is configured to communicate with your cluster:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl cluster-info</code></pre></div>
+<p>Open the Kubernetes dashboard in a browser:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">minikube dashboard</code></pre></div>
+<h2 id="create-your-node-js-application">Create your Node.js application</h2>
+
+<p>The next step is to write the application. Save this code in a folder named <code>hellonode</code>
+with the filename <code>server.js</code>:</p>
+
+<table class="includecode" id="server-js">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://github.com/kubernetes/website/blob/master/content/en/docs/tutorials/server.js" download="server.js">
+                    <code>server.js docs/tutorials</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('server-js')" title="Copy server.js to clipboard">
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#a2f;font-weight:bold">var</span> http <span style="color:#666">=</span> require(<span style="color:#b44">&#39;http&#39;</span>);
+
+<span style="color:#a2f;font-weight:bold">var</span> handleRequest <span style="color:#666">=</span> <span style="color:#a2f;font-weight:bold">function</span>(request, response) {
+  console.log(<span style="color:#b44">&#39;Received request for URL: &#39;</span> <span style="color:#666">+</span> request.url);
+  response.writeHead(<span style="color:#666">200</span>);
+  response.end(<span style="color:#b44">&#39;Hello World!&#39;</span>);
+};
+<span style="color:#a2f;font-weight:bold">var</span> www <span style="color:#666">=</span> http.createServer(handleRequest);
+www.listen(<span style="color:#666">8080</span>);
+</code></pre></div>  </td>
+        </tr>
+    </tbody>
+</table>
+
+<p>Run your application:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">node server.js</code></pre></div>
+<p>You should be able to see your &ldquo;Hello World!&rdquo; message at <a href="http://localhost:8080/" target="_blank">http://localhost:8080/</a>.</p>
+
+<p>Stop the running Node.js server by pressing <strong>Ctrl-C</strong>.</p>
+
+<p>The next step is to package your application in a Docker container.</p>
+
+<h2 id="create-a-docker-container-image">Create a Docker container image</h2>
+
+<p>Create a file, also in the <code>hellonode</code> folder, named <code>Dockerfile</code>. A Dockerfile describes
+the image that you want to build. You can build a Docker container image by extending an
+existing image. The image in this tutorial extends an existing Node.js image.</p>
+
+<table class="includecode" id="dockerfile">
+    <thead>
+        <tr>
+            <th>
+                <a href="https://github.com/kubernetes/website/blob/master/content/en/docs/tutorials/Dockerfile" download="Dockerfile">
+                    <code>Dockerfile docs/tutorials</code>
+                </a>
+                <img src="/images/copycode.svg" style="max-height:24px" onclick="copyCode('dockerfile')" title="Copy Dockerfile to clipboard">
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-conf" data-lang="conf">FROM node:6.9.2
+EXPOSE 8080
+COPY server.js .
+CMD node server.js
+</code></pre></div>  </td>
+        </tr>
+    </tbody>
+</table>
+
+<p>This recipe for the Docker image starts from the official Node.js LTS image
+found in the Docker registry, exposes port 8080, copies your <code>server.js</code> file
+to the image and starts the Node.js server.</p>
+
+<p>Because this tutorial uses Minikube, instead of pushing your Docker image to a
+registry, you can simply build the image using the same Docker host as
+the Minikube VM, so that the images are automatically present. To do so, make
+sure you are using the Minikube Docker daemon:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#a2f">eval</span> <span style="color:#a2f;font-weight:bold">$(</span>minikube docker-env<span style="color:#a2f;font-weight:bold">)</span></code></pre></div>
+<p><strong>Note:</strong> Later, when you no longer wish to use the Minikube host, you can undo
+this change by running <code>eval $(minikube docker-env -u)</code>.</p>
+
+<p>Build your Docker image, using the Minikube Docker daemon (mind the trailing dot):</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker build -t hello-node:v1 .</code></pre></div>
+<p>Now the Minikube VM can run the image you built.</p>
+
+<h2 id="create-a-deployment">Create a Deployment</h2>
+
+<p>A Kubernetes <a href="/docs/concepts/workloads/pods/pod/"><em>Pod</em></a> is a group of one or more Containers,
+tied together for the purposes of administration and networking. The Pod in this
+tutorial has only one Container. A Kubernetes
+<a href="/docs/concepts/workloads/controllers/deployment/"><em>Deployment</em></a> checks on the health of your
+Pod and restarts the Pod&rsquo;s Container if it terminates. Deployments are the
+recommended way to manage the creation and scaling of Pods.</p>
+
+<p>Use the <code>kubectl run</code> command to create a Deployment that manages a Pod. The
+Pod runs a Container based on your <code>hello-node:v1</code> Docker image. Set the
+<code>--image-pull-policy</code> flag to <code>Never</code> to always use the local image, rather than
+pulling it from your Docker registry (since you haven&rsquo;t pushed it there):</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl run hello-node --image<span style="color:#666">=</span>hello-node:v1 --port<span style="color:#666">=</span><span style="color:#666">8080</span> --image-pull-policy<span style="color:#666">=</span>Never</code></pre></div>
+<p>View the Deployment:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl get deployments</code></pre></div>
+<p>Output:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">NAME         DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+hello-node   <span style="color:#666">1</span>         <span style="color:#666">1</span>         <span style="color:#666">1</span>            <span style="color:#666">1</span>           3m</code></pre></div>
+<p>View the Pod:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl get pods</code></pre></div>
+<p>Output:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">NAME                         READY     STATUS    RESTARTS   AGE
+hello-node-714049816-ztzrb   <span style="color:#666">1</span>/1       Running   <span style="color:#666">0</span>          6m</code></pre></div>
+<p>View cluster events:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl get events</code></pre></div>
+<p>View the <code>kubectl</code> configuration:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl config view</code></pre></div>
+<p>For more information about <code>kubectl</code>commands, see the
+<a href="/docs/user-guide/kubectl-overview/">kubectl overview</a>.</p>
+
+<h2 id="create-a-service">Create a Service</h2>
+
+<p>By default, the Pod is only accessible by its internal IP address within the
+Kubernetes cluster. To make the <code>hello-node</code> Container accessible from outside the
+Kubernetes virtual network, you have to expose the Pod as a
+Kubernetes <a href="/docs/concepts/services-networking/service/"><em>Service</em></a>.</p>
+
+<p>From your development machine, you can expose the Pod to the public internet
+using the <code>kubectl expose</code> command:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl expose deployment hello-node --type<span style="color:#666">=</span>LoadBalancer</code></pre></div>
+<p>View the Service you just created:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl get services</code></pre></div>
+<p>Output:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">NAME         CLUSTER-IP   EXTERNAL-IP   PORT<span style="color:#666">(</span>S<span style="color:#666">)</span>    AGE
+hello-node   <span style="color:#666">10</span>.0.0.71    &lt;pending&gt;     <span style="color:#666">8080</span>/TCP   6m
+kubernetes   <span style="color:#666">10</span>.0.0.1     &lt;none&gt;        <span style="color:#666">443</span>/TCP    14d</code></pre></div>
+<p>The <code>--type=LoadBalancer</code> flag indicates that you want to expose your Service
+outside of the cluster. On cloud providers that support load balancers,
+an external IP address would be provisioned to access the Service. On Minikube,
+the <code>LoadBalancer</code> type makes the Service accessible through the <code>minikube service</code>
+command.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">minikube service hello-node</code></pre></div>
+<p>This automatically opens up a browser window using a local IP address that
+serves your app and shows the &ldquo;Hello World&rdquo; message.</p>
+
+<p>Assuming you&rsquo;ve sent requests to your new web service using the browser or curl,
+you should now be able to see some logs:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl logs &lt;POD-NAME&gt;</code></pre></div>
+<h2 id="update-your-app">Update your app</h2>
+
+<p>Edit your <code>server.js</code> file to return a new message:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">response.end(<span style="color:#b44">&#39;Hello World Again!&#39;</span>);
+</code></pre></div>
+<p>Build a new version of your image (mind the trailing dot):</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker build -t hello-node:v2 .</code></pre></div>
+<p>Update the image of your Deployment:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl <span style="color:#a2f">set</span> image deployment/hello-node hello-node<span style="color:#666">=</span>hello-node:v2</code></pre></div>
+<p>Run your app again to view the new message:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">minikube service hello-node</code></pre></div>
+<h2 id="enable-addons">Enable addons</h2>
+
+<p>Minikube has a set of built-in addons that can be enabled, disabled and opened in the local Kubernetes environment.</p>
+
+<p>First list the currently supported addons:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">minikube addons list</code></pre></div>
+<p>Output:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">- storage-provisioner: enabled
+- kube-dns: enabled
+- registry: disabled
+- registry-creds: disabled
+- addon-manager: enabled
+- dashboard: disabled
+- default-storageclass: enabled
+- coredns: disabled
+- heapster: disabled
+- efk: disabled
+- ingress: disabled</code></pre></div>
+<p>Minikube must be running for these commands to take effect. To enable <code>heapster</code> addon, for example:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">minikube addons <span style="color:#a2f">enable</span> heapster</code></pre></div>
+<p>Output:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">heapster was successfully enabled</code></pre></div>
+<p>View the Pod and Service you just created:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl get po,svc -n kube-system</code></pre></div>
+<p>Output:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">NAME                             READY     STATUS    RESTARTS   AGE
+po/heapster-zbwzv                <span style="color:#666">1</span>/1       Running   <span style="color:#666">0</span>          2m
+po/influxdb-grafana-gtht9        <span style="color:#666">2</span>/2       Running   <span style="color:#666">0</span>          2m
+
+NAME                       TYPE        CLUSTER-IP   EXTERNAL-IP   PORT<span style="color:#666">(</span>S<span style="color:#666">)</span>             AGE
+svc/heapster               NodePort    <span style="color:#666">10</span>.0.0.52    &lt;none&gt;        <span style="color:#666">80</span>:31655/TCP        2m
+svc/monitoring-grafana     NodePort    <span style="color:#666">10</span>.0.0.33    &lt;none&gt;        <span style="color:#666">80</span>:30002/TCP        2m
+svc/monitoring-influxdb    ClusterIP   <span style="color:#666">10</span>.0.0.43    &lt;none&gt;        <span style="color:#666">8083</span>/TCP,8086/TCP   2m</code></pre></div>
+<p>Open the endpoint to interacting with heapster in a browser:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">minikube addons open heapster</code></pre></div>
+<p>Output:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">Opening kubernetes service kube-system/monitoring-grafana in default browser...</code></pre></div>
+<h2 id="clean-up">Clean up</h2>
+
+<p>Now you can clean up the resources you created in your cluster:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl delete service hello-node
+kubectl delete deployment hello-node</code></pre></div>
+<p>Optionally, force removal of the Docker images created:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker rmi hello-node:v1 hello-node:v2 -f</code></pre></div>
+<p>Optionally, stop the Minikube VM:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">minikube stop
+<span style="color:#a2f">eval</span> <span style="color:#a2f;font-weight:bold">$(</span>minikube docker-env -u<span style="color:#a2f;font-weight:bold">)</span></code></pre></div>
+<p>Optionally, delete the Minikube VM:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">minikube delete</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="what-s-next">What&#39;s next</h2>
+<ul>
+<li>Learn more about <a href="/docs/concepts/workloads/controllers/deployment/">Deployment objects</a>.</li>
+<li>Learn more about <a href="/docs/user-guide/deploying-applications/">Deploying applications</a>.</li>
+<li>Learn more about <a href="/docs/concepts/services-networking/service/">Service objects</a>.</li>
+</ul>
+
+
+
+
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/tutorials/hello-minikube.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/tutorials\/hello-minikube\/",
+					"title" : "Hello Minikube",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/tutorials\/hello-minikube\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/tutorials/hello-minikube.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

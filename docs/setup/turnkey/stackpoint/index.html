@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Running Kubernetes on Multiple Clouds with Stackpoint.io - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="Running Kubernetes on Multiple Clouds with Stackpoint.io" />
+<meta property="og:description" content="Running Kubernetes on Multiple Clouds with Stackpoint.io" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/setup/turnkey/stackpoint/" />
+<meta property="og:title" content="Running Kubernetes on Multiple Clouds with Stackpoint.io - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+<h1>Setup</h1>
+<h5></h5>
+
+
+
+
+
+
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/" class="YAH">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Setup" href="/docs/setup/"></a>
+
+	
+	
+		
+		
+	<div class="item" data-title="Bootstrapping Clusters with kubeadm">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Customizing control plane configuration with kubeadm" href="/docs/setup/independent/control-plane-flags/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Creating Highly Available Clusters with kubeadm" href="/docs/setup/independent/high-availability/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Creating a single master cluster with kubeadm" href="/docs/setup/independent/create-cluster-kubeadm/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Troubleshooting kubeadm" href="/docs/setup/independent/troubleshooting-kubeadm/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Building Large Clusters" href="/docs/setup/cluster-large/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Building from Source" href="/docs/setup/building-from-source/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configuring Kubernetes with Salt" href="/docs/setup/salt/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Creating a Custom Cluster from Scratch" href="/docs/setup/scratch/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Custom Cloud Solutions">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="CoreOS on AWS or GCE" href="/docs/setup/custom-cloud/coreos/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Installing Kubernetes On-premises/Cloud Providers with Kubespray" href="/docs/setup/custom-cloud/kubespray/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Installing Kubernetes on AWS with kops" href="/docs/setup/custom-cloud/kops/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="On-Premises VMs">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Cloudstack" href="/docs/setup/on-premises-vm/cloudstack/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes on DCOS" href="/docs/setup/on-premises-vm/dcos/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="oVirt" href="/docs/setup/on-premises-vm/ovirt/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Picking the Right Solution" href="/docs/setup/pick-right-solution/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Running Kubernetes Locally via Minikube" href="/docs/setup/minikube/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Running in Multiple Zones" href="/docs/setup/multiple-zones/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Turnkey Cloud Solutions">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Running Kubernetes on AWS EC2" href="/docs/setup/turnkey/aws/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Running Kubernetes on Alibaba Cloud" href="/docs/setup/turnkey/alibaba-cloud/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Running Kubernetes on Azure" href="/docs/setup/turnkey/azure/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Running Kubernetes on CenturyLink Cloud" href="/docs/setup/turnkey/clc/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Running Kubernetes on Google Compute Engine" href="/docs/setup/turnkey/gce/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Running Kubernetes on Multiple Clouds with Stackpoint.io" href="/docs/setup/turnkey/stackpoint/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Validate Node Setup" href="/docs/setup/node-conformance/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/setup/turnkey/stackpoint.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>Running Kubernetes on Multiple Clouds with Stackpoint.io</h1>
+
+
+
+
+
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#aws">AWS</a>
+<ul>
+<li><a href="#choose-a-provider">Choose a Provider</a></li>
+<li><a href="#configure-your-provider">Configure Your Provider</a></li>
+<li><a href="#configure-your-cluster">Configure Your Cluster</a></li>
+<li><a href="#running-the-cluster">Running the Cluster</a></li>
+</ul></li>
+<li><a href="#gce">GCE</a>
+<ul>
+<li><a href="#choose-a-provider-1">Choose a Provider</a></li>
+<li><a href="#configure-your-provider-1">Configure Your Provider</a></li>
+<li><a href="#configure-your-cluster-1">Configure Your Cluster</a></li>
+<li><a href="#running-the-cluster-1">Running the Cluster</a></li>
+</ul></li>
+<li><a href="#google-kubernetes-engine">Google Kubernetes Engine</a>
+<ul>
+<li><a href="#choose-a-provider-2">Choose a Provider</a></li>
+<li><a href="#configure-your-provider-2">Configure Your Provider</a></li>
+<li><a href="#configure-your-cluster-2">Configure Your Cluster</a></li>
+<li><a href="#running-the-cluster-2">Running the Cluster</a></li>
+</ul></li>
+<li><a href="#digitalocean">DigitalOcean</a>
+<ul>
+<li><a href="#choose-a-provider-3">Choose a Provider</a></li>
+<li><a href="#configure-your-provider-3">Configure Your Provider</a></li>
+<li><a href="#configure-your-cluster-3">Configure Your Cluster</a></li>
+<li><a href="#running-the-cluster-3">Running the Cluster</a></li>
+</ul></li>
+<li><a href="#microsoft-azure">Microsoft Azure</a>
+<ul>
+<li><a href="#choose-a-provider-4">Choose a Provider</a></li>
+<li><a href="#configure-your-provider-4">Configure Your Provider</a></li>
+<li><a href="#configure-your-cluster-4">Configure Your Cluster</a></li>
+<li><a href="#running-the-cluster-4">Running the Cluster</a></li>
+</ul></li>
+<li><a href="#packet">Packet</a>
+<ul>
+<li><a href="#choose-a-provider-5">Choose a Provider</a></li>
+<li><a href="#configure-your-provider-5">Configure Your Provider</a></li>
+<li><a href="#configure-your-cluster-5">Configure Your Cluster</a></li>
+<li><a href="#running-the-cluster-5">Running the Cluster</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>StackPointCloud is the universal control plane for Kubernetes Anywhere.  StackPointCloud allows you to deploy and manage a Kubernetes cluster to the cloud provider of your choice in 3 steps using a web-based interface.</p>
+
+<h2 id="aws">AWS</h2>
+
+<p>To create a Kubernetes cluster on AWS, you will need an Access Key ID and a Secret Access Key from AWS.</p>
+
+<h3 id="choose-a-provider">Choose a Provider</h3>
+
+<p>Log in to <a href="https://stackpoint.io" target="_blank">stackpoint.io</a> with a GitHub, Google, or Twitter account.</p>
+
+<p>Click <strong>+ADD A CLUSTER NOW</strong>.</p>
+
+<p>Click to select Amazon Web Services (AWS).</p>
+
+<h3 id="configure-your-provider">Configure Your Provider</h3>
+
+<p>Add your Access Key ID and a Secret Access Key from AWS. Select your default StackPointCloud SSH keypair, or click <strong>ADD SSH KEY</strong> to add a new keypair.</p>
+
+<p>Click <strong>SUBMIT</strong> to submit the authorization information.</p>
+
+<h3 id="configure-your-cluster">Configure Your Cluster</h3>
+
+<p>Choose any extra options you may want to include with your cluster, then click <strong>SUBMIT</strong> to create the cluster.</p>
+
+<h3 id="running-the-cluster">Running the Cluster</h3>
+
+<p>You can monitor the status of your cluster and suspend or delete it from <a href="https://stackpoint.io/#/clusters" target="_blank">your stackpoint.io dashboard</a>.</p>
+
+<p>For information on using and managing a Kubernetes cluster on AWS, <a href="/docs/getting-started-guides/aws/">consult the  Kubernetes documentation</a>.</p>
+
+<h2 id="gce">GCE</h2>
+
+<p>To create a Kubernetes cluster on GCE, you will need the Service Account JSON Data from Google.</p>
+
+<h3 id="choose-a-provider-1">Choose a Provider</h3>
+
+<p>Log in to <a href="https://stackpoint.io" target="_blank">stackpoint.io</a> with a GitHub, Google, or Twitter account.</p>
+
+<p>Click <strong>+ADD A CLUSTER NOW</strong>.</p>
+
+<p>Click to select Google Compute Engine (GCE).</p>
+
+<h3 id="configure-your-provider-1">Configure Your Provider</h3>
+
+<p>Add your Service Account JSON Data from Google. Select your default StackPointCloud SSH keypair, or click <strong>ADD SSH KEY</strong> to add a new keypair.</p>
+
+<p>Click <strong>SUBMIT</strong> to submit the authorization information.</p>
+
+<h3 id="configure-your-cluster-1">Configure Your Cluster</h3>
+
+<p>Choose any extra options you may want to include with your cluster, then click <strong>SUBMIT</strong> to create the cluster.</p>
+
+<h3 id="running-the-cluster-1">Running the Cluster</h3>
+
+<p>You can monitor the status of your cluster and suspend or delete it from <a href="https://stackpoint.io/#/clusters" target="_blank">your stackpoint.io dashboard</a>.</p>
+
+<p>For information on using and managing a Kubernetes cluster on GCE, <a href="/docs/getting-started-guides/gce/">consult the  Kubernetes documentation</a>.</p>
+
+<h2 id="google-kubernetes-engine">Google Kubernetes Engine</h2>
+
+<p>To create a Kubernetes cluster on Google Kubernetes Engine, you will need the Service Account JSON Data from Google.</p>
+
+<h3 id="choose-a-provider-2">Choose a Provider</h3>
+
+<p>Log in to <a href="https://stackpoint.io" target="_blank">stackpoint.io</a> with a GitHub, Google, or Twitter account.</p>
+
+<p>Click <strong>+ADD A CLUSTER NOW</strong>.</p>
+
+<p>Click to select Google Kubernetes Engine.</p>
+
+<h3 id="configure-your-provider-2">Configure Your Provider</h3>
+
+<p>Add your Service Account JSON Data from Google. Select your default StackPointCloud SSH keypair, or click <strong>ADD SSH KEY</strong> to add a new keypair.</p>
+
+<p>Click <strong>SUBMIT</strong> to submit the authorization information.</p>
+
+<h3 id="configure-your-cluster-2">Configure Your Cluster</h3>
+
+<p>Choose any extra options you may want to include with your cluster, then click <strong>SUBMIT</strong> to create the cluster.</p>
+
+<h3 id="running-the-cluster-2">Running the Cluster</h3>
+
+<p>You can monitor the status of your cluster and suspend or delete it from <a href="https://stackpoint.io/#/clusters" target="_blank">your stackpoint.io dashboard</a>.</p>
+
+<p>For information on using and managing a Kubernetes cluster on Google Kubernetes Engine, consult <a href="/docs/home/">the official documentation</a>.</p>
+
+<h2 id="digitalocean">DigitalOcean</h2>
+
+<p>To create a Kubernetes cluster on DigitalOcean, you will need a DigitalOcean API Token.</p>
+
+<h3 id="choose-a-provider-3">Choose a Provider</h3>
+
+<p>Log in to <a href="https://stackpoint.io" target="_blank">stackpoint.io</a> with a GitHub, Google, or Twitter account.</p>
+
+<p>Click <strong>+ADD A CLUSTER NOW</strong>.</p>
+
+<p>Click to select DigitalOcean.</p>
+
+<h3 id="configure-your-provider-3">Configure Your Provider</h3>
+
+<p>Add your DigitalOcean API Token. Select your default StackPointCloud SSH keypair, or click <strong>ADD SSH KEY</strong> to add a new keypair.</p>
+
+<p>Click <strong>SUBMIT</strong> to submit the authorization information.</p>
+
+<h3 id="configure-your-cluster-3">Configure Your Cluster</h3>
+
+<p>Choose any extra options you may want to include with your cluster, then click <strong>SUBMIT</strong> to create the cluster.</p>
+
+<h3 id="running-the-cluster-3">Running the Cluster</h3>
+
+<p>You can monitor the status of your cluster and suspend or delete it from <a href="https://stackpoint.io/#/clusters" target="_blank">your stackpoint.io dashboard</a>.</p>
+
+<p>For information on using and managing a Kubernetes cluster on DigitalOcean, consult <a href="/docs/home/">the official documentation</a>.</p>
+
+<h2 id="microsoft-azure">Microsoft Azure</h2>
+
+<p>To create a Kubernetes cluster on Microsoft Azure, you will need an Azure Subscription ID, Username/Email, and Password.</p>
+
+<h3 id="choose-a-provider-4">Choose a Provider</h3>
+
+<p>Log in to <a href="https://stackpoint.io" target="_blank">stackpoint.io</a> with a GitHub, Google, or Twitter account.</p>
+
+<p>Click <strong>+ADD A CLUSTER NOW</strong>.</p>
+
+<p>Click to select Microsoft Azure.</p>
+
+<h3 id="configure-your-provider-4">Configure Your Provider</h3>
+
+<p>Add your Azure Subscription ID, Username/Email, and Password. Select your default StackPointCloud SSH keypair, or click <strong>ADD SSH KEY</strong> to add a new keypair.</p>
+
+<p>Click <strong>SUBMIT</strong> to submit the authorization information.</p>
+
+<h3 id="configure-your-cluster-4">Configure Your Cluster</h3>
+
+<p>Choose any extra options you may want to include with your cluster, then click <strong>SUBMIT</strong> to create the cluster.</p>
+
+<h3 id="running-the-cluster-4">Running the Cluster</h3>
+
+<p>You can monitor the status of your cluster and suspend or delete it from <a href="https://stackpoint.io/#/clusters" target="_blank">your stackpoint.io dashboard</a>.</p>
+
+<p>For information on using and managing a Kubernetes cluster on Azure, <a href="/docs/getting-started-guides/azure/">consult the  Kubernetes documentation</a>.</p>
+
+<h2 id="packet">Packet</h2>
+
+<p>To create a Kubernetes cluster on Packet, you will need a Packet API Key.</p>
+
+<h3 id="choose-a-provider-5">Choose a Provider</h3>
+
+<p>Log in to <a href="https://stackpoint.io" target="_blank">stackpoint.io</a> with a GitHub, Google, or Twitter account.</p>
+
+<p>Click <strong>+ADD A CLUSTER NOW</strong>.</p>
+
+<p>Click to select Packet.</p>
+
+<h3 id="configure-your-provider-5">Configure Your Provider</h3>
+
+<p>Add your Packet API Key. Select your default StackPointCloud SSH keypair, or click <strong>ADD SSH KEY</strong> to add a new keypair.</p>
+
+<p>Click <strong>SUBMIT</strong> to submit the authorization information.</p>
+
+<h3 id="configure-your-cluster-5">Configure Your Cluster</h3>
+
+<p>Choose any extra options you may want to include with your cluster, then click <strong>SUBMIT</strong> to create the cluster.</p>
+
+<h3 id="running-the-cluster-5">Running the Cluster</h3>
+
+<p>You can monitor the status of your cluster and suspend or delete it from <a href="https://stackpoint.io/#/clusters" target="_blank">your stackpoint.io dashboard</a>.</p>
+
+<p>For information on using and managing a Kubernetes cluster on Packet, consult <a href="/docs/home/">the official documentation</a>.</p>
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/setup/turnkey/stackpoint.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/setup\/turnkey\/stackpoint\/",
+					"title" : "Running Kubernetes on Multiple Clouds with Stackpoint.io",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/setup\/turnkey\/stackpoint\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/setup/turnkey/stackpoint.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

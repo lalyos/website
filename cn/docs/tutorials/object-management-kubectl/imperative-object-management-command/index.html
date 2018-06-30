@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>使用命令式的方式管理 Kubernetes 对象 - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="使用命令式的方式管理 Kubernetes 对象" />
+<meta property="og:description" content="使用命令式的方式管理 Kubernetes 对象" />
+
+<meta property="og:url" content="https://kubernetes.io/cn/docs/tutorials/object-management-kubectl/imperative-object-management-command/" />
+<meta property="og:title" content="使用命令式的方式管理 Kubernetes 对象 - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+             <li>
+                <a href="#">
+                    Chinese <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/">English</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+         
+        
+        <a class="item" data-title="Tutorials" href="/cn/docs/tutorials/"></a>
+
+	
+	
+		
+		
+<a class="item" data-title="Kubernetes 对象管理" href="/cn/docs/tutorials/object-management-kubectl/object-management/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="StatefulSet基本使用" href="/cn/docs/tutorials/stateful-application/basic-stateful-set/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Try Our Interactive Tutorials">
+		<div class="container">
+		
+		
+		<a class="item" data-title="Try Our Interactive Tutorials" href="/cn/docs/tutorials/kubernetes-basics/"></a>
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="互动教程 - 创建集群" href="/cn/docs/tutorials/kubernetes-basics/cluster-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 应用外部可见" href="/cn/docs/tutorials/kubernetes-basics/expose-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 应用程序探索" href="/cn/docs/tutorials/kubernetes-basics/explore-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 扩展您的应用程序" href="/cn/docs/tutorials/kubernetes-basics/scale-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 更新您的应用程序" href="/cn/docs/tutorials/kubernetes-basics/update-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 部署应用程序" href="/cn/docs/tutorials/kubernetes-basics/deploy-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Minikube 创建一个集群" href="/cn/docs/tutorials/kubernetes-basics/cluster-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 kubectl 创建部署" href="/cn/docs/tutorials/kubernetes-basics/deploy-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用服务发布您的应用程序" href="/cn/docs/tutorials/kubernetes-basics/expose-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="执行滚动更新" href="/cn/docs/tutorials/kubernetes-basics/update-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="查看 Pods 和节点" href="/cn/docs/tutorials/kubernetes-basics/explore-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="运行应用程序的多个实例" href="/cn/docs/tutorials/kubernetes-basics/scale-intro/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="“示例：使用 Stateful Sets 部署 Cassandra”" href="/cn/docs/tutorials/stateful-application/cassandra/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Source IP" href="/cn/docs/tutorials/services/source-ip/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用ConfigMap来配置Redis" href="/cn/docs/tutorials/configuration/configure-redis-using-configmap/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用命令式的方式管理 Kubernetes 对象" href="/cn/docs/tutorials/object-management-kubectl/imperative-object-management-command/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="基于 Persistent Volumes 搭建 WordPress 和 MySQL 应用" href="/cn/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="运行 ZooKeeper， 一个 CP 分布式系统" href="/cn/docs/tutorials/stateful-application/zookeeper/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/tutorials/object-management-kubectl/imperative-object-management-command.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>使用命令式的方式管理 Kubernetes 对象</h1>
+
+
+
+<p>直接使用内置的 <code>kubectl</code> 命令行工具，以命令式方式可以快速创建，更新和删除 Kubernetes 对象。本文档介绍了这些命令是如何组织的，以及如何使用它们来管理活动对象。</p>
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+<li><a href="#%e6%9d%83%e8%a1%a1">权衡</a></li>
+
+
+
+
+<li><a href="#%e5%a6%82%e4%bd%95%e5%88%9b%e5%bb%ba%e5%af%b9%e8%b1%a1">如何创建对象</a></li>
+
+
+
+
+<li><a href="#%e5%a6%82%e4%bd%95%e6%9b%b4%e6%96%b0%e5%af%b9%e8%b1%a1">如何更新对象</a></li>
+
+
+
+
+<li><a href="#%e5%a6%82%e4%bd%95%e5%88%a0%e9%99%a4%e5%af%b9%e8%b1%a1">如何删除对象</a></li>
+
+
+
+
+<li><a href="#%e5%a6%82%e4%bd%95%e6%9f%a5%e7%9c%8b%e5%af%b9%e8%b1%a1">如何查看对象</a></li>
+
+
+
+
+<li><a href="#%e4%bd%bf%e7%94%a8-set-%e5%91%bd%e4%bb%a4%e5%9c%a8%e5%88%9b%e5%bb%ba%e4%b9%8b%e5%89%8d%e4%bf%ae%e6%94%b9%e5%af%b9%e8%b1%a1">使用 <code>set</code> 命令在创建之前修改对象</a></li>
+
+
+
+
+<li><a href="#%e4%bd%bf%e7%94%a8-edit-%e5%9c%a8%e5%88%9b%e5%bb%ba%e4%b9%8b%e5%89%8d%e4%bf%ae%e6%94%b9%e5%af%b9%e8%b1%a1">使用 <code>--edit</code> 在创建之前修改对象</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#what-s-next">What's next</a></li>
+
+
+
+</ul>
+
+
+<h2 id="权衡">权衡</h2>
+
+<p><code>kubectl</code> 工具支持三种方式进行对象的管理:</p>
+
+<ul>
+<li>命令式的方式</li>
+<li>命令式的对象配置</li>
+<li>声明式的对象配置</li>
+</ul>
+
+<p>参见<a href="/docs/concepts/tools/kubectl/object-management-overview/">Kubernetes对象管理</a>
+讨论各种对象管理方式的优缺点.</p>
+
+<h2 id="如何创建对象">如何创建对象</h2>
+
+<p><code>kubectl</code> 工具支持用于创建一些最常用的对象类型的动词驱动命令，这些命令的命名让不熟悉Kubernetes 对象的用户也可以见名知义。</p>
+
+<ul>
+<li><code>run</code>: 创建一个新的 Deployment 对象以在一个或多个 Pod 中运行 Containers。</li>
+<li><code>expose</code>: 创建一个新的 Service 对象用于负载均衡 Pods 上的的网络流量。</li>
+<li><code>autoscale</code>: 创建一个新的 Autoscaler 对象，来实现 Deployment 等控制器的自动水平拓展。</li>
+</ul>
+
+<p><code>kubectl</code> 工具也支持由对象类型驱动的创建命令。 这些命令支持更多的对象类型，并且对其意图更为明确，但要求用户知道他们打算创建的对象的类型。</p>
+
+<ul>
+<li><code>create &lt;objecttype&gt; [&lt;subtype&gt;] &lt;instancename&gt;</code></li>
+</ul>
+
+<p>某些对象类型具有您可以在“create&rdquo;命令中指定的子类型。例如，Service对象有ClusterIP，LoadBalancer和NodePort等几种子类型。以下是使用子类型NodePort创建一个服务的示例:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl create service nodeport &lt;myservicename&gt;</code></pre></div>
+<p>在前面的例子中， <code>create service nodeport</code>命令叫做 <code>create service</code>命令的子命令.</p>
+
+<p>您可以使用 <code>-h</code> 标志来查找子命令支持的参数和标志:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl create service nodeport -h</code></pre></div>
+<h2 id="如何更新对象">如何更新对象</h2>
+
+<p><code>kubectl</code> 命令支持一些常见更新操作的动词驱动命令。这些命令的命名方式可以让不熟悉 Kubernetes 对象的用户，在不知道必须设置的特定字段的情况下也可以执行更新操作:</p>
+
+<ul>
+<li><code>scale</code>: 通过更新控制器的副本数量，水平扩展控制器以添加或删除 Pod。</li>
+<li><code>annotate</code>: 从对象添加或删除注释。</li>
+<li><code>label</code>: 为对象添加或删除标签。</li>
+</ul>
+
+<p><code>kubectl</code>命令还支持由对象的一个​​切面驱动的更新命令.设置此切面可能会为不同的对象类型设置不同的字段:</p>
+
+<ul>
+<li><code>set</code> <field>: 设置对象的一个​​切面。</li>
+</ul>
+
+<p><strong>注</strong>: 在 Kubernetes 版本 1.5 中，并不是每个动词驱动的命令都有一个相关的切面驱动的命令。</p>
+
+<p><code>kubectl</code> 工具支持直接更新活动对象的其他方法，然而，它们需要更好的了解 Kubernetes 对象模式。</p>
+
+<ul>
+<li><code>edit</code>: 通过在编辑器中打开其配置，直接编辑活动对象的原始配置。</li>
+<li><code>patch</code>: 通过使用补丁字符串直接修改活动对象的特定字段。</li>
+</ul>
+
+<p>有关补丁字符串的更多详细信息，请参阅补丁部分
+<a href="https://github.com/kubernetes/community/blob/master/contributors/devel/api-conventions.md#patch-operations" target="_blank">API 公约</a>。</p>
+
+<h2 id="如何删除对象">如何删除对象</h2>
+
+<p>您可以使用 <code>delete</code> 命令从集群中删除一个对象:</p>
+
+<ul>
+<li><code>delete &lt;type&gt;/&lt;name&gt;</code></li>
+</ul>
+
+<p><strong>注意</strong>: 您可以对命令式命令和命令式对象配置都使用 <code>kubectl delete</code> 方法。两者的差异在于传递的命令参数不同。要将
+ <code>kubectl delete</code> 作为命令式命令使用，需将要删除的对象作为参数传递。以下是传递名为 nginx 的 Deployment 对象的示例:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">kubectl delete deployment/nginx</code></pre></div>
+<h2 id="如何查看对象">如何查看对象</h2>
+
+<p>有几个命令用于打印有关对象的信息:</p>
+
+<ul>
+<li><code>get</code>: 打印有关匹配对象的基本信息。使用 <code>get -h</code> 来查看选项列表。</li>
+<li><code>describe</code>: 打印有关匹配对象的聚合详细信息。</li>
+<li><code>logs</code>: 打印 Pod 运行容器的 stdout 和 stderr 信息。</li>
+</ul>
+
+<h2 id="使用-set-命令在创建之前修改对象">使用 <code>set</code> 命令在创建之前修改对象</h2>
+
+<p>有一些对象字段没有可以在 <code>create</code> 命令中使用的标志。在某些情况下，您可以组合使用 <code>set</code> 和 <code>create</code> 在对象创建之前指定字段的值。这是通过将 <code>create</code> 命令的输出管道连接到 <code>set</code> 命令，然后回到 <code>create</code> 命令。以下是一个例子:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">kubectl create service clusterip &lt;myservicename&gt; -o yaml --dry-run | kubectl <span style="color:#a2f">set</span> selector --local -f - <span style="color:#b44">&#39;environment=qa&#39;</span> -o yaml | kubectl create -f -</code></pre></div>
+<ol>
+<li>使用 <code>create service -o yaml --dry-run</code> 创建服务配置，并将其作为 YAML 打印到 stdout，而不是将其发送到 Kubernetes API 服务器。</li>
+<li>使用 <code>set --local -f - -o yaml</code> 从 stdin 读取配置，并将更新后的配置作为 YAML 写入 stdout。</li>
+<li>使用 <code>kubectl create -f -</code> 从 stdin 提供的配置创建对象。</li>
+</ol>
+
+<h2 id="使用-edit-在创建之前修改对象">使用 <code>--edit</code> 在创建之前修改对象</h2>
+
+<p>您可以使用 <code>kubectl create --edit</code> 命令在对象创建之前，对对象进行任意更改。以下是一个例子:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">kubectl create service clusterip my-svc -o yaml --dry-run &gt; /tmp/srv.yaml
+kubectl create --edit -f /tmp/srv.yaml</code></pre></div>
+<ol>
+<li>使用<code>create service</code> 创建服务的配置并将其保存到 <code>/tmp/srv.yaml</code>。</li>
+<li>使用<code>create --edit</code> 在创建对象之前打开配置文件进行编辑。</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="what-s-next">What&#39;s next</h2>
+<ul>
+<li><a href="/docs/tutorials/object-management-kubectl/imperative-object-management-configuration/">使用对象配置管理 Kubernetes 对象(必要)</a></li>
+<li><a href="/docs/tutorials/object-management-kubectl/declarative-object-management-configuration/">使用对象配置(声明式)管理 Kubernetes 对象</a></li>
+<li><a href="/docs/user-guide/kubectl/v1.6/">Kubectl 命令参考</a></li>
+<li><a href="/docs/resources-reference/v1.6/">Kubernetes 对象模式参考</a></li>
+</ul>
+
+
+
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/tutorials/object-management-kubectl/imperative-object-management-command.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/cn\/docs\/tutorials\/object-management-kubectl\/imperative-object-management-command\/",
+					"title" : "使用命令式的方式管理 Kubernetes 对象",
+					"permalink" : "https:\/\/kubernetes.io\/cn\/docs\/tutorials\/object-management-kubectl\/imperative-object-management-command\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/tutorials/object-management-kubectl/imperative-object-management-command.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

@@ -1,0 +1,2102 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Configure Out Of Resource Handling - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="Configure Out Of Resource Handling" />
+<meta property="og:description" content="Configure Out Of Resource Handling" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/tasks/administer-cluster/out-of-resource/" />
+<meta property="og:title" content="Configure Out Of Resource Handling - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+
+
+
+
+<h1>Tasks</h1>
+<h5></h5>
+
+
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/" class="YAH">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Tasks" href="/docs/tasks/"></a>
+
+	
+	
+		
+		
+	<div class="item" data-title="Install Tools">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Install and Set Up kubectl" href="/docs/tasks/tools/install-kubectl/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Install Minikube" href="/docs/tasks/tools/install-minikube/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Installing kubeadm" href="/docs/tasks/tools/install-kubeadm/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Administer a Cluster">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+	<div class="item" data-title="Administration with kubeadm">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Upgrading kubeadm HA clusters from 1.9.x to 1.9.y" href="/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-ha/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Upgrading kubeadm clusters from 1.7 to 1.8" href="/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-1-8/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Upgrading kubeadm clusters from v1.10 to v1.11" href="/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-1-11/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Upgrading/downgrading kubeadm clusters between v1.8 to v1.9" href="/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-1-9/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Manage Memory, CPU, and API Resources">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Configure Default Memory Requests and Limits for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/memory-default-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Default CPU Requests and Limits for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/cpu-default-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Minimum and Maximum Memory Constraints for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/memory-constraint-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Minimum and Maximum CPU Constraints for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/cpu-constraint-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Memory and CPU Quotas for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/quota-memory-cpu-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod Quota for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/quota-pod-namespace/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Install a Network Policy Provider">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Use Calico for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/calico-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use Cilium for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/cilium-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use Kube-router for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/kube-router-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Romana for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/romana-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Weave Net for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/weave-network-policy/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Access Clusters Using the Kubernetes API" href="/docs/tasks/administer-cluster/access-cluster-api/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Access Services Running on Clusters" href="/docs/tasks/administer-cluster/access-cluster-services/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Advertise Extended Resources for a Node" href="/docs/tasks/administer-cluster/extended-resource-node/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Autoscale the DNS Service in a Cluster" href="/docs/tasks/administer-cluster/dns-horizontal-autoscaling/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Change the Reclaim Policy of a PersistentVolume" href="/docs/tasks/administer-cluster/change-pv-reclaim-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Change the default StorageClass" href="/docs/tasks/administer-cluster/change-default-storage-class/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Cluster Management" href="/docs/tasks/administer-cluster/cluster-management/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Multiple Schedulers" href="/docs/tasks/administer-cluster/configure-multiple-schedulers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Out Of Resource Handling" href="/docs/tasks/administer-cluster/out-of-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Quotas for API Objects" href="/docs/tasks/administer-cluster/quota-api-object/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Control CPU Management Policies on the Node" href="/docs/tasks/administer-cluster/cpu-management-policies/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Customizing DNS Service" href="/docs/tasks/administer-cluster/dns-custom-nameservers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debugging DNS Resolution" href="/docs/tasks/administer-cluster/dns-debugging-resolution/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Declare Network Policy" href="/docs/tasks/administer-cluster/declare-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Developing Cloud Controller Manager" href="/docs/tasks/administer-cluster/developing-cloud-controller-manager/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Encrypting Secret Data at Rest" href="/docs/tasks/administer-cluster/encrypt-data/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Guaranteed Scheduling For Critical Add-On Pods" href="/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="IP Masquerade Agent User Guide" href="/docs/tasks/administer-cluster/ip-masq-agent/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes Cloud Controller Manager" href="/docs/tasks/administer-cluster/running-cloud-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Limit Storage Consumption" href="/docs/tasks/administer-cluster/limit-storage-consumption/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Namespaces Walkthrough" href="/docs/tasks/administer-cluster/namespaces-walkthrough/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Operating etcd clusters for Kubernetes" href="/docs/tasks/administer-cluster/configure-upgrade-etcd/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Reconfigure a Node&#39;s Kubelet in a Live Cluster" href="/docs/tasks/administer-cluster/reconfigure-kubelet/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Reserve Compute Resources for System Daemons" href="/docs/tasks/administer-cluster/reserve-compute-resources/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Safely Drain a Node while Respecting Application SLOs" href="/docs/tasks/administer-cluster/safely-drain-node/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Securing a Cluster" href="/docs/tasks/administer-cluster/securing-a-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set Kubelet parameters via a config file" href="/docs/tasks/administer-cluster/kubelet-config-file/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up High-Availability Kubernetes Masters" href="/docs/tasks/administer-cluster/highly-available-master/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up a Highly Availabile etcd Cluster With kubeadm" href="/docs/tasks/administer-cluster/setup-ha-etcd-with-kubeadm/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Share a Cluster with Namespaces" href="/docs/tasks/administer-cluster/namespaces/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Static Pods" href="/docs/tasks/administer-cluster/static-pod/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Storage Object in Use Protection" href="/docs/tasks/administer-cluster/storage-object-in-use-protection/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using CoreDNS for Service Discovery" href="/docs/tasks/administer-cluster/coredns/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using a KMS provider for data encryption" href="/docs/tasks/administer-cluster/kms-provider/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using sysctls in a Kubernetes Cluster" href="/docs/tasks/administer-cluster/sysctl-cluster/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Configure Pods and Containers">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Assign Memory Resources to Containers and Pods" href="/docs/tasks/configure-pod-container/assign-memory-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Assign CPU Resources to Containers and Pods" href="/docs/tasks/configure-pod-container/assign-cpu-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Quality of Service for Pods" href="/docs/tasks/configure-pod-container/quality-service-pod/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Assign Extended Resources to a Container" href="/docs/tasks/configure-pod-container/extended-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod to Use a Volume for Storage" href="/docs/tasks/configure-pod-container/configure-volume-storage/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod to Use a PersistentVolume for Storage" href="/docs/tasks/configure-pod-container/configure-persistent-volume-storage/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod to Use a Projected Volume for Storage" href="/docs/tasks/configure-pod-container/configure-projected-volume-storage/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Security Context for a Pod or Container" href="/docs/tasks/configure-pod-container/security-context/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Service Accounts for Pods" href="/docs/tasks/configure-pod-container/configure-service-account/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pull an Image from a Private Registry" href="/docs/tasks/configure-pod-container/pull-image-private-registry/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Liveness and Readiness Probes" href="/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Assign Pods to Nodes" href="/docs/tasks/configure-pod-container/assign-pods-nodes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Pod Initialization" href="/docs/tasks/configure-pod-container/configure-pod-initialization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Attach Handlers to Container Lifecycle Events" href="/docs/tasks/configure-pod-container/attach-handler-lifecycle-event/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod to Use a ConfigMap" href="/docs/tasks/configure-pod-container/configure-pod-configmap/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Share Process Namespace between Containers in a Pod" href="/docs/tasks/configure-pod-container/share-process-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Translate a Docker Compose File to Kubernetes Resources" href="/docs/tasks/configure-pod-container/translate-compose-kubernetes/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Inject Data Into Applications">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Define a Command and Arguments for a Container" href="/docs/tasks/inject-data-application/define-command-argument-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Define Environment Variables for a Container" href="/docs/tasks/inject-data-application/define-environment-variable-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Expose Pod Information to Containers Through Environment Variables" href="/docs/tasks/inject-data-application/environment-variable-expose-pod-information/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Expose Pod Information to Containers Through Files" href="/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Distribute Credentials Securely Using Secrets" href="/docs/tasks/inject-data-application/distribute-credentials-secure/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Inject Information into Pods Using a PodPreset" href="/docs/tasks/inject-data-application/podpreset/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Run Applications">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Run a Stateless Application Using a Deployment" href="/docs/tasks/run-application/run-stateless-application-deployment/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Run a Single-Instance Stateful Application" href="/docs/tasks/run-application/run-single-instance-stateful-application/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Run a Replicated Stateful Application" href="/docs/tasks/run-application/run-replicated-stateful-application/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Update API Objects in Place Using kubectl patch" href="/docs/tasks/run-application/update-api-object-kubectl-patch/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Scale a StatefulSet" href="/docs/tasks/run-application/scale-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Delete a StatefulSet" href="/docs/tasks/run-application/delete-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Force Delete StatefulSet Pods" href="/docs/tasks/run-application/force-delete-stateful-set-pod/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Perform Rolling Update Using a Replication Controller" href="/docs/tasks/run-application/rolling-update-replication-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Horizontal Pod Autoscaler" href="/docs/tasks/run-application/horizontal-pod-autoscale/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Horizontal Pod Autoscaler Walkthrough" href="/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Specifying a Disruption Budget for your Application" href="/docs/tasks/run-application/configure-pdb/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Run Jobs">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Running automated tasks with cron jobs" href="/docs/tasks/job/automated-tasks-with-cron-jobs/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Parallel Processing using Expansions" href="/docs/tasks/job/parallel-processing-expansion/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Coarse Parallel Processing Using a Work Queue" href="/docs/tasks/job/coarse-parallel-processing-work-queue/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Fine Parallel Processing Using a Work Queue" href="/docs/tasks/job/fine-parallel-processing-work-queue/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Access Applications in a Cluster">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Web UI (Dashboard)" href="/docs/tasks/access-application-cluster/web-ui-dashboard/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Accessing Clusters" href="/docs/tasks/access-application-cluster/access-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Access to Multiple Clusters" href="/docs/tasks/access-application-cluster/configure-access-multiple-clusters/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use Port Forwarding to Access Applications in a Cluster" href="/docs/tasks/access-application-cluster/port-forward-access-application-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Provide Load-Balanced Access to an Application in a Cluster" href="/docs/tasks/access-application-cluster/load-balance-access-application-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use a Service to Access an Application in a Cluster" href="/docs/tasks/access-application-cluster/service-access-application-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Connect a Front End to a Back End Using a Service" href="/docs/tasks/access-application-cluster/connecting-frontend-backend/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Create an External Load Balancer" href="/docs/tasks/access-application-cluster/create-external-load-balancer/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Your Cloud Provider&#39;s Firewalls" href="/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="List All Container Images Running in a Cluster" href="/docs/tasks/access-application-cluster/list-all-running-container-images/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Communicate Between Containers in the Same Pod Using a Shared Volume" href="/docs/tasks/access-application-cluster/communicate-containers-same-pod-shared-volume/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure DNS for a Cluster" href="/docs/tasks/access-application-cluster/configure-dns-cluster/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Monitor, Log, and Debug">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Application Introspection and Debugging" href="/docs/tasks/debug-application-cluster/debug-application-introspection/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Auditing" href="/docs/tasks/debug-application-cluster/audit/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Core metrics pipeline" href="/docs/tasks/debug-application-cluster/core-metrics-pipeline/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debug Init Containers" href="/docs/tasks/debug-application-cluster/debug-init-containers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debug Pods and Replication Controllers" href="/docs/tasks/debug-application-cluster/debug-pod-replication-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debug Services" href="/docs/tasks/debug-application-cluster/debug-service/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debug a StatefulSet" href="/docs/tasks/debug-application-cluster/debug-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debugging Kubernetes nodes with crictl" href="/docs/tasks/debug-application-cluster/crictl/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Determine the Reason for Pod Failure" href="/docs/tasks/debug-application-cluster/determine-reason-pod-failure/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Developing and debugging services locally" href="/docs/tasks/debug-application-cluster/local-debugging/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Events in Stackdriver" href="/docs/tasks/debug-application-cluster/events-stackdriver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Get a Shell to a Running Container" href="/docs/tasks/debug-application-cluster/get-shell-running-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Logging Using Elasticsearch and Kibana" href="/docs/tasks/debug-application-cluster/logging-elasticsearch-kibana/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Logging Using Stackdriver" href="/docs/tasks/debug-application-cluster/logging-stackdriver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Monitor Node Health" href="/docs/tasks/debug-application-cluster/monitor-node-health/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Tools for Monitoring Compute, Storage, and Network Resources" href="/docs/tasks/debug-application-cluster/resource-usage-monitoring/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Troubleshoot Applications" href="/docs/tasks/debug-application-cluster/debug-application/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Troubleshoot Clusters" href="/docs/tasks/debug-application-cluster/debug-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Troubleshooting" href="/docs/tasks/debug-application-cluster/troubleshooting/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Extend Kubernetes">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Configure the aggregation layer" href="/docs/tasks/access-kubernetes-api/configure-aggregation-layer/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Use Custom Resources">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Extend the Kubernetes API with CustomResourceDefinitions" href="/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Versions of CustomResourceDefinitions" href="/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definition-versioning/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Migrate a ThirdPartyResource to CustomResourceDefinition" href="/docs/tasks/access-kubernetes-api/custom-resources/migrate-third-party-resource/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Setup an extension API server" href="/docs/tasks/access-kubernetes-api/setup-extension-api-server/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use an HTTP Proxy to Access the Kubernetes API" href="/docs/tasks/access-kubernetes-api/http-proxy-access-api/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="TLS">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Certificate Rotation" href="/docs/tasks/tls/certificate-rotation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Manage TLS Certificates in a Cluster" href="/docs/tasks/tls/managing-tls-in-a-cluster/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Federation - Run an App on Multiple Clusters">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Cross-cluster Service Discovery using Federated Services" href="/docs/tasks/federation/federation-service-discovery/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up Cluster Federation with Kubefed" href="/docs/tasks/federation/set-up-cluster-federation-kubefed/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up CoreDNS as DNS provider for Cluster Federation" href="/docs/tasks/federation/set-up-coredns-provider-federation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up placement policies in Federation" href="/docs/tasks/federation/set-up-placement-policies-federation/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Manage Cluster Daemons">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Perform a Rolling Update on a DaemonSet" href="/docs/tasks/manage-daemon/update-daemon-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Performing a Rollback on a DaemonSet" href="/docs/tasks/manage-daemon/rollback-daemon-set/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Install Service Catalog">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Install Service Catalog using Helm" href="/docs/tasks/service-catalog/install-service-catalog-using-helm/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Install Service Catalog using SC" href="/docs/tasks/service-catalog/install-service-catalog-using-sc/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Federation - Run an App on Multiple Clusters">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Federated Cluster" href="/docs/tasks/administer-federation/cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated ConfigMap" href="/docs/tasks/administer-federation/configmap/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated DaemonSet" href="/docs/tasks/administer-federation/daemonset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Deployment" href="/docs/tasks/administer-federation/deployment/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Events" href="/docs/tasks/administer-federation/events/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Horizontal Pod Autoscalers (HPA)" href="/docs/tasks/administer-federation/hpa/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Ingress" href="/docs/tasks/administer-federation/ingress/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Jobs" href="/docs/tasks/administer-federation/job/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Namespaces" href="/docs/tasks/administer-federation/namespaces/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated ReplicaSets" href="/docs/tasks/administer-federation/replicaset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Secrets" href="/docs/tasks/administer-federation/secret/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Extend kubectl with plugins" href="/docs/tasks/extend-kubectl/kubectl-plugins/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Manage HugePages" href="/docs/tasks/manage-hugepages/scheduling-hugepages/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Schedule GPUs" href="/docs/tasks/manage-gpus/scheduling-gpus/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/tasks/administer-cluster/out-of-resource.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>Configure Out Of Resource Handling</h1>
+
+
+
+<p>This page explains how to configure out of resource handling with <code>kubelet</code>.</p>
+
+<p>The <code>kubelet</code> needs to preserve node stability when available compute resources
+are low. This is especially important when dealing with incompressible
+compute resources, such as memory or disk space. If such resources are exhausted,
+nodes become unstable.</p>
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+<li><a href="#eviction-policy">Eviction Policy</a></li>
+
+
+
+
+<li><a href="#node-oom-behavior">Node OOM Behavior</a></li>
+
+
+
+
+<li><a href="#best-practices">Best Practices</a></li>
+
+
+
+
+<li><a href="#deprecation-of-existing-feature-flags-to-reclaim-disk">Deprecation of existing feature flags to reclaim disk</a></li>
+
+
+
+
+<li><a href="#known-issues">Known issues</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</ul>
+
+
+<h2 id="eviction-policy">Eviction Policy</h2>
+
+<p>The <code>kubelet</code> can proactively monitor for and prevent total starvation of a
+compute resource. In those cases, the <code>kubelet</code> can reclaim the starved
+resource by proactively failing one or more Pods. When the <code>kubelet</code> fails
+a Pod, it terminates all of its containers and transitions its <code>PodPhase</code> to <code>Failed</code>.</p>
+
+<h3 id="eviction-signals">Eviction Signals</h3>
+
+<p>The <code>kubelet</code> supports eviction decisions based on the signals described in the following
+table. The value of each signal is described in the Description column, which is based on
+the <code>kubelet</code> summary API.</p>
+
+<table>
+<thead>
+<tr>
+<th>Eviction Signal</th>
+<th>Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>memory.available</code></td>
+<td><code>memory.available</code> := <code>node.status.capacity[memory]</code> - <code>node.stats.memory.workingSet</code></td>
+</tr>
+
+<tr>
+<td><code>nodefs.available</code></td>
+<td><code>nodefs.available</code> := <code>node.stats.fs.available</code></td>
+</tr>
+
+<tr>
+<td><code>nodefs.inodesFree</code></td>
+<td><code>nodefs.inodesFree</code> := <code>node.stats.fs.inodesFree</code></td>
+</tr>
+
+<tr>
+<td><code>imagefs.available</code></td>
+<td><code>imagefs.available</code> := <code>node.stats.runtime.imagefs.available</code></td>
+</tr>
+
+<tr>
+<td><code>imagefs.inodesFree</code></td>
+<td><code>imagefs.inodesFree</code> := <code>node.stats.runtime.imagefs.inodesFree</code></td>
+</tr>
+</tbody>
+</table>
+
+<p>Each of the above signals supports either a literal or percentage based value.
+The percentage based value is calculated relative to the total capacity
+associated with each signal.</p>
+
+<p>The value for <code>memory.available</code> is derived from the cgroupfs instead of tools
+like <code>free -m</code>. This is important because <code>free -m</code> does not work in a
+container, and if users use the <a href="/docs/tasks/administer-cluster/reserve-compute-resources/#node-allocatable">node
+allocatable</a> feature, out of resource decisions
+are made local to the end user Pod part of the cgroup hierarchy as well as the
+root node. This
+<a href="/docs/tasks/administer-cluster/out-of-resource/memory-available.sh">script</a>
+reproduces the same set of steps that the <code>kubelet</code> performs to calculate
+<code>memory.available</code>. The <code>kubelet</code> excludes inactive_file (i.e. # of bytes of
+file-backed memory on inactive LRU list) from its calculation as it assumes that
+memory is reclaimable under pressure.</p>
+
+<p><code>kubelet</code> supports only two filesystem partitions.</p>
+
+<ol>
+<li>The <code>nodefs</code> filesystem that kubelet uses for volumes, daemon logs, etc.</li>
+<li>The <code>imagefs</code> filesystem that container runtimes uses for storing images and
+container writable layers.</li>
+</ol>
+
+<p><code>imagefs</code> is optional. <code>kubelet</code> auto-discovers these filesystems using
+cAdvisor. <code>kubelet</code> does not care about any other filesystems. Any other types
+of configurations are not currently supported by the kubelet. For example, it is
+<em>not OK</em> to store volumes and logs in a dedicated <code>filesystem</code>.</p>
+
+<p>In future releases, the <code>kubelet</code> will deprecate the existing <a href="/docs/concepts/cluster-administration/kubelet-garbage-collection/">garbage
+collection</a>
+support in favor of eviction in response to disk pressure.</p>
+
+<h3 id="eviction-thresholds">Eviction Thresholds</h3>
+
+<p>The <code>kubelet</code> supports the ability to specify eviction thresholds that trigger the <code>kubelet</code> to reclaim resources.</p>
+
+<p>Each threshold has the following form:</p>
+
+<p><code>[eviction-signal][operator][quantity]</code></p>
+
+<p>where:</p>
+
+<ul>
+<li><code>eviction-signal</code> is an eviction signal token as defined in the previous table.</li>
+<li><code>operator</code> is the desired relational operator, such as <code>&lt;</code> (less than).</li>
+<li><code>quantity</code> is the eviction threshold quantity, such as <code>1Gi</code>. These tokens must
+match the quantity representation used by Kubernetes. An eviction threshold can also
+be expressed as a percentage using the <code>%</code> token.</li>
+</ul>
+
+<p>For example, if a node has <code>10Gi</code> of total memory and you want trigger eviction if
+the available memory falls below <code>1Gi</code>, you can define the eviction threshold as
+either <code>memory.available&lt;10%</code> or <code>memory.available&lt;1Gi</code>. You cannot use both.</p>
+
+<h4 id="soft-eviction-thresholds">Soft Eviction Thresholds</h4>
+
+<p>A soft eviction threshold pairs an eviction threshold with a required
+administrator-specified grace period. No action is taken by the <code>kubelet</code>
+to reclaim resources associated with the eviction signal until that grace
+period has been exceeded. If no grace period is provided, the <code>kubelet</code>
+returns an error on startup.</p>
+
+<p>In addition, if a soft eviction threshold has been met, an operator can
+specify a maximum allowed Pod termination grace period to use when evicting
+pods from the node. If specified, the <code>kubelet</code> uses the lesser value among
+the <code>pod.Spec.TerminationGracePeriodSeconds</code> and the max allowed grace period.
+If not specified, the <code>kubelet</code> kills Pods immediately with no graceful
+termination.</p>
+
+<p>To configure soft eviction thresholds, the following flags are supported:</p>
+
+<ul>
+<li><code>eviction-soft</code> describes a set of eviction thresholds (e.g. <code>memory.available&lt;1.5Gi</code>) that if met over a
+corresponding grace period would trigger a Pod eviction.</li>
+<li><code>eviction-soft-grace-period</code> describes a set of eviction grace periods (e.g. <code>memory.available=1m30s</code>) that
+correspond to how long a soft eviction threshold must hold before triggering a Pod eviction.</li>
+<li><code>eviction-max-pod-grace-period</code> describes the maximum allowed grace period (in seconds) to use when terminating
+pods in response to a soft eviction threshold being met.</li>
+</ul>
+
+<h4 id="hard-eviction-thresholds">Hard Eviction Thresholds</h4>
+
+<p>A hard eviction threshold has no grace period, and if observed, the <code>kubelet</code>
+will take immediate action to reclaim the associated starved resource. If a
+hard eviction threshold is met, the <code>kubelet</code> kills the Pod immediately
+with no graceful termination.</p>
+
+<p>To configure hard eviction thresholds, the following flag is supported:</p>
+
+<ul>
+<li><code>eviction-hard</code> describes a set of eviction thresholds (e.g. <code>memory.available&lt;1Gi</code>) that if met
+would trigger a Pod eviction.</li>
+</ul>
+
+<p>The <code>kubelet</code> has the following default hard eviction threshold:</p>
+
+<ul>
+<li><code>memory.available&lt;100Mi</code></li>
+<li><code>nodefs.available&lt;10%</code></li>
+<li><code>nodefs.inodesFree&lt;5%</code></li>
+<li><code>imagefs.available&lt;15%</code></li>
+</ul>
+
+<h3 id="eviction-monitoring-interval">Eviction Monitoring Interval</h3>
+
+<p>The <code>kubelet</code> evaluates eviction thresholds per its configured housekeeping interval.</p>
+
+<ul>
+<li><code>housekeeping-interval</code> is the interval between container housekeepings.</li>
+</ul>
+
+<h3 id="node-conditions">Node Conditions</h3>
+
+<p>The <code>kubelet</code> maps one or more eviction signals to a corresponding node condition.</p>
+
+<p>If a hard eviction threshold has been met, or a soft eviction threshold has been met
+independent of its associated grace period, the <code>kubelet</code> reports a condition that
+reflects the node is under pressure.</p>
+
+<p>The following node conditions are defined that correspond to the specified eviction signal.</p>
+
+<table>
+<thead>
+<tr>
+<th>Node Condition</th>
+<th>Eviction Signal</th>
+<th>Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>MemoryPressure</code></td>
+<td><code>memory.available</code></td>
+<td>Available memory on the node has satisfied an eviction threshold</td>
+</tr>
+
+<tr>
+<td><code>DiskPressure</code></td>
+<td><code>nodefs.available</code>, <code>nodefs.inodesFree</code>, <code>imagefs.available</code>, or <code>imagefs.inodesFree</code></td>
+<td>Available disk space and inodes on either the node&rsquo;s root filesystem or image filesystem has satisfied an eviction threshold</td>
+</tr>
+</tbody>
+</table>
+
+<p>The <code>kubelet</code> continues to report node status updates at the frequency specified by
+<code>--node-status-update-frequency</code> which defaults to <code>10s</code>.</p>
+
+<h3 id="oscillation-of-node-conditions">Oscillation of node conditions</h3>
+
+<p>If a node is oscillating above and below a soft eviction threshold, but not exceeding
+its associated grace period, it would cause the corresponding node condition to
+constantly oscillate between true and false, and could cause poor scheduling decisions
+as a consequence.</p>
+
+<p>To protect against this oscillation, the following flag is defined to control how
+long the <code>kubelet</code> must wait before transitioning out of a pressure condition.</p>
+
+<ul>
+<li><code>eviction-pressure-transition-period</code> is the duration for which the <code>kubelet</code> has
+to wait before transitioning out of an eviction pressure condition.</li>
+</ul>
+
+<p>The <code>kubelet</code> would ensure that it has not observed an eviction threshold being met
+for the specified pressure condition for the period specified before toggling the
+condition back to <code>false</code>.</p>
+
+<h3 id="reclaiming-node-level-resources">Reclaiming node level resources</h3>
+
+<p>If an eviction threshold has been met and the grace period has passed,
+the <code>kubelet</code> initiates the process of reclaiming the pressured resource
+until it has observed the signal has gone below its defined threshold.</p>
+
+<p>The <code>kubelet</code> attempts to reclaim node level resources prior to evicting end-user Pods. If
+disk pressure is observed, the <code>kubelet</code> reclaims node level resources differently if the
+machine has a dedicated <code>imagefs</code> configured for the container runtime.</p>
+
+<h4 id="with-imagefs">With <code>imagefs</code></h4>
+
+<p>If <code>nodefs</code> filesystem has met eviction thresholds, <code>kubelet</code> frees up disk space by deleting the dead Pods and their containers.</p>
+
+<p>If <code>imagefs</code> filesystem has met eviction thresholds, <code>kubelet</code> frees up disk space by deleting all unused images.</p>
+
+<h4 id="without-imagefs">Without <code>imagefs</code></h4>
+
+<p>If <code>nodefs</code> filesystem has met eviction thresholds, <code>kubelet</code> frees up disk space in the following order:</p>
+
+<ol>
+<li>Delete dead Pods and their containers</li>
+<li>Delete all unused images</li>
+</ol>
+
+<h3 id="evicting-end-user-pods">Evicting end-user Pods</h3>
+
+<p>If the <code>kubelet</code> is unable to reclaim sufficient resource on the node, <code>kubelet</code> begins evicting Pods.</p>
+
+<p>The <code>kubelet</code> ranks Pods for eviction first by whether or not their usage  of the starved resource exceeds requests,
+then by <a href="https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/" target="_blank">Priority</a>, and then by the consumption of the starved compute resource relative to the Pods&rsquo; scheduling requests.</p>
+
+<p>As a result, <code>kubelet</code> ranks and evicts Pods in the following order:</p>
+
+<ul>
+<li><code>BestEffort</code> or <code>Burstable</code> Pods whose usage of a starved resource exceeds its request.
+Such pods are ranked by Priority, and then usage above request.</li>
+<li><code>Guaranteed</code> pods and <code>Burstable</code> pods whose usage is beneath requests are evicted last.
+<code>Guaranteed</code> Pods are guaranteed only when requests and limits are specified for all
+the containers and they are equal. Such pods are guaranteed to never be evicted because
+of another Pod&rsquo;s resource consumption. If a system daemon (such as <code>kubelet</code>, <code>docker</code>,
+and <code>journald</code>) is consuming more resources than were reserved via <code>system-reserved</code> or
+<code>kube-reserved</code> allocations, and the node only has <code>Guaranteed</code> or <code>Burstable</code> Pods using
+less than requests remaining, then the node must choose to evict such a Pod in order to
+preserve node stability and to limit the impact of the unexpected consumption to other Pods.
+In this case, it will choose to evict pods of Lowest Priority first.</li>
+</ul>
+
+<p>If necessary, <code>kubelet</code> evicts Pods one at a time to reclaim disk when <code>DiskPressure</code>
+is encountered. If the <code>kubelet</code> is responding to <code>inode</code> starvation, it reclaims
+<code>inodes</code> by evicting Pods with the lowest quality of service first. If the <code>kubelet</code>
+is responding to lack of available disk, it ranks Pods within a quality of service
+that consumes the largest amount of disk and kill those first.</p>
+
+<h4 id="with-imagefs-1">With <code>imagefs</code></h4>
+
+<p>If <code>nodefs</code> is triggering evictions, <code>kubelet</code> sorts Pods based on the usage on <code>nodefs</code>
+- local volumes + logs of all its containers.</p>
+
+<p>If <code>imagefs</code> is triggering evictions, <code>kubelet</code> sorts Pods based on the writable layer usage of all its containers.</p>
+
+<h4 id="without-imagefs-1">Without <code>imagefs</code></h4>
+
+<p>If <code>nodefs</code> is triggering evictions, <code>kubelet</code> sorts Pods based on their total disk usage
+- local volumes + logs &amp; writable layer of all its containers.</p>
+
+<h3 id="minimum-eviction-reclaim">Minimum eviction reclaim</h3>
+
+<p>In certain scenarios, eviction of Pods could result in reclamation of small amount of resources. This can result in
+<code>kubelet</code> hitting eviction thresholds in repeated successions. In addition to that, eviction of resources like <code>disk</code>,
+ is time consuming.</p>
+
+<p>To mitigate these issues, <code>kubelet</code> can have a per-resource <code>minimum-reclaim</code>. Whenever <code>kubelet</code> observes
+resource pressure, <code>kubelet</code> attempts to reclaim at least <code>minimum-reclaim</code> amount of resource below
+the configured eviction threshold.</p>
+
+<p>For example, with the following configuration:</p>
+
+<pre><code>--eviction-hard=memory.available&lt;500Mi,nodefs.available&lt;1Gi,imagefs.available&lt;100Gi
+--eviction-minimum-reclaim=&quot;memory.available=0Mi,nodefs.available=500Mi,imagefs.available=2Gi&quot;`
+</code></pre>
+
+<p>If an eviction threshold is triggered for <code>memory.available</code>, the <code>kubelet</code> works to ensure
+that <code>memory.available</code> is at least <code>500Mi</code>. For <code>nodefs.available</code>, the <code>kubelet</code> works
+to ensure that <code>nodefs.available</code> is at least <code>1.5Gi</code>, and for <code>imagefs.available</code> it
+works to ensure that <code>imagefs.available</code> is at least <code>102Gi</code> before no longer reporting pressure
+on their associated resources.</p>
+
+<p>The default <code>eviction-minimum-reclaim</code> is <code>0</code> for all resources.</p>
+
+<h3 id="scheduler">Scheduler</h3>
+
+<p>The node reports a condition when a compute resource is under pressure. The
+scheduler views that condition as a signal to dissuade placing additional
+pods on the node.</p>
+
+<table>
+<thead>
+<tr>
+<th>Node Condition</th>
+<th>Scheduler Behavior</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>MemoryPressure</code></td>
+<td>No new <code>BestEffort</code> Pods are scheduled to the node.</td>
+</tr>
+
+<tr>
+<td><code>DiskPressure</code></td>
+<td>No new Pods are scheduled to the node.</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="node-oom-behavior">Node OOM Behavior</h2>
+
+<p>If the node experiences a system OOM (out of memory) event prior to the <code>kubelet</code> is able to reclaim memory,
+the node depends on the <a href="https://lwn.net/Articles/391222/" target="_blank">oom_killer</a> to respond.</p>
+
+<p>The <code>kubelet</code> sets a <code>oom_score_adj</code> value for each container based on the quality of service for the Pod.</p>
+
+<table>
+<thead>
+<tr>
+<th>Quality of Service</th>
+<th>oom_score_adj</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>Guaranteed</code></td>
+<td>-998</td>
+</tr>
+
+<tr>
+<td><code>BestEffort</code></td>
+<td>1000</td>
+</tr>
+
+<tr>
+<td><code>Burstable</code></td>
+<td>min(max(2, 1000 - (1000 * memoryRequestBytes) / machineMemoryCapacityBytes), 999)</td>
+</tr>
+</tbody>
+</table>
+
+<p>If the <code>kubelet</code> is unable to reclaim memory prior to a node experiencing system OOM, the <code>oom_killer</code> calculates
+an <code>oom_score</code> based on the percentage of memory it&rsquo;s using on the node, and then add the <code>oom_score_adj</code> to get an
+effective <code>oom_score</code> for the container, and then kills the container with the highest score.</p>
+
+<p>The intended behavior should be that containers with the lowest quality of service that
+are consuming the largest amount of memory relative to the scheduling request should be killed first in order
+to reclaim memory.</p>
+
+<p>Unlike Pod eviction, if a Pod container is OOM killed, it may be restarted by the <code>kubelet</code> based on its <code>RestartPolicy</code>.</p>
+
+<h2 id="best-practices">Best Practices</h2>
+
+<p>The following sections describe best practices for out of resource handling.</p>
+
+<h3 id="schedulable-resources-and-eviction-policies">Schedulable resources and eviction policies</h3>
+
+<p>Consider the following scenario:</p>
+
+<ul>
+<li>Node memory capacity: <code>10Gi</code></li>
+<li>Operator wants to reserve 10% of memory capacity for system daemons (kernel, <code>kubelet</code>, etc.)</li>
+<li>Operator wants to evict Pods at 95% memory utilization to reduce incidence of system OOM.</li>
+</ul>
+
+<p>To facilitate this scenario, the <code>kubelet</code> would be launched as follows:</p>
+
+<pre><code>--eviction-hard=memory.available&lt;500Mi
+--system-reserved=memory=1.5Gi
+</code></pre>
+
+<p>Implicit in this configuration is the understanding that &ldquo;System reserved&rdquo; should include the amount of memory
+covered by the eviction threshold.</p>
+
+<p>To reach that capacity, either some Pod is using more than its request, or the system is using more than <code>1.5Gi - 500Mi = 1Gi</code>.</p>
+
+<p>This configuration ensures that the scheduler does not place Pods on a node that immediately induce memory pressure
+and trigger eviction assuming those Pods use less than their configured request.</p>
+
+<h3 id="daemonset">DaemonSet</h3>
+
+<p>It is never desired for <code>kubelet</code> to evict a <code>DaemonSet</code> Pod, since the Pod is
+immediately recreated and rescheduled back to the same node.</p>
+
+<p>At the moment, the <code>kubelet</code> has no ability to distinguish a Pod created
+from <code>DaemonSet</code> versus any other object. If/when that information is
+available, the <code>kubelet</code> could pro-actively filter those Pods from the
+candidate set of Pods provided to the eviction strategy.</p>
+
+<p>In general, it is strongly recommended that <code>DaemonSet</code> not
+create <code>BestEffort</code> Pods to avoid being identified as a candidate Pod
+for eviction. Instead <code>DaemonSet</code> should ideally launch <code>Guaranteed</code> Pods.</p>
+
+<h2 id="deprecation-of-existing-feature-flags-to-reclaim-disk">Deprecation of existing feature flags to reclaim disk</h2>
+
+<p><code>kubelet</code> has been freeing up disk space on demand to keep the node stable.</p>
+
+<p>As disk based eviction matures, the following <code>kubelet</code> flags are marked for deprecation
+in favor of the simpler configuration supported around eviction.</p>
+
+<table>
+<thead>
+<tr>
+<th>Existing Flag</th>
+<th>New Flag</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>--image-gc-high-threshold</code></td>
+<td><code>--eviction-hard</code> or <code>eviction-soft</code></td>
+</tr>
+
+<tr>
+<td><code>--image-gc-low-threshold</code></td>
+<td><code>--eviction-minimum-reclaim</code></td>
+</tr>
+
+<tr>
+<td><code>--maximum-dead-containers</code></td>
+<td>deprecated</td>
+</tr>
+
+<tr>
+<td><code>--maximum-dead-containers-per-container</code></td>
+<td>deprecated</td>
+</tr>
+
+<tr>
+<td><code>--minimum-container-ttl-duration</code></td>
+<td>deprecated</td>
+</tr>
+
+<tr>
+<td><code>--low-diskspace-threshold-mb</code></td>
+<td><code>--eviction-hard</code> or <code>eviction-soft</code></td>
+</tr>
+
+<tr>
+<td><code>--outofdisk-transition-frequency</code></td>
+<td><code>--eviction-pressure-transition-period</code></td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="known-issues">Known issues</h2>
+
+<p>The following sections describe known issues related to out of resource handling.</p>
+
+<h3 id="kubelet-may-not-observe-memory-pressure-right-away">kubelet may not observe memory pressure right away</h3>
+
+<p>The <code>kubelet</code> currently polls <code>cAdvisor</code> to collect memory usage stats at a regular interval. If memory usage
+increases within that window rapidly, the <code>kubelet</code> may not observe <code>MemoryPressure</code> fast enough, and the <code>OOMKiller</code>
+will still be invoked. We intend to integrate with the <code>memcg</code> notification API in a future release to reduce this
+latency, and instead have the kernel tell us when a threshold has been crossed immediately.</p>
+
+<p>If you are not trying to achieve extreme utilization, but a sensible measure of overcommit, a viable workaround for
+this issue is to set eviction thresholds at approximately 75% capacity. This increases the ability of this feature
+to prevent system OOMs, and promote eviction of workloads so cluster state can rebalance.</p>
+
+<h3 id="kubelet-may-evict-more-pods-than-needed">kubelet may evict more Pods than needed</h3>
+
+<p>The Pod eviction may evict more Pods than needed due to stats collection timing gap. This can be mitigated by adding
+the ability to get root container stats on an on-demand basis <a href="https://github.com/google/cadvisor/issues/1247" target="_blank">(https://github.com/google/cadvisor/issues/1247)</a> in the future.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/tasks/administer-cluster/out-of-resource.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/tasks\/administer-cluster\/out-of-resource\/",
+					"title" : "Configure Out Of Resource Handling",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/tasks\/administer-cluster\/out-of-resource\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/tasks/administer-cluster/out-of-resource.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

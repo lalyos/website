@@ -1,0 +1,2199 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Translate a Docker Compose File to Kubernetes Resources - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="Translate a Docker Compose File to Kubernetes Resources" />
+<meta property="og:description" content="Translate a Docker Compose File to Kubernetes Resources" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/tasks/configure-pod-container/translate-compose-kubernetes/" />
+<meta property="og:title" content="Translate a Docker Compose File to Kubernetes Resources - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+
+
+
+
+<h1>Tasks</h1>
+<h5></h5>
+
+
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/" class="YAH">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Tasks" href="/docs/tasks/"></a>
+
+	
+	
+		
+		
+	<div class="item" data-title="Install Tools">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Install and Set Up kubectl" href="/docs/tasks/tools/install-kubectl/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Install Minikube" href="/docs/tasks/tools/install-minikube/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Installing kubeadm" href="/docs/tasks/tools/install-kubeadm/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Administer a Cluster">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+	<div class="item" data-title="Administration with kubeadm">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Upgrading kubeadm HA clusters from 1.9.x to 1.9.y" href="/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-ha/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Upgrading kubeadm clusters from 1.7 to 1.8" href="/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-1-8/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Upgrading kubeadm clusters from v1.10 to v1.11" href="/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-1-11/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Upgrading/downgrading kubeadm clusters between v1.8 to v1.9" href="/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade-1-9/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Manage Memory, CPU, and API Resources">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Configure Default Memory Requests and Limits for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/memory-default-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Default CPU Requests and Limits for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/cpu-default-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Minimum and Maximum Memory Constraints for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/memory-constraint-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Minimum and Maximum CPU Constraints for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/cpu-constraint-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Memory and CPU Quotas for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/quota-memory-cpu-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod Quota for a Namespace" href="/docs/tasks/administer-cluster/manage-resources/quota-pod-namespace/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Install a Network Policy Provider">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Use Calico for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/calico-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use Cilium for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/cilium-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use Kube-router for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/kube-router-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Romana for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/romana-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Weave Net for NetworkPolicy" href="/docs/tasks/administer-cluster/network-policy-provider/weave-network-policy/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Access Clusters Using the Kubernetes API" href="/docs/tasks/administer-cluster/access-cluster-api/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Access Services Running on Clusters" href="/docs/tasks/administer-cluster/access-cluster-services/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Advertise Extended Resources for a Node" href="/docs/tasks/administer-cluster/extended-resource-node/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Autoscale the DNS Service in a Cluster" href="/docs/tasks/administer-cluster/dns-horizontal-autoscaling/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Change the Reclaim Policy of a PersistentVolume" href="/docs/tasks/administer-cluster/change-pv-reclaim-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Change the default StorageClass" href="/docs/tasks/administer-cluster/change-default-storage-class/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Cluster Management" href="/docs/tasks/administer-cluster/cluster-management/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Multiple Schedulers" href="/docs/tasks/administer-cluster/configure-multiple-schedulers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Out Of Resource Handling" href="/docs/tasks/administer-cluster/out-of-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Quotas for API Objects" href="/docs/tasks/administer-cluster/quota-api-object/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Control CPU Management Policies on the Node" href="/docs/tasks/administer-cluster/cpu-management-policies/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Customizing DNS Service" href="/docs/tasks/administer-cluster/dns-custom-nameservers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debugging DNS Resolution" href="/docs/tasks/administer-cluster/dns-debugging-resolution/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Declare Network Policy" href="/docs/tasks/administer-cluster/declare-network-policy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Developing Cloud Controller Manager" href="/docs/tasks/administer-cluster/developing-cloud-controller-manager/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Encrypting Secret Data at Rest" href="/docs/tasks/administer-cluster/encrypt-data/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Guaranteed Scheduling For Critical Add-On Pods" href="/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="IP Masquerade Agent User Guide" href="/docs/tasks/administer-cluster/ip-masq-agent/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes Cloud Controller Manager" href="/docs/tasks/administer-cluster/running-cloud-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Limit Storage Consumption" href="/docs/tasks/administer-cluster/limit-storage-consumption/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Namespaces Walkthrough" href="/docs/tasks/administer-cluster/namespaces-walkthrough/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Operating etcd clusters for Kubernetes" href="/docs/tasks/administer-cluster/configure-upgrade-etcd/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Reconfigure a Node&#39;s Kubelet in a Live Cluster" href="/docs/tasks/administer-cluster/reconfigure-kubelet/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Reserve Compute Resources for System Daemons" href="/docs/tasks/administer-cluster/reserve-compute-resources/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Safely Drain a Node while Respecting Application SLOs" href="/docs/tasks/administer-cluster/safely-drain-node/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Securing a Cluster" href="/docs/tasks/administer-cluster/securing-a-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set Kubelet parameters via a config file" href="/docs/tasks/administer-cluster/kubelet-config-file/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up High-Availability Kubernetes Masters" href="/docs/tasks/administer-cluster/highly-available-master/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up a Highly Availabile etcd Cluster With kubeadm" href="/docs/tasks/administer-cluster/setup-ha-etcd-with-kubeadm/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Share a Cluster with Namespaces" href="/docs/tasks/administer-cluster/namespaces/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Static Pods" href="/docs/tasks/administer-cluster/static-pod/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Storage Object in Use Protection" href="/docs/tasks/administer-cluster/storage-object-in-use-protection/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using CoreDNS for Service Discovery" href="/docs/tasks/administer-cluster/coredns/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using a KMS provider for data encryption" href="/docs/tasks/administer-cluster/kms-provider/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using sysctls in a Kubernetes Cluster" href="/docs/tasks/administer-cluster/sysctl-cluster/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Configure Pods and Containers">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Assign Memory Resources to Containers and Pods" href="/docs/tasks/configure-pod-container/assign-memory-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Assign CPU Resources to Containers and Pods" href="/docs/tasks/configure-pod-container/assign-cpu-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Quality of Service for Pods" href="/docs/tasks/configure-pod-container/quality-service-pod/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Assign Extended Resources to a Container" href="/docs/tasks/configure-pod-container/extended-resource/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod to Use a Volume for Storage" href="/docs/tasks/configure-pod-container/configure-volume-storage/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod to Use a PersistentVolume for Storage" href="/docs/tasks/configure-pod-container/configure-persistent-volume-storage/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod to Use a Projected Volume for Storage" href="/docs/tasks/configure-pod-container/configure-projected-volume-storage/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Security Context for a Pod or Container" href="/docs/tasks/configure-pod-container/security-context/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Service Accounts for Pods" href="/docs/tasks/configure-pod-container/configure-service-account/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pull an Image from a Private Registry" href="/docs/tasks/configure-pod-container/pull-image-private-registry/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Liveness and Readiness Probes" href="/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Assign Pods to Nodes" href="/docs/tasks/configure-pod-container/assign-pods-nodes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Pod Initialization" href="/docs/tasks/configure-pod-container/configure-pod-initialization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Attach Handlers to Container Lifecycle Events" href="/docs/tasks/configure-pod-container/attach-handler-lifecycle-event/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure a Pod to Use a ConfigMap" href="/docs/tasks/configure-pod-container/configure-pod-configmap/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Share Process Namespace between Containers in a Pod" href="/docs/tasks/configure-pod-container/share-process-namespace/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Translate a Docker Compose File to Kubernetes Resources" href="/docs/tasks/configure-pod-container/translate-compose-kubernetes/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Inject Data Into Applications">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Define a Command and Arguments for a Container" href="/docs/tasks/inject-data-application/define-command-argument-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Define Environment Variables for a Container" href="/docs/tasks/inject-data-application/define-environment-variable-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Expose Pod Information to Containers Through Environment Variables" href="/docs/tasks/inject-data-application/environment-variable-expose-pod-information/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Expose Pod Information to Containers Through Files" href="/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Distribute Credentials Securely Using Secrets" href="/docs/tasks/inject-data-application/distribute-credentials-secure/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Inject Information into Pods Using a PodPreset" href="/docs/tasks/inject-data-application/podpreset/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Run Applications">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Run a Stateless Application Using a Deployment" href="/docs/tasks/run-application/run-stateless-application-deployment/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Run a Single-Instance Stateful Application" href="/docs/tasks/run-application/run-single-instance-stateful-application/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Run a Replicated Stateful Application" href="/docs/tasks/run-application/run-replicated-stateful-application/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Update API Objects in Place Using kubectl patch" href="/docs/tasks/run-application/update-api-object-kubectl-patch/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Scale a StatefulSet" href="/docs/tasks/run-application/scale-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Delete a StatefulSet" href="/docs/tasks/run-application/delete-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Force Delete StatefulSet Pods" href="/docs/tasks/run-application/force-delete-stateful-set-pod/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Perform Rolling Update Using a Replication Controller" href="/docs/tasks/run-application/rolling-update-replication-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Horizontal Pod Autoscaler" href="/docs/tasks/run-application/horizontal-pod-autoscale/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Horizontal Pod Autoscaler Walkthrough" href="/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Specifying a Disruption Budget for your Application" href="/docs/tasks/run-application/configure-pdb/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Run Jobs">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Running automated tasks with cron jobs" href="/docs/tasks/job/automated-tasks-with-cron-jobs/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Parallel Processing using Expansions" href="/docs/tasks/job/parallel-processing-expansion/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Coarse Parallel Processing Using a Work Queue" href="/docs/tasks/job/coarse-parallel-processing-work-queue/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Fine Parallel Processing Using a Work Queue" href="/docs/tasks/job/fine-parallel-processing-work-queue/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Access Applications in a Cluster">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Web UI (Dashboard)" href="/docs/tasks/access-application-cluster/web-ui-dashboard/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Accessing Clusters" href="/docs/tasks/access-application-cluster/access-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Access to Multiple Clusters" href="/docs/tasks/access-application-cluster/configure-access-multiple-clusters/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use Port Forwarding to Access Applications in a Cluster" href="/docs/tasks/access-application-cluster/port-forward-access-application-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Provide Load-Balanced Access to an Application in a Cluster" href="/docs/tasks/access-application-cluster/load-balance-access-application-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use a Service to Access an Application in a Cluster" href="/docs/tasks/access-application-cluster/service-access-application-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Connect a Front End to a Back End Using a Service" href="/docs/tasks/access-application-cluster/connecting-frontend-backend/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Create an External Load Balancer" href="/docs/tasks/access-application-cluster/create-external-load-balancer/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure Your Cloud Provider&#39;s Firewalls" href="/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="List All Container Images Running in a Cluster" href="/docs/tasks/access-application-cluster/list-all-running-container-images/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Communicate Between Containers in the Same Pod Using a Shared Volume" href="/docs/tasks/access-application-cluster/communicate-containers-same-pod-shared-volume/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configure DNS for a Cluster" href="/docs/tasks/access-application-cluster/configure-dns-cluster/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Monitor, Log, and Debug">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Application Introspection and Debugging" href="/docs/tasks/debug-application-cluster/debug-application-introspection/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Auditing" href="/docs/tasks/debug-application-cluster/audit/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Core metrics pipeline" href="/docs/tasks/debug-application-cluster/core-metrics-pipeline/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debug Init Containers" href="/docs/tasks/debug-application-cluster/debug-init-containers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debug Pods and Replication Controllers" href="/docs/tasks/debug-application-cluster/debug-pod-replication-controller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debug Services" href="/docs/tasks/debug-application-cluster/debug-service/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debug a StatefulSet" href="/docs/tasks/debug-application-cluster/debug-stateful-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Debugging Kubernetes nodes with crictl" href="/docs/tasks/debug-application-cluster/crictl/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Determine the Reason for Pod Failure" href="/docs/tasks/debug-application-cluster/determine-reason-pod-failure/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Developing and debugging services locally" href="/docs/tasks/debug-application-cluster/local-debugging/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Events in Stackdriver" href="/docs/tasks/debug-application-cluster/events-stackdriver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Get a Shell to a Running Container" href="/docs/tasks/debug-application-cluster/get-shell-running-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Logging Using Elasticsearch and Kibana" href="/docs/tasks/debug-application-cluster/logging-elasticsearch-kibana/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Logging Using Stackdriver" href="/docs/tasks/debug-application-cluster/logging-stackdriver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Monitor Node Health" href="/docs/tasks/debug-application-cluster/monitor-node-health/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Tools for Monitoring Compute, Storage, and Network Resources" href="/docs/tasks/debug-application-cluster/resource-usage-monitoring/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Troubleshoot Applications" href="/docs/tasks/debug-application-cluster/debug-application/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Troubleshoot Clusters" href="/docs/tasks/debug-application-cluster/debug-cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Troubleshooting" href="/docs/tasks/debug-application-cluster/troubleshooting/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Extend Kubernetes">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Configure the aggregation layer" href="/docs/tasks/access-kubernetes-api/configure-aggregation-layer/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Use Custom Resources">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Extend the Kubernetes API with CustomResourceDefinitions" href="/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Versions of CustomResourceDefinitions" href="/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definition-versioning/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Migrate a ThirdPartyResource to CustomResourceDefinition" href="/docs/tasks/access-kubernetes-api/custom-resources/migrate-third-party-resource/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Setup an extension API server" href="/docs/tasks/access-kubernetes-api/setup-extension-api-server/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Use an HTTP Proxy to Access the Kubernetes API" href="/docs/tasks/access-kubernetes-api/http-proxy-access-api/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="TLS">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Certificate Rotation" href="/docs/tasks/tls/certificate-rotation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Manage TLS Certificates in a Cluster" href="/docs/tasks/tls/managing-tls-in-a-cluster/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Federation - Run an App on Multiple Clusters">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Cross-cluster Service Discovery using Federated Services" href="/docs/tasks/federation/federation-service-discovery/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up Cluster Federation with Kubefed" href="/docs/tasks/federation/set-up-cluster-federation-kubefed/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up CoreDNS as DNS provider for Cluster Federation" href="/docs/tasks/federation/set-up-coredns-provider-federation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Set up placement policies in Federation" href="/docs/tasks/federation/set-up-placement-policies-federation/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Manage Cluster Daemons">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Perform a Rolling Update on a DaemonSet" href="/docs/tasks/manage-daemon/update-daemon-set/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Performing a Rollback on a DaemonSet" href="/docs/tasks/manage-daemon/rollback-daemon-set/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Install Service Catalog">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Install Service Catalog using Helm" href="/docs/tasks/service-catalog/install-service-catalog-using-helm/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Install Service Catalog using SC" href="/docs/tasks/service-catalog/install-service-catalog-using-sc/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Federation - Run an App on Multiple Clusters">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Federated Cluster" href="/docs/tasks/administer-federation/cluster/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated ConfigMap" href="/docs/tasks/administer-federation/configmap/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated DaemonSet" href="/docs/tasks/administer-federation/daemonset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Deployment" href="/docs/tasks/administer-federation/deployment/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Events" href="/docs/tasks/administer-federation/events/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Horizontal Pod Autoscalers (HPA)" href="/docs/tasks/administer-federation/hpa/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Ingress" href="/docs/tasks/administer-federation/ingress/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Jobs" href="/docs/tasks/administer-federation/job/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Namespaces" href="/docs/tasks/administer-federation/namespaces/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated ReplicaSets" href="/docs/tasks/administer-federation/replicaset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federated Secrets" href="/docs/tasks/administer-federation/secret/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Extend kubectl with plugins" href="/docs/tasks/extend-kubectl/kubectl-plugins/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Manage HugePages" href="/docs/tasks/manage-hugepages/scheduling-hugepages/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Schedule GPUs" href="/docs/tasks/manage-gpus/scheduling-gpus/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/tasks/configure-pod-container/translate-compose-kubernetes.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>Translate a Docker Compose File to Kubernetes Resources</h1>
+
+
+
+
+<p>What&rsquo;s Kompose? It&rsquo;s a conversion tool for all things compose (namely Docker Compose) to container orchestrators (Kubernetes or OpenShift).</p>
+
+<p>More information can be found on the Kompose website at <a href="http://kompose.io" target="_blank">http://kompose.io</a>.</p>
+
+
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+<li><a href="#before-you-begin">Before you begin</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#install-kompose">Install Kompose</a></li>
+
+
+
+
+<li><a href="#use-kompose">Use Kompose</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#user-guide">User Guide</a></li>
+
+
+
+
+<li><a href="#kompose-convert"><code>kompose convert</code></a></li>
+
+
+
+
+<li><a href="#kompose-up"><code>kompose up</code></a></li>
+
+
+
+
+<li><a href="#kompose-down"><code>kompose down</code></a></li>
+
+
+
+
+<li><a href="#build-and-push-docker-images">Build and Push Docker Images</a></li>
+
+
+
+
+<li><a href="#alternative-conversions">Alternative Conversions</a></li>
+
+
+
+
+<li><a href="#labels">Labels</a></li>
+
+
+
+
+<li><a href="#restart">Restart</a></li>
+
+
+
+
+<li><a href="#docker-compose-versions">Docker Compose Versions</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</ul>
+
+
+
+<h2 id="before-you-begin">Before you begin</h2>
+<p>You need to have a Kubernetes cluster, and the kubectl command-line tool must
+be configured to communicate with your cluster. If you do not already have a
+cluster, you can create one by using
+<a href="/docs/getting-started-guides/minikube">Minikube</a>,
+or you can use one of these Kubernetes playgrounds:</p>
+
+<ul>
+<li><a href="https://www.katacoda.com/courses/kubernetes/playground" target="_blank">Katacoda</a></li>
+<li><a href="http://labs.play-with-k8s.com/" target="_blank">Play with Kubernetes</a></li>
+</ul>
+ 
+
+<p>To check the version, enter <code>kubectl version</code>.</p>
+
+
+
+
+<h2 id="install-kompose">Install Kompose</h2>
+
+<p>We have multiple ways to install Kompose. Our preferred method is downloading the binary from the latest GitHub release.</p>
+
+<h3 id="github-release">GitHub release</h3>
+
+<p>Kompose is released via GitHub on a three-week cycle, you can see all current releases on the <a href="https://github.com/kubernetes/kompose/releases" target="_blank">GitHub release page</a>.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#080;font-style:italic"># Linux 
+</span><span style="color:#080;font-style:italic"></span>curl -L https://github.com/kubernetes/kompose/releases/download/v1.1.0/kompose-linux-amd64 -o kompose
+
+<span style="color:#080;font-style:italic"># macOS
+</span><span style="color:#080;font-style:italic"></span>curl -L https://github.com/kubernetes/kompose/releases/download/v1.1.0/kompose-darwin-amd64 -o kompose
+
+<span style="color:#080;font-style:italic"># Windows
+</span><span style="color:#080;font-style:italic"></span>curl -L https://github.com/kubernetes/kompose/releases/download/v1.1.0/kompose-windows-amd64.exe -o kompose.exe
+
+chmod +x kompose
+sudo mv ./kompose /usr/local/bin/kompose</code></pre></div>
+<p>Alternatively, you can download the <a href="https://github.com/kubernetes/kompose/releases" target="_blank">tarball</a>.</p>
+
+<h3 id="go">Go</h3>
+
+<p>Installing using <code>go get</code> pulls from the master branch with the latest development changes.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">go get -u github.com/kubernetes/kompose</code></pre></div>
+<h3 id="centos">CentOS</h3>
+
+<p>Kompose is in <a href="https://fedoraproject.org/wiki/EPEL" target="_blank">EPEL</a> CentOS repository.
+If you don&rsquo;t have <a href="https://fedoraproject.org/wiki/EPEL" target="_blank">EPEL</a> repository already installed and enabled you can do it by running  <code>sudo yum install epel-release</code></p>
+
+<p>If you have <a href="https://fedoraproject.org/wiki/EPEL" target="_blank">EPEL</a> enabled in your system, you can install Kompose like any other package.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo yum -y install kompose</code></pre></div>
+<h3 id="fedora">Fedora</h3>
+
+<p>Kompose is in Fedora 24, 25 and 26 repositories. You can install it just like any other package.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo dnf -y install kompose</code></pre></div>
+<h3 id="macos">macOS</h3>
+
+<p>On macOS you can install latest release via <a href="https://brew.sh" target="_blank">Homebrew</a>:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">brew install kompose</code></pre></div>
+<h2 id="use-kompose">Use Kompose</h2>
+
+<p>In just a few steps, we&rsquo;ll take you from Docker Compose to Kubernetes. All
+you need is an existing <code>docker-compose.yml</code> file.</p>
+
+<ol>
+<li><p>Go to the directory containing your <code>docker-compose.yml</code> file. If you don&rsquo;t
+have one, test using this one.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#bbb">  </span>version:<span style="color:#bbb"> </span><span style="color:#b44">&#34;2&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>services:<span style="color:#bbb">
+</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>redis-master:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>image:<span style="color:#bbb"> </span>k8s.gcr.io/redis:e2e<span style="color:#bbb"> 
+</span><span style="color:#bbb">      </span>ports:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span><span style="color:#b44">&#34;6379&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>redis-slave:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>image:<span style="color:#bbb"> </span>gcr.io/google_samples/gb-redisslave:v1<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>ports:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span><span style="color:#b44">&#34;6379&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">      </span>environment:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span>GET_HOSTS_FROM=dns<span style="color:#bbb">
+</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>frontend:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>image:<span style="color:#bbb"> </span>gcr.io/google-samples/gb-frontend:v4<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>ports:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span><span style="color:#b44">&#34;80:80&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">      </span>environment:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span>GET_HOSTS_FROM=dns<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>labels:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>kompose.service.type:<span style="color:#bbb"> </span>LoadBalancer</code></pre></div></li>
+
+<li><p>Run the <code>kompose up</code> command to deploy to Kubernetes directly, or skip to
+the next step instead to generate a file to use with <code>kubectl</code>.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">  $ kompose up
+  We are going to create Kubernetes Deployments, Services and PersistentVolumeClaims <span style="color:#a2f;font-weight:bold">for</span> your Dockerized application. 
+  If you need different kind of resources, use the <span style="color:#b44">&#39;kompose convert&#39;</span> and <span style="color:#b44">&#39;kubectl create -f&#39;</span> commands instead. 
+
+  INFO Successfully created Service: redis          
+  INFO Successfully created Service: web            
+  INFO Successfully created Deployment: redis       
+  INFO Successfully created Deployment: web         
+
+  Your application has been deployed to Kubernetes. You can run <span style="color:#b44">&#39;kubectl get deployment,svc,pods,pvc&#39;</span> <span style="color:#a2f;font-weight:bold">for</span> details.</code></pre></div></li>
+
+<li><p>To convert the <code>docker-compose.yml</code> file to files that you can use with
+<code>kubectl</code>, run <code>kompose convert</code> and then <code>kubectl create -f &lt;output file&gt;</code>.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">  $ kompose convert                           
+  INFO Kubernetes file <span style="color:#b44">&#34;frontend-service.yaml&#34;</span> created         
+  INFO Kubernetes file <span style="color:#b44">&#34;redis-master-service.yaml&#34;</span> created     
+  INFO Kubernetes file <span style="color:#b44">&#34;redis-slave-service.yaml&#34;</span> created      
+  INFO Kubernetes file <span style="color:#b44">&#34;frontend-deployment.yaml&#34;</span> created      
+  INFO Kubernetes file <span style="color:#b44">&#34;redis-master-deployment.yaml&#34;</span> created  
+  INFO Kubernetes file <span style="color:#b44">&#34;redis-slave-deployment.yaml&#34;</span> created   </code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">  $ kubectl create -f frontend-service.yaml,redis-master-service.yaml,redis-slave-service.yaml,frontend-deployment.yaml,redis-master-deployment.yaml,redis-slave-deployment.yaml
+  service <span style="color:#b44">&#34;frontend&#34;</span> created
+  service <span style="color:#b44">&#34;redis-master&#34;</span> created
+  service <span style="color:#b44">&#34;redis-slave&#34;</span> created
+  deployment <span style="color:#b44">&#34;frontend&#34;</span> created
+  deployment <span style="color:#b44">&#34;redis-master&#34;</span> created
+  deployment <span style="color:#b44">&#34;redis-slave&#34;</span> created</code></pre></div>
+<p>Your deployments are running in Kubernetes.</p></li>
+
+<li><p>Access your application.</p>
+
+<p>If you&rsquo;re already using <code>minikube</code> for your development process:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">  $ minikube service frontend</code></pre></div>
+<p>Otherwise, let&rsquo;s look up what IP your service is using!</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">  $ kubectl describe svc frontend
+  Name:                   frontend
+  Namespace:              default
+  Labels:                 <span style="color:#b8860b">service</span><span style="color:#666">=</span>frontend
+  Selector:               <span style="color:#b8860b">service</span><span style="color:#666">=</span>frontend
+  Type:                   LoadBalancer
+  IP:                     <span style="color:#666">10</span>.0.0.183
+  LoadBalancer Ingress:   <span style="color:#666">123</span>.45.67.89
+  Port:                   <span style="color:#666">80</span>      <span style="color:#666">80</span>/TCP
+  NodePort:               <span style="color:#666">80</span>      <span style="color:#666">31144</span>/TCP
+  Endpoints:              <span style="color:#666">172</span>.17.0.4:80
+  Session Affinity:       None
+  No events.</code></pre></div>
+<p>If you&rsquo;re using a cloud provider, your IP will be listed next to <code>LoadBalancer Ingress</code>.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">  $ curl http://123.45.67.89</code></pre></div></li>
+</ol>
+
+
+
+
+<h2 id="user-guide">User Guide</h2>
+
+<ul>
+<li>CLI
+
+<ul>
+<li><a href="#kompose-convert"><code>kompose convert</code></a></li>
+<li><a href="#kompose-up"><code>kompose up</code></a></li>
+<li><a href="#kompose-down"><code>kompose down</code></a></li>
+</ul></li>
+<li>Documentation
+
+<ul>
+<li><a href="#build-and-push-docker-images">Build and Push Docker Images</a></li>
+<li><a href="#alternative-conversions">Alternative Conversions</a></li>
+<li><a href="#labels">Labels</a></li>
+<li><a href="#restart">Restart</a></li>
+<li><a href="#docker-compose-versions">Docker Compose Versions</a></li>
+</ul></li>
+</ul>
+
+<p>Kompose has support for two providers: OpenShift and Kubernetes.
+You can choose a targeted provider using global option <code>--provider</code>. If no provider is specified, Kubernetes is set by default.</p>
+
+<h2 id="kompose-convert"><code>kompose convert</code></h2>
+
+<p>Kompose supports conversion of V1, V2, and V3 Docker Compose files into Kubernetes and OpenShift objects.</p>
+
+<h3 id="kubernetes">Kubernetes</h3>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ kompose --file docker-voting.yml convert
+WARN Unsupported key networks - ignoring
+WARN Unsupported key build - ignoring
+INFO Kubernetes file <span style="color:#b44">&#34;worker-svc.yaml&#34;</span> created
+INFO Kubernetes file <span style="color:#b44">&#34;db-svc.yaml&#34;</span> created
+INFO Kubernetes file <span style="color:#b44">&#34;redis-svc.yaml&#34;</span> created
+INFO Kubernetes file <span style="color:#b44">&#34;result-svc.yaml&#34;</span> created
+INFO Kubernetes file <span style="color:#b44">&#34;vote-svc.yaml&#34;</span> created
+INFO Kubernetes file <span style="color:#b44">&#34;redis-deployment.yaml&#34;</span> created
+INFO Kubernetes file <span style="color:#b44">&#34;result-deployment.yaml&#34;</span> created
+INFO Kubernetes file <span style="color:#b44">&#34;vote-deployment.yaml&#34;</span> created
+INFO Kubernetes file <span style="color:#b44">&#34;worker-deployment.yaml&#34;</span> created
+INFO Kubernetes file <span style="color:#b44">&#34;db-deployment.yaml&#34;</span> created
+
+$ ls
+db-deployment.yaml  docker-compose.yml         docker-gitlab.yml  redis-deployment.yaml  result-deployment.yaml  vote-deployment.yaml  worker-deployment.yaml
+db-svc.yaml         docker-voting.yml          redis-svc.yaml     result-svc.yaml        vote-svc.yaml           worker-svc.yaml</code></pre></div>
+<p>You can also provide multiple docker-compose files at the same time:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ kompose -f docker-compose.yml -f docker-guestbook.yml convert
+INFO Kubernetes file <span style="color:#b44">&#34;frontend-service.yaml&#34;</span> created         
+INFO Kubernetes file <span style="color:#b44">&#34;mlbparks-service.yaml&#34;</span> created         
+INFO Kubernetes file <span style="color:#b44">&#34;mongodb-service.yaml&#34;</span> created          
+INFO Kubernetes file <span style="color:#b44">&#34;redis-master-service.yaml&#34;</span> created     
+INFO Kubernetes file <span style="color:#b44">&#34;redis-slave-service.yaml&#34;</span> created      
+INFO Kubernetes file <span style="color:#b44">&#34;frontend-deployment.yaml&#34;</span> created      
+INFO Kubernetes file <span style="color:#b44">&#34;mlbparks-deployment.yaml&#34;</span> created      
+INFO Kubernetes file <span style="color:#b44">&#34;mongodb-deployment.yaml&#34;</span> created       
+INFO Kubernetes file <span style="color:#b44">&#34;mongodb-claim0-persistentvolumeclaim.yaml&#34;</span> created 
+INFO Kubernetes file <span style="color:#b44">&#34;redis-master-deployment.yaml&#34;</span> created  
+INFO Kubernetes file <span style="color:#b44">&#34;redis-slave-deployment.yaml&#34;</span> created   
+
+$ ls
+mlbparks-deployment.yaml  mongodb-service.yaml                       redis-slave-service.jsonmlbparks-service.yaml  
+frontend-deployment.yaml  mongodb-claim0-persistentvolumeclaim.yaml  redis-master-service.yaml
+frontend-service.yaml     mongodb-deployment.yaml                    redis-slave-deployment.yaml
+redis-master-deployment.yaml</code></pre></div>
+<p>When multiple docker-compose files are provided the configuration is merged. Any configuration that is common will be over ridden by subsequent file.</p>
+
+<h3 id="openshift">OpenShift</h3>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ kompose --provider openshift --file docker-voting.yml convert
+WARN <span style="color:#666">[</span>worker<span style="color:#666">]</span> Service cannot be created because of missing port.
+INFO OpenShift file <span style="color:#b44">&#34;vote-service.yaml&#34;</span> created             
+INFO OpenShift file <span style="color:#b44">&#34;db-service.yaml&#34;</span> created               
+INFO OpenShift file <span style="color:#b44">&#34;redis-service.yaml&#34;</span> created            
+INFO OpenShift file <span style="color:#b44">&#34;result-service.yaml&#34;</span> created           
+INFO OpenShift file <span style="color:#b44">&#34;vote-deploymentconfig.yaml&#34;</span> created    
+INFO OpenShift file <span style="color:#b44">&#34;vote-imagestream.yaml&#34;</span> created         
+INFO OpenShift file <span style="color:#b44">&#34;worker-deploymentconfig.yaml&#34;</span> created  
+INFO OpenShift file <span style="color:#b44">&#34;worker-imagestream.yaml&#34;</span> created       
+INFO OpenShift file <span style="color:#b44">&#34;db-deploymentconfig.yaml&#34;</span> created      
+INFO OpenShift file <span style="color:#b44">&#34;db-imagestream.yaml&#34;</span> created           
+INFO OpenShift file <span style="color:#b44">&#34;redis-deploymentconfig.yaml&#34;</span> created   
+INFO OpenShift file <span style="color:#b44">&#34;redis-imagestream.yaml&#34;</span> created        
+INFO OpenShift file <span style="color:#b44">&#34;result-deploymentconfig.yaml&#34;</span> created  
+INFO OpenShift file <span style="color:#b44">&#34;result-imagestream.yaml&#34;</span> created  </code></pre></div>
+<p>It also supports creating buildconfig for build directive in a service. By default, it uses the remote repo for the current git branch as the source repo, and the current branch as the source branch for the build. You can specify a different source repo and branch using <code>--build-repo</code> and <code>--build-branch</code> options respectively.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ kompose --provider openshift --file buildconfig/docker-compose.yml convert
+WARN <span style="color:#666">[</span>foo<span style="color:#666">]</span> Service cannot be created because of missing port. 
+INFO OpenShift Buildconfig using git@github.com:rtnpro/kompose.git::master as source. 
+INFO OpenShift file <span style="color:#b44">&#34;foo-deploymentconfig.yaml&#34;</span> created     
+INFO OpenShift file <span style="color:#b44">&#34;foo-imagestream.yaml&#34;</span> created          
+INFO OpenShift file <span style="color:#b44">&#34;foo-buildconfig.yaml&#34;</span> created </code></pre></div>
+<p><strong>Note</strong>: If you are manually pushing the Openshift artifacts using <code>oc create -f</code>, you need to ensure that you push the imagestream artifact before the buildconfig artifact, to workaround this Openshift issue: <a href="https://github.com/openshift/origin/issues/4518" target="_blank">https://github.com/openshift/origin/issues/4518</a> .</p>
+
+<h2 id="kompose-up"><code>kompose up</code></h2>
+
+<p>Kompose supports a straightforward way to deploy your &ldquo;composed&rdquo; application to Kubernetes or OpenShift via <code>kompose up</code>.</p>
+
+<h3 id="kubernetes-1">Kubernetes</h3>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ kompose --file ./examples/docker-guestbook.yml up
+We are going to create Kubernetes deployments and services <span style="color:#a2f;font-weight:bold">for</span> your Dockerized application.
+If you need different kind of resources, use the <span style="color:#b44">&#39;kompose convert&#39;</span> and <span style="color:#b44">&#39;kubectl create -f&#39;</span> commands instead.
+
+INFO Successfully created service: redis-master   
+INFO Successfully created service: redis-slave    
+INFO Successfully created service: frontend       
+INFO Successfully created deployment: redis-master
+INFO Successfully created deployment: redis-slave
+INFO Successfully created deployment: frontend    
+
+Your application has been deployed to Kubernetes. You can run <span style="color:#b44">&#39;kubectl get deployment,svc,pods&#39;</span> <span style="color:#a2f;font-weight:bold">for</span> details.
+
+$ kubectl get deployment,svc,pods
+NAME                               DESIRED       CURRENT       UP-TO-DATE   AVAILABLE   AGE
+deploy/frontend                    <span style="color:#666">1</span>             <span style="color:#666">1</span>             <span style="color:#666">1</span>            <span style="color:#666">1</span>           4m
+deploy/redis-master                <span style="color:#666">1</span>             <span style="color:#666">1</span>             <span style="color:#666">1</span>            <span style="color:#666">1</span>           4m
+deploy/redis-slave                 <span style="color:#666">1</span>             <span style="color:#666">1</span>             <span style="color:#666">1</span>            <span style="color:#666">1</span>           4m
+
+NAME                               CLUSTER-IP    EXTERNAL-IP   PORT<span style="color:#666">(</span>S<span style="color:#666">)</span>      AGE
+svc/frontend                       <span style="color:#666">10</span>.0.174.12   &lt;none&gt;        <span style="color:#666">80</span>/TCP       4m
+svc/kubernetes                     <span style="color:#666">10</span>.0.0.1      &lt;none&gt;        <span style="color:#666">443</span>/TCP      13d
+svc/redis-master                   <span style="color:#666">10</span>.0.202.43   &lt;none&gt;        <span style="color:#666">6379</span>/TCP     4m
+svc/redis-slave                    <span style="color:#666">10</span>.0.1.85     &lt;none&gt;        <span style="color:#666">6379</span>/TCP     4m
+
+NAME                               READY         STATUS        RESTARTS     AGE
+po/frontend-2768218532-cs5t5       <span style="color:#666">1</span>/1           Running       <span style="color:#666">0</span>            4m
+po/redis-master-1432129712-63jn8   <span style="color:#666">1</span>/1           Running       <span style="color:#666">0</span>            4m
+po/redis-slave-2504961300-nve7b    <span style="color:#666">1</span>/1           Running       <span style="color:#666">0</span>            4m</code></pre></div>
+<p>Note:
+- You must have a running Kubernetes cluster with a pre-configured kubectl context.
+- Only deployments and services are generated and deployed to Kubernetes. If you need different kind of resources, use the &lsquo;kompose convert&rsquo; and &lsquo;kubectl create -f&rsquo; commands instead.</p>
+
+<h3 id="openshift-1">OpenShift</h3>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ kompose --file ./examples/docker-guestbook.yml --provider openshift up
+We are going to create OpenShift DeploymentConfigs and Services <span style="color:#a2f;font-weight:bold">for</span> your Dockerized application.
+If you need different kind of resources, use the <span style="color:#b44">&#39;kompose convert&#39;</span> and <span style="color:#b44">&#39;oc create -f&#39;</span> commands instead.
+
+INFO Successfully created service: redis-slave    
+INFO Successfully created service: frontend       
+INFO Successfully created service: redis-master   
+INFO Successfully created deployment: redis-slave
+INFO Successfully created ImageStream: redis-slave
+INFO Successfully created deployment: frontend    
+INFO Successfully created ImageStream: frontend   
+INFO Successfully created deployment: redis-master
+INFO Successfully created ImageStream: redis-master
+
+Your application has been deployed to OpenShift. You can run <span style="color:#b44">&#39;oc get dc,svc,is&#39;</span> <span style="color:#a2f;font-weight:bold">for</span> details.
+
+$ oc get dc,svc,is
+NAME               REVISION                              DESIRED       CURRENT    TRIGGERED BY
+dc/frontend        <span style="color:#666">0</span>                                     <span style="color:#666">1</span>             <span style="color:#666">0</span>          config,image<span style="color:#666">(</span>frontend:v4<span style="color:#666">)</span>
+dc/redis-master    <span style="color:#666">0</span>                                     <span style="color:#666">1</span>             <span style="color:#666">0</span>          config,image<span style="color:#666">(</span>redis-master:e2e<span style="color:#666">)</span>
+dc/redis-slave     <span style="color:#666">0</span>                                     <span style="color:#666">1</span>             <span style="color:#666">0</span>          config,image<span style="color:#666">(</span>redis-slave:v1<span style="color:#666">)</span>
+NAME               CLUSTER-IP                            EXTERNAL-IP   PORT<span style="color:#666">(</span>S<span style="color:#666">)</span>    AGE
+svc/frontend       <span style="color:#666">172</span>.30.46.64                          &lt;none&gt;        <span style="color:#666">80</span>/TCP     8s
+svc/redis-master   <span style="color:#666">172</span>.30.144.56                         &lt;none&gt;        <span style="color:#666">6379</span>/TCP   8s
+svc/redis-slave    <span style="color:#666">172</span>.30.75.245                         &lt;none&gt;        <span style="color:#666">6379</span>/TCP   8s
+NAME               DOCKER REPO                           TAGS          UPDATED
+is/frontend        <span style="color:#666">172</span>.30.12.200:5000/fff/frontend                     
+is/redis-master    <span style="color:#666">172</span>.30.12.200:5000/fff/redis-master                 
+is/redis-slave     <span style="color:#666">172</span>.30.12.200:5000/fff/redis-slave    v1  </code></pre></div>
+<p>Note:
+- You must have a running OpenShift cluster with a pre-configured <code>oc</code> context (<code>oc login</code>)</p>
+
+<h2 id="kompose-down"><code>kompose down</code></h2>
+
+<p>Once you have deployed &ldquo;composed&rdquo; application to Kubernetes, <code>$ kompose down</code> will help you to take the application out by deleting its deployments and services. If you need to remove other resources, use the &lsquo;kubectl&rsquo; command.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ kompose --file docker-guestbook.yml down
+INFO Successfully deleted service: redis-master   
+INFO Successfully deleted deployment: redis-master
+INFO Successfully deleted service: redis-slave    
+INFO Successfully deleted deployment: redis-slave
+INFO Successfully deleted service: frontend       
+INFO Successfully deleted deployment: frontend</code></pre></div>
+<p>Note:
+- You must have a running Kubernetes cluster with a pre-configured kubectl context.</p>
+
+<h2 id="build-and-push-docker-images">Build and Push Docker Images</h2>
+
+<p>Kompose supports both building and pushing Docker images. When using the <code>build</code> key within your Docker Compose file, your image will:</p>
+
+<ul>
+<li>Automatically be built with Docker using the <code>image</code> key specified within your file</li>
+<li>Be pushed to the correct Docker repository using local credentials (located at <code>.docker/config</code>)</li>
+</ul>
+
+<p>Using an <a href="https://raw.githubusercontent.com/kubernetes/kompose/master/examples/buildconfig/docker-compose.yml" target="_blank">example Docker Compose file</a>:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">version:<span style="color:#bbb"> </span><span style="color:#b44">&#34;2&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>services:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>foo:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>build:<span style="color:#bbb"> </span><span style="color:#b44">&#34;./build&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span>image:<span style="color:#bbb"> </span>docker.io/foo/bar</code></pre></div>
+<p>Using <code>kompose up</code> with a <code>build</code> key:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-none" data-lang="none">$ kompose up
+INFO Build key detected. Attempting to build and push image &#39;docker.io/foo/bar&#39; 
+INFO Building image &#39;docker.io/foo/bar&#39; from directory &#39;build&#39; 
+INFO Image &#39;docker.io/foo/bar&#39; from directory &#39;build&#39; built successfully 
+INFO Pushing image &#39;foo/bar:latest&#39; to registry &#39;docker.io&#39; 
+INFO Attempting authentication credentials &#39;https://index.docker.io/v1/ 
+INFO Successfully pushed image &#39;foo/bar:latest&#39; to registry &#39;docker.io&#39; 
+INFO We are going to create Kubernetes Deployments, Services and PersistentVolumeClaims for your Dockerized application. If you need different kind of resources, use the &#39;kompose convert&#39; and &#39;kubectl create -f&#39; commands instead. 
+ 
+INFO Deploying application in &#34;default&#34; namespace 
+INFO Successfully created Service: foo            
+INFO Successfully created Deployment: foo         
+
+Your application has been deployed to Kubernetes. You can run &#39;kubectl get deployment,svc,pods,pvc&#39; for details.</code></pre></div>
+<p>In order to disable the functionality, or choose to use BuildConfig generation (with OpenShift) <code>--build (local|build-config|none)</code> can be passed.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#080;font-style:italic"># Disable building/pushing Docker images
+</span><span style="color:#080;font-style:italic"></span>$ kompose up --build none
+
+<span style="color:#080;font-style:italic"># Generate Build Config artifacts for OpenShift
+</span><span style="color:#080;font-style:italic"></span>$ kompose up --provider openshift --build build-config</code></pre></div>
+<h2 id="alternative-conversions">Alternative Conversions</h2>
+
+<p>The default <code>kompose</code> transformation will generate Kubernetes <a href="http://kubernetes.io/docs/user-guide/deployments/" target="_blank">Deployments</a> and <a href="http://kubernetes.io/docs/concepts/services-networking/service/" target="_blank">Services</a>, in yaml format. You have alternative option to generate json with <code>-j</code>. Also, you can alternatively generate <a href="http://kubernetes.io/docs/user-guide/replication-controller/" target="_blank">Replication Controllers</a> objects, <a href="http://kubernetes.io/docs/admin/daemons/" target="_blank">Daemon Sets</a>, or <a href="https://github.com/helm/helm" target="_blank">Helm</a> charts.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ kompose convert -j
+INFO Kubernetes file <span style="color:#b44">&#34;redis-svc.json&#34;</span> created
+INFO Kubernetes file <span style="color:#b44">&#34;web-svc.json&#34;</span> created
+INFO Kubernetes file <span style="color:#b44">&#34;redis-deployment.json&#34;</span> created
+INFO Kubernetes file <span style="color:#b44">&#34;web-deployment.json&#34;</span> created</code></pre></div>
+<p>The <code>*-deployment.json</code> files contain the Deployment objects.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ kompose convert --replication-controller
+INFO Kubernetes file <span style="color:#b44">&#34;redis-svc.yaml&#34;</span> created
+INFO Kubernetes file <span style="color:#b44">&#34;web-svc.yaml&#34;</span> created
+INFO Kubernetes file <span style="color:#b44">&#34;redis-replicationcontroller.yaml&#34;</span> created
+INFO Kubernetes file <span style="color:#b44">&#34;web-replicationcontroller.yaml&#34;</span> created</code></pre></div>
+<p>The <code>*-replicationcontroller.yaml</code> files contain the Replication Controller objects. If you want to specify replicas (default is 1), use <code>--replicas</code> flag: <code>$ kompose convert --replication-controller --replicas 3</code></p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ kompose convert --daemon-set
+INFO Kubernetes file <span style="color:#b44">&#34;redis-svc.yaml&#34;</span> created
+INFO Kubernetes file <span style="color:#b44">&#34;web-svc.yaml&#34;</span> created
+INFO Kubernetes file <span style="color:#b44">&#34;redis-daemonset.yaml&#34;</span> created
+INFO Kubernetes file <span style="color:#b44">&#34;web-daemonset.yaml&#34;</span> created</code></pre></div>
+<p>The <code>*-daemonset.yaml</code> files contain the Daemon Set objects</p>
+
+<p>If you want to generate a Chart to be used with <a href="https://github.com/kubernetes/helm" target="_blank">Helm</a> simply do:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ kompose convert -c 
+INFO Kubernetes file <span style="color:#b44">&#34;web-svc.yaml&#34;</span> created
+INFO Kubernetes file <span style="color:#b44">&#34;redis-svc.yaml&#34;</span> created
+INFO Kubernetes file <span style="color:#b44">&#34;web-deployment.yaml&#34;</span> created
+INFO Kubernetes file <span style="color:#b44">&#34;redis-deployment.yaml&#34;</span> created
+chart created in <span style="color:#b44">&#34;./docker-compose/&#34;</span>
+
+$ tree docker-compose/
+docker-compose
+├── Chart.yaml
+├── README.md
+└── templates
+    ├── redis-deployment.yaml
+    ├── redis-svc.yaml
+    ├── web-deployment.yaml
+    └── web-svc.yaml</code></pre></div>
+<p>The chart structure is aimed at providing a skeleton for building your Helm charts.</p>
+
+<h2 id="labels">Labels</h2>
+
+<p><code>kompose</code> supports Kompose-specific labels within the <code>docker-compose.yml</code> file in order to explicitly define a service&rsquo;s behavior upon conversion.</p>
+
+<ul>
+<li>kompose.service.type defines the type of service to be created.</li>
+</ul>
+
+<p>For example:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">version:<span style="color:#bbb"> </span><span style="color:#b44">&#34;2&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>services:<span style="color:#bbb"> 
+</span><span style="color:#bbb">  </span>nginx:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>image:<span style="color:#bbb"> </span>nginx<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>dockerfile:<span style="color:#bbb"> </span>foobar<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>build:<span style="color:#bbb"> </span>./foobar<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>cap_add:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>-<span style="color:#bbb"> </span>ALL<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>container_name:<span style="color:#bbb"> </span>foobar<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>labels:<span style="color:#bbb"> 
+</span><span style="color:#bbb">      </span>kompose.service.type:<span style="color:#bbb"> </span>nodeport</code></pre></div>
+<ul>
+<li>kompose.service.expose defines if the service needs to be made accessible from outside the cluster or not. If the value is set to &ldquo;true&rdquo;, the provider sets the endpoint automatically, and for any other value, the value is set as the hostname. If multiple ports are defined in a service, the first one is chosen to be the exposed.
+
+<ul>
+<li>For the Kubernetes provider, an ingress resource is created and it is assumed that an ingress controller has already been configured.</li>
+<li>For the OpenShift provider, a route is created.</li>
+</ul></li>
+</ul>
+
+<p>For example:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">version:<span style="color:#bbb"> </span><span style="color:#b44">&#34;2&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>services:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>web:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>image:<span style="color:#bbb"> </span>tuna/docker-counter23<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>ports:<span style="color:#bbb">
+</span><span style="color:#bbb">     </span>-<span style="color:#bbb"> </span><span style="color:#b44">&#34;5000:5000&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>links:<span style="color:#bbb">
+</span><span style="color:#bbb">     </span>-<span style="color:#bbb"> </span>redis<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>labels:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>kompose.service.expose:<span style="color:#bbb"> </span><span style="color:#b44">&#34;counter.example.com&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>redis:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>image:<span style="color:#bbb"> </span>redis:<span style="color:#666">3.0</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>ports:<span style="color:#bbb">
+</span><span style="color:#bbb">     </span>-<span style="color:#bbb"> </span><span style="color:#b44">&#34;6379&#34;</span></code></pre></div>
+<p>The currently supported options are:</p>
+
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Value</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>kompose.service.type</td>
+<td>nodeport / clusterip / loadbalancer</td>
+</tr>
+
+<tr>
+<td>kompose.service.expose</td>
+<td>true / hostname</td>
+</tr>
+</tbody>
+</table>
+
+<p><strong>Note</strong>: <code>kompose.service.type</code> label should be defined with <code>ports</code> only, otherwise <code>kompose</code> will fail.</p>
+
+<h2 id="restart">Restart</h2>
+
+<p>If you want to create normal pods without controllers you can use <code>restart</code> construct of docker-compose to define that. Follow table below to see what happens on the <code>restart</code> value.</p>
+
+<table>
+<thead>
+<tr>
+<th><code>docker-compose</code> <code>restart</code></th>
+<th>object created</th>
+<th>Pod <code>restartPolicy</code></th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>&quot;&quot;</code></td>
+<td>controller object</td>
+<td><code>Always</code></td>
+</tr>
+
+<tr>
+<td><code>always</code></td>
+<td>controller object</td>
+<td><code>Always</code></td>
+</tr>
+
+<tr>
+<td><code>on-failure</code></td>
+<td>Pod</td>
+<td><code>OnFailure</code></td>
+</tr>
+
+<tr>
+<td><code>no</code></td>
+<td>Pod</td>
+<td><code>Never</code></td>
+</tr>
+</tbody>
+</table>
+
+<p><strong>Note</strong>: controller object could be <code>deployment</code> or <code>replicationcontroller</code>, etc.</p>
+
+<p>For e.g. <code>pival</code> service will become pod down here. This container calculated value of <code>pi</code>.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">version:<span style="color:#bbb"> </span><span style="color:#b44">&#39;2&#39;</span><span style="color:#bbb">
+</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>services:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>pival:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>image:<span style="color:#bbb"> </span>perl<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>command:<span style="color:#bbb"> </span>[<span style="color:#b44">&#34;perl&#34;</span>,<span style="color:#bbb">  </span><span style="color:#b44">&#34;-Mbignum=bpi&#34;</span>,<span style="color:#bbb"> </span><span style="color:#b44">&#34;-wle&#34;</span>,<span style="color:#bbb"> </span><span style="color:#b44">&#34;print bpi(2000)&#34;</span>]<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>restart:<span style="color:#bbb"> </span><span style="color:#b44">&#34;on-failure&#34;</span></code></pre></div>
+<h4 id="warning-about-deployment-config-s">Warning about Deployment Config&rsquo;s</h4>
+
+<p>If the Docker Compose file has a volume specified for a service, the Deployment (Kubernetes) or DeploymentConfig (OpenShift) strategy is changed to &ldquo;Recreate&rdquo; instead of &ldquo;RollingUpdate&rdquo; (default). This is done to avoid multiple instances of a service from accessing a volume at the same time.</p>
+
+<p>If the Docker Compose file has service name with <code>_</code> in it (eg.<code>web_service</code>), then it will be replaced by <code>-</code> and the service name will be renamed accordingly (eg.<code>web-service</code>). Kompose does this because &ldquo;Kubernetes&rdquo; doesn&rsquo;t allow <code>_</code> in object name.</p>
+
+<p>Please note that changing service name might break some <code>docker-compose</code> files.</p>
+
+<h2 id="docker-compose-versions">Docker Compose Versions</h2>
+
+<p>Kompose supports Docker Compose versions: 1, 2 and 3. We have limited support on versions 2.1 and 3.2 due to their experimental nature.</p>
+
+<p>A full list on compatibility between all three versions is listed in our <a href="https://github.com/kubernetes/kompose/blob/master/docs/conversion.md" target="_blank">conversion document</a> including a list of all incompatible Docker Compose keys.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/tasks/configure-pod-container/translate-compose-kubernetes.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/tasks\/configure-pod-container\/translate-compose-kubernetes\/",
+					"title" : "Translate a Docker Compose File to Kubernetes Resources",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/tasks\/configure-pod-container\/translate-compose-kubernetes\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/tasks/configure-pod-container/translate-compose-kubernetes.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

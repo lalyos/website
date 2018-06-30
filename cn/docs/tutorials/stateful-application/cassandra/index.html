@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>“示例：使用 Stateful Sets 部署 Cassandra” - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="“示例：使用 Stateful Sets 部署 Cassandra”" />
+<meta property="og:description" content="“示例：使用 Stateful Sets 部署 Cassandra”" />
+
+<meta property="og:url" content="https://kubernetes.io/cn/docs/tutorials/stateful-application/cassandra/" />
+<meta property="og:title" content="“示例：使用 Stateful Sets 部署 Cassandra” - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+             <li>
+                <a href="#">
+                    Chinese <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/">English</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+         
+        
+        <a class="item" data-title="Tutorials" href="/cn/docs/tutorials/"></a>
+
+	
+	
+		
+		
+<a class="item" data-title="Kubernetes 对象管理" href="/cn/docs/tutorials/object-management-kubectl/object-management/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="StatefulSet基本使用" href="/cn/docs/tutorials/stateful-application/basic-stateful-set/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Try Our Interactive Tutorials">
+		<div class="container">
+		
+		
+		<a class="item" data-title="Try Our Interactive Tutorials" href="/cn/docs/tutorials/kubernetes-basics/"></a>
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="互动教程 - 创建集群" href="/cn/docs/tutorials/kubernetes-basics/cluster-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 应用外部可见" href="/cn/docs/tutorials/kubernetes-basics/expose-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 应用程序探索" href="/cn/docs/tutorials/kubernetes-basics/explore-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 扩展您的应用程序" href="/cn/docs/tutorials/kubernetes-basics/scale-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 更新您的应用程序" href="/cn/docs/tutorials/kubernetes-basics/update-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="互动教程 - 部署应用程序" href="/cn/docs/tutorials/kubernetes-basics/deploy-interactive/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Minikube 创建一个集群" href="/cn/docs/tutorials/kubernetes-basics/cluster-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 kubectl 创建部署" href="/cn/docs/tutorials/kubernetes-basics/deploy-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用服务发布您的应用程序" href="/cn/docs/tutorials/kubernetes-basics/expose-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="执行滚动更新" href="/cn/docs/tutorials/kubernetes-basics/update-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="查看 Pods 和节点" href="/cn/docs/tutorials/kubernetes-basics/explore-intro/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="运行应用程序的多个实例" href="/cn/docs/tutorials/kubernetes-basics/scale-intro/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="“示例：使用 Stateful Sets 部署 Cassandra”" href="/cn/docs/tutorials/stateful-application/cassandra/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用 Source IP" href="/cn/docs/tutorials/services/source-ip/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用ConfigMap来配置Redis" href="/cn/docs/tutorials/configuration/configure-redis-using-configmap/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="使用命令式的方式管理 Kubernetes 对象" href="/cn/docs/tutorials/object-management-kubectl/imperative-object-management-command/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="基于 Persistent Volumes 搭建 WordPress 和 MySQL 应用" href="/cn/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="运行 ZooKeeper， 一个 CP 分布式系统" href="/cn/docs/tutorials/stateful-application/zookeeper/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/tutorials/stateful-application/cassandra.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>“示例：使用 Stateful Sets 部署 Cassandra”</h1>
+
+
+
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#目录">目录</a></li>
+<li><a href="#准备工作">准备工作</a></li>
+<li><a href="#cassandra-docker镜像">Cassandra Docker镜像</a></li>
+<li><a href="#快速入门">快速入门</a></li>
+<li><a href="#步骤1-创建-cassandra-headless-service">步骤1：创建 Cassandra Headless Service</a></li>
+<li><a href="#步骤2-使用-statefulset-创建-cassandra-ring环">步骤2：使用 StatefulSet 创建  Cassandra Ring环</a></li>
+<li><a href="#步骤3-验证和修改-cassandra-statefulset">步骤3：验证和修改 Cassandra StatefulSet</a></li>
+<li><a href="#步骤4-删除-cassandra-statefulset">步骤4：删除 Cassandra StatefulSet</a></li>
+<li><a href="#步骤5-使用-replication-controller-创建-cassandra-节点-pods">步骤5：使用 Replication Controller 创建 Cassandra 节点 pods</a></li>
+<li><a href="#步骤6-cassandra集群扩容">步骤6：Cassandra集群扩容</a></li>
+<li><a href="#步骤7-删除-replication-controller">步骤7：删除 Replication Controller</a></li>
+<li><a href="#步骤8-使用-daemonset-替换-replication-controller">步骤8：使用 DaemonSet 替换 Replication Controller</a></li>
+<li><a href="#步骤9-资源清理">步骤9：资源清理</a>
+<ul>
+<li><a href="#自定义-seed-provider">自定义 Seed Provider</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+
+
+
+<h2 id="目录">目录</h2>
+
+<ul>
+<li><a href="#prerequisites">准备工作</a></li>
+<li><a href="#cassandra-docker">Cassandra docker 镜像</a></li>
+<li><a href="#quickstart">快速入门</a></li>
+<li><a href="#step-1-create-a-cassandra-headless-service">步骤1：创建 Cassandra Headless Service</a></li>
+<li><a href="#step-2-use-a-statefulset-to-create-cassandra-ring">步骤2：使用 StatefulSet 创建 Cassandra Ring环</a></li>
+<li><a href="#step-3-validate-and-modify-the-cassandra-statefulset">步骤3：验证并修改 Cassandra StatefulSet</a></li>
+<li><a href="#step-4-delete-cassandra-statefulset">步骤4：删除 Cassandra StatefulSet</a></li>
+<li><a href="#step-5-use-a-replication-controller-to-create-cassandra-node-pods">步骤5：使用 Replication Controller 创建 Cassandra 节点 pods</a></li>
+<li><a href="#step-6-scale-up-the-cassandra-cluster">步骤6：Cassandra 集群扩容</a></li>
+<li><a href="#step-7-delete-the-replication-controller">步骤7：删除 Replication Controller</a></li>
+<li><a href="#step-8-use-a-daemonset-instead-of-a-replication-controller">步骤8：使用 DaemonSet 替换 Replication Controller</a></li>
+<li><a href="#step-9-resource-cleanup">步骤9：资源清理</a></li>
+<li><a href="#seed-provider-source">Seed Provider Source</a></li>
+</ul>
+
+<p>下文描述了在 Kubernetes 上部署一个<em>云原生</em> <a href="http://cassandra.apache.org/" target="_blank">Cassandra</a> 的过程。当我们说_云原生_时，指的是一个应用能够理解它运行在一个集群管理器内部，并且使用这个集群的管理基础设施来帮助实现这个应用。特别的，本例使用了一个自定义的 Cassandra <code>SeedProvider</code> 帮助 Cassandra 发现新加入集群 Cassandra 节点。</p>
+
+<p>本示例也使用了Kubernetes的一些核心组件：</p>
+
+<ul>
+<li><a href="/docs/user-guide/pods"><em>Pods</em></a></li>
+<li><a href="/docs/user-guide/services"> <em>Services</em></a></li>
+<li><a href="/docs/user-guide/replication-controller"><em>Replication Controllers</em></a></li>
+<li><a href="/docs/concepts/workloads/controllers/statefulset/"><em>Stateful Sets</em></a></li>
+<li><a href="/docs/admin/daemons"><em>Daemon Sets</em></a></li>
+</ul>
+
+<h2 id="准备工作">准备工作</h2>
+
+<p>本示例假设你已经安装运行了一个 Kubernetes集群（版本 &gt;=1.2），并且还在某个路径下安装了  <a href="https://kubernetes.io/docs/tasks/tools/install-kubectl/" target="_blank"><code>kubectl</code></a> 命令行工具。请查看 <a href="https://kubernetes.io/docs/getting-started-guides/" target="_blank">getting started guides</a> 获取关于你的平台的安装说明。</p>
+
+<p>本示例还需要一些代码和配置文件。为了避免手动输入，你可以 <code>git clone</code> Kubernetes 源到你本地。</p>
+
+<h2 id="cassandra-docker镜像">Cassandra Docker镜像</h2>
+
+<p>Pods 使用来自  Google 的 <a href="https://cloud.google.com/container-registry/docs/" target="_blank">container registry</a> 的  <a href="https://github.com/kubernetes/examples/blob/master/cassandra/image/Dockerfile" target="_blank"><code>gcr.io/google-samples/cassandra:v12</code></a> 镜像。这个 docker 镜像基于 <code>debian:jessie</code> 并包含 OpenJDK 8。该镜像包含一个从  Apache Debian 源中安装的标准 Cassandra。你可以通过使用环境变量改变插入到 <code>cassandra.yaml</code> 文件中的参数值。</p>
+
+<table>
+<thead>
+<tr>
+<th>ENV VAR</th>
+<th align="center">DEFAULT VALUE</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>CASSANDRA_CLUSTER_NAME</td>
+<td align="center">&lsquo;Test Cluster&rsquo;</td>
+</tr>
+
+<tr>
+<td>CASSANDRA_NUM_TOKENS</td>
+<td align="center">32</td>
+</tr>
+
+<tr>
+<td>CASSANDRA_RPC_ADDRESS</td>
+<td align="center">0.0.0.0</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="快速入门">快速入门</h2>
+
+<p>如果你希望直接跳到我们使用的命令，以下是全部步骤：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#080;font-style:italic">#
+</span><span style="color:#080;font-style:italic"># StatefulSet
+</span><span style="color:#080;font-style:italic">#
+</span><span style="color:#080;font-style:italic"></span>
+<span style="color:#080;font-style:italic"># clone the example repository
+</span><span style="color:#080;font-style:italic"></span>git clone https://github.com/kubernetes/examples
+<span style="color:#a2f">cd</span> examples
+
+<span style="color:#080;font-style:italic"># create a service to track all cassandra statefulset nodes
+</span><span style="color:#080;font-style:italic"></span>kubectl create -f cassandra/cassandra-service.yaml
+
+<span style="color:#080;font-style:italic"># create a statefulset
+</span><span style="color:#080;font-style:italic"></span>kubectl create -f cassandra/cassandra-statefulset.yaml
+
+<span style="color:#080;font-style:italic"># validate the Cassandra cluster. Substitute the name of one of your pods.
+</span><span style="color:#080;font-style:italic"></span>kubectl <span style="color:#a2f">exec</span> -ti cassandra-0 -- nodetool status
+
+<span style="color:#080;font-style:italic"># cleanup
+</span><span style="color:#080;font-style:italic"></span><span style="color:#b8860b">grace</span><span style="color:#666">=</span><span style="color:#a2f;font-weight:bold">$(</span>kubectl get po cassandra-0 -o<span style="color:#666">=</span><span style="color:#b8860b">jsonpath</span><span style="color:#666">=</span><span style="color:#b44">&#39;{.spec.terminationGracePeriodSeconds}&#39;</span><span style="color:#a2f;font-weight:bold">)</span> <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>  <span style="color:#666">&amp;&amp;</span> kubectl delete statefulset,po -l <span style="color:#b8860b">app</span><span style="color:#666">=</span>cassandra <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>  <span style="color:#666">&amp;&amp;</span> <span style="color:#a2f">echo</span> <span style="color:#b44">&#34;Sleeping </span><span style="color:#b8860b">$grace</span><span style="color:#b44">&#34;</span> <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>  <span style="color:#666">&amp;&amp;</span> sleep <span style="color:#b8860b">$grace</span> <span style="color:#b62;font-weight:bold">\
+</span><span style="color:#b62;font-weight:bold"></span>  <span style="color:#666">&amp;&amp;</span> kubectl delete pvc -l <span style="color:#b8860b">app</span><span style="color:#666">=</span>cassandra
+
+<span style="color:#080;font-style:italic">#
+</span><span style="color:#080;font-style:italic"># Resource Controller Example
+</span><span style="color:#080;font-style:italic">#
+</span><span style="color:#080;font-style:italic"></span>
+<span style="color:#080;font-style:italic"># create a replication controller to replicate cassandra nodes
+</span><span style="color:#080;font-style:italic"></span>kubectl create -f cassandra/cassandra-controller.yaml
+
+<span style="color:#080;font-style:italic"># validate the Cassandra cluster. Substitute the name of one of your pods.
+</span><span style="color:#080;font-style:italic"></span>kubectl <span style="color:#a2f">exec</span> -ti cassandra-xxxxx -- nodetool status
+
+<span style="color:#080;font-style:italic"># scale up the Cassandra cluster
+</span><span style="color:#080;font-style:italic"></span>kubectl scale rc cassandra --replicas<span style="color:#666">=</span><span style="color:#666">4</span>
+
+<span style="color:#080;font-style:italic"># delete the replication controller
+</span><span style="color:#080;font-style:italic"></span>kubectl delete rc cassandra
+
+<span style="color:#080;font-style:italic">#
+</span><span style="color:#080;font-style:italic"># Create a DaemonSet to place a cassandra node on each kubernetes node
+</span><span style="color:#080;font-style:italic">#
+</span><span style="color:#080;font-style:italic"></span>
+kubectl create -f cassandra/cassandra-daemonset.yaml --validate<span style="color:#666">=</span><span style="color:#a2f">false</span>
+
+<span style="color:#080;font-style:italic"># resource cleanup
+</span><span style="color:#080;font-style:italic"></span>kubectl delete service -l <span style="color:#b8860b">app</span><span style="color:#666">=</span>cassandra
+kubectl delete daemonset cassandra</code></pre></div>
+<h2 id="步骤1-创建-cassandra-headless-service">步骤1：创建 Cassandra Headless Service</h2>
+
+<p>Kubernetes <em><a href="/docs/user-guide/services">Service</a></em> 描述一组执行同样任务的 <a href="/docs/user-guide/pods"><em>Pods</em></a>。在Kubernetes中，一个应用的原子调度单位是一个 Pod：一个或多个_必须_调度到相同主机上的容器。</p>
+
+<p>这个 Service 用于在Kubernetes 集群内部进行 Cassandra 客户端和 Cassandra Pods之间的 DNS 查找。</p>
+
+<p>以下为这个 service 的描述：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Service<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>labels:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>app:<span style="color:#bbb"> </span>cassandra<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>cassandra<span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>clusterIP:<span style="color:#bbb"> </span>None<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>ports:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>-<span style="color:#bbb"> </span>port:<span style="color:#bbb"> </span><span style="color:#666">9042</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>selector:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>app:<span style="color:#bbb"> </span>cassandra</code></pre></div>
+<p><a href="https://raw.githubusercontent.com/kubernetes/examples/master/cassandra-service.yaml" target="_blank">下载示例</a></p>
+
+<p>为 StatefulSet 创建 service</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ kubectl create -f cassandra/cassandra-service.yaml</code></pre></div>
+<p>以下命令显示了 service 是否被成功创建。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ kubectl get svc cassandra</code></pre></div>
+<p>命令的响应应该像这样：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">NAME        CLUSTER-IP   EXTERNAL-IP   PORT(S)    AGE
+cassandra   None         &lt;none&gt;        9042/TCP   45s</code></pre></div>
+<p>如果返回错误则表示 service 创建失败。</p>
+
+<h2 id="步骤2-使用-statefulset-创建-cassandra-ring环">步骤2：使用 StatefulSet 创建  Cassandra Ring环</h2>
+
+<p>StatefulSets（以前叫做 PetSets）特性在 Kubernetes 1.5 中升级为一个 <i>Beta</i> 组件。在集群环境中部署类似于 Cassandra 的有状态分布式应用是一项具有挑战性的工作。我们实现了StatefulSet，极大的简化了这个过程。本示例使用了 StatefulSet 的多个特性，但其本身超出了本文的范围。<a href="https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/" target="_blank">请参考 Stateful Set 文档。</a></p>
+
+<p>以下是StatefulSet 的清单文件，用于创建一个由三个 pods 组成的 Cassandra ring环。</p>
+
+<p>本示例使用了 GCE Storage Class，请根据你运行的云平台做适当的修改。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span><span style="color:#b44">&#34;apps/v1beta1&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>StatefulSet<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>cassandra<span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>serviceName:<span style="color:#bbb"> </span>cassandra<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>replicas:<span style="color:#bbb"> </span><span style="color:#666">3</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>template:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>labels:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>app:<span style="color:#bbb"> </span>cassandra<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>containers:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>cassandra<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>image:<span style="color:#bbb"> </span>gcr.io/google-samples/cassandra:v12<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>imagePullPolicy:<span style="color:#bbb"> </span>Always<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>ports:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span>containerPort:<span style="color:#bbb"> </span><span style="color:#666">7000</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span>name:<span style="color:#bbb"> </span>intra-node<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span>containerPort:<span style="color:#bbb"> </span><span style="color:#666">7001</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span>name:<span style="color:#bbb"> </span>tls-intra-node<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span>containerPort:<span style="color:#bbb"> </span><span style="color:#666">7199</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span>name:<span style="color:#bbb"> </span>jmx<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span>containerPort:<span style="color:#bbb"> </span><span style="color:#666">9042</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span>name:<span style="color:#bbb"> </span>cql<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>resources:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>limits:<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>cpu:<span style="color:#bbb"> </span><span style="color:#b44">&#34;500m&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">            </span>memory:<span style="color:#bbb"> </span>1Gi<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>requests:<span style="color:#bbb">
+</span><span style="color:#bbb">           </span>cpu:<span style="color:#bbb"> </span><span style="color:#b44">&#34;500m&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">           </span>memory:<span style="color:#bbb"> </span>1Gi<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>securityContext:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>capabilities:<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>add:<span style="color:#bbb">
+</span><span style="color:#bbb">              </span>-<span style="color:#bbb"> </span>IPC_LOCK<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>lifecycle:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>preStop:<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>exec:<span style="color:#bbb">
+</span><span style="color:#bbb">              </span>command:<span style="color:#bbb"> </span>[<span style="color:#b44">&#34;/bin/sh&#34;</span>,<span style="color:#bbb"> </span><span style="color:#b44">&#34;-c&#34;</span>,<span style="color:#bbb"> </span><span style="color:#b44">&#34;PID=$(pidof java) &amp;&amp; kill $PID &amp;&amp; while ps -p $PID &gt; /dev/null; do sleep 1; done&#34;</span>]<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>env:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>MAX_HEAP_SIZE<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>value:<span style="color:#bbb"> </span>512M<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>HEAP_NEWSIZE<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>value:<span style="color:#bbb"> </span>100M<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>CASSANDRA_SEEDS<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>value:<span style="color:#bbb"> </span><span style="color:#b44">&#34;cassandra-0.cassandra.default.svc.cluster.local&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>CASSANDRA_CLUSTER_NAME<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>value:<span style="color:#bbb"> </span><span style="color:#b44">&#34;K8Demo&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>CASSANDRA_DC<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>value:<span style="color:#bbb"> </span><span style="color:#b44">&#34;DC1-K8Demo&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>CASSANDRA_RACK<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>value:<span style="color:#bbb"> </span><span style="color:#b44">&#34;Rack1-K8Demo&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>CASSANDRA_AUTO_BOOTSTRAP<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>value:<span style="color:#bbb"> </span><span style="color:#b44">&#34;false&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>POD_IP<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>valueFrom:<span style="color:#bbb">
+</span><span style="color:#bbb">              </span>fieldRef:<span style="color:#bbb">
+</span><span style="color:#bbb">                </span>fieldPath:<span style="color:#bbb"> </span>status.podIP<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>readinessProbe:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>exec:<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>command:<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>-<span style="color:#bbb"> </span>/bin/bash<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>-<span style="color:#bbb"> </span>-c<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>-<span style="color:#bbb"> </span>/ready-probe.sh<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>initialDelaySeconds:<span style="color:#bbb"> </span><span style="color:#666">15</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span>timeoutSeconds:<span style="color:#bbb"> </span><span style="color:#666">5</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#080;font-style:italic"># These volume mounts are persistent. They are like inline claims,</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#080;font-style:italic"># but not exactly because the names need to match exactly one of</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#080;font-style:italic"># the stateful pod volumes.</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span>volumeMounts:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>cassandra-data<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>mountPath:<span style="color:#bbb"> </span>/cassandra_data<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#080;font-style:italic"># These are converted to volume claims by the controller</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#080;font-style:italic"># and mounted at the paths mentioned above.</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#080;font-style:italic"># do not use these in production until ssd GCEPersistentDisk or other ssd pd</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>volumeClaimTemplates:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>name:<span style="color:#bbb"> </span>cassandra-data<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>annotations:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>volume.beta.kubernetes.io/storage-class:<span style="color:#bbb"> </span>fast<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>accessModes:<span style="color:#bbb"> </span>[<span style="color:#bbb"> </span><span style="color:#b44">&#34;ReadWriteOnce&#34;</span><span style="color:#bbb"> </span>]<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>resources:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>requests:<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>storage:<span style="color:#bbb"> </span>1Gi<span style="color:#bbb">
+</span><span style="color:#bbb"></span>---<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>StorageClass<span style="color:#bbb">
+</span><span style="color:#bbb"></span>apiVersion:<span style="color:#bbb"> </span>storage.k8s.io/v1beta1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>fast<span style="color:#bbb">
+</span><span style="color:#bbb"></span>provisioner:<span style="color:#bbb"> </span>kubernetes.io/gce-pd<span style="color:#bbb">
+</span><span style="color:#bbb"></span>parameters:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>type:<span style="color:#bbb"> </span>pd-ssd</code></pre></div>
+<p><a href="https://raw.githubusercontent.com/kubernetes/examples/master/cassandra-statefulset.yaml" target="_blank">下载示例</a></p>
+
+<p>创建  Cassandra StatefulSet 如下：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ kubectl create -f cassandra/cassandra-statefulset.yaml</code></pre></div>
+<h2 id="步骤3-验证和修改-cassandra-statefulset">步骤3：验证和修改 Cassandra StatefulSet</h2>
+
+<p>这个 StatefulSet 的部署展示了 StatefulSets 提供的两个新特性：</p>
+
+<ol>
+<li>Pod 的名称已知</li>
+<li>Pod 以递增顺序部署</li>
+</ol>
+
+<p>首先，运行下面的 <code>kubectl</code> 命令，验证 StatefulSet 已经被成功部署。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ kubectl get statefulset cassandra</code></pre></div>
+<p>这个命令的响应应该像这样：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">NAME        DESIRED   CURRENT   AGE
+cassandra   3         3         13s</code></pre></div>
+<p>接下来观察 Cassandra pods 以一个接一个的形式部署。StatefulSet 资源按照数字序号的模式部署 pods：1, 2, 3 等。如果在 pods 部署前执行下面的命令，你就能够看到这种顺序的创建过程。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ kubectl get pods -l=&#34;app=cassandra&#34;
+NAME          READY     STATUS              RESTARTS   AGE
+cassandra-0   1/1       Running             0          1m
+cassandra-1   0/1       ContainerCreating   0          8s</code></pre></div>
+<p>上面的示例显示了三个 Cassandra StatefulSet pods 中的两个已经部署。一旦所有的 pods 都部署成功，相同的命令会显示一个完整的StatefulSet。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ kubectl get pods -l=&#34;app=cassandra&#34;
+NAME          READY     STATUS    RESTARTS   AGE
+cassandra-0   1/1       Running   0          10m
+cassandra-1   1/1       Running   0          9m
+cassandra-2   1/1       Running   0          8m</code></pre></div>
+<p>运行 Cassandra 工具 <code>nodetool</code> 将显示 ring环的状态。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ kubectl exec cassandra-0 -- nodetool status
+Datacenter: DC1-K8Demo
+======================
+Status=Up/Down
+|/ State=Normal/Leaving/Joining/Moving
+--  Address   Load       Tokens       Owns (effective)  Host ID                               Rack
+UN  10.4.2.4  65.26 KiB  32           63.7%             a9d27f81-6783-461d-8583-87de2589133e  Rack1-K8Demo
+UN  10.4.0.4  102.04 KiB  32           66.7%             5559a58c-8b03-47ad-bc32-c621708dc2e4  Rack1-K8Demo
+UN  10.4.1.4  83.06 KiB  32           69.6%             9dce943c-581d-4c0e-9543-f519969cc805  Rack1-K8Demo</code></pre></div>
+<p>你也可以运行 <code>cqlsh</code> 来显示集群的 keyspaces。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ kubectl exec cassandra-0 -- cqlsh -e &#39;desc keyspaces&#39;
+
+system_traces  system_schema  system_auth  system  system_distributed</code></pre></div>
+<p>你需要使用 <code>kubectl edit</code> 来增加或减小 Cassandra StatefulSet 的大小。你可以在 <a href="/docs/user-guide/kubectl/kubectl_edit">文档</a> 中找到更多关于 edit 命令的信息。</p>
+
+<p>使用以下命令编辑 StatefulSet。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ kubectl edit statefulset cassandra</code></pre></div>
+<p>这会在你的命令行中创建一个编辑器。你需要修改的行是 <code>replicas</code>。这个例子没有包含终端窗口的所有内容，下面示例中的最后一行就是你希望改变的 replicas 行。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console"># Please edit the object below. Lines beginning with a &#39;#&#39; will be ignored,
+# and an empty file will abort the edit. If an error occurs while saving this file will be
+# reopened with the relevant failures.
+#
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  creationTimestamp: 2016-08-13T18:40:58Z
+  generation: 1
+  labels:
+    app: cassandra
+  name: cassandra
+  namespace: default
+  resourceVersion: &#34;323&#34;
+  selfLink: /apis/apps/v1beta1/namespaces/default/statefulsets/cassandra
+  uid: 7a219483-6185-11e6-a910-42010a8a0fc0
+spec:
+  replicas: 3</code></pre></div>
+<p>按下面的示例修改清单文件并保存。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">spec:
+  replicas: 4</code></pre></div>
+<p>这个 StatefulSet 现在将包含四个 pods。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ kubectl get statefulset cassandra</code></pre></div>
+<p>这个command的响应应该像这样：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">NAME        DESIRED   CURRENT   AGE
+cassandra   4         4         36m</code></pre></div>
+<p>对于 Kubernetes 1.5 发布版，beta StatefulSet 资源没有像 Deployment, ReplicaSet, Replication Controller或者 Job一样，包含 <code>kubectl scale</code> 功能，</p>
+
+<h2 id="步骤4-删除-cassandra-statefulset">步骤4：删除 Cassandra StatefulSet</h2>
+
+<p>删除或者缩容 StatefulSet 时不会删除与之关联的 volumes。这样做是为了优先保证安全。你的数据比其它会被自动清除的 StatefulSet 关联资源更宝贵。删除 Persistent Volume Claims 可能会导致关联的 volumes 被删除，这种行为依赖 storage class 和 reclaim policy。永远不要期望能在 claim 删除后访问一个 volume。</p>
+
+<p>使用如下命令删除 StatefulSet。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ grace=$(kubectl get po cassandra-0 -o=jsonpath=&#39;{.spec.terminationGracePeriodSeconds}&#39;) \
+  &amp;&amp; kubectl delete statefulset -l app=cassandra \
+  &amp;&amp; echo &#34;Sleeping $grace&#34; \
+  &amp;&amp; sleep $grace \
+  &amp;&amp; kubectl delete pvc -l app=cassandra</code></pre></div>
+<h2 id="步骤5-使用-replication-controller-创建-cassandra-节点-pods">步骤5：使用 Replication Controller 创建 Cassandra 节点 pods</h2>
+
+<p>Kubernetes <em><a href="/docs/user-guide/replication-controller">Replication Controller</a></em> 负责复制一个完全相同的 pods 集合。像 Service 一样，它具有一个 selector query，用来识别它的集合成员。和 Service 不一样的是，它还具有一个期望的副本数，并且会通过创建或删除 Pods来保证 Pods 的数量满足它期望的状态。</p>
+
+<p>和我们刚才定义的 Service 一起，Replication Controller 能够让我们轻松的构建一个复制的、可扩展的 Cassandra 集群。</p>
+
+<p>让我们创建一个具有两个初始副本的  replication controller。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>ReplicationController<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>cassandra<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#080;font-style:italic"># The labels will be applied automatically</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#080;font-style:italic"># from the labels in the pod template, if not set</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#080;font-style:italic"># labels:</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#080;font-style:italic"># app: cassandra</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>replicas:<span style="color:#bbb"> </span><span style="color:#666">2</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#080;font-style:italic"># The selector will be applied automatically</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#080;font-style:italic"># from the labels in the pod template, if not set.</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#080;font-style:italic"># selector:</span><span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#080;font-style:italic"># app: cassandra</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span>template:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>labels:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>app:<span style="color:#bbb"> </span>cassandra<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>containers:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span>command:<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>-<span style="color:#bbb"> </span>/run.sh<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>resources:<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>limits:<span style="color:#bbb">
+</span><span style="color:#bbb">              </span>cpu:<span style="color:#bbb"> </span><span style="color:#666">0.5</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span>env:<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>MAX_HEAP_SIZE<span style="color:#bbb">
+</span><span style="color:#bbb">              </span>value:<span style="color:#bbb"> </span>512M<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>HEAP_NEWSIZE<span style="color:#bbb">
+</span><span style="color:#bbb">              </span>value:<span style="color:#bbb"> </span>100M<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>CASSANDRA_SEED_PROVIDER<span style="color:#bbb">
+</span><span style="color:#bbb">              </span>value:<span style="color:#bbb"> </span><span style="color:#b44">&#34;io.k8s.cassandra.KubernetesSeedProvider&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">            </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>POD_NAMESPACE<span style="color:#bbb">
+</span><span style="color:#bbb">              </span>valueFrom:<span style="color:#bbb">
+</span><span style="color:#bbb">                </span>fieldRef:<span style="color:#bbb">
+</span><span style="color:#bbb">                  </span>fieldPath:<span style="color:#bbb"> </span>metadata.namespace<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>POD_IP<span style="color:#bbb">
+</span><span style="color:#bbb">              </span>valueFrom:<span style="color:#bbb">
+</span><span style="color:#bbb">                </span>fieldRef:<span style="color:#bbb">
+</span><span style="color:#bbb">                  </span>fieldPath:<span style="color:#bbb"> </span>status.podIP<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>image:<span style="color:#bbb"> </span>gcr.io/google-samples/cassandra:v12<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>name:<span style="color:#bbb"> </span>cassandra<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>ports:<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>-<span style="color:#bbb"> </span>containerPort:<span style="color:#bbb"> </span><span style="color:#666">7000</span><span style="color:#bbb">
+</span><span style="color:#bbb">              </span>name:<span style="color:#bbb"> </span>intra-node<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>-<span style="color:#bbb"> </span>containerPort:<span style="color:#bbb"> </span><span style="color:#666">7001</span><span style="color:#bbb">
+</span><span style="color:#bbb">              </span>name:<span style="color:#bbb"> </span>tls-intra-node<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>-<span style="color:#bbb"> </span>containerPort:<span style="color:#bbb"> </span><span style="color:#666">7199</span><span style="color:#bbb">
+</span><span style="color:#bbb">              </span>name:<span style="color:#bbb"> </span>jmx<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>-<span style="color:#bbb"> </span>containerPort:<span style="color:#bbb"> </span><span style="color:#666">9042</span><span style="color:#bbb">
+</span><span style="color:#bbb">              </span>name:<span style="color:#bbb"> </span>cql<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>volumeMounts:<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>-<span style="color:#bbb"> </span>mountPath:<span style="color:#bbb"> </span>/cassandra_data<span style="color:#bbb">
+</span><span style="color:#bbb">              </span>name:<span style="color:#bbb"> </span>data<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>volumes:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>data<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>emptyDir:<span style="color:#bbb"> </span>{}</code></pre></div>
+<p><a href="https://raw.githubusercontent.com/kubernetes/examples/master/cassandra-controller.yaml" target="_blank">下载示例</a></p>
+
+<p>在这个描述中需要注意几件事情。</p>
+
+<p><code>selector</code> 属性包含了控制器的  selector query。它能够被显式指定，或者在没有设置时，像此处一样从 pod 模板中的 labels 中自动应用。</p>
+
+<p>Pod 模板的标签 <code>app:cassandra</code> 匹配步骤1中的 Service selector。这就是 Service  如何选择 replication controller 创建的 pods 的原理。</p>
+
+<p><code>replicas</code> 属性指明了期望的副本数量，在本例中最开始为 2。我们很快将要扩容更多数量。</p>
+
+<p>创建 Replication Controller：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ kubectl create -f cassandra/cassandra-controller.yaml</code></pre></div>
+<p>你可以列出新建的 controller：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ kubectl get rc -o wide
+NAME        DESIRED   CURRENT   AGE       CONTAINER(S)   IMAGE(S)                             SELECTOR
+cassandra   2         2         11s       cassandra      gcr.io/google-samples/cassandra:v12   app=cassandra</code></pre></div>
+<p>现在，如果你列出集群中的 pods，并且使用 <code>app=cassandra</code> 标签过滤，你应该能够看到两个 Cassandra pods。（<code>wide</code> 参数使你能够看到 pods 被调度到了哪个 Kubernetes 节点上）</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ kubectl get pods -l=&#34;app=cassandra&#34; -o wide
+NAME              READY     STATUS    RESTARTS   AGE       NODE
+cassandra-21qyy   1/1       Running   0          1m        kubernetes-minion-b286
+cassandra-q6sz7   1/1       Running   0          1m        kubernetes-minion-9ye5</code></pre></div>
+<p>因为这些 pods 拥有 <code>app=cassandra</code> 标签，它们被映射给了我们在步骤1中创建的 service。</p>
+
+<p>你可以使用下面的 service endpoint 查询命令来检查 Pods 是否对 Service 可用。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ kubectl get endpoints cassandra -o yaml
+apiVersion: v1
+kind: Endpoints
+metadata:
+  creationTimestamp: 2015-06-21T22:34:12Z
+  labels:
+    app: cassandra
+  name: cassandra
+  namespace: default
+  resourceVersion: &#34;944373&#34;
+  selfLink: /api/v1/namespaces/default/endpoints/cassandra
+  uid: a3d6c25f-1865-11e5-a34e-42010af01bcc
+subsets:
+- addresses:
+  - ip: 10.244.3.15
+    targetRef:
+      kind: Pod
+      name: cassandra
+      namespace: default
+      resourceVersion: &#34;944372&#34;
+      uid: 9ef9895d-1865-11e5-a34e-42010af01bcc
+  ports:
+  - port: 9042
+    protocol: TCP</code></pre></div>
+<p>为了显示 <code>SeedProvider</code> 逻辑是按设想在运行，你可以使用 <code>nodetool</code> 命令来检查  Cassandra 集群的状态。为此，请使用 <code>kubectl exec</code> 命令，这样你就能在一个 Cassandra pod 上运行 <code>nodetool</code>。同样的，请替换 <code>cassandra-xxxxx</code> 为任意一个 pods的真实名字。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ kubectl exec -ti cassandra-xxxxx -- nodetool status
+Datacenter: datacenter1
+=======================
+Status=Up/Down
+|/ State=Normal/Leaving/Joining/Moving
+--  Address     Load       Tokens  Owns (effective)  Host ID                               Rack
+UN  10.244.0.5  74.09 KB   256     100.0%            86feda0f-f070-4a5b-bda1-2eeb0ad08b77  rack1
+UN  10.244.3.3  51.28 KB   256     100.0%            dafe3154-1d67-42e1-ac1d-78e7e80dce2b  rack1</code></pre></div>
+<h2 id="步骤6-cassandra集群扩容">步骤6：Cassandra集群扩容</h2>
+
+<p>现在，让我们把 Cassandra 集群扩展到4个 pods。我们通过告诉 Replication Controller 现在我们需要4个副本来完成。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ kubectl scale rc cassandra --replicas<span style="color:#666">=</span><span style="color:#666">4</span></code></pre></div>
+<p>你可以看到列出了新的 pods：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ kubectl get pods -l=&#34;app=cassandra&#34; -o wide
+NAME              READY     STATUS    RESTARTS   AGE       NODE
+cassandra-21qyy   1/1       Running   0          6m        kubernetes-minion-b286
+cassandra-81m2l   1/1       Running   0          47s       kubernetes-minion-b286
+cassandra-8qoyp   1/1       Running   0          47s       kubernetes-minion-9ye5
+cassandra-q6sz7   1/1       Running   0          6m        kubernetes-minion-9ye5</code></pre></div>
+<p>一会儿你就能再次检查 Cassandra 集群的状态，你可以看到新的 pods 已经被自定义的 <code>SeedProvider</code> 检测到：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ kubectl exec -ti cassandra-xxxxx -- nodetool status
+Datacenter: datacenter1
+=======================
+Status=Up/Down
+|/ State=Normal/Leaving/Joining/Moving
+--  Address     Load       Tokens  Owns (effective)  Host ID                               Rack
+UN  10.244.0.6  51.67 KB   256     48.9%             d07b23a5-56a1-4b0b-952d-68ab95869163  rack1
+UN  10.244.1.5  84.71 KB   256     50.7%             e060df1f-faa2-470c-923d-ca049b0f3f38  rack1
+UN  10.244.1.6  84.71 KB   256     47.0%             83ca1580-4f3c-4ec5-9b38-75036b7a297f  rack1
+UN  10.244.0.5  68.2 KB    256     53.4%             72ca27e2-c72c-402a-9313-1e4b61c2f839  rack1</code></pre></div>
+<h2 id="步骤7-删除-replication-controller">步骤7：删除 Replication Controller</h2>
+
+<p>在你开始步骤5之前， <strong>删除</strong>你在上面创建的 <strong>replication controller</strong>。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ kubectl delete rc cassandra</code></pre></div>
+<h2 id="步骤8-使用-daemonset-替换-replication-controller">步骤8：使用 DaemonSet 替换 Replication Controller</h2>
+
+<p>在 Kubernetes中，<a href="/docs/admin/daemons"><em>Daemon Set</em></a> 能够将 pods 一对一的分布到 Kubernetes 节点上。和  <em>ReplicationController</em> 相同的是它也有一个用于识别它的集合成员的 selector query。但和 <em>ReplicationController</em> 不同的是，它拥有一个节点 selector，用于限制基于模板的 pods 可以调度的节点。并且 pod 的复制不是基于一个设置的数量，而是为每一个节点分配一个 pod。</p>
+
+<p>示范用例：当部署到云平台时，预期情况是实例是短暂的并且随时可能终止。Cassandra 被搭建成为在各个节点间复制数据以便于实现数据冗余。这样的话，即使一个实例终止了，存储在它上面的数据却没有，并且集群会通过重新复制数据到其它运行节点来作为响应。</p>
+
+<p><code>DaemonSet</code> 设计为在 Kubernetes 集群中的每个节点上放置一个 pod。那样就会给我们带来数据冗余度。让我们创建一个 DaemonSet 来启动我们的存储集群：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>extensions/v1beta1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>DaemonSet<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>labels:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>name:<span style="color:#bbb"> </span>cassandra<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>cassandra<span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>template:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>labels:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>app:<span style="color:#bbb"> </span>cassandra<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#080;font-style:italic"># Filter to specific nodes:</span><span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#080;font-style:italic"># nodeSelector:</span><span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#080;font-style:italic">#  app: cassandra</span><span style="color:#bbb">
+</span><span style="color:#bbb">      </span>containers:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span>command:<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>-<span style="color:#bbb"> </span>/run.sh<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>env:<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>MAX_HEAP_SIZE<span style="color:#bbb">
+</span><span style="color:#bbb">              </span>value:<span style="color:#bbb"> </span>512M<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>HEAP_NEWSIZE<span style="color:#bbb">
+</span><span style="color:#bbb">              </span>value:<span style="color:#bbb"> </span>100M<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>CASSANDRA_SEED_PROVIDER<span style="color:#bbb">
+</span><span style="color:#bbb">              </span>value:<span style="color:#bbb"> </span><span style="color:#b44">&#34;io.k8s.cassandra.KubernetesSeedProvider&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">            </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>POD_NAMESPACE<span style="color:#bbb">
+</span><span style="color:#bbb">              </span>valueFrom:<span style="color:#bbb">
+</span><span style="color:#bbb">                </span>fieldRef:<span style="color:#bbb">
+</span><span style="color:#bbb">                  </span>fieldPath:<span style="color:#bbb"> </span>metadata.namespace<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>POD_IP<span style="color:#bbb">
+</span><span style="color:#bbb">              </span>valueFrom:<span style="color:#bbb">
+</span><span style="color:#bbb">                </span>fieldRef:<span style="color:#bbb">
+</span><span style="color:#bbb">                  </span>fieldPath:<span style="color:#bbb"> </span>status.podIP<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>image:<span style="color:#bbb"> </span>gcr.io/google-samples/cassandra:v12<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>name:<span style="color:#bbb"> </span>cassandra<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>ports:<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>-<span style="color:#bbb"> </span>containerPort:<span style="color:#bbb"> </span><span style="color:#666">7000</span><span style="color:#bbb">
+</span><span style="color:#bbb">              </span>name:<span style="color:#bbb"> </span>intra-node<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>-<span style="color:#bbb"> </span>containerPort:<span style="color:#bbb"> </span><span style="color:#666">7001</span><span style="color:#bbb">
+</span><span style="color:#bbb">              </span>name:<span style="color:#bbb"> </span>tls-intra-node<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>-<span style="color:#bbb"> </span>containerPort:<span style="color:#bbb"> </span><span style="color:#666">7199</span><span style="color:#bbb">
+</span><span style="color:#bbb">              </span>name:<span style="color:#bbb"> </span>jmx<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>-<span style="color:#bbb"> </span>containerPort:<span style="color:#bbb"> </span><span style="color:#666">9042</span><span style="color:#bbb">
+</span><span style="color:#bbb">              </span>name:<span style="color:#bbb"> </span>cql<span style="color:#bbb">
+</span><span style="color:#bbb">              </span><span style="color:#080;font-style:italic"># If you need it, it will go away in C* 4.0.</span><span style="color:#bbb">
+</span><span style="color:#bbb">              </span><span style="color:#080;font-style:italic">#- containerPort: 9160</span><span style="color:#bbb">
+</span><span style="color:#bbb">              </span><span style="color:#080;font-style:italic">#  name: thrift</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span>resources:<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>requests:<span style="color:#bbb">
+</span><span style="color:#bbb">              </span>cpu:<span style="color:#bbb"> </span><span style="color:#666">0.5</span><span style="color:#bbb">
+</span><span style="color:#bbb">          </span>volumeMounts:<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>-<span style="color:#bbb"> </span>mountPath:<span style="color:#bbb"> </span>/cassandra_data<span style="color:#bbb">
+</span><span style="color:#bbb">              </span>name:<span style="color:#bbb"> </span>data<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>volumes:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>data<span style="color:#bbb">
+</span><span style="color:#bbb">          </span>emptyDir:<span style="color:#bbb"> </span>{}</code></pre></div>
+<p><a href="https://raw.githubusercontent.com/kubernetes/examples/master/cassandra-daemonset.yaml" target="_blank">下载示例</a></p>
+
+<p>这个 DaemonSet 绝大部分的定义和上面的 ReplicationController 完全相同；它只是简单的给 daemon set 一个创建新的 Cassandra pods 的方法，并且以集群中所有的 Cassandra 节点为目标。</p>
+
+<p>不同之处在于 <code>nodeSelector</code> 属性，它允许 DaemonSet 以全部节点的一个子集为目标（你可以向其他资源一样标记节点），并且没有 <code>replicas</code> 属性，因为它使用1对1的 node-pod 关系。</p>
+
+<p>创建这个 DaemonSet：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ kubectl create -f cassandra/cassandra-daemonset.yaml</code></pre></div>
+<p>你可能需要禁用配置文件检查，像这样：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ kubectl create -f cassandra/cassandra-daemonset.yaml --validate=false</code></pre></div>
+<p>你可以看到 DaemonSet 已经在运行：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ kubectl get daemonset
+NAME        DESIRED   CURRENT   NODE-SELECTOR
+cassandra   3         3         &lt;none&gt;</code></pre></div>
+<p>现在，如果你列出集群中的 pods，并且使用 <code>app=cassandra</code> 标签过滤，你应该能够看到你的网络中的每一个节点上都有一个（且只有一个）新的 cassandra pod。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ kubectl get pods -l=&#34;app=cassandra&#34; -o wide
+NAME              READY     STATUS    RESTARTS   AGE       NODE
+cassandra-ico4r   1/1       Running   0          4s        kubernetes-minion-rpo1
+cassandra-kitfh   1/1       Running   0          1s        kubernetes-minion-9ye5
+cassandra-tzw89   1/1       Running   0          2s        kubernetes-minion-b286</code></pre></div>
+<p>为了证明这是按设想的在工作，你可以再次使用 <code>nodetool</code> 命令来检查集群的状态。为此，请使用 <code>kubectl exec</code> 命令在任何一个新建的 cassandra pods 上运行 <code>nodetool</code>。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ kubectl exec -ti cassandra-xxxxx -- nodetool status
+Datacenter: datacenter1
+=======================
+Status=Up/Down
+|/ State=Normal/Leaving/Joining/Moving
+--  Address     Load       Tokens  Owns (effective)  Host ID                               Rack
+UN  10.244.0.5  74.09 KB   256     100.0%            86feda0f-f070-4a5b-bda1-2eeb0ad08b77  rack1
+UN  10.244.4.2  32.45 KB   256     100.0%            0b1be71a-6ffb-4895-ac3e-b9791299c141  rack1
+UN  10.244.3.3  51.28 KB   256     100.0%            dafe3154-1d67-42e1-ac1d-78e7e80dce2b  rack1</code></pre></div>
+<p><strong>注意</strong>：这个示例让你在创建 DaemonSet 前删除了 cassandra的Replication Controller。这是因为为了保持示例的简单，RC 和 DaemonSet 使用了相同的 <code>app=cassandra</code> 标签（如此它们的 pods 映射到了我们创建的 service，这样 SeedProvider 就能识别它们）。</p>
+
+<p>如果我们没有预先删除 RC，这两个资源在需要运行多少 pods 上将会发生冲突。如果希望的话，我们可以使用额外的标签和 selectors 来支持同时运行它们。</p>
+
+<h2 id="步骤9-资源清理">步骤9：资源清理</h2>
+
+<p>当你准备删除你的资源时，按以下执行：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ kubectl delete service -l app=cassandra
+$ kubectl delete daemonset cassandra</code></pre></div>
+<h3 id="自定义-seed-provider">自定义 Seed Provider</h3>
+
+<p>我们使用了一个自定义的  <a href="https://svn.apache.org/repos/asf/cassandra/trunk/src/java/org/apache/cassandra/locator/SeedProvider.java" target="_blank"><code>SeedProvider</code></a> 来在 Kubernetes 之上运行 Cassandra。仅当你通过 replication control 或者 daemonset 部署 Cassandra 时才需要使用自定义的 seed provider。在 Cassandra 中，<code>SeedProvider</code> 引导 Cassandra 使用 gossip 协议来查找其它 Cassandra 节点。Seed 地址是被视为连接端点的主机。Cassandra 实例使用 seed 列表来查找彼此并学习 ring环拓扑。<a href="https://github.com/kubernetes/kubernetes/blob/master/examples/storage/cassandra/java/src/main/java/io/k8s/cassandra/KubernetesSeedProvider.java" target="_blank"><code>KubernetesSeedProvider</code></a> 通过 Kubernetes API 发现  Cassandra seeds IP 地址，那些 Cassandra 实例在 Cassandra Service 中定义。</p>
+
+<p>请查阅自定义 seed provider 的 <a href="https://git.k8s.io/examples/cassandra/java/README.md" target="_blank">README</a> 文档，获取 <code>KubernetesSeedProvider</code> 进阶配置。对于本示例来说，你应该不需要自定义 Seed Provider 的配置。</p>
+
+<p>查看本示例的 <a href="https://github.com/kubernetes/examples/tree/master/cassandra/image" target="_blank">image</a> 目录，了解如何构建容器的 docker 镜像及其内容。</p>
+
+<p>你可能还注意到我们设置了一些 Cassandra 参数（<code>MAX_HEAP_SIZE</code>和<code>HEAP_NEWSIZE</code>），并且增加了关于 <a href="/docs/user-guide/namespaces">namespace</a> 的信息。我们还告诉 Kubernetes 容器暴露了 <code>CQL</code> 和 <code>Thrift</code> API 端口。最后，我们告诉集群管理器我们需要 0.1 cpu（0.1 核）。</p>
+
+<p><a href="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/cassandra/README.md?pixel" target="_blank">!Analytics</a>]()</p>
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/tutorials/stateful-application/cassandra.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/cn\/docs\/tutorials\/stateful-application\/cassandra\/",
+					"title" : "“示例：使用 Stateful Sets 部署 Cassandra”",
+					"permalink" : "https:\/\/kubernetes.io\/cn\/docs\/tutorials\/stateful-application\/cassandra\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/tutorials/stateful-application/cassandra.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

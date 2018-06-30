@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Authorization Overview - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="Authorization Overview" />
+<meta property="og:description" content="Authorization Overview" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/reference/access-authn-authz/authorization/" />
+<meta property="og:title" content="Authorization Overview - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h1>Reference Documentation</h1>
+<h5></h5>
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/" class="YAH">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Reference" href="/docs/reference/"></a>
+
+	
+	
+		
+		
+<a class="item" data-title="Standardized Glossary" href="/docs/reference/glossary/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Kubernetes Issues and Security">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Kubernetes Issue Tracker" href="/docs/reference/issues-security/issues/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes Security and Disclosure Information" href="/docs/reference/issues-security/security/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Using the Kubernetes API">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Kubernetes API Overview" href="/docs/reference/using-api/api-overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes API Concepts" href="/docs/reference/using-api/api-concepts/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Client Libraries" href="/docs/reference/using-api/client-libraries/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes Deprecation Policy" href="/docs/reference/using-api/deprecation-policy/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Accessing the API">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Controlling Access to the Kubernetes API" href="/docs/reference/access-authn-authz/controlling-access/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Authenticating" href="/docs/reference/access-authn-authz/authentication/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Authenticating with Bootstrap Tokens" href="/docs/reference/access-authn-authz/bootstrap-tokens/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using Admission Controllers" href="/docs/reference/access-authn-authz/admission-controllers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Dynamic Admission Control" href="/docs/reference/access-authn-authz/extensible-admission-controllers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Managing Service Accounts" href="/docs/reference/access-authn-authz/service-accounts-admin/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Authorization Overview" href="/docs/reference/access-authn-authz/authorization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using RBAC Authorization" href="/docs/reference/access-authn-authz/rbac/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using ABAC Authorization" href="/docs/reference/access-authn-authz/abac/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Using Node Authorization" href="/docs/reference/access-authn-authz/node/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Webhook Mode" href="/docs/reference/access-authn-authz/webhook/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="API Reference">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Well-Known Labels, Annotations and Taints" href="/docs/reference/kubernetes-api/labels-annotations-taints/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="v1.11" href="/docs/reference/kubernetes-api/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Federation API">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="extensions/v1beta1 Model Definitions" href="/docs/reference/federation/extensions/v1beta1/definitions/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="extensions/v1beta1 Operations" href="/docs/reference/federation/extensions/v1beta1/operations/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="v1 Model Definitions" href="/docs/reference/federation/v1/definitions/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="v1 Operations" href="/docs/reference/federation/v1/operations/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Setup tools reference">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+	<div class="item" data-title="Kubeadm">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Overview of kubeadm" href="/docs/reference/setup-tools/kubeadm/kubeadm/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm init" href="/docs/reference/setup-tools/kubeadm/kubeadm-init/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm join" href="/docs/reference/setup-tools/kubeadm/kubeadm-join/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm upgrade" href="/docs/reference/setup-tools/kubeadm/kubeadm-upgrade/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm config" href="/docs/reference/setup-tools/kubeadm/kubeadm-config/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm reset" href="/docs/reference/setup-tools/kubeadm/kubeadm-reset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm token" href="/docs/reference/setup-tools/kubeadm/kubeadm-token/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm version" href="/docs/reference/setup-tools/kubeadm/kubeadm-version/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubeadm alpha" href="/docs/reference/setup-tools/kubeadm/kubeadm-alpha/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Implementation details" href="/docs/reference/setup-tools/kubeadm/implementation-details/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="kubefed">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="kubefed" href="/docs/reference/setup-tools/kubefed/kubefed/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubefed options" href="/docs/reference/setup-tools/kubefed/kubefed-options/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubefed init" href="/docs/reference/setup-tools/kubefed/kubefed-init/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubefed join" href="/docs/reference/setup-tools/kubefed/kubefed-join/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubefed unjoin" href="/docs/reference/setup-tools/kubefed/kubefed-unjoin/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubefed version" href="/docs/reference/setup-tools/kubefed/kubefed-version/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Command line tools reference">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Feature Gates" href="/docs/reference/command-line-tools-reference/feature-gates/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="federation-apiserver" href="/docs/reference/command-line-tools-reference/federation-apiserver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="federation-controller-manager" href="/docs/reference/command-line-tools-reference/federation-controller-manager/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubelet authentication/authorization" href="/docs/reference/command-line-tools-reference/kubelet-authentication-authorization/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="TLS bootstrapping" href="/docs/reference/command-line-tools-reference/kubelet-tls-bootstrapping/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="cloud-controller-manager" href="/docs/reference/command-line-tools-reference/cloud-controller-manager/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kube-apiserver" href="/docs/reference/command-line-tools-reference/kube-apiserver/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kube-controller-manager" href="/docs/reference/command-line-tools-reference/kube-controller-manager/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kube-proxy" href="/docs/reference/command-line-tools-reference/kube-proxy/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kube-scheduler" href="/docs/reference/command-line-tools-reference/kube-scheduler/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubelet" href="/docs/reference/command-line-tools-reference/kubelet/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="kubectl CLI">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="JSONPath Support" href="/docs/reference/kubectl/jsonpath/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Overview of kubectl" href="/docs/reference/kubectl/overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubectl" href="/docs/reference/kubectl/kubectl/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubectl Cheat Sheet" href="/docs/reference/kubectl/cheatsheet/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubectl Commands" href="/docs/reference/kubectl/kubectl-cmds/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubectl Usage Conventions" href="/docs/reference/kubectl/conventions/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="kubectl for Docker Users" href="/docs/reference/kubectl/docker-cli-to-kubectl/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Tools" href="/docs/reference/tools/"></a>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/reference/access-authn-authz/authorization.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>Authorization Overview</h1>
+
+
+
+<p>Learn more about Kubernetes authorization, including details about creating
+policies using the supported authorization modules.</p>
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+<li><a href="#determine-whether-a-request-is-allowed-or-denied">Determine Whether a Request is Allowed or Denied</a></li>
+
+
+
+
+<li><a href="#review-your-request-attributes">Review Your Request Attributes</a></li>
+
+
+
+
+<li><a href="#determine-the-request-verb">Determine the Request Verb</a></li>
+
+
+
+
+<li><a href="#authorization-modules">Authorization Modules</a></li>
+
+
+
+
+<li><a href="#using-flags-for-your-authorization-module">Using Flags for Your Authorization Module</a></li>
+
+
+
+
+<li><a href="#privilege-escalation-via-pod-creation">Privilege escalation via pod creation</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="#what-s-next">What's next</a></li>
+
+
+
+</ul>
+
+
+<p>In Kubernetes, you must be authenticated (logged in) before your request can be
+authorized (granted permission to access). For information about authentication,
+see <a href="/docs/reference/access-authn-authz/controlling-access/">Accessing Control Overview</a>.</p>
+
+<p>Kubernetes expects attributes that are common to REST API requests. This means
+that Kubernetes authorization works with existing organization-wide or
+cloud-provider-wide access control systems which may handle other APIs besides
+the Kubernetes API.</p>
+
+<h2 id="determine-whether-a-request-is-allowed-or-denied">Determine Whether a Request is Allowed or Denied</h2>
+
+<p>Kubernetes authorizes API requests using the API server. It evaluates all of the
+request attributes against all policies and allows or denies the request. All
+parts of an API request must be allowed by some policy in order to proceed. This
+means that permissions are denied by default.</p>
+
+<p>(Although Kubernetes uses the API server, access controls and policies that
+depend on specific fields of specific kinds of objects are handled by Admission
+Controllers.)</p>
+
+<p>When multiple authorization modules are configured, each is checked in sequence.
+If any authorizer approves or denies a request, that decision is immediately
+returned and no other authorizer is consulted. If all modules have no opinion on
+the request, then the request is denied. A deny returns an HTTP status code 403.</p>
+
+<h2 id="review-your-request-attributes">Review Your Request Attributes</h2>
+
+<p>Kubernetes reviews only the following API request attributes:</p>
+
+<ul>
+<li><strong>user</strong> - The <code>user</code> string provided during authentication.</li>
+<li><strong>group</strong> - The list of group names to which the authenticated user belongs.</li>
+<li><strong>extra</strong> - A map of arbitrary string keys to string values, provided by the authentication layer.</li>
+<li><strong>API</strong> - Indicates whether the request is for an API resource.</li>
+<li><strong>Request path</strong> - Path to miscellaneous non-resource endpoints like <code>/api</code> or <code>/healthz</code>.</li>
+<li><strong>API request verb</strong> - API verbs <code>get</code>, <code>list</code>, <code>create</code>, <code>update</code>, <code>patch</code>, <code>watch</code>, <code>proxy</code>, <code>redirect</code>, <code>delete</code>, and <code>deletecollection</code> are used for resource requests. To determine the request verb for a resource API endpoint, see <a href="/docs/reference/access-authn-authz/authorization/#determine-whether-a-request-is-allowed-or-denied">Determine the request verb</a> below.</li>
+<li><strong>HTTP request verb</strong> - HTTP verbs <code>get</code>, <code>post</code>, <code>put</code>, and <code>delete</code> are used for non-resource requests.</li>
+<li><strong>Resource</strong> - The ID or name of the resource that is being accessed (for resource requests only) &ndash; For resource requests using <code>get</code>, <code>update</code>, <code>patch</code>, and <code>delete</code> verbs, you must provide the resource name.</li>
+<li><strong>Subresource</strong> - The subresource that is being accessed (for resource requests only).</li>
+<li><strong>Namespace</strong> - The namespace of the object that is being accessed (for namespaced resource requests only).</li>
+<li><strong>API group</strong> - The API group being accessed (for resource requests only). An empty string designates the <a href="/docs/concepts/overview/kubernetes-api/">core API group</a>.</li>
+</ul>
+
+<h2 id="determine-the-request-verb">Determine the Request Verb</h2>
+
+<p>To determine the request verb for a resource API endpoint, review the HTTP verb
+used and whether or not the request acts on an individual resource or a
+collection of resources:</p>
+
+<table>
+<thead>
+<tr>
+<th>HTTP verb</th>
+<th>request verb</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>POST</td>
+<td>create</td>
+</tr>
+
+<tr>
+<td>GET, HEAD</td>
+<td>get (for individual resources), list (for collections)</td>
+</tr>
+
+<tr>
+<td>PUT</td>
+<td>update</td>
+</tr>
+
+<tr>
+<td>PATCH</td>
+<td>patch</td>
+</tr>
+
+<tr>
+<td>DELETE</td>
+<td>delete (for individual resources), deletecollection (for collections)</td>
+</tr>
+</tbody>
+</table>
+
+<p>Kubernetes sometimes checks authorization for additional permissions using specialized verbs. For example:</p>
+
+<ul>
+<li><a href="/docs/concepts/policy/pod-security-policy/">PodSecurityPolicy</a> checks for authorization of the <code>use</code> verb on <code>podsecuritypolicies</code> resources in the <code>policy</code> API group.</li>
+<li><a href="/docs/reference/access-authn-authz/rbac/#privilege-escalation-prevention-and-bootstrapping">RBAC</a> checks for authorization
+of the <code>bind</code> verb on <code>roles</code> and <code>clusterroles</code> resources in the <code>rbac.authorization.k8s.io</code> API group.</li>
+<li><a href="/docs/reference/access-authn-authz/authentication/">Authentication</a> layer checks for authorization of the <code>impersonate</code> verb on <code>users</code>, <code>groups</code>, and <code>serviceaccounts</code> in the core API group, and the <code>userextras</code> in the <code>authentication.k8s.io</code> API group.</li>
+</ul>
+
+<h2 id="authorization-modules">Authorization Modules</h2>
+
+<ul>
+<li><strong>Node</strong> - A special-purpose authorizer that grants permissions to kubelets based on the pods they are scheduled to run. To learn more about using the Node authorization mode, see <a href="/docs/reference/access-authn-authz/node/">Node Authorization</a>.</li>
+<li><strong>ABAC</strong> - Attribute-based access control (ABAC) defines an access control paradigm whereby access rights are granted to users through the use of policies which combine attributes together. The policies can use any type of attributes (user attributes, resource attributes, object, environment attributes, etc). To learn more about using the ABAC mode, see <a href="/docs/reference/access-authn-authz/abac/">ABAC Mode</a>.</li>
+<li><strong>RBAC</strong> - Role-based access control (RBAC) is a method of regulating access to computer or network resources based on the roles of individual users within an enterprise. In this context, access is the ability of an individual user to perform a specific task, such as view, create, or modify a file. To learn more about using the RBAC mode, see <a href="/docs/reference/access-authn-authz/rbac/">RBAC Mode</a>
+
+<ul>
+<li>When specified RBAC (Role-Based Access Control) uses the <code>rbac.authorization.k8s.io</code> API group to drive authorization decisions, allowing admins to dynamically configure permission policies through the Kubernetes API.</li>
+<li>To enable RBAC, start the apiserver with <code>--authorization-mode=RBAC</code>.</li>
+</ul></li>
+<li><strong>Webhook</strong> - A WebHook is an HTTP callback: an HTTP POST that occurs when something happens; a simple event-notification via HTTP POST. A web application implementing WebHooks will POST a message to a URL when certain things happen. To learn more about using the Webhook mode, see <a href="/docs/reference/access-authn-authz/webhook/">Webhook Mode</a>.</li>
+</ul>
+
+<h4 id="checking-api-access">Checking API Access</h4>
+
+<p><code>kubectl</code> provides the <code>auth can-i</code> subcommand for quickly querying the API authorization layer.
+The command uses the <code>SelfSubjectAccessReview</code> API to determine if the current user can perform
+a given action, and works regardless of the authorization mode used.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl auth can-i create deployments --namespace dev
+yes
+$ kubectl auth can-i create deployments --namespace prod
+no</code></pre></div>
+<p>Administrators can combine this with <a href="/docs/reference/access-authn-authz/authentication/#user-impersonation">user impersonation</a>
+to determine what action other users can perform.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl auth can-i list secrets --namespace dev --as dave
+no</code></pre></div>
+<p><code>SelfSubjectAccessReview</code> is part of the <code>authorization.k8s.io</code> API group, which
+exposes the API server authorization to external services. Other resources in
+this group include:</p>
+
+<ul>
+<li><code>SubjectAccessReview</code> - Access review for any user, not just the current one. Useful for delegating authorization decisions to the API server. For example, the kubelet and extension API servers use this to determine user access to their own APIs.</li>
+<li><code>LocalSubjectAccessReview</code> - Like <code>SubjectAccessReview</code> but restricted to a specific namespace.</li>
+<li><code>SelfSubjectRulesReview</code> - A review which returns the set of actions a user can perform within a namespace. Useful for users to quickly summarize their own access, or for UIs to hide/show actions.</li>
+</ul>
+
+<p>These APIs can be queried by creating normal Kubernetes resources, where the response &ldquo;status&rdquo;
+field of the returned object is the result of the query.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl create -f - -o yaml <span style="color:#b44">&lt;&lt; EOF
+</span><span style="color:#b44">apiVersion: authorization.k8s.io/v1
+</span><span style="color:#b44">kind: SelfSubjectAccessReview
+</span><span style="color:#b44">spec:
+</span><span style="color:#b44">  resourceAttributes:
+</span><span style="color:#b44">    group: apps
+</span><span style="color:#b44">    name: deployments
+</span><span style="color:#b44">    verb: create
+</span><span style="color:#b44">    namespace: dev
+</span><span style="color:#b44">EOF</span>
+
+apiVersion: authorization.k8s.io/v1
+kind: SelfSubjectAccessReview
+metadata:
+  creationTimestamp: null
+spec:
+  resourceAttributes:
+    group: apps
+    name: deployments
+    namespace: dev
+    verb: create
+status:
+  allowed: <span style="color:#a2f">true</span>
+  denied: false</code></pre></div>
+<h2 id="using-flags-for-your-authorization-module">Using Flags for Your Authorization Module</h2>
+
+<p>You must include a flag in your policy to indicate which authorization module
+your policies include:</p>
+
+<p>The following flags can be used:</p>
+
+<ul>
+<li><code>--authorization-mode=ABAC</code> Attribute-Based Access Control (ABAC) mode allows you to configure policies using local files.</li>
+<li><code>--authorization-mode=RBAC</code> Role-based access control (RBAC) mode allows you to create and store policies using the Kubernetes API.</li>
+<li><code>--authorization-mode=Webhook</code> WebHook is an HTTP callback mode that allows you to manage authorization using a remote REST endpoint.</li>
+<li><code>--authorization-mode=Node</code> Node authorization is a special-purpose authorization mode that specifically authorizes API requests made by kubelets.</li>
+<li><code>--authorization-mode=AlwaysDeny</code> This flag blocks all requests. Use this flag only for testing.</li>
+<li><code>--authorization-mode=AlwaysAllow</code> This flag allows all requests. Use this flag only if you do not require authorization for your API requests.</li>
+</ul>
+
+<p>You can choose more than one authorization module. Modules are checked in order
+so an earlier module has higher priority to allow or deny a request.</p>
+
+<h2 id="privilege-escalation-via-pod-creation">Privilege escalation via pod creation</h2>
+
+<p>Users who have the ability to create pods in a namespace can potentially
+escalate their privileges within that namespace.  They can create pods that
+access their privileges within that namespace. They can create pods that access
+secrets the user cannot themselves read, or that run under a service account
+with different/greater permissions.</p>
+
+<blockquote class="caution">
+  <div><strong>Caution:</strong> System administrators, use care when granting access to pod
+creation.  A user granted permission to create pods (or controllers that create
+pods) in the namespace can: read all secrets in the namespace; read all config
+maps in the namespace; and impersonate any service account in the namespace and
+take any action the account could take. This applies regardless of authorization
+mode.</div>
+</blockquote>
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="what-s-next">What&#39;s next</h2>
+<ul>
+<li>To learn more about Authentication, see <strong>Authentication</strong> in <a href="/docs/reference/access-authn-authz/controlling-access/">Controlling Access to the Kubernetes API</a>.</li>
+<li>To learn more about Admission Control, see <a href="/docs/reference/access-authn-authz/admission-controllers/">Using Admission Controllers</a>.</li>
+</ul>
+
+
+
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/reference/access-authn-authz/authorization.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/reference\/access-authn-authz\/authorization\/",
+					"title" : "Authorization Overview",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/reference\/access-authn-authz\/authorization\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/reference/access-authn-authz/authorization.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

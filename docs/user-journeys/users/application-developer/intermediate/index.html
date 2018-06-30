@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Intermediate - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style_user_journeys.css">
+
+
+<meta name="description" content="Intermediate" />
+<meta property="og:description" content="Intermediate" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/user-journeys/users/application-developer/intermediate/" />
+<meta property="og:title" content="Intermediate - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+<script src="https://use.fontawesome.com/4bcc658a89.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			<div id="docsToc" style="display:none;"></div>
+			<div id="content">
+				
+	
+	  <h1>Intermediate</h1>
+	
+	
+
+
+
+	
+	<div class="track">USERS › APPLICATION DEVELOPER › INTERMEDIATE</div>
+<div class="topheader">
+   Introduction
+</div>
+<div class="sections">sections in this doc</div>
+<div id="user-journeys-toc" class="tablebar">
+
+</div>
+
+<div class="docsection1">
+
+<blockquote class="note">
+  <div>This page assumes that you&rsquo;ve experimented with Kubernetes before. At this point, you should have basic experience interacting with a Kubernetes cluster (locally with Minikube, or elsewhere), and using API objects like Deployments to run your applications.<br><br>If not, you should review the <a href="/docs/user-journeys/users/application-developer/foundational/" target="_blank">Beginner App Developer</a> topics first.</div>
+</blockquote>
+
+<p>After checking out the current page and its linked sections, you should have a better understanding of the following:</p>
+
+<ul>
+<li>Additional Kubernetes workload patterns, beyond Deployments</li>
+<li>What it takes to make a Kubernetes application production-ready</li>
+<li>Community tools that can improve your development workflow</li>
+</ul>
+
+</div><h2 id="learn-additional-workload-patterns">Learn additional workload patterns</h2><div class="docsection1">
+
+<p>As your Kubernetes use cases become more complex, you may find it helpful to familiarize yourself with more of the toolkit that Kubernetes provides. <a href="/docs/user-journeys/users/application-developer/foundational/#section-2" target="_blank">Basic workload</a> objects like <a class='glossary-tooltip' href='/docs/concepts/workloads/controllers/deployment/' target='_blank'>Deployments<span class='tooltip-text'>An API object that manages a replicated application.</span>
+</a> make it straightforward to run, update, and scale applications, but they are not ideal for every scenario.</p>
+
+<p>The following API objects provide functionality for additional workload types, whether they are <em>persistent</em> or <em>terminating</em>.</p>
+
+<h4 id="persistent-workloads">Persistent workloads</h4>
+
+<p>Like Deployments, these API objects run indefinitely on a cluster until they are manually terminated. They are best for long-running applications.</p>
+
+<ul>
+<li><p><strong><a class='glossary-tooltip' href='/docs/concepts/workloads/controllers/statefulset/' target='_blank'>StatefulSets<span class='tooltip-text'>Manages the deployment and scaling of a set of Pods, and provides guarantees about the ordering and uniqueness of these Pods.</span>
+</a></strong> - Like Deployments, StatefulSets allow you to specify that a
+certain number of replicas should be running for your application.</p>
+
+<blockquote class="note">
+<div>It&rsquo;s misleading to say that Deployments can&rsquo;t handle stateful workloads. Using <a class='glossary-tooltip' href='/docs/concepts/storage/persistent-volumes/' target='_blank'>PersistentVolumes<span class='tooltip-text'>An API object that represents a piece of storage in the cluster. Available as a general, pluggable resource that persists beyond the lifecycle of any individual Pod.</span>
+</a>, you can persist data beyond the lifecycle of any individual Pod in your Deployment.</div>
+</blockquote>
+
+<p>However, StatefulSets can provide stronger guarantees about &ldquo;recovery&rdquo; behavior than Deployments. StatefulSets maintain a sticky, stable identity for their Pods. The following table provides some concrete examples of what this might look like:</p>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Deployment</th>
+<th>StatefulSet</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><strong>Example Pod name</strong></td>
+<td><code>example-b1c4</code></td>
+<td><code>example-0</code></td>
+</tr>
+
+<tr>
+<td><strong>When a Pod dies</strong></td>
+<td>Reschedule on <em>any</em> node, with new name <code>example-a51z</code></td>
+<td>Reschedule on same node, as <code>example-0</code></td>
+</tr>
+
+<tr>
+<td><strong>When a node becomes unreachable</strong></td>
+<td>Pod(s) are scheduled onto new node, with new names</td>
+<td>Pod(s) are marked as &ldquo;Unknown&rdquo;, and aren&rsquo;t rescheduled unless the Node object is forcefully deleted</td>
+</tr>
+</tbody>
+</table>
+
+<p>In practice, this means that StatefulSets are best suited for scenarios where replicas (Pods) need to coordinate their workloads in a strongly consistent manner. Guaranteeing an identity for each Pod helps avoid <a href="https://en.wikipedia.org/wiki/Split-brain_%28computing%29" target="_blank">split-brain</a> side effects in the case when a node becomes unreachable (<a href="https://en.wikipedia.org/wiki/Network_partition" target="_blank">network partition</a>). This makes StatefulSets a great fit for distributed datastores like Cassandra or Elasticsearch.</p></li>
+
+<li><p><strong><a class='glossary-tooltip' href='/docs/concepts/workloads/controllers/daemonset' target='_blank'>DaemonSets<span class='tooltip-text'>Ensures a copy of a Pod is running across a set of nodes in a cluster.</span>
+</a></strong> - DaemonSets run continuously on every node in your cluster, even as nodes are added or swapped in. This guarantee is particularly useful for setting up global behavior across your cluster, such as:</p>
+
+<ul>
+<li>Logging and monitoring, from applications like <code>fluentd</code></li>
+<li>Network proxy or <a href="https://www.linux.com/news/whats-service-mesh-and-why-do-i-need-one" target="_blank">service mesh</a></li>
+</ul></li>
+</ul>
+
+<h4 id="terminating-workloads">Terminating workloads</h4>
+
+<p>In contrast to Deployments, these API objects are finite. They stop once the specified number of Pods have completed successfully.</p>
+
+<ul>
+<li><p><strong><a class='glossary-tooltip' href='/docs/concepts/workloads/controllers/jobs-run-to-completion' target='_blank'>Jobs<span class='tooltip-text'>A finite or batch task that runs to completion.</span>
+</a></strong> - You can use these for one-off tasks like running a script or setting up a work queue. These tasks can be executed sequentially or in parallel. These tasks should be relatively independent, as Jobs do not support closely communicating parallel processes. <a href="/docs/concepts/workloads/controllers/jobs-run-to-completion/#job-patterns" target="_blank">Read more about Job patterns</a>.</p></li>
+
+<li><p><strong><a class='glossary-tooltip' href='/docs/concepts/workloads/controllers/cron-jobs/' target='_blank'>CronJobs<span class='tooltip-text'>Manages a Job that runs on a periodic schedule.</span>
+</a></strong> - These are similar to Jobs, but allow you to schedule their execution for a specific time or for periodic recurrence. You might use CronJobs to send reminder emails or to run backup jobs. They are set up with a similar syntax as <em>crontab</em>.</p></li>
+</ul>
+
+<h4 id="other-resources">Other resources</h4>
+
+<p>For more info, you can check out <a href="/docs/reference/kubectl/overview/#resource-types" target="_blank">a list of additional Kubernetes resource types</a> as well as the <a href="%7b%7b%20reference_docs_url%20%7d%7d" target="_blank">API reference docs</a>.</p>
+
+<p>There may be additional features not mentioned here that you may find useful, which are covered in the <a href="/docs/home/?path=browse" target="_blank">full Kubernetes documentation</a>.</p>
+
+</div><h2 id="deploy-a-production-ready-workload">Deploy a production-ready workload</h2><div class="docsection1">
+
+<p>The beginner tutorials on this site, such as the <a href="/docs/tutorials/stateless-application/guestbook/" target="_blank">Guestbook app</a>, are geared towards getting workloads up and running on your cluster. This prototyping is great for building your intuition around Kubernetes! However, in order to reliably and securely promote your workloads to production, you need to follow some additional best practices.</p>
+
+<h4 id="declarative-configuration">Declarative configuration</h4>
+
+<p>You are likely interacting with your Kubernetes cluster via <a class='glossary-tooltip' href='/docs/user-guide/kubectl-overview/' target='_blank'>kubectl<span class='tooltip-text'>A command line tool for communicating with a Kubernetes API server.</span>
+</a>. kubectl can be used to debug the current state of your cluster (such as checking the number of nodes), or to modify live Kubernetes objects (such as updating a workload&rsquo;s replica count with <code>kubectl scale</code>).</p>
+
+<p>When using kubectl to update your Kubernetes objects, it&rsquo;s important to be aware that different commands correspond to different approaches:</p>
+
+<ul>
+<li><a href="/docs/tutorials/object-management-kubectl/imperative-object-management-command/" target="_blank">Purely imperative</a></li>
+<li><a href="/docs/tutorials/object-management-kubectl/imperative-object-management-configuration/" target="_blank">Imperative with local configuration files</a> (typically YAML)</li>
+<li><a href="/docs/tutorials/object-management-kubectl/declarative-object-management-configuration/" target="_blank">Declarative with local configuration files</a> (typically YAML)</li>
+</ul>
+
+<p>There are pros and cons to each approach, though the declarative approach (such as <code>kubectl apply -f</code>) may be most helpful in production. With this approach, you rely on local YAML files as the source of truth about your desired state. This enables you to version control your configuration, which is helpful for code reviews and audit tracking.</p>
+
+<p>For additional configuration best practices, familiarize yourself with <a href="/docs/concepts/configuration/overview/" target="_blank">this guide</a>.</p>
+
+<h4 id="security">Security</h4>
+
+<p>You may be familiar with the <em>principle of least privilege</em>&mdash;if you are too generous with permissions when writing or using software, the negative effects of a compromise can escalate out of control. Would you be cautious handing out <code>sudo</code> privileges to software on your OS? If so, you should be just as careful when granting your workload permissions to the <a class='glossary-tooltip' href='/docs/concepts/overview/kubernetes-api/' target='_blank'>Kubernetes API<span class='tooltip-text'>The application that serves Kubernetes functionality through a RESTful interface and stores the state of the cluster.</span>
+</a> server! The API server is the gateway for your cluster&rsquo;s source of truth; it provides endpoints to read or modify cluster state.</p>
+
+<p>You (or your <a class='glossary-tooltip' href='/docs/reference/glossary/?all=true#term-cluster-operator' target='_blank'>cluster operator<span class='tooltip-text'>A person who configures, controls, and monitors clusters.</span>
+</a>) can lock down API access with the following:</p>
+
+<ul>
+<li><strong><a class='glossary-tooltip' href='/docs/tasks/configure-pod-container/configure-service-account/' target='_blank'>ServiceAccounts<span class='tooltip-text'>Provides an identity for processes that run in a Pod.</span>
+</a></strong> - An &ldquo;identity&rdquo; that your Pods can be tied to</li>
+<li><strong><a class='glossary-tooltip' href='/docs/admin/authorization/rbac/' target='_blank'>RBAC<span class='tooltip-text'>Manages authorization decisions, allowing admins to dynamically configure access policies through the Kubernetes API.</span>
+</a></strong> - One way of granting your ServiceAccount explicit permissions</li>
+</ul>
+
+<p>For even more comprehensive reading about security best practices, consider checking out the following topics:</p>
+
+<ul>
+<li><a href="/docs/admin/authentication/" target="_blank">Authentication</a> (Is the user who they say they are?)</li>
+<li><a href="/docs/admin/authorization/" target="_blank">Authorization</a> (Does the user actually have permissions to do what they&rsquo;re asking?)</li>
+</ul>
+
+<h4 id="resource-isolation-and-management">Resource isolation and management</h4>
+
+<p>If your workloads are operating in a <em>multi-tenant</em> environment with multiple teams or projects, your container(s) are not necessarily running alone on their node(s). They are sharing node resources with other containers which you do not own.</p>
+
+<p>Even if your cluster operator is managing the cluster on your behalf, it is helpful to be aware of the following:</p>
+
+<ul>
+<li><strong><a class='glossary-tooltip' href='/docs/concepts/overview/working-with-objects/namespaces' target='_blank'>Namespaces<span class='tooltip-text'>An abstraction used by Kubernetes to support multiple virtual clusters on the same physical cluster.</span>
+</a></strong>, used for isolation</li>
+<li><strong><a href="/docs/concepts/policy/resource-quotas/" target="_blank">Resource quotas</a></strong>, which affect what your team&rsquo;s workloads can use</li>
+<li><strong><a href="/docs/tasks/configure-pod-container/assign-memory-resource/" target="_blank">Memory</a> and <a href="/docs/tasks/configure-pod-container/assign-cpu-resource/" target="_blank">CPU</a> requests</strong>, for a given Pod or container</li>
+<li><strong><a href="/docs/tasks/debug-application-cluster/resource-usage-monitoring/" target="_blank">Monitoring</a></strong>, both on the cluster level and the app level</li>
+</ul>
+
+<p>This list may not be completely comprehensive, but many teams have existing processes that take care of all this. If this is not the case, you&rsquo;ll find the Kubernetes documentation fairly rich in detail.</p>
+
+</div><h2 id="improve-your-dev-workflow-with-tooling">Improve your dev workflow with tooling</h2><div class="docsection1">
+
+<p>As an app developer, you&rsquo;ll likely encounter the following tools in your workflow.</p>
+
+<h4 id="kubectl">kubectl</h4>
+
+<p><code>kubectl</code> is a command-line tool that allows you to easily read or modify your Kubernetes cluster. It provides convenient, short commands for common operations like scaling app instances and getting node info. How does kubectl do this? It&rsquo;s basically just a user-friendly wrapper for making API requests. It&rsquo;s written using <a href="https://github.com/kubernetes/client-go/#client-go" target="_blank">client-go</a>, the Go library for the Kubernetes API.</p>
+
+<p>To learn about the most commonly used kubectl commands, check out the <a href="/docs/reference/kubectl/cheatsheet/" target="_blank">kubectl cheatsheet</a>. It explains topics such as the following:</p>
+
+<ul>
+<li><a href="/docs/tasks/access-application-cluster/configure-access-multiple-clusters/" target="_blank">kubeconfig files</a> - Your kubeconfig file tells kubectl what cluster to talk to, and can reference multiple clusters (such as dev and prod).</li>
+
+<li><p><a href="/docs/reference/kubectl/cheatsheet/#formatting-output" target="_blank">The various output formats available</a> - This is useful to know when you are using <code>kubectl get</code> to list information about certain API objects.</p></li>
+
+<li><p><a href="/docs/reference/kubectl/jsonpath/" target="_blank">The JSONPath output format</a> - This is related to the output formats above. JSONPath is especially useful for parsing specific subfields out of <code>kubectl get</code> output (such as the URL of a <a class='glossary-tooltip' href='/docs/concepts/services-networking/service/' target='_blank'>Service<span class='tooltip-text'>An API object that describes how to access applications, such as a set of Pods, and can describe ports and load-balancers.</span>
+</a>).</p></li>
+
+<li><p><a href="/docs/reference/kubectl/conventions/" target="_blank"><code>kubectl run</code> vs <code>kubectl apply</code></a> - This ties into the <a href="#declarative-configuration">declarative configuration</a> discussion in the previous section.</p></li>
+</ul>
+
+<p>For the full list of kubectl commands and their options, check out <a href="/docs/reference/generated/kubectl/kubectl-commands" target="_blank">the reference guide</a>.</p>
+
+<h4 id="helm">Helm</h4>
+
+<p>To leverage pre-packaged configurations from the community, you can use <strong><a class='glossary-tooltip' href='https://github.com/kubernetes/helm/blob/master/docs/charts.md' target='_blank'>Helm charts<span class='tooltip-text'>A package of pre-configured Kubernetes resources that can be managed with the Helm tool.</span>
+</a></strong>.</p>
+
+<p>Helm charts package up YAML configurations for specific apps like Jenkins and Postgres. You can then  install and run these apps on your cluster with minimal extra configuration. This approach makes the most sense for &ldquo;off-the-shelf&rdquo; components which do not require much custom implementation logic.</p>
+
+<p>For writing your own Kubernetes app configurations, there is a <a href="https://docs.google.com/a/heptio.com/spreadsheets/d/1FCgqz1Ci7_VCz_wdh8vBitZ3giBtac_H8SBw4uxnrsE/edit?usp=drive_web" target="_blank">thriving ecosystem of tools</a> that you may find useful.</p>
+
+</div><h2 id="explore-additional-resources">Explore additional resources</h2><div class="docsection1">
+
+<h4 id="references">References</h4>
+
+<p>Now that you&rsquo;re fairly familiar with Kubernetes, you may find it useful to browse the following reference pages. Doing so provides a high level view of what other features may exist:</p>
+
+<ul>
+<li><a href="/docs/reference/kubectl/cheatsheet/" target="_blank">Commonly used <code>kubectl</code> commands</a></li>
+<li><a href="%7b%7b%20reference_docs_url%20%7d%7d" target="_blank">Kubernetes API reference</a></li>
+<li><a href="/docs/reference/glossary/" target="_blank">Standardized Glossary</a></li>
+</ul>
+
+<p>In addition, <a href="https://kubernetes.io/blog/" target="_blank">the Kubernetes Blog</a> often has helpful posts on Kubernetes design patterns and case studies.</p>
+
+<h4 id="what-s-next">What&rsquo;s next</h4>
+
+<p>If you feel fairly comfortable with the topics on this page and want to learn more, check out the following user journeys:</p>
+
+<ul>
+<li><a href="/docs/user-journeys/users/application-developer/advanced/" target="_blank">Advanced App Developer</a> - Dive deeper, with the next level of this journey.</li>
+<li><a href="/docs/user-journeys/users/cluster-operator/foundational/" target="_blank">Foundational Cluster Operator</a> - Build breadth, by exploring other journeys.</li>
+</ul>
+</div>
+
+<script src="/js/user-journeys/toc.js"></script>
+
+	
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/user-journeys/users/application-developer/intermediate.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/user-journeys\/users\/application-developer\/intermediate\/",
+					"title" : "Intermediate",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/user-journeys\/users\/application-developer\/intermediate\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/user-journeys/users/application-developer/intermediate.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>

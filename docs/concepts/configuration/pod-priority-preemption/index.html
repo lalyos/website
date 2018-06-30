@@ -1,0 +1,1464 @@
+<!DOCTYPE html>
+<html id="docs" lang="en" class="">
+	<head>
+	<meta charset="utf-8">
+<title>Pod Priority and Preemption - Kubernetes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+<link rel="stylesheet" type="text/css" href="/css/base_fonts.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="/css/callouts.css">
+<link rel="stylesheet" type="text/css" href="/css/custom-jekyll/tags.css">
+
+
+
+
+<meta name="description" content="Pod Priority and Preemption" />
+<meta property="og:description" content="Pod Priority and Preemption" />
+
+<meta property="og:url" content="https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/" />
+<meta property="og:title" content="Pod Priority and Preemption - Kubernetes" />
+
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/custom-jekyll/tags.js"></script>
+
+
+	</head>
+	<body>
+		<div id="cellophane" onclick="kub.toggleMenu()"></div>
+
+<header>
+    <a href="/" class="logo"></a>
+
+    <div class="nav-buttons" data-auto-burger="primary">
+        <ul class="global-nav">
+            
+            
+            <li><a href="/docs/home/">Documentation</a></li>
+            
+            <li><a href="/blog/">Blog</a></li>
+            
+            <li><a href="/partners/">Partners</a></li>
+            
+            <li><a href="/community/">Community</a></li>
+            
+            <li><a href="/case-studies/">Case Studies</a></li>
+            
+            
+             <li>
+                <a href="#">
+                    English <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="/cn/">Chinese</a></li>
+                
+                </ul>
+            </li>
+         
+            <li>
+                <a href="#">
+                    v1.11 <span class="ui-icon ui-icon-carat-1-s"></span>
+                </a>
+                <ul>
+                
+                    <li><a href="https://kubernetes.io">v1.11</a></li>
+                
+                    <li><a href="https://kubernetes.io">v1.10</a></li>
+                
+                    <li><a href="https://v1-9.docs.kubernetes.io">v1.9</a></li>
+                
+                    <li><a href="https://v1-8.docs.kubernetes.io">v1.8</a></li>
+                
+                    <li><a href="https://v1-7.docs.kubernetes.io">v1.7</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+        
+        <a href="/docs/tutorials/kubernetes-basics/" class="button" id="tryKubernetes" data-auto-burger-exclude>Try Kubernetes</a>
+        <button id="hamburger" onclick="kub.toggleMenu()" data-auto-burger-exclude><div></div></button>
+    </div>
+
+    <nav id="mainNav">
+        <main data-auto-burger="primary">
+        <div class="nav-box">
+            <h3><a href="/docs/tutorials/stateless-application/hello-minikube/">Get Started</a></h3>
+            <p>Ready to get your hands dirty? Build a simple Kubernetes cluster that runs "Hello World" for Node.js.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/docs/home/">Documentation</a></h3>
+            <p>Learn how to use Kubernetes with the use of walkthroughs, samples, and reference documentation. You can even <a href="/editdocs/" data-auto-burger-exclude>help contribute to the docs</a>!</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/community/">Community</a></h3>
+            <p>If you need help, you can connect with other Kubernetes users and the Kubernetes authors, attend community events, and watch video presentations from around the web.</p>
+        </div>
+        <div class="nav-box">
+            <h3><a href="/blog/">Blog</a></h3>
+            <p>Read the latest news for Kubernetes and the containers space in general, and get technical how-tos hot off the presses.</p>
+        </div>
+        </main>
+        <main data-auto-burger="primary">
+        <div class="left">
+            <h5 class="github-invite">Interested in hacking on the core Kubernetes code base?</h5>
+            <a href="https://github.com/kubernetes/kubernetes" class="button" data-auto-burger-exclude>View On Github</a>
+        </div>
+
+        <div class="right">
+            <h5 class="github-invite">Explore the community</h5>
+            <div class="social">
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>Twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+        </div>
+        <div class="clear" style="clear: both"></div>
+        </main>
+    </nav>
+</header>
+
+		
+		
+		<section id="hero" class="light-text no-sub">
+			
+
+
+
+
+
+
+
+
+
+<h1>Concepts</h1>
+<h5></h5>
+
+
+
+
+
+
+
+
+<div id="vendorStrip" class="light-text">
+	<ul>
+		
+		
+		<li><a href="/docs/home/">DOCUMENTATION</a></li>
+		
+		
+		<li><a href="/docs/setup/">SETUP</a></li>
+		
+		
+		<li><a href="/docs/concepts/" class="YAH">CONCEPTS</a></li>
+		
+		
+		<li><a href="/docs/tasks/">TASKS</a></li>
+		
+		
+		<li><a href="/docs/tutorials/">TUTORIALS</a></li>
+		
+		
+		<li><a href="/docs/reference/">REFERENCE</a></li>
+		
+	</ul>
+	<div id="searchBox">
+		<input type="text" id="search" placeholder="Search" onkeydown="if (event.keyCode==13) window.location.replace('/docs/search/?q=' + this.value)" autofocus="autofocus">
+	</div>
+</div>
+
+		</section>
+		
+		
+
+		<section id="encyclopedia">
+			
+<div id="docsToc">
+     <div class="pi-accordion">
+    	
+        
+        
+        
+        
+        
+         
+             
+                 
+             
+         
+             
+                 
+             
+         
+             
+                 
+                          
+                          
+                 
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+             
+         
+         
+        
+        <a class="item" data-title="Concepts" href="/docs/concepts/"></a>
+
+	
+	
+		
+		
+	<div class="item" data-title="Overview">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="What is Kubernetes?" href="/docs/concepts/overview/what-is-kubernetes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Kubernetes Components" href="/docs/concepts/overview/components/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="The Kubernetes API" href="/docs/concepts/overview/kubernetes-api/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Working with Kubernetes Objects">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Understanding Kubernetes Objects" href="/docs/concepts/overview/working-with-objects/kubernetes-objects/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Names" href="/docs/concepts/overview/working-with-objects/names/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Namespaces" href="/docs/concepts/overview/working-with-objects/namespaces/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Labels and Selectors" href="/docs/concepts/overview/working-with-objects/labels/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Annotations" href="/docs/concepts/overview/working-with-objects/annotations/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Object Management Using kubectl">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Kubernetes Object Management" href="/docs/concepts/overview/object-management-kubectl/overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Managing Kubernetes Objects Using Imperative Commands" href="/docs/concepts/overview/object-management-kubectl/imperative-command/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Imperative Management of Kubernetes Objects Using Configuration Files" href="/docs/concepts/overview/object-management-kubectl/imperative-config/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Declarative Management of Kubernetes Objects Using Configuration Files" href="/docs/concepts/overview/object-management-kubectl/declarative-config/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Compute, Storage, and Networking Extensions">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Cluster Administration Overview" href="/docs/concepts/cluster-administration/cluster-administration-overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Certificates" href="/docs/concepts/cluster-administration/certificates/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Cloud Providers" href="/docs/concepts/cluster-administration/cloud-providers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Managing Resources" href="/docs/concepts/cluster-administration/manage-deployment/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Cluster Networking" href="/docs/concepts/cluster-administration/networking/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Logging Architecture" href="/docs/concepts/cluster-administration/logging/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Configuring kubelet Garbage Collection" href="/docs/concepts/cluster-administration/kubelet-garbage-collection/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Federation" href="/docs/concepts/cluster-administration/federation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Proxies in Kubernetes" href="/docs/concepts/cluster-administration/proxies/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Controller manager metrics" href="/docs/concepts/cluster-administration/controller-metrics/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Installing Addons" href="/docs/concepts/cluster-administration/addons/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Kubernetes Architecture">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Nodes" href="/docs/concepts/architecture/nodes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Master-Node communication" href="/docs/concepts/architecture/master-node-communication/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Concepts Underlying the Cloud Controller Manager" href="/docs/concepts/architecture/cloud-controller/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Extending Kubernetes">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Extending your Kubernetes Cluster" href="/docs/concepts/extend-kubernetes/extend-cluster/"></a>
+
+		
+	
+		
+		
+	<div class="item" data-title="Extending the Kubernetes API">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Extending the Kubernetes API with the aggregation layer" href="/docs/concepts/extend-kubernetes/api-extension/apiserver-aggregation/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Custom Resources" href="/docs/concepts/extend-kubernetes/api-extension/custom-resources/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Compute, Storage, and Networking Extensions">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Network Plugins" href="/docs/concepts/extend-kubernetes/compute-storage-net/network-plugins/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Device Plugins" href="/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+<a class="item" data-title="Service Catalog" href="/docs/concepts/extend-kubernetes/service-catalog/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Containers">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Images" href="/docs/concepts/containers/images/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Container Environment Variables" href="/docs/concepts/containers/container-environment-variables/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Container Lifecycle Hooks" href="/docs/concepts/containers/container-lifecycle-hooks/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Workloads">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+	<div class="item" data-title="Pods">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Pod Overview" href="/docs/concepts/workloads/pods/pod-overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pods" href="/docs/concepts/workloads/pods/pod/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pod Lifecycle" href="/docs/concepts/workloads/pods/pod-lifecycle/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Init Containers" href="/docs/concepts/workloads/pods/init-containers/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pod Preset" href="/docs/concepts/workloads/pods/podpreset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Disruptions" href="/docs/concepts/workloads/pods/disruptions/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Controllers">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="ReplicaSet" href="/docs/concepts/workloads/controllers/replicaset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="ReplicationController" href="/docs/concepts/workloads/controllers/replicationcontroller/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Deployments" href="/docs/concepts/workloads/controllers/deployment/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="StatefulSets" href="/docs/concepts/workloads/controllers/statefulset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="DaemonSet" href="/docs/concepts/workloads/controllers/daemonset/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Garbage Collection" href="/docs/concepts/workloads/controllers/garbage-collection/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Jobs - Run to Completion" href="/docs/concepts/workloads/controllers/jobs-run-to-completion/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="CronJob" href="/docs/concepts/workloads/controllers/cron-jobs/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Configuration">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Configuration Best Practices" href="/docs/concepts/configuration/overview/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Managing Compute Resources for Containers" href="/docs/concepts/configuration/manage-compute-resources-container/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Assigning Pods to Nodes" href="/docs/concepts/configuration/assign-pod-node/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Taints and Tolerations" href="/docs/concepts/configuration/taint-and-toleration/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Secrets" href="/docs/concepts/configuration/secret/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Organizing Cluster Access Using kubeconfig Files" href="/docs/concepts/configuration/organize-cluster-access-kubeconfig/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pod Priority and Preemption" href="/docs/concepts/configuration/pod-priority-preemption/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Services, Load Balancing, and Networking">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Services" href="/docs/concepts/services-networking/service/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="DNS for Services and Pods" href="/docs/concepts/services-networking/dns-pod-service/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Connecting Applications with Services" href="/docs/concepts/services-networking/connect-applications-service/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Ingress" href="/docs/concepts/services-networking/ingress/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Network Policies" href="/docs/concepts/services-networking/network-policies/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Adding entries to Pod /etc/hosts with HostAliases" href="/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Storage">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Volumes" href="/docs/concepts/storage/volumes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Persistent Volumes" href="/docs/concepts/storage/persistent-volumes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Storage Classes" href="/docs/concepts/storage/storage-classes/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Dynamic Volume Provisioning" href="/docs/concepts/storage/dynamic-provisioning/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Node-specific Volume Limits" href="/docs/concepts/storage/storage-limits/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+		
+		
+	<div class="item" data-title="Policies">
+		<div class="container">
+		
+		
+	
+	
+		
+		
+<a class="item" data-title="Resource Quotas" href="/docs/concepts/policy/resource-quotas/"></a>
+
+		
+	
+		
+		
+<a class="item" data-title="Pod Security Policies" href="/docs/concepts/policy/pod-security-policy/"></a>
+
+		
+	
+
+		</div>
+	</div>
+
+		
+	
+
+
+
+
+
+
+     </div> 
+    <button class="push-menu-close-button" onclick="kub.toggleToc()"></button>
+</div> 
+
+			<div id="docsContent">
+				
+<p><a href="/docs/editdocs#docs/concepts/configuration/pod-priority-preemption.md" id="editPageButton">Edit This Page</a></p>
+
+<h1>Pod Priority and Preemption</h1>
+
+
+
+<div style="margin-top: 10px; margin-bottom: 10px;">
+
+
+
+<b>FEATURE STATE:</b> <code>Kubernetes 1.8</code>
+
+
+
+
+    
+    
+    
+    
+    
+<a href="#" id="feature-state-dialog-link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-newwin"></span>alpha</a>
+<div id="feature-state-dialog" class="ui-dialog-content" title="alpha">
+This feature is currently in a <em>alpha</em> state, meaning:</p>
+
+<ul>
+<li>The version names contain alpha (e.g. v1alpha1).</li>
+<li>Might be buggy. Enabling the feature may expose bugs. Disabled by default.</li>
+<li>Support for feature may be dropped at any time without notice.</li>
+<li>The API may change in incompatible ways in a later software release without notice.</li>
+<li>Recommended for use only in short-lived testing clusters, due to increased risk of bugs and lack of long-term support.</li>
+</ul>
+
+</div>
+<script>
+$(function(){
+    
+    $( "#feature-state-dialog" ).dialog({
+        autoOpen: false,
+        width: "600",
+        buttons: [
+            {
+                text: "Ok",
+                click: function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        ]
+    });
+
+    
+    $( "#feature-state-dialog-link" ).click(function( event ) {
+        $( "#feature-state-dialog" ).dialog( "open" );
+        event.preventDefault();
+    });
+
+});
+</script>
+
+    
+
+</div>
+
+<div style="margin-top: 10px; margin-bottom: 10px;">
+
+
+
+<b>FEATURE STATE:</b> <code>Kubernetes 1.11</code>
+
+
+
+
+    
+    
+    
+    
+    
+<a href="#" id="feature-state-dialog-link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-newwin"></span>beta</a>
+<div id="feature-state-dialog" class="ui-dialog-content" title="beta">
+This feature is currently in a <em>beta</em> state, meaning:</p>
+
+<ul>
+<li>The version names contain beta (e.g. v2beta3).</li>
+<li>Code is well tested. Enabling the feature is considered safe. Enabled by default.</li>
+<li>Support for the overall feature will not be dropped, though details may change.</li>
+<li>The schema and/or semantics of objects may change in incompatible ways in a subsequent beta or stable release. When this happens, we will provide instructions for migrating to the next version. This may require deleting, editing, and re-creating API objects. The editing process may require some thought. This may require downtime for applications that rely on the feature.</li>
+<li>Recommended for only non-business-critical uses because of potential for incompatible changes in subsequent releases. If you have multiple clusters that can be upgraded independently, you may be able to relax this restriction.</li>
+<li><strong>Please do try our beta features and give feedback on them! After they exit beta, it may not be practical for us to make more changes.</strong></li>
+</ul>
+
+</div>
+<script>
+$(function(){
+    
+    $( "#feature-state-dialog" ).dialog({
+        autoOpen: false,
+        width: "600",
+        buttons: [
+            {
+                text: "Ok",
+                click: function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        ]
+    });
+
+    
+    $( "#feature-state-dialog-link" ).click(function( event ) {
+        $( "#feature-state-dialog" ).dialog( "open" );
+        event.preventDefault();
+    });
+
+});
+</script>
+
+    
+
+</div>
+
+<p><a href="/docs/user-guide/pods">Pods</a> can have <em>priority</em>. Priority
+indicates the importance of a Pod relative to other Pods. If a Pod cannot be scheduled,
+the scheduler tries to preempt (evict) lower priority Pods to make scheduling of the
+pending Pod possible.</p>
+
+<p>In Kubernetes 1.9 and later, Priority also affects scheduling
+order of Pods and out-of-resource eviction ordering on the Node.</p>
+
+<p>Pod priority and preemption are moved to beta since Kubernetes 1.11 and are enabled by default in
+this release and later.</p>
+
+<p>In Kubernetes versions where Pod priority and preemption is still an alpha-level
+feature, you need to explicitly enable it. To use these features in the older versions of
+Kubernetes, follow the instructions in the documentation for your Kubernetes version, by
+going to the documentation archive version for your Kubernetes version.</p>
+
+<table>
+<thead>
+<tr>
+<th>Kubernetes Version</th>
+<th align="center">Priority and Preemption State</th>
+<th align="center">Enabled by default</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>1.8</td>
+<td align="center">alpha</td>
+<td align="center">no</td>
+</tr>
+
+<tr>
+<td>1.9</td>
+<td align="center">alpha</td>
+<td align="center">no</td>
+</tr>
+
+<tr>
+<td>1.10</td>
+<td align="center">alpha</td>
+<td align="center">no</td>
+</tr>
+
+<tr>
+<td>1.11</td>
+<td align="center">beta</td>
+<td align="center">yes</td>
+</tr>
+</tbody>
+</table>
+
+<blockquote class="warning">
+  <div><strong>Warning</strong>: In a cluster where not all users are trusted, a malicious
+user could create pods at the highest possible priorities, causing
+other pods to be evicted/not get scheduled. To resolve this issue,
+<a href="https://kubernetes.io/docs/concepts/policy/resource-quotas/" target="_blank">ResourceQuota</a> is augmented to support
+Pod priority. An admin can create ResourceQuota for users at specific priority levels, preventing
+them from creating pods at high priorities. However, this feature is in alpha as of Kubernetes 1.11.</div>
+</blockquote>
+
+
+
+
+
+
+
+
+
+<ul id="markdown-toc">
+
+
+
+
+
+
+
+
+
+
+<li><a href="#how-to-use-priority-and-preemption">How to use priority and preemption</a></li>
+
+
+
+
+<li><a href="#how-to-disable-preemption">How to disable preemption</a></li>
+
+
+
+
+<li><a href="#priorityclass">PriorityClass</a></li>
+
+
+
+
+<li><a href="#pod-priority">Pod priority</a></li>
+
+
+
+
+<li><a href="#preemption">Preemption</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</ul>
+
+
+<h2 id="how-to-use-priority-and-preemption">How to use priority and preemption</h2>
+
+<p>To use priority and preemption in Kubernetes 1.11 and later, follow these steps:</p>
+
+<ol>
+<li><p>Add one or more <a href="#priorityclass">PriorityClasses</a>.</p></li>
+
+<li><p>Create Pods with<a href="#pod-priority"><code>priorityClassName</code></a> set to one of the added PriorityClasses.
+Of course you do not need to create the Pods directly; normally you would add
+<code>priorityClassName</code> to the Pod template of a collection object like a Deployment.</p></li>
+</ol>
+
+<p>Keep reading for more information about these steps.</p>
+
+<p>If you try the feature and then decide to disable it, you must remove the PodPriority
+command-line flag or set it to <code>false</code>, and then restart the API server and
+scheduler. After the feature is disabled, the existing Pods keep their priority
+fields, but preemption is disabled, and priority fields are ignored. If the feature
+is disabled, you cannot set <code>priorityClassName</code> in new Pods.</p>
+
+<h2 id="how-to-disable-preemption">How to disable preemption</h2>
+
+<blockquote class="note">
+  <div><strong>Note</strong>: In Kubernetes 1.11, critical pods (except DaemonSet pods, which are
+still scheduled by the DaemonSet controller) rely on scheduler preemption to be
+scheduled when a cluster is under resource pressure. For this reason, we do not
+recommend disabling this feature. If you still have to disable this feature,
+follow the instructions below.</div>
+</blockquote>
+
+<p>In Kubernetes 1.11 and later, preemption is controlled by a kube-scheduler flag
+<code>disablePreemption</code>, which is set to <code>false</code> by default.</p>
+
+<p>To disable preemption, set <code>disablePreemption</code> to true. This keeps pod priority
+enabled but disables preemption. Here is a sample configuration:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>componentconfig/v1alpha1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>KubeSchedulerConfiguration<span style="color:#bbb">
+</span><span style="color:#bbb"></span>algorithmSource:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>provider:<span style="color:#bbb"> </span>DefaultProvider<span style="color:#bbb">
+</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>...<span style="color:#bbb">
+</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>disablePreemption:<span style="color:#bbb"> </span><span style="color:#a2f;font-weight:bold">true</span></code></pre></div>
+<p>Although preemption of the scheduler is enabled by default, it is disabled if <code>PodPriority</code>
+feature is disabled.</p>
+
+<h2 id="priorityclass">PriorityClass</h2>
+
+<p>A PriorityClass is a non-namespaced object that defines a mapping from a priority
+class name to the integer value of the priority. The name is specified in the <code>name</code>
+field of the PriorityClass object&rsquo;s metadata. The value is specified in the required
+<code>value</code> field. The higher the value, the higher the priority.</p>
+
+<p>A PriorityClass object can have any 32-bit integer value smaller than or equal to
+1 billion. Larger numbers are reserved for critical system Pods that should not
+normally be preempted or evicted. A cluster admin should create one PriorityClass
+object for each such mapping that they want.</p>
+
+<p>PriorityClass also has two optional fields: <code>globalDefault</code> and <code>description</code>.
+The <code>globalDefault</code> field indicates that the value of this PriorityClass should
+be used for Pods without a <code>priorityClassName</code>. Only one PriorityClass with
+<code>globalDefault</code>  set to true can exist in the system. If there is no PriorityClass
+with <code>globalDefault</code> set, the priority of Pods with no <code>priorityClassName</code> is zero.</p>
+
+<p>The <code>description</code> field is an arbitrary string. It is meant to tell users of
+the cluster when they should use this PriorityClass.</p>
+
+<h3 id="notes-about-podpriority-and-existing-clusters">Notes about PodPriority and existing clusters</h3>
+
+<ul>
+<li><p>If you upgrade your existing cluster and enable this feature, the priority
+of your existing Pods is effectively zero.</p></li>
+
+<li><p>Addition of a PriorityClass with <code>globalDefault</code> set to <code>true</code> does not
+change the priorities of existing Pods. The value of such a PriorityClass is used only
+for Pods created after the PriorityClass is added.</p></li>
+
+<li><p>If you delete a PriorityClass, existing Pods that use the name of the
+deleted PriorityClass remain unchanged, but you cannot create more Pods
+that use the name of the deleted PriorityClass.</p></li>
+</ul>
+
+<h3 id="example-priorityclass">Example PriorityClass</h3>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>scheduling.k8s.io/v1alpha1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>PriorityClass<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>high-priority<span style="color:#bbb">
+</span><span style="color:#bbb"></span>value:<span style="color:#bbb"> </span><span style="color:#666">1000000</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>globalDefault:<span style="color:#bbb"> </span><span style="color:#a2f;font-weight:bold">false</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>description:<span style="color:#bbb"> </span><span style="color:#b44">&#34;This priority class should be used for XYZ service pods only.&#34;</span></code></pre></div>
+<h2 id="pod-priority">Pod priority</h2>
+
+<p>After you have one or more PriorityClasses, you can create Pods that specify one
+of those PriorityClass names in their specifications. The priority admission
+controller uses the <code>priorityClassName</code> field and populates the integer value
+of the priority. If the priority class is not found, the Pod is rejected.</p>
+
+<p>The following YAML is an example of a Pod configuration that uses the PriorityClass
+created in the preceding example. The priority admission controller checks the
+specification and resolves the priority of the Pod to 1000000.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion:<span style="color:#bbb"> </span>v1<span style="color:#bbb">
+</span><span style="color:#bbb"></span>kind:<span style="color:#bbb"> </span>Pod<span style="color:#bbb">
+</span><span style="color:#bbb"></span>metadata:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>name:<span style="color:#bbb"> </span>nginx<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>labels:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>env:<span style="color:#bbb"> </span>test<span style="color:#bbb">
+</span><span style="color:#bbb"></span>spec:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>containers:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>-<span style="color:#bbb"> </span>name:<span style="color:#bbb"> </span>nginx<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>image:<span style="color:#bbb"> </span>nginx<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>imagePullPolicy:<span style="color:#bbb"> </span>IfNotPresent<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>priorityClassName:<span style="color:#bbb"> </span>high-priority</code></pre></div>
+<h3 id="effect-of-pod-priority-on-scheduling-order">Effect of Pod priority on scheduling order</h3>
+
+<p>In Kubernetes 1.9 and later, when Pod priority is enabled, scheduler orders pending
+Pods by their priority and a pending Pod is placed ahead of other pending Pods with
+lower priority in the scheduling queue. As a result, the higher priority Pod may
+by scheduled sooner that Pods with lower priority if its scheduling requirements
+are met. If such Pod cannot be scheduled, scheduler will continue and tries to
+schedule other lower priority Pods.</p>
+
+<h2 id="preemption">Preemption</h2>
+
+<p>When Pods are created, they go to a queue and wait to be scheduled. The scheduler
+picks a Pod from the queue and tries to schedule it on a Node. If no Node is found
+that satisfies all the specified requirements of the Pod, preemption logic is triggered
+for the pending Pod. Let&rsquo;s call the pending Pod P. Preemption logic tries to find a Node
+where removal of one or more Pods with lower priority than P would enable P to be scheduled
+on that Node. If such a Node is found, one or more lower priority Pods get
+deleted from the Node. After the Pods are gone, P can be scheduled on the Node.</p>
+
+<h3 id="user-exposed-information">User exposed information</h3>
+
+<p>When Pod P preempts one or more Pods on Node N, <code>nominatedNodeName</code> field of Pod P&rsquo;s status is set to
+the name of Node N. This field helps scheduler track resources reserved for Pod P and also gives
+users information about preemptions in their clusters.</p>
+
+<p>Please note that Pod P is not necessarily scheduled to the &ldquo;nominated Node&rdquo;. After victim Pods are
+preempted, they get their graceful termination period. If another node becomes available while
+scheduler is waiting for the victim Pods to terminate, scheduler will use the other node to schedule
+Pod P. As a result <code>nominatedNodeName</code> and <code>nodeName</code> of Pod spec are not always the same. Also, if
+scheduler preempts Pods on Node N, but then a higher priority Pod than Pod P arrives, scheduler may
+give Node N to the new higher priority Pod. In such a case, scheduler clears <code>nominatedNodeName</code> of
+Pod P. By doing this, scheduler makes Pod P eligible to preempt Pods on another Node.</p>
+
+<h3 id="limitations-of-preemption">Limitations of preemption</h3>
+
+<h4 id="graceful-termination-of-preemption-victims">Graceful termination of preemption victims</h4>
+
+<p>When Pods are preempted, the victims get their
+<a href="/docs/concepts/workloads/pods/pod/#termination-of-pods">graceful termination period</a>.
+They have that much time to finish their work and exit. If they don&rsquo;t, they are
+killed. This graceful termination period creates a time gap between the point
+that the scheduler preempts Pods and the time when the pending Pod (P) can be
+scheduled on the Node (N). In the meantime, the scheduler keeps scheduling other
+pending Pods. As victims exit or get terminated, the scheduler tries to schedule
+Pods in the pending queue. Therefore, there is usually a time gap between the point
+that scheduler preempts victims and the time that Pod P is scheduled. In order to
+minimize this gap, one can set graceful termination period of lower priority Pods
+to zero or a small number.</p>
+
+<h4 id="poddisruptionbudget-is-supported-but-not-guaranteed">PodDisruptionBudget is supported, but not guaranteed!</h4>
+
+<p>A <a href="/docs/concepts/workloads/pods/disruptions/">Pod Disruption Budget (PDB)</a>
+allows application owners to limit the number Pods of a replicated application that
+are down simultaneously from voluntary disruptions. Kubernetes 1.9 supports PDB
+when preempting Pods, but respecting PDB is best effort. The Scheduler tries to
+find victims whose PDB are not violated by preemption, but if no such victims are
+found, preemption will still happen, and lower priority Pods will be removed
+despite their PDBs  being violated.</p>
+
+<h4 id="inter-pod-affinity-on-lower-priority-pods">Inter-Pod affinity on lower-priority Pods</h4>
+
+<p>A Node is considered for preemption only when
+the answer to this question is yes: &ldquo;If all the Pods with lower priority than
+the pending Pod are removed from the Node, can the pending Pod be scheduled on
+the Node?&rdquo;</p>
+
+<blockquote class="note">
+  <div><strong>Note:</strong> Preemption does not necessarily remove all lower-priority Pods. If the
+pending Pod can be scheduled by removing fewer than all lower-priority Pods, then
+only a portion of the lower-priority Pods are removed. Even so, the answer to the
+preceding question must be yes. If the answer is no, the Node is not considered
+for preemption.</div>
+</blockquote>
+
+<p>If a pending Pod has inter-pod affinity to one or more of the lower-priority Pods
+on the Node, the inter-Pod affinity rule cannot be satisfied in the absence of those
+lower-priority Pods. In this case, the scheduler does not preempt any Pods on the
+Node. Instead, it looks for another Node. The scheduler might find a suitable Node
+or it might not. There is no guarantee that the pending Pod can be scheduled.</p>
+
+<p>Our recommended solution for this problem is to create inter-Pod affinity only towards
+equal or higher priority Pods.</p>
+
+<h4 id="cross-node-preemption">Cross node preemption</h4>
+
+<p>Suppose a Node N is being considered for preemption so that a pending Pod P
+can be scheduled on N. P might become feasible on N only if a Pod on another
+Node is preempted. Here&rsquo;s an example:</p>
+
+<ul>
+<li>Pod P is being considered for Node N.</li>
+<li>Pod Q is running on another Node in the same Zone as Node N.</li>
+<li>Pod P has Zone-wide anti-affinity with Pod Q
+(<code>topologyKey: failure-domain.beta.kubernetes.io/zone</code>).</li>
+<li>There are no other cases of anti-affinity between Pod P and other Pods in the Zone.</li>
+<li>In order to schedule Pod P on Node N, Pod Q can be preempted, but scheduler
+does not perform cross-node preemption. So, Pod P will be deemed unschedulable
+on Node N.</li>
+</ul>
+
+<p>If Pod Q were removed from its Node, the Pod anti-affinity violation would be gone,
+and Pod P could possibly be scheduled on Node N.</p>
+
+<p>We may consider adding cross Node preemption in future versions if we find an
+algorithm with reasonable performance. We cannot promise anything at this point,
+and cross Node preemption will not be considered a blocker for Beta or GA.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				<div class="issue-button-container">
+					<p><a href=""><img src="https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/docs/concepts/configuration/pod-priority-preemption.md?pixel" alt="Analytics" /></a></p>
+					
+					
+					<script type="text/javascript">
+					PDRTJS_settings_8345992 = {
+					"id" : "8345992",
+					"unique_id" : "\/docs\/concepts\/configuration\/pod-priority-preemption\/",
+					"title" : "Pod Priority and Preemption",
+					"permalink" : "https:\/\/kubernetes.io\/docs\/concepts\/configuration\/pod-priority-preemption\/"
+					};
+					(function(d,c,j){if(!document.getElementById(j)){var pd=d.createElement(c),s;pd.id=j;pd.src=('https:'==document.location.protocol)?'https://polldaddy.com/js/rating/rating.js':'http://i0.poll.fm/js/rating/rating.js';s=document.getElementsByTagName(c)[0];s.parentNode.insertBefore(pd,s);}}(document,'script','pd-rating-js'));
+					</script>
+					<a href="" onclick="window.open('https://github.com/kubernetes/website/issues/new?title=Issue%20with%20' +
+					'k8s.io'+window.location.pathname)" class="button issue">Create an Issue</a>
+					
+					
+					
+					<a href="/docs/editdocs#docs/concepts/configuration/pod-priority-preemption.md" class="button issue">Edit this Page</a>
+					
+				</div>
+			</div>
+		</section>
+		<footer>
+    <main class="light-text">
+        <nav>
+            
+            
+            
+            <a href="/docs/home/">Documentation</a>
+            
+            <a href="/blog/">Blog</a>
+            
+            <a href="/partners/">Partners</a>
+            
+            <a href="/community/">Community</a>
+            
+            <a href="/case-studies/">Case Studies</a>
+            
+        </nav>
+        <div class="social">
+            <div>
+                <a href="https://twitter.com/kubernetesio" class="twitter"><span>twitter</span></a>
+                <a href="https://github.com/kubernetes/kubernetes" class="github"><span>Github</span></a>
+                <a href="http://slack.k8s.io/" class="slack"><span>Slack</span></a>
+            </div>
+            <div>
+                <a href="http://stackoverflow.com/questions/tagged/kubernetes" class="stack-overflow"><span>Stack Overflow</span></a>
+                <a href="https://discuss.kubernetes.io" class="mailing-list"><span>Forum</span></a>
+                <a href="https://calendar.google.com/calendar/embed?src=nt2tcnbtbied3l6gi2h29slvc0%40group.calendar.google.com" class="calendar"><span>Events Calendar</span></a>
+            </div>
+            <div>
+                <a href="/docs/setup/pick-right-solution/" class="button">Get Kubernetes</a>
+                <a href="https://git.k8s.io/community/contributors/guide" class="button">Contribute</a>
+            </div>
+        </div>
+        <div id="miceType" class="center">
+            &copy; 2018 The Kubernetes Authors | Documentation Distributed under <a href="https://git.k8s.io/website/LICENSE" class="light-text">CC BY 4.0</a>
+        </div>
+        <div id="miceType" class="center">
+            Copyright &copy; 2018 The Linux Foundation&reg;. All rights reserved. The Linux Foundation has registered trademarks and uses trademarks. For a list of trademarks of The Linux Foundation, please see our <a href="https://www.linuxfoundation.org/trademark-usage" class="light-text">Trademark Usage page</a>
+        </div>
+    </main>
+</footer>
+
+		<button class="flyout-button" onclick="kub.toggleToc()"></button>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-36037335-10', 'auto');
+ga('send', 'pageview');
+
+
+(function () {
+    window.addEventListener('DOMContentLoaded', init)
+
+        
+        function init() {
+            window.removeEventListener('DOMContentLoaded', init)
+                hideNav()
+        }
+
+    function hideNav(toc){
+        if (!toc) toc = document.querySelector('#docsToc')
+        if (!toc) return
+            var container = toc.querySelector('.container')
+
+                
+                if (container) {
+                    if (container.childElementCount === 0 || toc.querySelectorAll('a.item').length === 1) {
+                        toc.style.display = 'none'
+                            document.getElementById('docsContent').style.width = '100%'
+                    }
+                } else {
+                    requestAnimationFrame(function () {
+                        hideNav(toc)
+                    })
+                }
+    }
+})();
+</script>
+
+
+
+	</body>
+</html>
